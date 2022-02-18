@@ -57,7 +57,7 @@ export default {
     queryInfo(){
       buyCryptoInfo().then(res=>{
         if(res){
-          this.$parent.cryptoCurrencyResponse =
+          // this.$parent.cryptoCurrencyResponse = '';
         }
       })
     },
