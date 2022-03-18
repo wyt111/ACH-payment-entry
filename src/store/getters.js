@@ -1,8 +1,8 @@
-const getters = {
-  sidebar: state => state.app.sidebar,
-  size: state => state.app.size,
-  device: state => state.app.device,
-  visitedViews: state => state.tagsView.visitedViews,
-  token: state => state.user.token,
-}
-export default getters
+// const getters = {
+  // sidebar: state => state.app.sidebar,
+  // size: state => state.app.size,
+  // device: state => state.app.device,
+  // visitedViews: state => state.tagsView.visitedViews,
+  // token: state => state.user.token,
+// }
+// export default getters

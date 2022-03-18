@@ -1,90 +1,196 @@
-<!--  supportCurrency === true Not selectable  -->
 <template>
   <div id="receiveCoins">
-    <div class="promptInformation">
-      <span v-if="supportCurrency">You can receive to an address you own or deposit to Alchemy Pay Wallet.</span>
-      <span v-else>You can receive to an address you own.</span>
-    </div>
-    <div class="collectionMethod" v-if="supportCurrency">
-      <div class="methods">
-        <div class="methods_name">Deposit to Alchemy Pay Wallet</div>
-        <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>
+    <!-- select network -->
+    <search v-if="searchViewState" :viewName="viewName" :allBasicData="networkList"/>
+    <!-- Select acceptance method -->
+    <div ref="receiveCoins_ref" v-show="!searchViewState">
+      <div class="promptInformation">
+        <span v-if="supportCurrency">You can receive to an address you own or deposit to Alchemy Pay Wallet.</span>
+        <span v-else>You can receive to an address you own.</span>
       </div>
-      <div v-if="checkModel[0]==='ach'">
-        <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>
-        <div class="methods_account">Account: <span>zyfqqq123456@gmail.com</span></div>
-      </div>
-    </div>
-    <div class="collectionMethod">
-      <div class="methods">
-        <div class="methods_name">Receive to an address you own</div>
-        <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>
-      </div>
-      <div v-if="checkModel[0]==='address'">
-        <div class="methods_myAddress">
-          <div class="methods_input"><input type="text" placeholder="Wallet Address…"></div>
-<!--          <div class="methods_errorText">Not a valid ACH address.</div>-->
+      <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">
+        <div class="methods">
+          <div class="methods_name">Deposit to Alchemy Pay Wallet</div>
+          <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>
         </div>
-        <div class="methods_myAddress">
-          <div class="methods_title">Network</div>
-          <div class="methods_input network_input">
-            <input type="text" placeholder="Select Network" disabled>
-            <span class="rightIcon"><img src="../../assets/images/rightIcon.png"></span>
+        <div v-if="checkModel[0]==='ach'">
+          <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>
+          <div class="methods_account">Account: <span>{{ email }}</span></div>
+        </div>
+      </div>
+      <div class="collectionMethod" @click="checkMethods('address')">
+        <div class="methods">
+          <div class="methods_name">Receive to an address you own</div>
+          <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>
+        </div>
+        <div v-if="checkModel[0]==='address'">
+          <div class="methods_myAddress">
+            <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…"></div>
+            <div class="methods_errorText" v-if="walletAddress_state">Not a valid ATOM address.</div>
+          </div>
+          <div class="methods_myAddress">
+            <div class="methods_title">Network</div>
+            <div class="methods_input network_input" @click="openSelect">
+              <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>
+              <span class="rightIcon"><img src="../../assets/images/rightIcon.png"></span>
+            </div>
           </div>
         </div>
       </div>
+      <!-- Expense information -->
+      <includedDetails :network="buyParams.network"/>
+      <div class="continue" @click="transaction" :class="{'continue_state': checkModel[0]==='ach'||(checkModel[0]==='address'&&buyParams.network!==''&&buyParams.address!=='')}">Continue</div>
     </div>
-    <includedDetails/>
   </div>
 </template>
 
 <script>
-import includedDetails from "../emailCode/childrens/includedDetails";
+import includedDetails from "../../components/includedDetails";
+import search from "../../components/search";
+
+/**
+ * searchViewState - Control search selection network components (viewName: The component needs to determine which entrance to enter,allBasicData: Network Data).
+ * receiveCoins_ref - Used to search and modify parent component network information.
+ * supportCurrency - Judge whether it can be received (by true: Not selectable,by flase).
+ */
 export default {
   name: "Receive coins",
-  components: { includedDetails },
+  components: { includedDetails, search },
   data(){
     return{
+      email: "",
       checkModel: [],
       //ach支持的币种可以选择
       supportCurrency: true,
+      //select network
+      networkList: [],
+      buyParams: {
+        cryptoCurrency: "",
+        address: "",
+        network: "",
+        fiatCurrency: "",
+        amount: 0,
+        depositType: 1,
+        payWayCode: 10001 //支付方式
+      },
+      networkRegular: '',
+      walletAddress_state: false,
+      searchViewState: false,
+      viewName: '',
     }
   },
-  watch: {
-    checkModel(){
-      if(this.checkModel[0] === 'ach' && this.checkModel.length === 1){
-        this.checkModel[0] = 'ach';
-        this.checkModel = [...new Set(this.checkModel)];
-        return
-      }
-      if(this.checkModel[0] === 'address' && this.checkModel.length === 1){
-        this.checkModel[0] = 'address';
-        this.checkModel = [...new Set(this.checkModel)];
-        return
-      }
-      if(this.checkModel[0] === 'address' && this.checkModel.length > 1){
-        this.checkModel[0] = 'ach';
-        this.checkModel = [...new Set(this.checkModel)];
-        return
-      }
-      if(this.checkModel[0] === 'ach' && this.checkModel.length > 1){
-        this.checkModel[0] = 'address';
-        this.checkModel = [...new Set(this.checkModel)];
-        return
-      }
-    },
-  },
   mounted() {
-    this.supportCurrency === false ? this.checkModel[0] = 'address' : '';
+    this.routingInformation();
+    this.queryNetwork();
   },
   methods: {
-
+    routingInformation(){
+      localStorage.getItem("email") ? this.email = localStorage.getItem("email") : this.email = '';
+      let query = JSON.parse(this.$route.query.routerParams);
+      //essential information
+      this.buyParams.payWayCode = query.payWayCode;
+      this.buyParams.fiatCurrency = query.fiatCurrency;
+      this.buyParams.cryptoCurrency = query.cryptoCurrency;
+      this.buyParams.amount = query.amount;
+      this.receivingMode();
+    },
+    queryNetwork(){
+      let params = {
+        coin: JSON.parse(this.$route.query.routerParams).cryptoCurrency
+      }
+      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_network,params).then(res=>{
+        if(res && res.returnCode === "0000"){
+          this.networkList = res.data.networkList;
+        }
+      })
+    },
+    // Receiving mode (request submit token)
+    receivingMode(){
+      let newParams = {
+        "coin": JSON.parse(this.$route.query.routerParams).cryptoCurrency,
+        "email": localStorage.getItem("email")
+      }
+      this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_coinSupportedWallet,newParams).then(res=> {
+        if (res && res.returnCode === "0000") {
+          // Support acceptance method
+          this.supportCurrency = res.data.isRegister === 1 ? true : false;
+          this.supportCurrency === false ? this.checkModel[0] = 'address' : '';
+        }
+      })
+    },
+    checkMethods(value){
+      if(value === 'ach'){
+        this.buyParams.network = "";
+      }
+      if(this.checkModel.length === 0){
+        this.checkModel.push(value);
+        return;
+      }
+      if(value !== this.checkModel[0]){
+        this.checkModel[0] = value;
+        this.checkModel = [...new Set(this.checkModel)];
+      }
+    },
+    openSelect(){
+      this.$parent.$refs.viewTab.tabState = false;
+      this.searchViewState = true;
+      this.viewName = 'network';
+    },
+    transaction(){
+      if(this.checkModel[0] === 'address' && (this.buyParams.address === '' || this.buyParams.network === '')){
+        return;
+      }
+      if(this.checkModel[0] === 'address' && !new RegExp(this.networkRegular).test(this.buyParams.address)){
+        this.walletAddress_state = true;
+        return;
+      }
+      this.walletAddress_state = false;
+      if(this.checkModel[0] === 'ach'){
+        this.buyParams.depositType = 1;
+        this.buyParams.address = localStorage.getItem("email");
+        this.buyParams.network = "";
+      }else{
+        this.buyParams.depositType = 2;
+      }
+      this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
+        if(res && res.returnMsg === 'SUCCESS'){
+          this.generateRouterQuery(res);
+        }
+      })
+    },
+    generateRouterQuery(res){
+      //kycStatus === 10 Basisidauth authentication is not required - to path: /internationalCardPay
+      //kycStatus !== 10 Basisidauth Basisidauth authentication required - to path: /basisIdAuth
+      let router = JSON.parse(this.$route.query.routerParams).payWayName==='VISA/MasterCard' ? localStorage.getItem("kycStatus") !== 10 ? 'basisIdAuth': 'internationalCardPay' : 'indonesianPayment';
+      let ordParams = JSON.parse(this.$route.query.routerParams);
+      let newParams = {
+        depositType: this.buyParams.depositType,
+        orderNo: res.data.orderNo,
+      }
+      Object.assign(newParams, ordParams);
+      if(JSON.parse(this.$route.query.routerParams).payWayName!=='VISA/MasterCard'){
+        let params = {
+          orderNo: res.data.orderNo,
+          lastname: "1"
+        }
+        this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_indonesiaBuy,params,'submitToken').then(res=>{
+          if(res && res.returnMsg === 'SUCCESS'){
+            // newParams.webUrl = res.data.webUrl;
+            // this.$router.push(`/${router}?routerParams=${JSON.stringify(newParams)}`);
+            window.location.href(res.data.webUrl);
+          }
+        })
+        return;
+      }
+      this.$router.push(`/${router}?routerParams=${JSON.stringify(newParams)}`);
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 #receiveCoins{
+  margin-bottom: 0.95rem;
   .promptInformation{
     font-size: 0.14rem;
     font-family: Jost-Medium, Jost;
@@ -189,6 +295,27 @@ export default {
         color: #4479D9;
       }
     }
+  }
+
+  .continue{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 0 0 0.2rem 0;
+    width: 100%;
+    height: 0.6rem;
+    background: rgba(68, 121, 217, 0.5);
+    border-radius: 4px;
+    text-align: center;
+    line-height: 0.6rem;
+    font-size: 0.18rem;
+    font-family: Jost-Medium, Jost;
+    font-weight: 500;
+    color: #FAFAFA;
+    cursor: no-drop;
+  }
+  .continue_state{
+    background: #4479D9;
   }
 }
 </style>

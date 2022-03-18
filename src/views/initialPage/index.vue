@@ -1,6 +1,6 @@
 <template>
   <div id="homePage">
-    <div class="homePage_content" v-if="searchState">
+    <div class="homePage_content" v-show="searchState">
       <div class="homePage_view" v-if="!menuState">
         <div class="home-header">
           <div class="home-tab">
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="home-children">
-          <buyCrypto v-if="tabstate === 'buyCrypto'"/>
+          <buyCrypto v-if="tabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>
           <sellCrypto v-else-if="tabstate === 'sellCrypto'"/>
         </div>
       </div>
@@ -28,16 +28,15 @@
       </div>
     </div>
     <!-- search Public organization -->
-    <search v-else :viewName="viewName" />
+    <search v-if="!searchState" ref="search_ref" :viewName="viewName" :allBasicData="basicData"/>
   </div>
 </template>
 
 <script>
 import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
-import search from '/src/views/initialPage/childrens/search'
+import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
-import { buyCryptoInfo } from "@/api/article.js";
 
 export default {
   name: "index",
@@ -48,31 +47,27 @@ export default {
       tabstate: 'buyCrypto',
       searchState: true,
       viewName: "",
+      basicData: {},
     }
   },
   mounted(){
     this.queryInfo();
   },
   methods: {
-    queryInfo(){
-      buyCryptoInfo().then(res=>{
-        if(res){
-          // this.$parent.cryptoCurrencyResponse = '';
-        }
-      })
-    },
     openSearch(view) {
       this.searchState = false;
       this.viewName = view;
     },
     openMenu(){
-      if(this.menuState === true){
-        this.menuState = false;
-
-      }else{
-        this.menuState = true;
-      }
-    }
+      this.menuState = this.menuState === true ? false : true;
+    },
+    queryInfo(){
+      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_buyCryptoInfo).then(res=>{
+        if(res && res.returnCode === "0000"){
+          this.basicData = res.data;
+        }
+      })
+    },
   }
 };
 </script>

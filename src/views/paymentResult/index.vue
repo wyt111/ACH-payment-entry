@@ -18,20 +18,20 @@ Three channels for successful payment --- 'channel'
 
     <div class="paymentInformation">
       <div class="paymentInformation-line">
-        <div class="line_name">ACH Price</div>
-        <div class="line_number">$238</div>
+        <div class="line_name">{{ routingParameters.cryptoCurrency }} Price</div>
+        <div class="line_number">${{ detailsParameters.cryptoPrice }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">ACH Amount</div>
-        <div class="line_number">10</div>
+        <div class="line_number">{{ detailsParameters.cryptoQuantity }}</div>
       </div>
       <div class="paymentInformation-line" v-if="channel===1||channel===2">
         <div class="line_name">Address</div>
-        <div class="line_number">12345678hg9876543df765xzZxdfgh54321</div>
+        <div class="line_number">{{ detailsParameters.address }}</div>
       </div>
       <div class="paymentInformation-line" v-if="channel===2">
         <div class="line_name">Hash ID</div>
-        <div class="line_number">1234567894532</div>
+        <div class="line_number">{{ detailsParameters.hashId }}</div>
       </div>
       <div class="paymentInformation-line achWallet" v-if="channel===3">
         <div class="line_name">ACH Wallet</div>
@@ -39,14 +39,14 @@ Three channels for successful payment --- 'channel'
       </div>
       <div class="paymentInformation-line" v-if="channel===3">
         <div class="line_name">Password</div>
-        <div class="line_number">wq1345678</div>
+        <div class="line_number">{{ detailsParameters.password }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">Total</div>
-        <div class="line_number">$30.00</div>
+        <div class="line_number">${{ detailsParameters.amount }}</div>
       </div>
     </div>
-    <div class="continue">Continue to by Cryptos</div>
+    <div class="continue" @click="goHome">Continue to by Cryptos</div>
   </div>
 </template>
 
@@ -56,26 +56,61 @@ export default {
   data(){
     return{
       resultState: true,
-      channel: 1,
+      //1: ach支付成功&到账 2: 链上地址支付成功 3: ach支付成功
+      channel: 3,
       resultText: '',
+      routingParameters: {},
+      detailsParameters: {},
     }
   },
   mounted(){
     this.judgeChannel();
+    this.queryRouterParams();
+    this.queryDetails()
   },
   methods: {
-    judgeChannel(){
-      if(this.channel === 1){
-        this.resultText = ` Payment success!
-        <span>18.67 ACH</span> will transfer to your wallet address.
-        We will notify you of the result by email
-        <span>zyfqqq123456@gmail.com</span>`;
-      }else if(this.channel === 2){
-        this.resultText = `<span>18.67 ACH</span> has transfered to your wallt address.`;
+    queryRouterParams(){
+      this.routingParameters = JSON.parse(this.$route.query.routerParams);
+      console.log(this.routingParameters)
+      if(this.routingParameters.depositType === 1){
+        this.channel = 3;
       }else{
-        this.resultText = `Payment success! <span>18.67 ACH</span> has deposited to your Alchemy
+        this.channel = 2;
+      }
+    },
+    queryDetails(){
+      var countDown = setInterval(()=>{
+        let params = {
+          "orderNo": this.$route.query.orderNo
+        }
+        this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_payResult,params).then(res=>{
+          if(res && res.data){
+            this.detailsParameters = res.data;
+            if(res.orderStatus === 0 || res.orderStatus === 1 || res.orderStatus === 2 || res.orderStatus === 3){
+              this.channel = 3;
+            }else if(res.orderStatus === 4){
+              this.channel = 1;
+              clearInterval(countDown);
+            }
+          }
+        })
+      },1000);
+    },
+    judgeChannel(){
+      if(this.channel === 3){
+        this.resultText = ` Payment success!
+        <span>${this.detailsParameters.cryptoQuantity} ACH</span> will transfer to your wallet address.
+        We will notify you of the result by email
+        <span>${localStorage.getItem("email")}</span>`;
+      }else if(this.channel === 2){
+        this.resultText = `<span>${this.detailsParameters.cryptoQuantity} ACH</span> has transfered to your wallt address.`;
+      }else{
+        this.resultText = `Payment success! <span>${this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
         Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
       }
+    },
+    goHome(){
+      this.$router.push("/");
     }
   }
 }

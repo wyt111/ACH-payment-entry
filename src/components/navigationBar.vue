@@ -16,30 +16,55 @@
 </template>
 
 <script>
+/**
+ * tabState - Used to hide the menu bar of other routing pages except the home page  eg:'/receiveCoins' Using search components
+ */
 export default {
   name: "navigationBar",
   data() {
     return {
       routerName: "",
       tabState: true,
+      routerPath: '',
     };
   },
   watch: {
     $route:{
       immediate: true,
-      handler: function(val){
+      handler: function(val,oldVal){
         if(val.name === 'Home') {
           this.tabState = false;
         } else {
           this.tabState = true;
           this.routerName = val.name;
         }
+        oldVal ? this.routerPath = oldVal.path : "";
       },
     }
   },
   methods: {
     goBack(){
-      this.$router.go(-1)
+      if(this.$route.path === '/emailCode'){
+        this.$router.push('/')
+        return;
+      }
+      if(this.$route.path === '/paymentReSult'){
+        this.$router.push('/');
+        return;
+      }
+      if(this.routerPath === '/emailCode' && this.$route.path === '/receiveCoins'){
+        this.$router.go(-2);
+        return;
+      }
+      if(this.routerPath === '/emailCode'){
+        this.$router.back(-2);
+        return;
+      }
+      if(this.$route.path === '/internationalCardPay' && this.routerPath === '/basisIdAuth'){
+        this.$router.go(-6);
+        return;
+      }
+      this.$router.back(-1);
     },
     openMenu(){
       if(this.$parent.routerViewState === true){

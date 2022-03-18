@@ -1,6 +1,6 @@
 <template>
   <div id="App">
-    <tab />
+    <tab ref="viewTab"/>
     <router-view class="routerView" v-if="routerViewState"/>
     <routerMenu class="routerView" v-else />
   </div>
@@ -11,14 +11,14 @@ import tab from "./components/navigationBar";
 import routerMenu from "./components/routerMenu";
 
 export default {
-  name: "index",
+  name: 'App',
   components: { tab, routerMenu },
   data(){
     return{
       routerViewState: true,
     }
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">
@@ -48,17 +48,22 @@ a,img,button,input,textarea,span,div {
   padding: 0;
   box-sizing: border-box;
 }
-html,body,#App,#app{
+html,body,#app,#App{
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 #App {
   -ms-overflow-style: none; /* IE 10+ */
   display: flex;
   flex-direction: column;
+  //padding: 0.2rem;
   .routerView{
     flex: 1;
     overflow: auto;
   }
+}
+.van-overlay{
+  border-radius: 0.1rem;
 }
 </style>

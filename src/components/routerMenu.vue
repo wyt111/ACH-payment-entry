@@ -39,7 +39,7 @@
       <div class="lineIcon"><img src="../assets/images/menu/icon6.png"></div>
       <div class="lineName">Log Out</div>
       <div class="lineRight">
-        <div class="email">zyfqqq123456@gmail.com</div>
+        <div class="email">{{ email }}</div>
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
@@ -49,14 +49,43 @@
 <script>
 export default {
   name: "routerMenu",
+  data(){
+    return{
+      email: '',
+    }
+  },
+  mounted(){
+    this.email = localStorage.getItem("email");
+  },
   methods: {
     goView(name){
-      this.$router.push(name)
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
+      if(name === '/'){
+        this.$router.push(name);
+        return;
+      }
+       if(!localStorage.getItem("token")){
+        this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
+      }else{
+        this.$router.push(name);
+      }
     },
     outLogin(){
-
+      if(this.email){
+        this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_outLogin).then(res=>{
+          if(res && res.returnCode === "0000"){
+            this.$parent.menuState = false;
+            localStorage.removeItem("sign");
+            localStorage.removeItem("token");
+            localStorage.removeItem("email");
+            localStorage.removeItem("userNo");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("kycStatus");
+            this.$router.push('/')
+          }
+        })
+      }
     }
   }
 }

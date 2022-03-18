@@ -2,60 +2,70 @@
   <div id="buyCrypto">
     <div class="selectCountry" @click="openSearch('country')">
       <div class="selectCountry_left">
-        <div><img src="@/assets/logo.png"></div>
-        <div>Hong Kong</div>
+        <div><img :src="positionData.positionImg"></div>
+        <div>{{ positionData.positionValue }}</div>
       </div>
       <div class="selectCountry_right"><img src="@/assets/images/rightIcon.png"></div>
     </div>
 
     <div class="form_title methods_title">Payment Method</div>
-    <div class="methods_select">Visa/Master</div>
+    <div class="methods_select" @click="openPicker">{{ paymentMethod }}</div>
 
     <div class="form_title pay_title">You Pay</div>
     <div class="methods_select">
-      <input class="pay_input" type="number" placeholder="0.00">
+      <input class="pay_input" type="number" v-model="payAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="0.00">
       <span class="pay_company">USD</span>
     </div>
-    <div class="warning_text" v-if="warningTextState">The minimum transaction amount is $30.00.</div>
+    <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
     <div class="form_title get_title">You Get</div>
     <div class="methods_select">
-      <input class="pay_input get_input" type="number" placeholder="0.00">
+      <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="0.00" disabled="true">
       <div class="get_company" @click="openSearch('currency')">
-        <div class="getImg"><img src="@/assets/logo.png"></div>
-        <div class="getText">ACH</div>
+        <div class="getImg"><img :src="currencyData.icon"></div>
+        <div class="getText">{{ currencyData.name }}</div>
         <div class="rightIcon"><img src="@/assets/images/rightIcon.png"></div>
       </div>
     </div>
 
-    <div class="calculationProcess">
+    <div class="calculationProcess" v-if="detailedInfo_state">
       <div class="calculationProcess_line">
         <div class="line_name">Remaining time</div>
         <div class="line_number">
-          <div class="line_number_icon"><img src="@/assets/images/countDownIcon.svg"></div>
-          <div class="line_number_red">15S</div>
+          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
+          <div class="line_number_red">{{ timeDownNumber }}S</div>
         </div>
       </div>
       <div class="calculationProcess_line">
-        <div class="line_name">ACH Price</div>
-        <div class="line_number">$238</div>
+        <div class="line_name">{{ currencyData.name }} Price</div>
+        <div class="line_number">${{ feeInfo.price }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Ramp fee</div>
-        <div class="line_number">$10</div>
+        <div class="line_number">${{ Number(feeInfo.serviceFee) * Number(payAmount) }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Network Fee</div>
-        <div class="line_number">$10</div>
+        <div class="line_number">${{ feeInfo.networkFee }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Total</div>
-        <div class="line_number">$30.00</div>
+        <div class="line_number">${{ payAmount }}</div>
       </div>
     </div>
 
-    <div class="continue">Continue</div>
+    <div class="continue" @click="nextStep" :class="{'continue_true': continueState}">Continue</div>
 
+    <!-- select network -->
+    <van-popup v-model="showPicker" round position="bottom">
+      <van-picker
+          show-toolbar
+          :columns="payType"
+          value-key="payWayName"
+          @cancel="showPicker = false"
+          @confirm="onConfirm"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -63,20 +73,213 @@
 
 export default {
   name: "buyCrypto",
+  props: ['allBasicData'],
   data(){
     return{
       warningTextState: false,
+      payAmount_tips: '',
 
+      basicData: {},
+      positionData: {
+        positionValue: '',
+        positionImg: '',
+      },
+      currencyData: {
+        icon: '',
+        name: '',
+        networkFee: '',
+        serviceFee: '',
+        price: '',
+      },
+      payAmount: '',
+      getAmount: '',
+      detailedInfo_state: false,
+      timeDownNumber: 15,
+
+      paymentMethod: '',
+      paymentMethodCode: '',
+      payType: [],
+      showPicker: false,
+
+      feeInfo: {},
+      timeDown: null,
     }
+  },
+  computed: {
+    continueState(){
+      if(this.positionData.positionValue !== ''&& this.paymentMethod !== '' &&
+          this.payAmount !== '' && Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100 &&
+          this.getAmount !== '' && Number(this.payAmount) > 0){
+        return true
+      }else{
+        return false
+      }
+    }
+  },
+  watch: {
+    allBasicData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.allBasicData.worldList !== undefined ? this.currentLocation() : '';
+      },
+    },
+    payAmount: {
+      deep: true,
+      handler() {
+        if(this.payAmount === ''){
+          this.warningTextState = false;
+          return;
+        }
+        //Purchase amount prompt
+        if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
+          this.warningTextState = false;
+          //How many digital currencies can I exchange
+          this.calculationAmount();
+        }else{
+          var minError = "The minimum transaction amount is $30.00.";
+          var maxError = "The maximum transaction amount is $100.00.";
+          if(Number(this.payAmount) < 30){
+            this.payAmount_tips = minError;
+          }else if(Number(this.payAmount) > 100){
+            this.payAmount_tips = maxError;
+          }
+          this.warningTextState = true;
+          this.getAmount = "";
+        }
+        this.payinfo();
+      }
+    },
+  },
+  destroyed(){
+    clearInterval(this.timeDown);
   },
   methods: {
     openSearch(view){
       this.$parent.openSearch(view);
     },
-    submitForm(){
-      buyCryptoInfo().then(res=>{
-
+    //Real time calculation getAmount
+    calculationAmount(){
+      if(Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
+        this.getAmount = (((Number(this.payAmount) - this.feeInfo.networkFee) - Number(this.payAmount)*this.feeInfo.serviceFee) / this.feeInfo.price).toFixed(6)*1;
+      }
+    },
+    //Purchase information details - Scheduled refresh
+    payinfo(){
+      clearInterval(this.timeDown);
+      if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
+        this.detailedInfo_state = true;
+        this.queryFee();
+      }else{
+        clearInterval(this.timeDown);
+        this.detailedInfo_state = false;
+      }
+    },
+    //Purchase information details
+    queryFee(){
+      this.timeDownNumber = 15;
+      let params = {
+        symbol: this.currencyData.name + "USDT",
+        coin: this.currencyData.name,
+      }
+      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_inquiryFee,params).then(res=>{
+        if(res.data){
+          this.feeInfo = res.data;
+          this.calculationAmount();
+        }
       })
+      this.timeDown = setInterval(()=> {
+        if (this.timeDownNumber === 1) {
+          this.timeDownNumber = 15;
+          let params = {
+            symbol: this.currencyData.name + "USDT",
+            coin: this.currencyData.name,
+          }
+          this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_inquiryFee,params).then(res=>{
+            if(res.data){
+              this.feeInfo = res.data;
+              this.calculationAmount();
+            }
+          })
+        }else{
+          this.timeDownNumber -= 1;
+        }
+      },1000);
+    },
+    //position country
+    currentLocation(){
+      this.basicData = this.allBasicData;
+      this.paymentMethod = this.basicData.payWayList[0].payWayName;
+      this.paymentMethodCode = this.basicData.payWayList[0].payWayCode;
+      this.basicData.worldList.forEach((item)=>{
+        if(item.alpha2 === JSON.parse(localStorage.getItem("Position")).cid){
+          this.positionData.positionValue = item.enCommonName;
+          this.positionData.positionImg = item.flag;
+          //pay methods
+          if(item.payWayList.length===1){
+            this.payType[0] = this.basicData.payWayList[0];
+          }else{
+            this.payType = this.basicData.payWayList;
+          }
+          if(this.payType.length === 0){
+            this.payType = this.basicData.payWayList;
+          }
+        }else if(JSON.parse(localStorage.getItem("Position")).cid === 'CN' ||
+            JSON.parse(localStorage.getItem("Position")).cid === '810000'||
+            JSON.parse(localStorage.getItem("Position")).cid === '110000'){
+          this.positionData.positionValue = 'Hong Kong'
+          this.positionData.positionImg = 'https://flagcdn.com/hk.svg'
+          this.payType[0] = this.basicData.payWayList[0];
+        }
+      })
+
+      //Default currency
+      this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{
+        if(item.name === 'ACH'){
+          this.currencyData = {
+            icon: item.logoUrl,
+            name: item.name,
+            networkFee: item.networkFee,
+            price: item.price,
+            serviceFee: item.serviceFee,
+          }
+        }
+      })
+    },
+    nextStep(){
+      /**
+       * - No token jump /emailCode
+       * post_coinSupportedWallet - How to get acceptable currency - ACh Wallet OR Chain address
+       * - User selected verification
+       * choice Indonesian payment /internationalCardPay
+       * Other payment jump /receiveCoins
+       * */
+      let routerParams = {
+        cryptoCurrency: this.currencyData.name,
+        fiatCurrency: 'USD',
+        amount: this.payAmount,
+        payWayCode: this.paymentMethodCode,
+        payWayName: this.paymentMethod
+      }
+      if(this.positionData.positionValue === ''|| this.paymentMethod === '' ||
+          this.payAmount === '' || Number(this.payAmount) < 30 || Number(this.payAmount) > 100 ||
+          this.getAmount === '' || Number(this.payAmount) <= 0){
+        return;
+      }
+      // Login information
+      if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
+        this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
+        return;
+      }
+      this.$router.push(`/receiveCoins?routerParams=${JSON.stringify(routerParams)}`)
+    },
+    openPicker(){
+      this.payType.length > 1 ? this.showPicker = true : '';
+    },
+    onConfirm(val){
+      this.paymentMethod = val.payWayName;
+      this.paymentMethodCode = val.payWayCode;
+      this.showPicker = false;
     }
   }
 }
@@ -181,8 +384,8 @@ export default {
   right: 0.2rem;
   display: flex;
   align-items: center;
-  div{display: flex}
   .getImg{
+    display: flex;
     margin-right: 0.1rem;
     img{
       width: 0.3rem;
@@ -216,6 +419,9 @@ export default {
   color: #FAFAFA;
   margin-top: 0.4rem;
   cursor: no-drop;
+}
+.continue_true{
+  background: #4479D9;
 }
 
 .calculationProcess{
@@ -254,4 +460,17 @@ export default {
   }
 }
 
+@keyframes loadingIcon {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .loadingIcon {
+    animation: loadingIcon infinite 2s linear;
+  }
+}
 </style>

@@ -1,95 +1,101 @@
 <template>
   <div id="tradeHistory">
-    <div class="historyList" v-if="judgeData">
-      <div class="historyLi">
-        <div class="historyLi_header">
-          <div class="time">2022-02-24  12:34:45</div>
-          <div class="state">Complete</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Amount:</div>
-          <div class="details_line_value">$30.00</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Crypto:</div>
-          <div class="details_line_value">18.67</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Address:</div>
-          <div class="details_line_value">43df765xzZ326575432</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Hash ID:</div>
-          <div class="details_line_value">43df765xzZ326575432</div>
-        </div>
-      </div>
-
-      <!-- state: Transferring -->
-      <div class="historyLi">
-        <div class="historyLi_header">
-          <div class="time">2022-02-24  12:34:45</div>
-          <div class="state">Transferring</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Amount:</div>
-          <div class="details_line_value">$30.00</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Crypto:</div>
-          <div class="details_line_value">18.67</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">ACH Wallet:</div>
-          <div class="details_line_value">43df765xzZ@qq.com</div>
-        </div>
-      </div>
-
-      <div class="historyLi">
-        <div class="historyLi_header">
-          <div class="time">2022-02-24  12:34:45</div>
-          <div class="state">Complete</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Amount:</div>
-          <div class="details_line_value">$30.00</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Crypto:</div>
-          <div class="details_line_value">18.67</div>
-        </div>
-        <div class="details_line">
-          <div class="details_line_title">Address:</div>
-          <div class="details_line_value">43df765xzZ326575432</div>
-        </div>
-      </div>
-    </div>
-    <div class="noData" v-else>
+    <div class="noData" v-if="historyList.length===0">
       <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
       <div class="noDataText">No transactions</div>
       <div class="continue" @click="goHome">Buy Crypto</div>
+    </div>
+    <div class="historyList" v-else>
+      <van-list v-model="loading" :finished="finished" finished-text="No more" @load="onLoad" loading-text="Loading" error-text="Loading failed">
+        <div class="van-clearfix">
+          <div class="float-item" v-for="(item,index) in historyList" :key="index">
+            <div class="historyLi_header">
+              <div class="time">{{ item.createdTime }}</div>
+              <div class="state">
+                <span v-if="item.orderState === 4" class="state_success">Complete</span>
+<!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
+                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>
+              </div>
+            </div>
+            <div class="details_line">
+              <div class="details_line_title">Amount:</div>
+              <div class="details_line_value">${{ item.amount }}</div>
+            </div>
+            <div class="details_line">
+              <div class="details_line_title">Crypto:</div>
+              <div class="details_line_value">{{ item.cryptoCurrencyVolume }}</div>
+            </div>
+            <div class="details_line" >
+              <div class="details_line_title">
+                <span v-if="item.deposityType===1">Address:</span>
+                <span v-if="item.deposityType===2">ACH Wallet:</span>
+              </div>
+              <div class="details_line_value">{{ item.address }}</div>
+            </div>
+            <div class="details_line" v-if="item.hashId">
+              <div class="details_line_title">Hash ID:</div>
+              <div class="details_line_value">{{ item.hashId }}</div>
+            </div>
+          </div>
+        </div>
+      </van-list>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "Trade History",
   data(){
     return{
-      judgeData: false,
+      query: {
+        orderState: 2,
+        orderType: 1,
+        pageIndex: 1,
+        pageSize: 5
+      },
+      historyList: [],
+
+      loading: false,
+      finished: false,
     }
+  },
+  mounted(){
+    this.queryTransactionHistory();
   },
   methods:{
     goHome(){
       this.$router.push('/')
-    }
+    },
+    queryTransactionHistory(){
+      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_transactionHistory,this.query).then(res=>{
+        if(res.data){
+          let newArray = res.data.result;
+          this.historyList = this.historyList.concat(newArray);
+          this.loading = false;
+          if (this.historyList.length === res.data.total) {
+            this.finished = true;
+          }
+        }
+      })
+    },
+    onLoad() {
+      setTimeout(() => {
+        this.query.pageIndex += 1;
+        this.queryTransactionHistory();
+      }, 1000);
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+html,body,#tradeHistory,.historyList,.van-list{
+  height: 100%;
+}
 #tradeHistory{
-  .historyLi{
+  .float-item{
     background: #FFFFFF;
     border-radius: 10px;
     border: 1px solid #232323;
@@ -107,6 +113,15 @@ export default {
       .state{
         margin-left: auto;
         color: #02AF38;
+        .state_success{
+          color: #02AF38;
+        }
+        .state_loading{
+          color: #FFA400;
+        }
+        .state_error{
+          color: red;
+        }
       }
     }
 
