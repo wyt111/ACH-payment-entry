@@ -25,7 +25,7 @@ Three channels for successful payment --- 'channel'
         <div class="line_name">ACH Amount</div>
         <div class="line_number">{{ detailsParameters.cryptoQuantity }}</div>
       </div>
-      <div class="paymentInformation-line" v-if="channel===1||channel===2">
+      <div class="paymentInformation-line" v-if="channel===2||channel===3">
         <div class="line_name">Address</div>
         <div class="line_number">{{ detailsParameters.address }}</div>
       </div>
@@ -33,11 +33,11 @@ Three channels for successful payment --- 'channel'
         <div class="line_name">Hash ID</div>
         <div class="line_number">{{ detailsParameters.hashId }}</div>
       </div>
-      <div class="paymentInformation-line achWallet" v-if="channel===3">
+      <div class="paymentInformation-line achWallet" v-if="channel===1">
         <div class="line_name">ACH Wallet</div>
         <div class="line_number">12345678hg9876543df765xzZxdfgh54321</div>
       </div>
-      <div class="paymentInformation-line" v-if="channel===3">
+      <div class="paymentInformation-line" v-if="channel===1">
         <div class="line_name">Password</div>
         <div class="line_number">{{ detailsParameters.password }}</div>
       </div>
@@ -64,20 +64,9 @@ export default {
     }
   },
   mounted(){
-    this.judgeChannel();
-    this.queryRouterParams();
     this.queryDetails()
   },
   methods: {
-    queryRouterParams(){
-      this.routingParameters = JSON.parse(this.$route.query.routerParams);
-      console.log(this.routingParameters)
-      if(this.routingParameters.depositType === 1){
-        this.channel = 3;
-      }else{
-        this.channel = 2;
-      }
-    },
     queryDetails(){
       var countDown = setInterval(()=>{
         let params = {
@@ -86,12 +75,14 @@ export default {
         this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_payResult,params).then(res=>{
           if(res && res.data){
             this.detailsParameters = res.data;
-            if(res.orderStatus === 0 || res.orderStatus === 1 || res.orderStatus === 2 || res.orderStatus === 3){
+            res.orderStatus === 4 ?  (clearInterval(countDown),this.channel = 1) : '';
+            // depositType - Receiving mode
+            if(res.data.depositType === 1) {
               this.channel = 3;
-            }else if(res.orderStatus === 4){
-              this.channel = 1;
-              clearInterval(countDown);
+            }else{
+              this.channel = 2;
             }
+            this.judgeChannel();
           }
         })
       },1000);
@@ -102,12 +93,14 @@ export default {
         <span>${this.detailsParameters.cryptoQuantity} ACH</span> will transfer to your wallet address.
         We will notify you of the result by email
         <span>${localStorage.getItem("email")}</span>`;
-      }else if(this.channel === 2){
-        this.resultText = `<span>${this.detailsParameters.cryptoQuantity} ACH</span> has transfered to your wallt address.`;
-      }else{
-        this.resultText = `Payment success! <span>${this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
-        Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
+        return;
       }
+      if(this.channel === 2){
+        this.resultText = `<span>${this.detailsParameters.cryptoQuantity} ACH</span> has transfered to your wallt address.`;
+        return;
+      }
+      this.resultText = `Payment success! <span>${this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
+        Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
     },
     goHome(){
       this.$router.push("/");
@@ -135,6 +128,7 @@ export default {
     color: #232323;
     line-height: 0.24rem;
     text-align: center;
+    min-height: 0.8rem;
   }
   .results_text ::v-deep span{
     color: #4479D9;
@@ -169,14 +163,14 @@ export default {
       font-weight: 500;
       color: #333333;
       margin-left: auto;
+      word-break: break-word;
+      max-width: 60%;
+      text-align: right;
     }
   }
   .achWallet{
     .line_name{
       min-width: 0.9rem;
-    }
-    .line_number{
-      word-break: break-word;
     }
   }
 }

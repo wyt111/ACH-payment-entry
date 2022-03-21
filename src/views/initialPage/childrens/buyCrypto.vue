@@ -71,6 +71,8 @@
 
 <script>
 
+import store from "../../../store";
+
 export default {
   name: "buyCrypto",
   props: ['allBasicData'],
@@ -268,6 +270,14 @@ export default {
       }
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
+        this.$store.state.routerParams = routerParams;
+        window.onbeforeunload = function() {
+          console.log("youxiao")
+        }
+          window.addEventListener("beforeunload",()=>{
+          console.log("触发")
+          localStorage.setItem("store",JSON.stringify(store.state));
+        })
         this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
         return;
       }

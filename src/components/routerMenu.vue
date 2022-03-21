@@ -75,6 +75,7 @@ export default {
       if(this.email){
         this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_outLogin).then(res=>{
           if(res && res.returnCode === "0000"){
+            this.$parent.routerViewState = true;
             this.$parent.menuState = false;
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
@@ -82,7 +83,7 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
-            this.$router.push('/')
+            // this.$router.push('/')
           }
         })
       }

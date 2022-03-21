@@ -26,7 +26,7 @@
         <div v-if="checkModel[0]==='address'">
           <div class="methods_myAddress">
             <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…"></div>
-            <div class="methods_errorText" v-if="walletAddress_state">Not a valid ATOM address.</div>
+            <div class="methods_errorText" v-if="walletAddress_state">Not a valid {{ buyParams.cryptoCurrency }} address.</div>
           </div>
           <div class="methods_myAddress">
             <div class="methods_title">Network</div>
@@ -96,7 +96,7 @@ export default {
     },
     queryNetwork(){
       let params = {
-        coin: JSON.parse(this.$route.query.routerParams).cryptoCurrency
+        coin: this.buyParams.cryptoCurrency
       }
       this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_network,params).then(res=>{
         if(res && res.returnCode === "0000"){
@@ -107,10 +107,10 @@ export default {
     // Receiving mode (request submit token)
     receivingMode(){
       let newParams = {
-        "coin": JSON.parse(this.$route.query.routerParams).cryptoCurrency,
+        "coin": this.buyParams.cryptoCurrency,
         "email": localStorage.getItem("email")
       }
-      this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_coinSupportedWallet,newParams).then(res=> {
+      this.$axios.post(localStorage.getItem("baseUrl") + this.$api.post_coinSupportedWallet, newParams).then(res=> {
         if (res && res.returnCode === "0000") {
           // Support acceptance method
           this.supportCurrency = res.data.isRegister === 1 ? true : false;
@@ -161,7 +161,6 @@ export default {
     generateRouterQuery(res){
       //kycStatus === 10 Basisidauth authentication is not required - to path: /internationalCardPay
       //kycStatus !== 10 Basisidauth Basisidauth authentication required - to path: /basisIdAuth
-      let router = JSON.parse(this.$route.query.routerParams).payWayName==='VISA/MasterCard' ? localStorage.getItem("kycStatus") !== 10 ? 'basisIdAuth': 'internationalCardPay' : 'indonesianPayment';
       let ordParams = JSON.parse(this.$route.query.routerParams);
       let newParams = {
         depositType: this.buyParams.depositType,
@@ -175,14 +174,23 @@ export default {
         }
         this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_indonesiaBuy,params,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){
-            // newParams.webUrl = res.data.webUrl;
-            // this.$router.push(`/${router}?routerParams=${JSON.stringify(newParams)}`);
-            window.location.href(res.data.webUrl);
+            console.log(res)
+            window.open(res.data.webUrl);
           }
         })
         return;
       }
-      this.$router.push(`/${router}?routerParams=${JSON.stringify(newParams)}`);
+      if(JSON.parse(this.$route.query.routerParams).payWayName==='VISA/MasterCard'){
+        this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_isbasisIdAuth,"").then(res=>{
+          if(res && res.returnCode === '0000'){
+            if(res.data.status === 10){
+              this.$router.push(`/internationalCardPay?routerParams=${JSON.stringify(newParams)}`);
+            }else{
+              this.$router.push(`/basisIdAuth?routerParams=${JSON.stringify(newParams)}`);
+            }
+          }
+        })
+      }
     }
   }
 }

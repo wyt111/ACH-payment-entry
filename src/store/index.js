@@ -1,8 +1,9 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
-// // import getters from './getters'
+import Vue from 'vue'
+import Vuex from 'vuex'
+// import getters from './getters'
 //
-// Vue.use(Vuex)
+Vue.use(Vuex)
+
 //
 // // https://webpack.js.org/guides/dependency-management/#requirecontext
 // const modulesFiles = require.context('./modules', true, /\.js$/)
@@ -17,9 +18,21 @@
 //   return modules
 // }, {})
 //
-// const store = new Vuex.Store({
-//   modules,
-//   // getters
-// })
-//
-// export default store
+const store = new Vuex.Store({
+  // modules,
+  // getters
+    state: {
+        routerParams: {},
+    }
+})
+
+export default store
+
+if(localStorage.getItem("store")){
+    console.log(store)
+    store.replaceState(Object.assign({},store.state),JSON.parse(localStorage.getItem("store")));
+}
+window.addEventListener("beforeunload",()=>{
+    console.log("触发")
+    localStorage.setItem("store",JSON.stringify(store.state));
+})

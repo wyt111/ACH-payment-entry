@@ -26,6 +26,9 @@ function requestPrompt(response){
       case "70003":
         Toast(response.returnMsg);
         break;
+      case "10003":
+        Toast(response.returnMsg);
+        break;
     }
   }
 }
@@ -67,60 +70,6 @@ axios.interceptors.response.use(function (response) {
   //Request callback prompt
   requestPrompt(response.data);
   return response.data
-}, function (error) {
-  let errMsg = '';
-  if (error.response) {
-    // The request is executed and the server responds with a status code
-    switch (error.response.status) {
-      case 400:
-        errMsg = 'Error request';
-        break;
-      case 401:
-        errMsg = 'Unauthorized, please log in again';
-        // localStorage.removeItem("token");
-        // this.$message.error(errMsg);
-        break;
-      case 403:
-        errMsg = 'access denied';
-        // localStorage.removeItem("token");
-        // this.$message.error(errMsg);
-        break;
-      case 404:
-        errMsg = 'Request error, the resource was not found';
-        break;
-      case 405:
-        errMsg = 'Request method not allowed';
-        break;
-      case 408:
-        errMsg = 'request timeout';
-        break;
-      case 500:
-        errMsg = 'Server side error';
-        break;
-      case 501:
-        errMsg = 'Network not implemented';
-        break;
-      case 502:
-        errMsg = 'network error';
-        break;
-      case 503:
-        errMsg = 'Service Unavailable';
-        break;
-      case 504:
-        errMsg = 'Network Timeout';
-        break;
-      case 505:
-        errMsg = 'The request is not supported by the HTTP version';
-        break;
-      default:
-        errMsg = 'Connection error';
-    }
-  } else {
-    errMsg = "Failed to connect to the server";
-  }
-
-  return Promise.reject(errMsg);
-
 });
 export default {
   /**
@@ -141,10 +90,6 @@ export default {
         'timestamp': timestamp,
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
-        // 'Access-Control-Allow-Origin': '*',
-        // "Access-Control-Allow-Headers":"Authorization,Origin, X-Requested-With, Content-Type, Accept",
-        // "Access-Control-Allow-Methods":"GET,POST",
       },
     }).then((response) => {
       if (response.returnCode === "0000") {
@@ -175,10 +120,8 @@ export default {
         'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
         'timestamp': timestamp,
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
       }
     }).then((response) => {
-      // debugger;
       if (response.returnCode === "0000") {
         return Promise.resolve(response);
       } else {

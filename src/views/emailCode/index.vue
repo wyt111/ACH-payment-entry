@@ -43,6 +43,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.$store.state.routerParams)
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
   },
   methods: {

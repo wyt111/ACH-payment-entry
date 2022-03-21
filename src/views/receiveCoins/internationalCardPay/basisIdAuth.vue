@@ -70,6 +70,7 @@ export default {
                     if(res.data.status === 10){
                       _this.nextState = true;
                       _this.CallbackState = true;
+                      localStorage.setItem("kyctStatus",10);
                       _this.storeInfo(result)
                       clearInterval(this.timeDown);
                     }else{

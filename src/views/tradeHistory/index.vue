@@ -12,9 +12,9 @@
             <div class="historyLi_header">
               <div class="time">{{ item.createdTime }}</div>
               <div class="state">
-                <span v-if="item.orderState === 4" class="state_success">Complete</span>
+                <span v-if="Number(item.orderState) >= 2" class="state_success">Complete</span>
 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
-                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>
+<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
               </div>
             </div>
             <div class="details_line">
@@ -27,10 +27,10 @@
             </div>
             <div class="details_line" >
               <div class="details_line_title">
-                <span v-if="item.deposityType===1">Address:</span>
-                <span v-if="item.deposityType===2">ACH Wallet:</span>
+                <span v-if="item.depositType===1">ACH Wallet:</span>
+                <span v-if="item.depositType===2">Address:</span>
               </div>
-              <div class="details_line_value">{{ item.address }}</div>
+              <div class="details_line_value address_value">{{ item.address }}</div>
             </div>
             <div class="details_line" v-if="item.hashId">
               <div class="details_line_title">Hash ID:</div>
@@ -141,8 +141,13 @@ html,body,#tradeHistory,.historyList,.van-list{
         padding-bottom: 0.2rem;
       }
       .details_line_value{
+        max-width: 60%;
+        word-wrap: break-word;
         font-weight: 500;
         margin-left: auto;
+      }
+      .address_value{
+        margin-right: -0.06rem;
       }
     }
   }
