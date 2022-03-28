@@ -70,9 +70,6 @@
 </template>
 
 <script>
-
-import store from "../../../store";
-
 export default {
   name: "buyCrypto",
   props: ['allBasicData'],
@@ -108,6 +105,7 @@ export default {
     }
   },
   computed: {
+    //Control button status
     continueState(){
       if(this.positionData.positionValue !== ''&& this.paymentMethod !== '' &&
           this.payAmount !== '' && Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100 &&
@@ -160,16 +158,18 @@ export default {
     openSearch(view){
       this.$parent.openSearch(view);
     },
+
     //Real time calculation getAmount
     calculationAmount(){
       if(Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
         this.getAmount = (((Number(this.payAmount) - this.feeInfo.networkFee) - Number(this.payAmount)*this.feeInfo.serviceFee) / this.feeInfo.price).toFixed(6)*1;
       }
     },
+
     //Purchase information details - Scheduled refresh
     payinfo(){
       clearInterval(this.timeDown);
-      if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
+      if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100 && Number(this.getAmount) > 0){
         this.detailedInfo_state = true;
         this.queryFee();
       }else{
@@ -177,6 +177,7 @@ export default {
         this.detailedInfo_state = false;
       }
     },
+
     //Purchase information details
     queryFee(){
       this.timeDownNumber = 15;
@@ -184,7 +185,7 @@ export default {
         symbol: this.currencyData.name + "USDT",
         coin: this.currencyData.name,
       }
-      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_inquiryFee,params).then(res=>{
+      this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res.data){
           this.feeInfo = res.data;
           this.calculationAmount();
@@ -197,7 +198,7 @@ export default {
             symbol: this.currencyData.name + "USDT",
             coin: this.currencyData.name,
           }
-          this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_inquiryFee,params).then(res=>{
+          this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
             if(res.data){
               this.feeInfo = res.data;
               this.calculationAmount();
@@ -208,6 +209,7 @@ export default {
         }
       },1000);
     },
+
     //position country
     currentLocation(){
       this.basicData = this.allBasicData;
@@ -248,6 +250,7 @@ export default {
         }
       })
     },
+
     nextStep(){
       /**
        * - No token jump /emailCode
@@ -275,17 +278,19 @@ export default {
           console.log("youxiao")
         }
           window.addEventListener("beforeunload",()=>{
-          console.log("触发")
-          localStorage.setItem("store",JSON.stringify(store.state));
+          localStorage.setItem("store",JSON.stringify(this.$store.state));
         })
         this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
         return;
       }
       this.$router.push(`/receiveCoins?routerParams=${JSON.stringify(routerParams)}`)
     },
+
+    //open pay methods view
     openPicker(){
       this.payType.length > 1 ? this.showPicker = true : '';
     },
+    //choise pay methods
     onConfirm(val){
       this.paymentMethod = val.payWayName;
       this.paymentMethodCode = val.payWayCode;

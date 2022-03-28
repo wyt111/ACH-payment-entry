@@ -28,7 +28,7 @@ export default {
       let params = {
         "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
       }
-      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_payResult,params).then(res=> {
+      this.$axios.get(this.$api.get_payResult,params).then(res=> {
         if (res.data.orderStatus && res.data.orderStatus !== 0) {
           // Clear create order token
           localStorage.removeItem("submit-token");

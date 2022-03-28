@@ -69,13 +69,14 @@ export default {
       this.$router.push('/')
     },
     queryTransactionHistory(){
-      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_transactionHistory,this.query).then(res=>{
+      let _this = this;
+      this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
         if(res.data){
           let newArray = res.data.result;
-          this.historyList = this.historyList.concat(newArray);
-          this.loading = false;
-          if (this.historyList.length === res.data.total) {
-            this.finished = true;
+          _this.historyList = _this.historyList.concat(newArray);
+          _this.loading = false;
+          if (_this.historyList.length === res.data.total) {
+            _this.finished = true;
           }
         }
       })

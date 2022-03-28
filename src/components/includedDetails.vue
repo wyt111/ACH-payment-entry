@@ -86,7 +86,7 @@ export default {
         coin: JSON.parse(this.$route.query.routerParams).cryptoCurrency,
         network: this.network
       }
-      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_inquiryFee,params).then(res=>{
+      this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = res.data
         }

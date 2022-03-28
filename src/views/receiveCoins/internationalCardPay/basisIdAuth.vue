@@ -63,20 +63,20 @@ export default {
           onLoad: function(){},
           onManualCheck: function(result) {
             if (result.status === "ok"){
+              //Refresh the form status filled in by the user
               this.timeDown = setInterval(()=>{
-                _this.$axios.get(localStorage.getItem("baseUrl") + _this.$api.get_isbasisIdAuth).then(res=>{
+                _this.$axios.get(_this.$api.get_isbasisIdAuth, '').then(res=>{
                   if(res && res.returnCode === "0000"){
                     //10 of Authentication successful
                     if(res.data.status === 10){
                       _this.nextState = true;
                       _this.CallbackState = true;
-                      localStorage.setItem("kyctStatus",10);
                       _this.storeInfo(result)
                       clearInterval(this.timeDown);
                     }else{
                       _this.nextState = true;
                       _this.CallbackState = false;
-                      clearInterval(this.timeDown);
+                      clearInterval(_this.timeDown);
                     }
                   }
                 })
@@ -86,13 +86,21 @@ export default {
         }
       });
     },
+
+    //Store user filled information
     storeInfo(result){
       let params = {
         "userId": result.user_id,
         "userHash": result.user_hash
       }
-      this.$axios.post(localStorage.getItem("baseUrl") + this.$api.post_storageBasisIdAuth,params).then(()=>{})
+      this.$axios.post(this.$api.post_storageBasisIdAuth, params).then(res=>{
+        if(res && res.returnCode === "0000"){
+          console.log("store userId ok");
+        }
+      })
     },
+
+    //go to next page
     payNext(){
       if(this.CallbackState === true){
         this.$router.replace(`/internationalCardPay?routerParams=${this.$route.query.routerParams}`);

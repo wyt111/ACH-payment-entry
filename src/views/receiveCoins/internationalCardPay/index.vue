@@ -166,13 +166,13 @@ export default {
       if(this.buttonState){
         this.params.payWayCode = JSON.parse(this.$route.query.routerParams).payWayCode;
         this.params.orderNo = JSON.parse(this.$route.query.routerParams).orderNo;
-        this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_internationalCard,this.params,'submitToken').then(res=>{
+        this.$axios.post(this.$api.post_internationalCard,this.params,'submitToken').then(res=>{
           if(res.returnCode === '0000'){
             let timeDown = setInterval(()=>{
               let params = {
                 "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
               }
-              this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_payResult,params).then(res=>{
+              this.$axios.get(this.$api.get_payResult,params).then(res=>{
                 if(res.data.orderStatus && res.data.orderStatus !== 0 || res.data.orderStatus !== 1){
                   // Clear create order token
                   localStorage.removeItem("submit-token");

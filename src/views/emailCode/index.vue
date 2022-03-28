@@ -43,7 +43,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.$store.state.routerParams)
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
   },
   methods: {
@@ -65,7 +64,7 @@ export default {
       let params = {
         email: this.email
       }
-      this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_sendEmail,params).then(res=>{
+      this.$axios.post(this.$api.post_sendEmail,params).then(res=>{
         if(res.returnCode === '0000'){
           this.timeDown -= 1;
           var timeDown = setInterval(()=>{
@@ -90,7 +89,7 @@ export default {
         data.append('verificationCode', this.code);
         var config = {
           method: 'post',
-          url: localStorage.getItem("baseUrl")+this.$api.post_login,
+          url: process.env.VUE_APP_BASE_API + this.$api.post_login,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },

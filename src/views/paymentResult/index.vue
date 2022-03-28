@@ -67,12 +67,13 @@ export default {
     this.queryDetails()
   },
   methods: {
+    //Get result information
     queryDetails(){
       var countDown = setInterval(()=>{
         let params = {
           "orderNo": this.$route.query.orderNo
         }
-        this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_payResult,params).then(res=>{
+        this.$axios.get(this.$api.get_payResult,params).then(res=>{
           if(res && res.data){
             this.detailsParameters = res.data;
             res.orderStatus === 4 ?  (clearInterval(countDown),this.channel = 1) : '';
@@ -87,6 +88,8 @@ export default {
         })
       },1000);
     },
+
+    //Judgment order status display text
     judgeChannel(){
       if(this.channel === 3){
         this.resultText = ` Payment success!
@@ -102,6 +105,7 @@ export default {
       this.resultText = `Payment success! <span>${this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
         Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
     },
+
     goHome(){
       this.$router.push("/");
     }

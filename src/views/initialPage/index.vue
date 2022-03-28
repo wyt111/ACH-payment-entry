@@ -62,9 +62,10 @@ export default {
       this.menuState = this.menuState === true ? false : true;
     },
     queryInfo(){
-      this.$axios.get(localStorage.getItem("baseUrl")+this.$api.get_buyCryptoInfo).then(res=>{
+      let _this = this;
+      this.$axios.get(this.$api.get_buyCryptoInfo,"").then(res=>{
         if(res && res.returnCode === "0000"){
-          this.basicData = res.data;
+          _this.basicData = res.data;
         }
       })
     },

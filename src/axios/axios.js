@@ -3,9 +3,19 @@ import { Toast } from 'vant';
 import router from "../router";
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
 
-//Process Sign
+//Request service address
+const baseUrl = process.env.VUE_APP_BASE_API;
+
+//Encrypted sign
+/**
+ * sign - Encryption and decryption rules
+ * Sign encryption/decryption key：@ALCHEMY$VPG!J8vq
+ * Sign encryption/Decryption algorithm：通过AES/ECB/PKCS5Padding
+ * The content of the generated sign is：userId - Last 5 digits of userno - timestamp，eg：12345678-12345-1645427147261
+ * After successful decryption and login，You can get userId from sign,Remove the ACh from the decrypted content of the sign is userId，eg：ACH12345 delete ACH = userId=12345
+ */
 var timestamp = '';
-function processSign(){
+function processSign_encryption(){
   if(localStorage.getItem("token")){
     let sign = localStorage.getItem("userId");
     let userId = sign.substring(sign.lastIndexOf("\H")+1,sign.length);
@@ -16,6 +26,7 @@ function processSign(){
   }
 }
 
+//Request status
 function requestPrompt(response){
   if (response) {
     // The request is executed and the server responds with a status code
@@ -33,17 +44,18 @@ function requestPrompt(response){
   }
 }
 
-axios.defaults.timeout = 30000; // Set the request timeout (MS) to no more than half a minute
 
+//request interceptor
 axios.interceptors.request.use(function (config) {
   return config;
 }, function (error) {
   return Promise.reject(error)
 });
 
+//Response interceptor
 axios.interceptors.response.use(function (response) {
   //token effect: Login information verification
-  if(response.config.url === localStorage.getItem('baseUrl') + '/user/login' && response.data.data !== null){
+  if(response.config.url === process.env.VUE_APP_BASE_API + '/user/login' && response.data.data !== null){
     localStorage.setItem("userId",AES_Decrypt(response.headers.sign));
     localStorage.setItem("token",response.headers.token);
     localStorage.setItem("email",response.data.data.email);
@@ -51,10 +63,10 @@ axios.interceptors.response.use(function (response) {
     localStorage.setItem("kycStatus",response.data.data.kycStatus);
   }
   //token effect: Multiple trigger interface verification
-  if(response.config.url === localStorage.getItem('baseUrl') + '/crypto/wallet/check'){
+  if(response.config.url === process.env.VUE_APP_BASE_API + '/crypto/wallet/check'){
     localStorage.setItem("submit-token",response.headers.token);
   }
-  if(response.config.url === localStorage.getItem('baseUrl') + '/trade/create'){
+  if(response.config.url === process.env.VUE_APP_BASE_API + '/trade/create'){
     localStorage.setItem("submit-token",response.headers.token);
   }
   //no login info
@@ -71,18 +83,22 @@ axios.interceptors.response.use(function (response) {
   requestPrompt(response.data);
   return response.data
 });
+
+axios.defaults.timeout = 30000; // Set the request timeout (MS) to no more than half a minute
+
 export default {
   /**
    *
-   * @param url  Interface address
+   * @param requestUrl  Interface address
+   * @param submitToken Submit Token
    * @param params Interface parameters (object)
    * @returns {Q.Promise<any>}
    */
-  post(url, params, submitToken) {
-    processSign();
+  post(requestUrl, params, submitToken) {
+    processSign_encryption();
     return axios({
       method: 'post',
-      url: url,
+      url: baseUrl + requestUrl,
       data: params,
       headers: {
         'token': localStorage.getItem('token') ? localStorage.getItem('token') : '',
@@ -105,15 +121,15 @@ export default {
 
   /**
    *
-   * @param url  Interface address
+   * @param requestUrl  Interface address
    * @param params Interface parameters (object)
    * @returns {Q.Promise<any>}
    */
-  get(url, params) {
-    processSign();
+  get(requestUrl, params) {
+    processSign_encryption();
     return axios({
       method: 'get',
-      url: url,
+      url: baseUrl + requestUrl,
       params: params,
       headers: {
         'token': localStorage.getItem('token') ? localStorage.getItem('token') : '',
@@ -160,23 +176,4 @@ export default {
   //     console.log('failed', error);
   //   });
   // },
-
-  // getJson(method) {
-  //
-  //   return new Promise((resolve, reject) => {
-  //     axios({
-  //       method: 'get',
-  //       baseURL: '',
-  //       url: method,
-  //       dataType: "json",
-  //       crossDomain: true,
-  //       cache: false
-  //     }).then(res => {
-  //       resolve(res)
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-  //
-  // }
 }

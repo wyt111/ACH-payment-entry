@@ -22,9 +22,6 @@ Vue.prototype.$decrypt = AES_Decrypt;
 // localStorage.setItem("sign",'nUScnFlw9F/xfrMug41xSNNEEsOCh9tBxn3L+V4AXm8=');
 // localStorage.setItem("email",'1003934654@qq.com');
 
-localStorage.setItem("baseUrl",'http://testbuy.alchemypay.cc');
-// localStorage.setItem("baseUrl",'http://192.168.110.75:8082');
-
 Vue.config.productionTip = false;
 
 new Vue({

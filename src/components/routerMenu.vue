@@ -73,7 +73,7 @@ export default {
     },
     outLogin(){
       if(this.email){
-        this.$axios.post(localStorage.getItem("baseUrl")+this.$api.post_outLogin).then(res=>{
+        this.$axios.post(this.$api.post_outLogin).then(res=>{
           if(res && res.returnCode === "0000"){
             this.$parent.routerViewState = true;
             this.$parent.menuState = false;

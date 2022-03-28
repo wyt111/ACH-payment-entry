@@ -17,6 +17,9 @@ export default {
     return{
       routerViewState: true,
     }
+  },
+  mounted(){
+    this.$store.state.routerParams.a = '1'
   }
 }
 </script>
