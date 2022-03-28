@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     //Fuzzy search
-    searchData() {
+    searchData(){
       if(this.searchText && this.viewName === 'country') {
         let resultArray_country1 = [],resultArray_country2 = [],resultArray_country3 = [],resultArray_country4 = [],all_resultArray_country = [];
         resultArray_country1 = this.countryList.filter((value) => {
@@ -98,7 +98,8 @@ export default {
         all_resultArray_country = all_resultArray_country.concat(resultArray_country1).concat(resultArray_country2).concat(resultArray_country3).concat(resultArray_country4);
         all_resultArray_country = [...new Set(all_resultArray_country)];
         return all_resultArray_country;
-      }else if(this.searchText && this.viewName === 'currency'){
+      }
+      if(this.searchText && this.viewName === 'currency'){
         let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
         //Match full name
         resultArray1 = this.cryptoCurrencyVOList.filter((value) => {
@@ -136,6 +137,7 @@ export default {
     this.customComponentTitle();
   },
   methods: {
+    //Judge title name
     customComponentTitle(){
       if(this.viewName === 'country'){
         this.viewTitle = 'Select Country';
@@ -150,6 +152,8 @@ export default {
         return;
       }
     },
+
+    //close component
     closeView(){
       if(this.viewName === 'country' || this.viewName === 'currency') {
         this.$parent.searchState = true;
@@ -161,6 +165,8 @@ export default {
         return;
       }
     },
+
+    //Select data
     choiseItem(type,item){
       setTimeout(()=>{
         if(type === 'country'){
@@ -192,6 +198,8 @@ export default {
         }
       })
     },
+
+    //Get and call component path, processing data
     initializationData(){
       if(this.viewName === 'country') {
         this.basicData = this.allBasicData;

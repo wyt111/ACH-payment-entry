@@ -61,15 +61,15 @@ export default {
     }
   },
   mounted(){
-    this.amountMoney = JSON.parse(this.$route.query.routerParams).amount;
-    this.cryptoCurrencyName = JSON.parse(this.$route.query.routerParams).cryptoCurrency;
-    // this.queryFee();
-    // this.timingSetting();
+    let routerParams = JSON.parse(this.$route.query.routerParams);
+    this.amountMoney = routerParams.amount;
+    this.cryptoCurrencyName = routerParams.cryptoCurrency;
   },
   destroyed(){
     clearInterval(this.timeOut)
   },
   methods:{
+    //Countdown 15 refresh data
     timingSetting(){
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
@@ -92,6 +92,7 @@ export default {
         }
       })
     },
+    //Control details display status
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
     }

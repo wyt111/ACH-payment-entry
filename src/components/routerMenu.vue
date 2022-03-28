@@ -58,6 +58,7 @@ export default {
     this.email = localStorage.getItem("email");
   },
   methods: {
+    //Select menu
     goView(name){
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
@@ -71,9 +72,11 @@ export default {
         this.$router.push(name);
       }
     },
+
+    //Exit the login hidden menu and clear the login information
     outLogin(){
       if(this.email){
-        this.$axios.post(this.$api.post_outLogin).then(res=>{
+        this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
             this.$parent.routerViewState = true;
             this.$parent.menuState = false;
@@ -83,7 +86,6 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
-            // this.$router.push('/')
           }
         })
       }

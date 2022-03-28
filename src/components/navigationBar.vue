@@ -67,11 +67,7 @@ export default {
       this.$router.back(-1);
     },
     openMenu(){
-      if(this.$parent.routerViewState === true){
-        this.$parent.routerViewState = false;
-      }else{
-        this.$parent.routerViewState = true;
-      }
+      this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
     }
   }
 };

@@ -28,6 +28,7 @@ const store = new Vuex.Store({
 
 export default store
 
+//localStorage strore state
 if(localStorage.getItem("store")){
     store.replaceState(Object.assign({},store.state),JSON.parse(localStorage.getItem("store")));
 }
