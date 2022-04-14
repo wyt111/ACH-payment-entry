@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="paymentInformation-line">
-      <div class="line_name detailsName">${{ amountMoney }} is all you pay,fees included</div>
+      <div class="line_name detailsName">${{ routerParams.amount }} is all you pay,fees included</div>
       <div class="line_number details" @click="expandCollapse">Details</div>
     </div>
     <div v-if="detailsState">
@@ -14,20 +14,20 @@
         </div>
       </div>
       <div class="paymentInformation-line">
-        <div class="line_name">{{ cryptoCurrencyName }} Price</div>
-        <div class="line_number">${{ feeInfo.price }}</div>
+        <div class="line_name">{{ routerParams.cryptoCurrency }} Price</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ (feeInfo.price * routerParams.exchangeRate).toFixed(6) }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">Ramp fee</div>
-        <div class="line_number">${{ Number(feeInfo.serviceFee) * Number(amountMoney) }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ ((Number(payCommission.feeRate) * Number(routerParams.amount) + payCommission.fixedFee) * routerParams.exchangeRate).toFixed(2) }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">Network Fee</div>
-        <div class="line_number">${{ feeInfo.networkFee }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(2) }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">Total</div>
-        <div class="line_number">${{ amountMoney }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ routerParams.amount }}</div>
       </div>
     </div>
   </div>
@@ -44,8 +44,8 @@ export default {
       timeOut: null,
       detailsState: true,
       feeInfo: {},
-      amountMoney: '',
-      cryptoCurrencyName: '',
+      routerParams: {},
+      payCommission: {},
       timeDownNumber: 15,
     }
   },
@@ -62,8 +62,8 @@ export default {
   },
   mounted(){
     let routerParams = JSON.parse(this.$route.query.routerParams);
-    this.amountMoney = routerParams.amount;
-    this.cryptoCurrencyName = routerParams.cryptoCurrency;
+    this.routerParams = routerParams;
+    this.payCommission = routerParams.payCommission;
   },
   destroyed(){
     clearInterval(this.timeOut)

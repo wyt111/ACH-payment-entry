@@ -56,17 +56,40 @@ export const constantRoutes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/index.vue"),
+        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/payForm.vue"),
+    meta: {
+      requireAuth: true,
+      fromPage: 'basisIdAuth'
+    }
+  },
+  {
+    path: "/internationalCardConfigPag",
+    name: "Confirm Payment",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/configPayment.vue"),
     meta: {requireAuth: true}
   },
   {
     path: "/indonesianPayment",
-    name: "Indonesian payment",
+    name: "Payment",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/receiveCoins/indonesianPayment/index.vue"),
+    meta: {requireAuth: true}
+  },
+  {
+    path: "/indonesianConfirm",
+    name: "Confirm Payment",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/receiveCoins/indonesianPayment/confirmPayment.vue"),
     meta: {requireAuth: true}
   },
   {

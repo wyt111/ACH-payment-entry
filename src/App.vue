@@ -56,6 +56,11 @@ html,body,#app,#App{
   height: 100%;
   border-radius: 10px;
 }
+html,body,#app,#App{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
 #App {
   -ms-overflow-style: none; /* IE 10+ */
   display: flex;

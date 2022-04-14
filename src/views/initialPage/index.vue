@@ -28,7 +28,7 @@
       </div>
     </div>
     <!-- search Public organization -->
-    <search v-if="!searchState" ref="search_ref" :viewName="viewName" :allBasicData="basicData"/>
+    <search v-if="!searchState" ref="search_ref" :viewName="viewName" :choiseItemData='choiseItem' :allBasicData="basicData"/>
   </div>
 </template>
 
@@ -48,15 +48,17 @@ export default {
       searchState: true,
       viewName: "",
       basicData: {},
+      choiseItem: {},
     }
   },
   mounted(){
     this.queryInfo();
   },
   methods: {
-    openSearch(view) {
+    openSearch(view,choiseItem) {
       this.searchState = false;
       this.viewName = view;
+      this.choiseItem = choiseItem;
     },
     openMenu(){
       this.menuState = this.menuState === true ? false : true;

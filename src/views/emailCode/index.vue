@@ -8,7 +8,7 @@
     <!-- error message -->
     <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
     <div class="form-title">Enter the verification code you received</div>
-    <div class="form-input emailCode"><input type="text" v-model="code" maxlength="6"></div>
+    <div class="form-input emailCode"><input type="text" v-model="code" placeholder="Login Code" maxlength="6"></div>
     <!-- error message -->
     <div class="errorMessage" v-if="codeErrorState" v-html="codeError">Verification code not match.</div>
     <!-- Permission agreement -->
@@ -153,6 +153,9 @@ export default {
       outline: none;
     }
   }
+  .emailCode input::placeholder{
+    letter-spacing: 0;
+  }
   .emailCode input{
     letter-spacing: 3px;
   }
@@ -218,6 +221,7 @@ export default {
   }
   .buttonTrue{
     background: #4479D9 !important;
+    cursor: pointer;
   }
 }
 </style>

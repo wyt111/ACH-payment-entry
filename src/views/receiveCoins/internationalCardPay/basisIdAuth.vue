@@ -93,7 +93,7 @@ export default {
         "userId": result.user_id,
         "userHash": result.user_hash
       }
-      this.$axios.post(this.$api.post_storageBasisIdAuth, params).then(res=>{
+      this.$axios.post(this.$api.post_storageBasisIdAuth, params,'').then(res=>{
         if(res && res.returnCode === "0000"){
           console.log("store userId ok");
         }
@@ -103,7 +103,7 @@ export default {
     //go to next page
     payNext(){
       if(this.CallbackState === true){
-        this.$router.replace(`/internationalCardPay?routerParams=${this.$route.query.routerParams}`);
+        this.$router.replace(`/internationalCardPay?routerParams=${this.$route.query.routerParams}&submitForm=${this.$route.query.submitForm}`);
       }else{
         this.$router.replace('/');
       }

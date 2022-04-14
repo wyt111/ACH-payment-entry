@@ -64,7 +64,15 @@ export default {
         this.$router.go(-6);
         return;
       }
-      this.$router.back(-1);
+      if(this.$route.path === '/internationalCardConfigPag' && this.routerPath === '/internationalCardPay'){
+        this.$router.go(-2);
+        return;
+      }
+      // if(this.$route.path === '/internationalCardConfigPag' && this.routerPath === '/basisIdAuth'){
+      //   this.$router.go(-2);
+      //   return;
+      // }
+      this.$router.go(-1);
     },
     openMenu(){
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;

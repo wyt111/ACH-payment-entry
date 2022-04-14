@@ -9,17 +9,19 @@ Three channels for successful payment --- 'channel'
     <!-- Confirm Payment Payment results -->
     <div class="results_content">
       <div class="results_img">
-        <img src="../../assets/images/paymentSuccessful.png" v-if="resultState">
+        <img src="../../assets/images/paymentSuccessful.png" v-if="resultState === 1">
+        <img src="../../assets/images/paymentOvertime.png" v-else-if="resultState === 3">
         <img src="../../assets/images/paymentFailure.png" v-else>
       </div>
-      <div class="results_text" v-if="resultState" v-html="resultText"></div>
+      <div class="results_text" v-if="resultState === 1" v-html="resultText"></div>
+      <div class="errorMessage" v-else-if="resultState === 3">Invoice Expired!</div>
       <div class="errorMessage" v-else>Payment Fail! Please check your card information.</div>
     </div>
 
     <div class="paymentInformation">
       <div class="paymentInformation-line">
         <div class="line_name">{{ routingParameters.cryptoCurrency }} Price</div>
-        <div class="line_number">${{ detailsParameters.cryptoPrice }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">ACH Amount</div>
@@ -43,7 +45,7 @@ Three channels for successful payment --- 'channel'
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">Total</div>
-        <div class="line_number">${{ detailsParameters.amount }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ detailsParameters.amount }}</div>
       </div>
     </div>
     <div class="continue" @click="goHome">Continue to by Cryptos</div>
@@ -55,61 +57,78 @@ export default {
   name: "Payment ReSult",
   data(){
     return{
-      resultState: true,
-      //1: ach支付成功&到账 2: 链上地址支付成功 3: ach支付成功
-      channel: 3,
+      resultState: 1, // 1: success 2: error 3: timeOut
+      channel: 3, //1: ach支付成功&到账 2: 链上地址支付成功 3: ach支付成功
       resultText: '',
       routingParameters: {},
+      payCommission: {},
       detailsParameters: {},
+      countDown: null,
     }
   },
   mounted(){
+    this.routingParameters = JSON.parse(this.$route.query.routerParams);
+    this.payCommission = JSON.parse(this.$route.query.routerParams).payCommission;
     this.queryDetails()
   },
   methods: {
     //Get result information
     queryDetails(){
-      var countDown = setInterval(()=>{
-        let params = {
-          "orderNo": this.$route.query.orderNo
-        }
-        this.$axios.get(this.$api.get_payResult,params).then(res=>{
-          if(res && res.data){
-            this.detailsParameters = res.data;
-            res.orderStatus === 4 ?  (clearInterval(countDown),this.channel = 1) : '';
-            // depositType - Receiving mode
-            if(res.data.depositType === 1) {
-              this.channel = 3;
-            }else{
-              this.channel = 2;
-            }
-            this.judgeChannel();
-          }
-        })
+      this.orderInfo();
+      this.countDown = setInterval(()=>{
+        this.orderInfo();
       },1000);
+    },
+    orderInfo(){
+      let params = {
+        "orderNo": this.$route.query.orderNo
+      }
+      this.$axios.get(this.$api.get_payResult,params).then(res=>{
+        if(res && res.data){
+          this.detailsParameters = res.data;
+          res.data.orderStatus === 6 ? this.resultState = 3 : this.resultState = 1;
+          res.data.orderStatus === 4 ?  (clearInterval(this.countDown),this.channel = 1) : '';
+          // depositType - Receiving mode
+          if(res.data.depositType === 1) {
+            this.channel = 3;
+          }else{
+            this.channel = 2;
+          }
+          this.judgeChannel();
+        }
+      })
     },
 
     //Judgment order status display text
     judgeChannel(){
-      if(this.channel === 3){
-        this.resultText = ` Payment success!
+      if(this.resultState === 1){
+        if(this.channel === 3){
+          this.resultText = ` Payment success!
         <span>${this.detailsParameters.cryptoQuantity} ACH</span> will transfer to your wallet address.
         We will notify you of the result by email
         <span>${localStorage.getItem("email")}</span>`;
-        return;
-      }
-      if(this.channel === 2){
-        this.resultText = `<span>${this.detailsParameters.cryptoQuantity} ACH</span> has transfered to your wallt address.`;
-        return;
-      }
-      this.resultText = `Payment success! <span>${this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
+          return;
+        }
+        if(this.channel === 2){
+          this.resultText = `<span>{{ this.payCommission.currencySymbol }}{this.detailsParameters.cryptoQuantity} ACH</span> has transfered to your wallt address.`;
+          return;
+        }
+        if(this.channel === 6){
+          this.resultText = `<span class="overtime">Invoice Expired!<span/>`;
+          return;
+        }
+        this.resultText = `Payment success! <span>{{ this.payCommission.currencySymbol }}{this.detailsParameters.cryptoQuantity} ACH</span> has deposited to your Alchemy
         Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
+      }
     },
 
     goHome(){
       this.$router.push("/");
     }
-  }
+  },
+  destroyed(){
+    clearInterval(this.countDown());
+  },
 }
 </script>
 
@@ -177,6 +196,10 @@ export default {
       min-width: 0.9rem;
     }
   }
+}
+
+.overtime{
+  color: #FF0000;
 }
 
 .continue{

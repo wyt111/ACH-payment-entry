@@ -90,7 +90,7 @@ export default {
       let query = JSON.parse(this.$route.query.routerParams);
       //essential information
       this.buyParams.payWayCode = query.payWayCode;
-      this.buyParams.fiatCurrency = query.fiatCurrency;
+      this.buyParams.fiatCurrency = query.payCommission.currency;
       this.buyParams.cryptoCurrency = query.cryptoCurrency;
       this.buyParams.amount = query.amount;
       this.receivingMode();
@@ -114,10 +114,10 @@ export default {
         "coin": this.buyParams.cryptoCurrency,
         "email": localStorage.getItem("email")
       }
-      this.$axios.post(this.$api.post_coinSupportedWallet, newParams).then(res=> {
+      this.$axios.post(this.$api.post_coinSupportedWallet, newParams,'').then(res=> {
         if (res && res.returnCode === "0000") {
           // Support acceptance method
-          this.supportCurrency = res.data.isRegister === 1 ? true : false;
+          this.supportCurrency = res.data.isSupportCoin === 1 ? true : false;
           this.supportCurrency === false ? this.checkModel[0] = 'address' : '';
         }
       })
@@ -172,8 +172,7 @@ export default {
     //Determine the route to jump to the next page
     generateRouterQuery(res){
       /**
-       * kycStatus === 10 Basisidauth authentication is not required - to path: /internationalCardPay
-       * kycStatus !== 10 Basisidauth Basisidauth authentication required - to path: /basisIdAuth
+       * payMethod !== '10001'(International card) All belong to Indonesian payment,No authentication required
        */
       let ordParams = JSON.parse(this.$route.query.routerParams);
       let newParams = {
@@ -181,30 +180,35 @@ export default {
         orderNo: res.data.orderNo,
       }
       Object.assign(newParams, ordParams);
-      //go to Indonesian payment
-      if(newParams.payWayName!=='VISA/MasterCard'){
-        let params = {
-          orderNo: res.data.orderNo,
-          lastname: "1"
-        }
-        this.$axios.post(this.$api.post_indonesiaBuy,params,'submitToken').then(res=>{
-          if(res && res.returnMsg === 'SUCCESS'){
-            window.open(res.data.webUrl);
+      if(newParams.payWayCode === '10001'){
+        this.$axios.post(this.$api.post_getCardInfo,'','').then(value=>{
+          if (value && value.returnCode === "0000") {
+            if (value.data != null) {
+              //Judge whether the user has filled in the information - 10 is Filled in
+              this.$axios.get(this.$api.get_isbasisIdAuth,"").then(result=> {
+                if (result && result.returnCode === '0000') {
+                  if (result.data.status === 10){
+                    this.$router.push(`/internationalCardConfigPag?routerParams=${JSON.stringify(newParams)}&submitForm=${JSON.stringify(value.data)}`);
+                  }else{
+                    this.$router.push(`/basisIdAuth?routerParams=${JSON.stringify(newParams)}&submitForm=${JSON.stringify(value.data)}`);
+                  }
+                }
+              })
+            }else{
+              this.$router.push(`/internationalCardPay?routerParams=${JSON.stringify(newParams)}`);
+            }
           }
         })
         return;
       }
-      if(newParams.payWayName==='VISA/MasterCard'){
-        //Judge whether the user has filled in the information - 10 is Filled in
-        this.$axios.get(this.$api.get_isbasisIdAuth,"").then(res=>{
-          if(res && res.returnCode === '0000'){
-            if(res.data.status === 10){
-              this.$router.push(`/internationalCardPay?routerParams=${JSON.stringify(newParams)}`);
-            }else{
-              this.$router.push(`/basisIdAuth?routerParams=${JSON.stringify(newParams)}`);
-            }
-          }
-        })
+      //go to Indonesian payment
+      if(newParams.payWayCode === '10003'){
+        this.$router.push(`/indonesianPayment?routerParams=${JSON.stringify(newParams)}`);
+        return;
+      }
+      if(newParams.payWayCode === '10004' || newParams.payWayCode === '10005' || newParams.payWayCode === '10006'){ //QRIS DANA OVO
+        this.$router.push(`/indonesianConfirm?routerParams=${JSON.stringify(newParams)}`);
+        return;
       }
     }
   }
@@ -339,6 +343,7 @@ export default {
   }
   .continue_state{
     background: #4479D9;
+    cursor: pointer;
   }
 }
 </style>

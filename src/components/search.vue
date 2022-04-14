@@ -6,20 +6,23 @@
         <div class="text">{{ viewTitle }}</div>
         <div class="icon"><img src="../assets/images/closeIcon.png" @click="closeView"></div>
       </div>
-      <div class="searchHeader_view2" v-if="viewName !== 'network'">
+      <div class="searchHeader_view2" v-if="viewName !== 'network' && viewName !== 'payMethods'&& viewName !== 'payCurrency'">
         <input type="text" placeholder="Search here…" v-model="searchText">
         <div class="searchIcon"><img src="../assets/images/searchIcon.svg"></div>
       </div>
     </div>
     <div class="search_core">
+<!--      <van-list v-model="loading" :finished="finished" finished-text="No more" @load="onLoad" loading-text="Loading" error-text="Loading failed" v-if="viewName === 'country'">-->
       <!-- country content -->
-      <ul v-if="viewName === 'country'">
-        <li v-for="(item,index) in searchText==='' ? countryList : searchData" :key="index" @click="choiseItem('country',item)">
-          <p class="seach_li_img"><img :src="item.flag"></p>
-          <p class="seach_li_text">{{ item.enCommonName }}</p>
-          <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
-        </li>
-      </ul>
+        <ul v-if="viewName === 'country'">
+          <li v-for="(item,index) in searchText==='' ? countryList : searchData" :key="index" @click="choiseItem('country',item)">
+            <p class="seach_li_img"><img :src="item.flag"></p>
+            <p class="seach_li_text">{{ item.enCommonName }}</p>
+            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+          </li>
+        </ul>
+<!--      </van-list>-->
+
       <!-- currency content -->
       <ul v-else-if="viewName === 'currency'">
         <div v-if="searchText===''">
@@ -30,23 +33,41 @@
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
           <div class="screen_title">All</div>
-          <li v-for="(item,index) in cryptoCurrencyVOList" :key="index" @click="choiseItem('currency',item)">
+          <li v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
         </div>
         <div v-else>
-          <li v-for="(item,index) in searchData" :key="index" @click="choiseItem('currency',item)">
+          <li v-for="(item,index) in searchData" :key="'search_'+index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
         </div>
       </ul>
+
+      <!-- network content -->
       <ul v-else-if="viewName === 'network'">
         <li v-for="(item,index) in basicData" :key="index" @click="choiseItem('network',item)">
           <p class="seach_li_text currencyCopywriting">{{ item.network }} - <span class="seach_li_allText">{{ item.networkName }}</span></p>
+          <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+        </li>
+      </ul>
+
+      <!-- pay methods content -->
+      <ul v-else-if="viewName === 'payMethods'">
+        <li v-for="(item,index) in basicData" :key="index" @click="choiseItem('payMethods',item)">
+          <p class="seach_li_text currencyCopywriting">{{ item.payWayName }} <span class="seach_li_allText" v-if="item.payWayCode!=='10001'">- IDR Only</span></p>
+          <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+        </li>
+      </ul>
+
+      <!--  -->
+      <ul v-else-if="viewName === 'payCurrency'">
+        <li v-for="(item,index) in basicData" :key="index" @click="choiseItem('payCurrency',item)">
+          <p class="seach_li_text currencyCopywriting">{{ item.currency }} <span class="seach_li_allText">- {{ item.currencyName }}</span></p>
           <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
         </li>
       </ul>
@@ -58,7 +79,7 @@
 
 export default {
   name: "search",
-  props: ['viewName','allBasicData'],
+  props: ['viewName','allBasicData','choiseItemData'],
   data(){
     return{
       viewTitle: "",
@@ -66,11 +87,19 @@ export default {
       //Search for data
       searchText: "",
 
-      //all data
+      //all data(all / network / payMethods)
       basicData: {},
 
       //all country data
       countryList: [],
+      // query: {
+      //   state: 1,
+      //   enCommonName: '',
+      //   pageIndex: 1,
+      //   pageSize: 15
+      // },
+      // loading: false,
+      // finished: false,
 
       //Recommended digital currency list
       popularList: [],
@@ -135,6 +164,7 @@ export default {
   },
   mounted(){
     this.customComponentTitle();
+    // this.queryCountry();
   },
   methods: {
     //Judge title name
@@ -151,11 +181,72 @@ export default {
         this.viewTitle = 'Select Network';
         return;
       }
+      if(this.viewName === 'payMethods'){
+        this.viewTitle = 'Select Payment Method';
+        return;
+      }
+      if(this.viewName === 'payCurrency'){
+        this.viewTitle = 'Select Fait';
+        return;
+      }
     },
+
+    //Get and call component path, processing data
+    initializationData(){
+      if(this.viewName === 'country') {
+        this.basicData = this.allBasicData;
+        this.$nextTick(()=>{
+          this.countryList = this.basicData.worldList;
+        })
+        return;
+      }
+      if(this.viewName === 'currency'){
+        this.basicData = this.allBasicData;
+        this.$nextTick(()=>{
+          this.popularList = this.basicData.cryptoCurrencyResponse.popularList;
+          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList;
+        })
+        return;
+      }
+      if(this.viewName === 'network'){
+        this.basicData = [];
+        this.basicData = this.allBasicData;
+        return;
+      }
+      if(this.viewName === 'payMethods'){
+        this.basicData = [];
+        this.basicData = this.allBasicData.payWayList;
+      }
+      if(this.viewName === 'payCurrency'){
+        this.basicData = [];
+        this.basicData = this.choiseItemData;
+        return;
+      }
+    },
+
+    // queryCountry(){
+    //   this.$axios.get(this.$api.get_countryList,this.query).then(res=>{
+    //     if(res && res.returnCode === '0000'){
+    //       let newArray = res.data.result;
+    //       this.countryList = this.countryList.concat(newArray);
+    //       this.loading = false;
+    //       if (this.countryList.length === res.data.total) {
+    //         this.finished = true;
+    //       }
+    //       console.log(this.countryList.length)
+    //     }
+    //   })
+    // },
+    // onLoad() {
+    //   setTimeout(() => {
+    //     this.query.pageIndex += 1;
+    //     this.queryCountry();
+    //   }, 1000);
+    // },
 
     //close component
     closeView(){
-      if(this.viewName === 'country' || this.viewName === 'currency') {
+      if(this.viewName === 'country' || this.viewName === 'currency' || this.viewName === 'payMethods' || this.viewName === 'payCurrency') {
         this.$parent.searchState = true;
         return;
       }
@@ -173,16 +264,11 @@ export default {
           this.$parent.$refs.buyCrypto_ref.positionData.positionImg = item.flag;
           this.$parent.$refs.buyCrypto_ref.positionData.positionValue = item.enCommonName;
           //pay methods
-          if(item.payWayList.length===1){
-            this.$parent.$refs.buyCrypto_ref.payType = [];
-            this.$parent.$refs.buyCrypto_ref.payType.push(this.basicData.payWayList[0]);
-            this.$parent.$refs.buyCrypto_ref.paymentMethod = this.$parent.$refs.buyCrypto_ref.payType[0].payWayName;
-            this.$parent.$refs.buyCrypto_ref.paymentMethodCode = this.$parent.$refs.buyCrypto_ref.payType[0].payWayCode;
-          }else{
-            this.$parent.$refs.buyCrypto_ref.payType = this.basicData.payWayList;
-          }
+          this.$parent.$refs.buyCrypto_ref.handlePayWayList(item);
           this.$parent.searchState = true;
-        }else if(type === 'currency'){
+          return;
+        }
+        if(type === 'currency'){
           this.$parent.$refs.buyCrypto_ref.currencyData.icon = item.logoUrl;
           this.$parent.$refs.buyCrypto_ref.currencyData.name = item.name;
           this.$parent.$refs.buyCrypto_ref.currencyData.networkFee = item.networkFee;
@@ -190,32 +276,33 @@ export default {
           this.$parent.$refs.buyCrypto_ref.currencyData.serviceFee = item.serviceFee;
           this.$parent.$refs.buyCrypto_ref.payinfo();
           this.$parent.searchState = true;
-        }else if(type === 'network'){
+          return;
+        }
+        if(type === 'network'){
           this.$parent.buyParams.network = item.network;
           this.$parent.networkRegular = item.addressRegex;
           this.$parent.$parent.$refs.viewTab.tabState = true;
           this.$parent.searchViewState = false;
+          return;
+        }
+        if(type === 'payMethods'){
+          this.$parent.$refs.buyCrypto_ref.paymentMethod = item.payWayName;
+          this.$parent.$refs.buyCrypto_ref.paymentMethodCode = item.payWayCode;
+          this.$parent.$refs.buyCrypto_ref.payCommission = item.payCommissionList[0];
+          this.$parent.$refs.buyCrypto_ref.allPayCommission = item.payCommissionList;
+          this.$parent.$refs.buyCrypto_ref.amountControl();
+          this.$parent.searchState = true;
+          return;
+        }
+        if(type === 'payCurrency'){
+          this.$parent.$refs.buyCrypto_ref.payCommission = item;
+          //Filter exchange rate
+          // this.$parent.$refs.buyCrypto_ref.exchangeRate = this.$parent.$refs.buyCrypto_ref.basicData.usdToEXR[item.currency];
+          this.$parent.$refs.buyCrypto_ref.amountControl();
+          this.$parent.searchState = true;
+          return;
         }
       })
-    },
-
-    //Get and call component path, processing data
-    initializationData(){
-      if(this.viewName === 'country') {
-        this.basicData = this.allBasicData;
-        this.$nextTick(()=>{
-          this.countryList = this.basicData.worldList;
-        })
-      }else if(this.viewName === 'currency'){
-        this.basicData = this.allBasicData;
-        this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList;
-          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList;
-        })
-      }else if(this.viewName === 'network'){
-        this.basicData = [];
-        this.basicData = this.allBasicData;
-      }
     },
   }
 }
@@ -260,7 +347,7 @@ html,body,#search{
           margin-left: 0.2rem;
           .seach_li_allText{
             color: #666666;
-            font-weight: 500;
+            font-weight: 400;
           }
         }
         .currencyCopywriting{

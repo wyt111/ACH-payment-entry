@@ -1,4 +1,4 @@
-# History-interface
+# Alchemy
 
 ## Project setup
 ```

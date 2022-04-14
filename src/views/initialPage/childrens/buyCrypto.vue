@@ -9,17 +9,20 @@
     </div>
 
     <div class="form_title methods_title">Payment Method</div>
-    <div class="methods_select" @click="openPicker">{{ paymentMethod }}</div>
+    <div class="methods_select" @click="openSearch('payMethods')">
+      <div class="pay_input">{{ paymentMethod }}</div>
+      <span class="pay_company"><img src="@/assets/images/rightIcon.png"></span>
+    </div>
 
     <div class="form_title pay_title">You Pay</div>
-    <div class="methods_select">
-      <input class="pay_input" type="number" v-model="payAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="0.00">
-      <span class="pay_company">USD</span>
+    <div class="methods_select cursor">
+      <input class="pay_input" type="number" v-model="payAmount" :disabled="payAmountState" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="0.00">
+      <span class="pay_company" @click="openSearch('payCurrency')">{{ payCommission.currency }} <img src="@/assets/images/rightIcon.png"></span>
     </div>
     <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
     <div class="form_title get_title">You Get</div>
-    <div class="methods_select">
+    <div class="methods_select cursor">
       <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="0.00" disabled="true">
       <div class="get_company" @click="openSearch('currency')">
         <div class="getImg"><img :src="currencyData.icon"></div>
@@ -38,34 +41,23 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ currencyData.name }} Price</div>
-        <div class="line_number">${{ feeInfo.price }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ Number(feeInfo.price).toFixed(6) }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Ramp fee</div>
-        <div class="line_number">${{ Number(feeInfo.serviceFee) * Number(payAmount) }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ (Number(payCommission.feeRate) * Number(payAmount) + payCommission.fixedFee).toFixed(2) }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Network Fee</div>
-        <div class="line_number">${{ feeInfo.networkFee }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ Number(feeInfo.networkFee).toFixed(2) }}</div>
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">Total</div>
-        <div class="line_number">${{ payAmount }}</div>
+        <div class="line_number">{{ payCommission.currencySymbol }}{{ payAmount }}</div>
       </div>
     </div>
 
     <div class="continue" @click="nextStep" :class="{'continue_true': continueState}">Continue</div>
-
-    <!-- select network -->
-    <van-popup v-model="showPicker" round position="bottom">
-      <van-picker
-          show-toolbar
-          :columns="payType"
-          value-key="payWayName"
-          @cancel="showPicker = false"
-          @confirm="onConfirm"
-      />
-    </van-popup>
   </div>
 </template>
 
@@ -75,14 +67,29 @@ export default {
   props: ['allBasicData'],
   data(){
     return{
+      //you pay Prompt information
       warningTextState: false,
       payAmount_tips: '',
 
+      //All data
       basicData: {},
+
+      //Location data
       positionData: {
         positionValue: '',
         positionImg: '',
       },
+
+      payAmount: '',
+      getAmount: '',
+
+      //Expense information
+      feeInfo: {},
+      timeDown: null,
+      timeDownNumber: 15,
+      detailedInfo_state: false,
+
+      //you get Currency information
       currencyData: {
         icon: '',
         name: '',
@@ -90,26 +97,34 @@ export default {
         serviceFee: '',
         price: '',
       },
-      payAmount: '',
-      getAmount: '',
-      detailedInfo_state: false,
-      timeDownNumber: 15,
 
+      //Select or default payment method information
       paymentMethod: '',
       paymentMethodCode: '',
-      payType: [],
-      showPicker: false,
-
-      feeInfo: {},
-      timeDown: null,
+      //Payment methods
+      allPayMethods: [],
+      //Payment method information
+      payCommission: {},
+      allPayCommission: [],
+      //Exchange rate in payment currency
+      exchangeRate: 0,
     }
   },
   computed: {
+    //you pay input status - Data can only be entered after loading
+    payAmountState(){
+      if(this.payCommission.payMax > 0 && this.payCommission.payMin > 0){
+        return false
+      }else{
+        return true
+      }
+    },
     //Control button status
     continueState(){
       if(this.positionData.positionValue !== ''&& this.paymentMethod !== '' &&
-          this.payAmount !== '' && Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100 &&
-          this.getAmount !== '' && Number(this.payAmount) > 0){
+          this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
+          Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
+          Number(this.payAmount) > 0){
         return true
       }else{
         return false
@@ -127,27 +142,7 @@ export default {
     payAmount: {
       deep: true,
       handler() {
-        if(this.payAmount === ''){
-          this.warningTextState = false;
-          return;
-        }
-        //Purchase amount prompt
-        if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
-          this.warningTextState = false;
-          //How many digital currencies can I exchange
-          this.calculationAmount();
-        }else{
-          var minError = "The minimum transaction amount is $30.00.";
-          var maxError = "The maximum transaction amount is $100.00.";
-          if(Number(this.payAmount) < 30){
-            this.payAmount_tips = minError;
-          }else if(Number(this.payAmount) > 100){
-            this.payAmount_tips = maxError;
-          }
-          this.warningTextState = true;
-          this.getAmount = "";
-        }
-        this.payinfo();
+        this.amountControl();
       }
     },
   },
@@ -156,20 +151,47 @@ export default {
   },
   methods: {
     openSearch(view){
-      this.$parent.openSearch(view);
+      //pay methods
+      if(view === 'payMethods' && this.positionData.positionValue !== 'Indonesia'){
+        return;
+      }
+      //pay currency
+      if(view === 'payCurrency' && this.allPayCommission.length === 0){
+        return;
+      }
+      this.$parent.openSearch(view,this.allPayCommission);
     },
 
-    //Real time calculation getAmount
-    calculationAmount(){
-      if(Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100){
-        this.getAmount = (((Number(this.payAmount) - this.feeInfo.networkFee) - Number(this.payAmount)*this.feeInfo.serviceFee) / this.feeInfo.price).toFixed(6)*1;
+    //Process the quantity and display status of received legal currency
+    amountControl(){
+      if(this.payAmount === ''){
+        this.warningTextState = false;
+        return;
+      }
+      //Purchase amount prompt
+      if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+        this.warningTextState = false;
+        //How many digital currencies can I exchange
+        this.payinfo();
+      }else{
+        var minError = `The minimum transaction amount is $${this.payCommission.payMin}.`;
+        var maxError = `The maximum transaction amount is $${this.payCommission.payMax}.`;
+        if(Number(this.payAmount) < this.payCommission.payMin){
+          this.payAmount_tips = minError;
+        }else if(Number(this.payAmount) > this.payCommission.payMax){
+          this.payAmount_tips = maxError;
+        }
+        this.warningTextState = true;
+        this.getAmount = "";
+        this.detailedInfo_state = false;
+        clearInterval(this.timeDown);
       }
     },
 
     //Purchase information details - Scheduled refresh
     payinfo(){
       clearInterval(this.timeDown);
-      if (Number(this.payAmount) >= 30 && Number(this.payAmount) <= 100 && Number(this.getAmount) > 0){
+      if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
         this.detailedInfo_state = true;
         this.queryFee();
       }else{
@@ -210,34 +232,36 @@ export default {
       },1000);
     },
 
+    //Real time calculation getAmount
+    calculationAmount(){
+      if(Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+        //Filter exchange rate - Calculate cost and accepted quantity
+        this.exchangeRate = this.basicData.usdToEXR[this.payCommission.currency];
+        this.feeInfo.price = this.exchangeRate * this.feeInfo.price;
+        this.feeInfo.networkFee = this.exchangeRate * this.feeInfo.networkFee;
+        let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - (Number(this.payCommission.feeRate) * Number(this.payAmount) + this.payCommission.fixedFee)) / this.feeInfo.price;
+        newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
+        console.log(newGetAmount,"----newGetAmount")
+      }
+    },
+
     //position country
     currentLocation(){
       this.basicData = this.allBasicData;
-      this.paymentMethod = this.basicData.payWayList[0].payWayName;
-      this.paymentMethodCode = this.basicData.payWayList[0].payWayCode;
-      this.basicData.worldList.forEach((item)=>{
-        if(item.alpha2 === JSON.parse(localStorage.getItem("Position")).cid){
-          this.positionData.positionValue = item.enCommonName;
-          this.positionData.positionImg = item.flag;
-          //pay methods
-          if(item.payWayList.length===1){
-            this.payType[0] = this.basicData.payWayList[0];
-          }else{
-            this.payType = this.basicData.payWayList;
-          }
-          if(this.payType.length === 0){
-            this.payType = this.basicData.payWayList;
-          }
-        }else if(JSON.parse(localStorage.getItem("Position")).cid === 'CN' ||
+
+      var worldData = {};
+      worldData = this.basicData.worldList.filter((item)=> {
+        if(JSON.parse(localStorage.getItem("Position")).cid === 'CN' ||
             JSON.parse(localStorage.getItem("Position")).cid === '810000'||
             JSON.parse(localStorage.getItem("Position")).cid === '110000'){
-          this.positionData.positionValue = 'Hong Kong'
-          this.positionData.positionImg = 'https://flagcdn.com/hk.svg'
-          this.payType[0] = this.basicData.payWayList[0];
+          return item.enCommonName === 'Hong Kong';
+        }else if(item.alpha2 === JSON.parse(localStorage.getItem("Position")).cid){
+          return item;
         }
       })
+      this.handlePayWayList(worldData[0]);
 
-      //Default currency
+      //you pay currency
       this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{
         if(item.name === 'ACH'){
           this.currencyData = {
@@ -251,6 +275,25 @@ export default {
       })
     },
 
+    handlePayWayList(data){
+      this.positionData.positionValue = data.enCommonName;
+      this.positionData.positionImg = data.flag;
+      //Screening payment methods by country
+      data.payWayList.forEach(item=>{
+        let itemPayMethods = this.basicData.payWayList.filter(value=>{
+          return item === value.payWayCode;
+        })
+        this.allPayMethods.push(itemPayMethods[0]);
+      })
+      //Initialization data  -  Reload data after selection
+      this.paymentMethod = this.allPayMethods[0].payWayName;
+      this.paymentMethodCode = this.allPayMethods[0].payWayCode;
+      this.payCommission = this.allPayMethods[0].payCommissionList[0];
+      this.allPayCommission = this.allPayMethods[0].payCommissionList;
+      //Filter exchange rate
+      this.exchangeRate = this.basicData.usdToEXR[this.payCommission.currency];
+    },
+
     nextStep(){
       /**
        * - No token jump /emailCode
@@ -261,41 +304,25 @@ export default {
        * */
       let routerParams = {
         cryptoCurrency: this.currencyData.name,
-        fiatCurrency: 'USD',
         amount: this.payAmount,
+        getAmount: this.getAmount,
         payWayCode: this.paymentMethodCode,
-        payWayName: this.paymentMethod
+        payWayName: this.paymentMethod,
+        payCommission: this.payCommission,
+        exchangeRate: this.exchangeRate
       }
       if(this.positionData.positionValue === ''|| this.paymentMethod === '' ||
-          this.payAmount === '' || Number(this.payAmount) < 30 || Number(this.payAmount) > 100 ||
+          this.payAmount === '' || Number(this.payAmount) < this.payCommission.payMin || Number(this.payAmount) > this.payCommission.payMax ||
           this.getAmount === '' || Number(this.payAmount) <= 0){
         return;
       }
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
-        this.$store.state.routerParams = routerParams;
-        window.onbeforeunload = function() {
-          console.log("youxiao")
-        }
-          window.addEventListener("beforeunload",()=>{
-          localStorage.setItem("store",JSON.stringify(this.$store.state));
-        })
         this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
         return;
       }
       this.$router.push(`/receiveCoins?routerParams=${JSON.stringify(routerParams)}`)
     },
-
-    //open pay methods view
-    openPicker(){
-      this.payType.length > 1 ? this.showPicker = true : '';
-    },
-    //choise pay methods
-    onConfirm(val){
-      this.paymentMethod = val.payWayName;
-      this.paymentMethodCode = val.payWayCode;
-      this.showPicker = false;
-    }
   }
 }
 </script>
@@ -377,7 +404,13 @@ export default {
 }
 .pay_company{
   position: absolute;
+  top: 0;
   right: 0.2rem;
+  cursor: pointer;
+  img{
+    width: 0.12rem;
+    margin-left: 0.2rem;
+  }
 }
 .warning_text{
   font-size: 0.14rem;
@@ -399,6 +432,7 @@ export default {
   right: 0.2rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
   .getImg{
     display: flex;
     margin-right: 0.1rem;
@@ -437,6 +471,10 @@ export default {
 }
 .continue_true{
   background: #4479D9;
+  cursor: pointer;
+}
+.cursor{
+  cursor: auto;
 }
 
 .calculationProcess{

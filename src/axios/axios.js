@@ -40,6 +40,10 @@ function requestPrompt(response){
       case "10003":
         Toast(response.returnMsg);
         break;
+      //pay card form
+      case "10005":
+        Toast(response.returnMsg);
+        break;
     }
   }
 }

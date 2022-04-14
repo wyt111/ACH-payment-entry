@@ -19,7 +19,7 @@
             </div>
             <div class="details_line">
               <div class="details_line_title">Amount:</div>
-              <div class="details_line_value">${{ item.amount }}</div>
+              <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">
               <div class="details_line_title">Crypto:</div>
@@ -50,7 +50,7 @@ export default {
   data(){
     return{
       query: {
-        orderState: 2,
+        orderState: 3,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5
@@ -132,7 +132,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 400;
       color: #232323;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       margin-top: 0.2rem;
       padding: 0 0.2rem;
       &:nth-of-type(2){

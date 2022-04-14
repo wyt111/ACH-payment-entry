@@ -2,6 +2,21 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+export function timeDown(time){
+  if(time > 0){
+    var second = time;
+    var minute=0;
+    minute = parseInt(second/60);
+    second%=60;
+    if(minute>60) {
+      minute%=60;
+    }
+    second = second>9?second:"0"+second;
+    minute = minute>9?minute:"0"+minute;
+    return minute+":"+second;
+  }
+}
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
