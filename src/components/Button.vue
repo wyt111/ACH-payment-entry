@@ -23,6 +23,10 @@ export default {
     disabled: {
       type: Boolean,
       default: null
+    },
+    customName: {
+      type: String,
+      default: null
     }
   },
   data(){

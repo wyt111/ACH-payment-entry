@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     buttonState(){
-      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.email !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === true){
+      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.email !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false){
         return true;
       }else{
         return false;
@@ -114,7 +114,7 @@ export default {
       //去除地址栏穿参导致参数中拼有空格问题
       addressForm.firstname = AES_Decrypt(addressForm.firstname.replace(/ /g,'+'));
       addressForm.lastname = AES_Decrypt(addressForm.lastname.replace(/ /g,'+'));
-      addressForm.phone = AES_Decrypt(addressForm.phone.replace(/ /g,'+'));
+      // addressForm.phone = AES_Decrypt(addressForm.phone.replace(/ /g,'+'));
       addressForm.email = AES_Decrypt(addressForm.email.replace(/ /g,'+'));
       this.params = {...this.params,...addressForm};
       //获取历史卡信息中的日期

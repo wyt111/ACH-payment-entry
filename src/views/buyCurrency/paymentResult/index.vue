@@ -119,7 +119,7 @@ export default {
     }
   },
   deactivated(){
-    clearInterval(this.countDown());
+    clearInterval(this.countDown);
   },
 }
 </script>

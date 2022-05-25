@@ -159,7 +159,7 @@ export default {
       })
     },
   },
-  destroyed(){
+  deactivated(){
     clearInterval(this.timeDown);
   }
 }

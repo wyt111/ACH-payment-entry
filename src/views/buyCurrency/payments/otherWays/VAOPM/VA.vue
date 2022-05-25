@@ -60,7 +60,6 @@ export default {
     }
   },
   mounted(){
-    console.log("chufa")
     this.receiveinfo();
   },
   methods:{
@@ -183,11 +182,6 @@ export default {
         clipboard.destroy()
       })
     }
-  },
-  deactivated(){
-    clearInterval(this.paystateTimeOut);
-    clearInterval(this.paymentCountDown);
-    sessionStorage.removeItem("indonesiaPayment");
   },
 }
 </script>

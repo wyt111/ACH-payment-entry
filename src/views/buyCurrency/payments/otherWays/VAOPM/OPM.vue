@@ -124,11 +124,6 @@ export default {
       })
     }
   },
-  deactivated(){
-    clearInterval(this.paystateTimeOut);
-    clearInterval(this.paymentCountDown);
-    sessionStorage.removeItem("indonesiaPayment");
-  },
 }
 </script>
 

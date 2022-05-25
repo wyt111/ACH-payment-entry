@@ -31,6 +31,16 @@ export const constantRoutes = [
     }
   },
   {
+    path: "/tradeHistory",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Trade History'
+    }
+  },
+    //买币路由
+  {
     path: "/receivingMode",
     name: '',
     component: () =>
@@ -114,13 +124,41 @@ export const constantRoutes = [
       title: 'Payment Result'
     }
   },
+    //卖币路由
   {
-    path: "/tradeHistory",
+    path: "/sell-formUserInfo",
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
+        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
     meta: {
       requireAuth: true,
-      title: 'Trade History'
+      title: 'Enter Information'
+    }
+  },
+  {
+    path: "/sell-formAddress",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formAddress.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Enter card billing address'
+    }
+  },
+  {
+    path: "/sell-formBankInfo",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formBankInfo.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Enter card details'
+    }
+  },
+  {
+    path: "/configSell",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/sellCurrency/configSell/index.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Confirm'
     }
   },
 ]
