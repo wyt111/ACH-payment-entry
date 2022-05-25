@@ -7,13 +7,13 @@
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line">
-      <div class="lineIcon"><img src="../assets/images/menu/icon2.png"></div>
-      <div class="lineName">Sell Crypto</div>
-      <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
-      </div>
-    </div>
+<!--    <div class="routerMenu_line">-->
+<!--      <div class="lineIcon"><img src="../assets/images/menu/icon2.png"></div>-->
+<!--      <div class="lineName">Sell Crypto</div>-->
+<!--      <div class="lineRight">-->
+<!--        <div><img src="../assets/images/rightIcon.png"></div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="routerMenu_line" @click="goView('/tradeHistory')">
       <div class="lineIcon"><img src="../assets/images/menu/icon3.png"></div>
       <div class="lineName">Trade History</div>
@@ -21,14 +21,14 @@
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line">
+    <div class="routerMenu_line" @click="goProtocol('termsUse')">
       <div class="lineIcon"><img src="../assets/images/menu/icon4.png"></div>
-      <div class="lineName">Terms of Service</div>
+      <div class="lineName">Terms of Use</div>
       <div class="lineRight">
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line">
+    <div class="routerMenu_line" @click="goProtocol('privacyPolicy')">
       <div class="lineIcon"><img src="../assets/images/menu/icon5.png"></div>
       <div class="lineName">Privacy Policy</div>
       <div class="lineRight">
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import {AES_Decrypt} from "../utils/encryp";
+
 export default {
   name: "routerMenu",
   data(){
@@ -55,7 +57,7 @@ export default {
     }
   },
   mounted(){
-    this.email = localStorage.getItem("email");
+    this.email = AES_Decrypt(localStorage.getItem("email"));
   },
   methods: {
     //Select menu
@@ -66,7 +68,8 @@ export default {
         this.$router.push(name);
         return;
       }
-       if(!localStorage.getItem("token")){
+
+      if(!localStorage.getItem("token")){
         this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
       }else{
         this.$router.push(name);
@@ -89,6 +92,17 @@ export default {
           }
         })
       }
+    },
+
+    goProtocol(name){
+      if(name === 'privacyPolicy'){
+        window.location = 'https://alchemypay.org/privacy-policy/';
+        return;
+      }
+      if(name === 'termsUse'){
+        window.location = 'https://alchemypay.org/terms-of-use/';
+        return;
+      }
     }
   }
 }
@@ -109,7 +123,7 @@ export default {
     }
     .lineName{
       font-size: 0.16rem;
-      font-family: Jost-Medium, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: 500;
       color: #232323;
       margin-left: 0.2rem;
@@ -121,7 +135,7 @@ export default {
       .email{
         margin-right: 0.3rem;
         font-size: 0.14rem;
-        font-family: Jost-Regular, Jost;
+        font-family: "Jost", sans-serif;
         font-weight: 400;
         color: #999999;;
       }

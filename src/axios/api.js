@@ -1,5 +1,5 @@
 export default {
-  "get_buyCryptoInfo": '/crypto/buy',
+  "get_buyCryptoInfo": '/crypto/buy/v1', ///v1
   "post_sendEmail": '/mail/sending',
   "post_login": '/user/login',
   "get_network": '/crypto/network',
@@ -16,6 +16,8 @@ export default {
   "post_basisIdAuth": '/kyc/auth/check',
   "post_storageBasisIdAuth": '/kyc/auth/create',
   "get_isbasisIdAuth": '/kyc/auth/status',
-
-  "get_countryList": '/crypto/world/list',
+  "get_orderVerification": '/merchant/order/check',
+  "post_mxnSubmit": '/pay/mxn/submit',
+  //查询货币支持的支付方式
+  "get_payMethods": '/crypto/payment/',
 }

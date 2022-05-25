@@ -12,7 +12,8 @@
             <div class="historyLi_header">
               <div class="time">{{ item.createdTime }}</div>
               <div class="state">
-                <span v-if="Number(item.orderState) >= 2" class="state_success">Complete</span>
+                <span v-if="Number(item.orderState) === 4" class="state_success">Processing</span>
+                <span v-if="Number(item.orderState) === 5" class="state_success">Complete</span>
 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
 <!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
               </div>
@@ -22,8 +23,12 @@
               <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">
+              <div class="details_line_title">{{ item.cryptoCurrency }} price:</div>
+              <div class="details_line_value">{{ item.cryptoCurrencyPrice }}{{ item.fiatCurrency }}</div>
+            </div>
+            <div class="details_line">
               <div class="details_line_title">Crypto:</div>
-              <div class="details_line_value">{{ item.cryptoCurrencyVolume }}</div>
+              <div class="details_line_value">{{ item.cryptoCurrencyVolume }}{{ item.cryptoCurrency }}</div>
             </div>
             <div class="details_line" >
               <div class="details_line_title">
@@ -50,7 +55,7 @@ export default {
   data(){
     return{
       query: {
-        orderState: 3,
+        orderState: 4,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5
@@ -61,7 +66,7 @@ export default {
       finished: false,
     }
   },
-  mounted(){
+  activated(){
     this.queryTransactionHistory();
   },
   methods:{
@@ -105,7 +110,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       display: flex;
       align-items: center;
       font-size: 0.16rem;
-      font-family: Jost-Medium, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: 500;
       color: #232323;
       height: 0.64rem;
@@ -128,7 +133,7 @@ html,body,#tradeHistory,.historyList,.van-list{
 
     .details_line{
       font-size: 0.16rem;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       color: #232323;
       display: flex;
@@ -169,7 +174,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       text-align: center;
       margin-top: 0.4rem;
       font-size: 0.14rem;
-      font-family: Jost-Medium, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: 500;
       color: #AFC5D8;
     }
@@ -181,7 +186,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       text-align: center;
       line-height: 0.6rem;
       font-size: 0.18rem;
-      font-family: Jost-Medium, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;

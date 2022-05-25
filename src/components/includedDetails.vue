@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="paymentInformation-line">
-      <div class="line_name detailsName">${{ routerParams.amount }} is all you pay,fees included</div>
+      <div class="line_name detailsName">{{ payCommission.symbol }}{{ routerParams.amount }} is all you pay</div>
       <div class="line_number details" @click="expandCollapse">Details</div>
     </div>
     <div v-if="detailsState">
@@ -14,35 +14,53 @@
         </div>
       </div>
       <div class="paymentInformation-line">
-        <div class="line_name">{{ routerParams.cryptoCurrency }} Price</div>
-        <div class="line_number">{{ payCommission.currencySymbol }}{{ (feeInfo.price * routerParams.exchangeRate).toFixed(6) }}</div>
+        <div class="line_name">{{ routerParams.name }} price</div>
+        <div class="line_number">{{ payCommission.symbol }}{{ (feeInfo.price * routerParams.exchangeRate).toFixed(6) }}</div>
       </div>
-      <div class="paymentInformation-line">
-        <div class="line_name">Ramp fee</div>
-        <div class="line_number">{{ payCommission.currencySymbol }}{{ ((Number(payCommission.feeRate) * Number(routerParams.amount) + payCommission.fixedFee) * routerParams.exchangeRate).toFixed(2) }}</div>
+      <div class="paymentInformation-line" v-show="feeState">
+        <div class="line_name">
+          Ramp fee
+          <el-popover
+              placement="top"
+              :trigger="triggerType"
+              :offset="-18"
+              content="Based on payment method">
+            <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
+          </el-popover>
+        </div>
+        <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }}{{ payCommission.rampFee }}</div>
       </div>
-      <div class="paymentInformation-line">
-        <div class="line_name">Network Fee</div>
-        <div class="line_number">{{ payCommission.currencySymbol }}{{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(2) }}</div>
+      <div class="paymentInformation-line" v-show="feeState">
+        <div class="line_name">Network fee</div>
+        <div class="line_number">{{ payCommission.symbol }}{{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(2) }}</div>
       </div>
+      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
       <div class="paymentInformation-line">
         <div class="line_name">Total</div>
-        <div class="line_number">{{ payCommission.currencySymbol }}{{ routerParams.amount }}</div>
+        <div class="line_number">{{ payCommission.symbol }}{{ routerParams.amount }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+/**
+ * 费用展示组件
+ */
+import common from "../utils/common";
 
 export default {
   name: "includedDetails",
-  props: ['network'],
+  props: ['network','showState'],
   data(){
     return{
+      triggerType: "hover",
+
       timeDown: 60,
       timeOut: null,
       detailsState: true,
+      feeState: false,
+      feeText: 'View fees',
       feeInfo: {},
       routerParams: {},
       payCommission: {},
@@ -60,12 +78,17 @@ export default {
       }
     }
   },
-  mounted(){
+  activated(){
+    //接收父组件是否需要展开费用
+    this.detailsState = this.showState;
+    //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
+    this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
+    //接收路由信息
     let routerParams = JSON.parse(this.$route.query.routerParams);
     this.routerParams = routerParams;
     this.payCommission = routerParams.payCommission;
   },
-  destroyed(){
+  deactivated(){
     clearInterval(this.timeOut)
   },
   methods:{
@@ -92,9 +115,27 @@ export default {
         }
       })
     },
+
     //Control details display status
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
+      if(this.$route.path === '/receivingMode' && this.detailsState === true){
+        this.$nextTick(()=>{
+          this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
+        })
+        return
+      }
+    },
+
+    expandFee(){
+      this.feeState = this.feeState === true ? false : true;
+      this.feeText = this.feeState === true ? 'Hide fees' : 'View fees';
+      if(this.$route.path === '/receivingMode' && this.feeState === true){
+        this.$nextTick(()=>{
+          this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
+        })
+        return
+      }
     }
   }
 }
@@ -107,19 +148,37 @@ export default {
   .paymentInformation-line{
     display: flex;
     align-items: center;
-    margin-top: 0.2rem;
+    margin-top: 0.13rem;
     .line_name{
       font-size: 0.14rem;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       color: #333333;
+      display: flex;
+      align-items: center;
+      .tipsIcon{
+        width: 0.14rem;
+        height: 0.14rem;
+        margin-left: 0.1rem;
+        display: flex;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
     .line_number{
       font-size: 0.14rem;
-      font-family: Jost-Medium, Jost;
-      font-weight: 500;
+      font-family: 'Jost', sans-serif;
+      font-weight: bold;
       color: #333333;
       margin-left: auto;
+      .minText{
+        font-size: 0.14rem;
+        font-weight: 400;
+        color: #666666;
+        margin-right: 0.2rem;
+      }
     }
     .detailsName{
       font-size: 0.16rem;
@@ -139,6 +198,15 @@ export default {
         margin-right: 0.05rem;
       }
     }
+  }
+  .feeViewBtn{
+    text-align: right;
+    font-size: 0.14rem;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    color: #4479D9;
+    margin-top: 0.1rem;
+    cursor: pointer;
   }
 }
 

@@ -10,12 +10,12 @@
       </div>
     </div>
     <div class="line-info">
-      <div class="line-info-title">{{ routerParams.cryptoCurrency }} Price</div>
+      <div class="line-info-title">{{ routerParams.cryptoCurrency }} price</div>
       <div class="line_number">{{ payCommission.currencySymbol }}{{ (feeInfo.price * routerParams.exchangeRate).toFixed(6) }}</div>
     </div>
     <div class="line-info">
-      <div class="line-info-title">{{ routerParams.cryptoCurrency }} Amount</div>
-      <div class="line_number">{{ payCommission.currencySymbol }}{{ routerParams.getAmount }}</div>
+      <div class="line-info-title">{{ routerParams.cryptoCurrency }} amount</div>
+      <div class="line_number">{{ routerParams.getAmount }}</div>
     </div>
   </div>
 </template>
@@ -36,8 +36,6 @@ export default {
   mounted() {
     this.routerParams = JSON.parse(this.$route.query.routerParams);
     this.payCommission = this.routerParams.payCommission;
-    console.log(this.payCommission)
-    console.log()
     this.orderStatus();
     this.timeDown = setInterval(()=>{
       if(this.timeDownNumber === 1){
@@ -48,7 +46,7 @@ export default {
       }
     },1000);
   },
-  destroyed(){
+  deactivated(){
     clearInterval(this.timeDown);
   },
   methods: {
@@ -82,7 +80,7 @@ export default {
     text-align: center;
     span{
       font-size: 0.16rem;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       color: #232323;
     }
@@ -92,13 +90,13 @@ export default {
     margin-top: 0.2rem;
     .line-info-title{
       font-size: 0.14rem;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       color: #333333;
     }
     .line_number{
       font-size: 0.14rem;
-      font-family: Jost-Medium, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: 500;
       color: #333333;
       margin-left: auto;

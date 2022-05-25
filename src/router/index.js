@@ -17,100 +17,111 @@ Router.prototype.push = function push(location) {
 export const constantRoutes = [
   {
     path: "/",
-    name: "Home",
     component: Home,
-  },
-  {
-    path: "/emailCode",
-    name: "Enter Email Address",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/emailCode/index.vue"),
-  },
-  {
-    path: "/receiveCoins",
-    name: "Receive coins",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/index.vue"),
-    // meta: {requireAuth: true}
-  },
-  {
-    path: "/basisIdAuth",
-    name: "basis-Id-Auth",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/basisIdAuth.vue"),
-    meta: {requireAuth: true}
-  },
-  {
-    path: "/internationalCardPay",
-    name: "International-card-payment",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/payForm.vue"),
     meta: {
-      requireAuth: true,
-      fromPage: 'basisIdAuth'
+      title: 'Home'
     }
   },
   {
-    path: "/internationalCardConfigPag",
-    name: "Confirm Payment",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/emailCode",
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/internationalCardPay/configPayment.vue"),
-    meta: {requireAuth: true}
+        import(/* webpackChunkName: "about" */ "../views/emailCode/index.vue"),
+    meta: {
+      title: 'Enter Email Address'
+    }
   },
   {
-    path: "/indonesianPayment",
-    name: "Payment",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/receivingMode",
+    name: '',
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/indonesianPayment/index.vue"),
-    meta: {requireAuth: true}
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/receivingMode/index.vue"),
+    meta: {
+      title: 'Receive coins'
+    }
   },
   {
-    path: "/indonesianConfirm",
-    name: "Confirm Payment",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/paymentMethod",
+    name: '',
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/receiveCoins/indonesianPayment/confirmPayment.vue"),
-    meta: {requireAuth: true}
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentMethod/index.vue"),
+    meta: {
+      title: 'Choose payment method'
+    }
   },
   {
-    path: "/paymentReSult",
-    name: "Payment ReSult",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/basisIdAuth",
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/paymentResult/index.vue"),
-    meta: {requireAuth: true}
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/basisIdAuth.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'basis-Id-Auth'
+    },
+
+  },
+  {
+    path: "/creditCardForm-address",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-address.vue"),
+    meta: {
+      requireAuth: true,
+      fromPage: 'basisIdAuth',
+      title: 'Enter card billing address'
+    }
+  },
+  {
+    path: "/creditCardForm-cardInfo",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue"),
+    meta: {
+      requireAuth: true,
+      fromPage: 'basisIdAuth',
+      title: 'Enter card details'
+    }
+  },
+  {
+    path: "/creditCardConfig",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/configPayment.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Confirm Payment'
+    }
+  },
+  {
+    path: "/otherWays-VA",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/VAOPM"),
+    meta: {
+      requireAuth: true,
+      title: 'Payment'
+    }
+  },
+  {
+    path: "/otherWayPay",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/indonesian.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Confirm Payment'
+    }
+  },
+  {
+    path: "/paymentResult",
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentResult/index.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'Payment Result'
+    }
   },
   {
     path: "/tradeHistory",
-    name: "Trade History",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
-    meta: {requireAuth: true}
+    meta: {
+      requireAuth: true,
+      title: 'Trade History'
+    }
   },
 ]
 

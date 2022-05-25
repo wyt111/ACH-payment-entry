@@ -10,5 +10,5 @@ module.exports = {
           args[0].title= 'Alchemy'
           return args
         })
-    }
+    },
 }
