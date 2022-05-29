@@ -9,7 +9,7 @@
         
       </div>
       <div class="state-content">
-        <div ></div>
+        <div></div>
         <div></div>
         <div></div>
         <div></div>
@@ -95,7 +95,7 @@ export default{
   name:'orderState',
   data(){
     return {
-      state:0,
+      state:2,
       show:false,
       handleQrAddress:'23hd8932bcxcbmiw3455',
       Network:'Bitcoin',
@@ -140,7 +140,37 @@ export default{
     SetNetwork(text){
       this.Network_show=false
       this.Network = text
+    },
+    getNetworkList(){
+      // let params = {
+      //   coin:'CNY'
+      // }
+      // this.$axios.get(this.$api.get_networkList).then(res=>{
+      //   if(res && res.data){
+      //     this.Network_data = res.data
+      //   }
+      // })
+    },
+    getUserCard(){
+      // let params = {
+      //   "country":'CN',
+      //   "fiatName":'USDT'
+      // }
+      // this.$axios.get(this.$api.get_userCard,params).then(res=>{
+      //   console.log(res);
+      // })
+    },
+    getCurrencyStatus(){
+      // let parmas = {
+
+      // }
+      this.$axios.get(this.$api.get_PlayCurrencyStatus)
     }
+
+  },
+  mounted(){
+    this.getNetworkList()
+    this.getUserCard()
   }
 }
 

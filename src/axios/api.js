@@ -18,4 +18,7 @@ export default {
   "get_isbasisIdAuth": '/kyc/auth/status',
 
   "get_countryList": '/crypto/world/list',
+  "get_networkList":'/crypto/sell/network',
+  "get_userCard":'/user/card/query/sell',
+  "get_PlayCurrencyStatus":'/trade/query/sellOrder'
 }
