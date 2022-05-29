@@ -48,7 +48,7 @@
 
 <script>
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
-import includedDetails from "../../../components/includedDetails";
+import includedDetails from "../../../components/IncludedDetails";
 import search from "../../../components/search";
 
 /**

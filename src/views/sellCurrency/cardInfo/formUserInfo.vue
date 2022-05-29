@@ -8,31 +8,31 @@
       <div class="formLine formLine_flex">
         <div class="formLine_flex_child">
           <div class="formTitle">First Name</div>
-          <div class="formContent"><input type="text" v-model="params.firstname" maxlength="50"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.firstname" maxlength="50"></div>
         </div>
         <div class="formLine_flex_child">
           <div class="formTitle">Last Name</div>
-          <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.lastname" maxlength="50"></div>
         </div>
       </div>
       <div class="formLine">
         <div class="formTitle">Phone</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formContent"><input type="email" v-model="sellForm.phone"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">Email</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formContent"><input type="email" v-model="sellForm.email"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">Idtype</div>
         <div class="formContent">
-          <div class="radio">ID Card</div>
-          <div class="radio">Passport</div>
+          <div class="radio" :class="{'radioClass': sellForm.idType === 1}" @click="sellForm.idType=1">ID Card</div>
+          <div class="radio" :class="{'radioClass': sellForm.idType === 2}" @click="sellForm.idType=2">Passport</div>
         </div>
       </div>
       <div class="formLine">
-        <div class="formTitle">Idnumer</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formTitle">Idnumber</div>
+        <div class="formContent"><input type="email" v-model="sellForm.idNumber"></div>
       </div>
     </div>
     <button class="continue" :disabled="!buttonState" @click="next">Continue</button>
@@ -48,17 +48,39 @@ export default {
         firstname: "",
         lastname: "",
       },
-      agreement: false
+      agreement: false,
+      sellForm: {
+        firstname: "", // 传值需要加密处理
+        lastname: "",   //  传值需要加密处理
+        phone: "",  //  传值需要加密处理
+        email: "", // 传值需要加密处理
+        idType: "", // 证件类型  1=ID Card 、2=Passport
+        idNumber: "", // 证件号码 传值需要加密处理
+        source: "1", // 来源 1=卖币添加 0=买币添加
+      }
     }
   },
   computed: {
     buttonState(){
-      return true;
+      if(this.sellForm.firstname === ''||this.sellForm.lastname === ''||
+          this.sellForm.phone === '' || this.sellForm.email === ''||
+          this.sellForm.idType === ''||this.sellForm.idNumber === ''){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  },
+  activated(){
+    if(sessionStorage.getItem("sellForm")){
+      let oldSellFrom = JSON.parse(sessionStorage.getItem("sellForm"));
+      this.sellForm = {...oldSellFrom,...this.sellForm};
     }
   },
   methods: {
     next(){
-
+      sessionStorage.setItem("sellForm",JSON.stringify(this.sellForm));
+      this.$router.push(`/sell-formAddress?goPath=${this.$route.query.goPath}`);
     }
   }
 }
@@ -145,6 +167,10 @@ export default {
             margin-left: 0.2rem;
           }
         }
+        .radioClass{
+          background: #4479D9;
+          color: #FAFAFA;
+        }
       }
     }
     .formLine_flex{
@@ -160,7 +186,7 @@ export default {
     .continue{
       width: 100%;
       height: 0.6rem;
-      background: rgba(68, 121, 217, 0.5);
+      background: #4479D9;
       border-radius: 4px;
       text-align: center;
       line-height: 0.6rem;
@@ -171,6 +197,9 @@ export default {
       margin: 0.1rem 0 0 0;
       cursor: no-drop;
       border: none;
+      &:disabled{
+        background: rgba(68, 121, 217, 0.5);
+      }
     }
   }
 </style>

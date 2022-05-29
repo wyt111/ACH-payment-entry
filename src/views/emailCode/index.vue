@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import includedDetails from "../../components/includedDetails";
+import includedDetails from "../../components/IncludedDetails";
 import axios from 'axios';
 import { debounce } from '../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';

@@ -5,7 +5,7 @@
         <div class="home-header">
           <div class="home-tab">
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="tabstate='buyCrypto'">Buy Crypto</div>
-<!--            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="tabstate='sellCrypto'">Sell Crypto</div>-->
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="tabstate='sellCrypto'">Sell Crypto</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -13,7 +13,7 @@
         </div>
         <div class="home-children">
           <buyCrypto v-if="tabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>
-<!--          <sellCrypto v-else-if="tabstate === 'sellCrypto'"/>-->
+          <sellCrypto v-else-if="tabstate === 'sellCrypto'" :allBasicData="basicData" ref="sellCrypto_ref"/>
         </div>
       </div>
       <!--  menu view  -->
@@ -33,18 +33,18 @@
 </template>
 
 <script>
-// import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
+import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
 
 export default {
   name: "index",
-  components: { buyCrypto, search, routerMenu }, //, sellCrypto
+  components: { buyCrypto, sellCrypto, search, routerMenu },
   data() {
     return {
       menuState: false,
-      tabstate: 'buyCrypto',//sellCrypto
+      tabstate: 'sellCrypto',//buyCrypto
       searchState: true,
       viewName: "",
       basicData: {},

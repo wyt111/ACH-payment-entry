@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import IncludedDetails from "../../../../components/includedDetails";
+import IncludedDetails from "../../../../components/IncludedDetails";
 import CryptoCurrencyAddress from "../../../../components/CryptoCurrencyAddress";
 import AuthorizationInfo from "../../../../components/AuthorizationInfo";
 import { querySubmitToken } from "../../../../utils/publicRequest";

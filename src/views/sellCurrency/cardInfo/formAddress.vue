@@ -7,22 +7,22 @@
       </div>
       <div class="formLine">
         <div class="formTitle">Country</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formContent"><input type="text" v-model="sellForm.country"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">Address</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formContent"><input type="text" v-model="sellForm.address"></div>
       </div>
       <div class="formLine">
-        <div class="formTitle">Citr</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formTitle">City</div>
+        <div class="formContent"><input type="text" v-model="sellForm.city"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">State</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+        <div class="formContent"><input type="text" v-model="sellForm.state"></div>
       </div>
     </div>
-    <button class="continue" :disabled="!buttonState" @click="next">Continue</button>
+    <button class="continue" :disabled="buttonState" @click="next">Continue</button>
   </div>
 </template>
 
@@ -35,17 +35,38 @@ export default {
         firstname: "",
         lastname: "",
       },
-      agreement: false
+      agreement: false,
+      sellForm: {
+        country: "",
+        city: "",
+        state: "",
+        address: "",
+        source: "1", // 来源 1=卖币添加 0=买币添加
+      }
     }
   },
   computed: {
     buttonState(){
-      return true;
+      console.log(this.sellForm.country === ''||this.sellForm.address === ''||
+          this.sellForm.city === '' || this.sellForm.state === '')
+      if(this.sellForm.country === ''||this.sellForm.address === ''||
+      this.sellForm.city === '' || this.sellForm.state === ''){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  },
+  activated(){
+    if(sessionStorage.getItem("sellForm")){
+      let oldSellFrom = JSON.parse(sessionStorage.getItem("sellForm"));
+      this.sellForm = {...oldSellFrom,...this.sellForm};
     }
   },
   methods: {
     next(){
-
+      sessionStorage.setItem("sellForm",JSON.stringify(this.sellForm));
+      this.$router.push(`/sell-formBankInfo?goPath=${this.$route.query.goPath}`);
     }
   }
 }
@@ -147,7 +168,7 @@ export default {
   .continue{
     width: 100%;
     height: 0.6rem;
-    background: rgba(68, 121, 217, 0.5);
+    background: #4479D9;
     border-radius: 4px;
     text-align: center;
     line-height: 0.6rem;
@@ -158,6 +179,9 @@ export default {
     margin: 0.1rem 0 0 0;
     cursor: no-drop;
     border: none;
+    &:disabled{
+      background: rgba(68, 121, 217, 0.5);
+    }
   }
 }
 </style>

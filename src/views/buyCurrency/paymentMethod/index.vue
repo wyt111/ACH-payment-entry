@@ -44,14 +44,14 @@
           </div>
         </div>
       </div>
-      <IncludedDetails class="IncludedDetails" :showState="false"/>
+      <IncludedDetails class="IncludedDetails" :showState="false" :titleStatus="true"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">Continue</button>
   </div>
 </template>
 
 <script>
-import IncludedDetails from "@/components/includedDetails.vue";
+import IncludedDetails from "@/components/IncludedDetails.vue";
 import {querySubmitToken} from "../../../utils/publicRequest";
 import { AES_Decrypt,AES_Encrypt } from "../../../utils/encryp";
 

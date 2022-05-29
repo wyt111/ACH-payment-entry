@@ -1,7 +1,7 @@
 <template>
   <button class="button" :disabled="disabled" @click="submit">
-<!--    <slot/>-->
-    <div>{{ buttonName }}</div>
+    <slot v-if="buttonData.customName"/>
+    <div v-else>{{ buttonName }}</div>
     <i v-if="buttonData.loading" class="el-icon-loading"></i>
   </button>
 </template>
@@ -11,6 +11,7 @@
  * 确认按钮组件
  * buttonData.agreement === 1 支付
  * buttonData.agreement >1 查询支付状态
+ * buttonData.customName 自定义按钮名称状态
  * @returns {Promise<void>}
  */
 export default {
@@ -24,10 +25,6 @@ export default {
       type: Boolean,
       default: null
     },
-    customName: {
-      type: String,
-      default: null
-    }
   },
   data(){
     return{
@@ -39,7 +36,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val){
-        if(val.loading === true){
+        if(val.loading === true && val.customName && val.customName === false){
           this.buttonName = 'I have completed the payment';
         }
       }
@@ -50,10 +47,12 @@ export default {
       this.buttonData.triggerNum += 1;
       if(this.buttonData.triggerNum === 1){
         this.buttonData.loading = true;
-        this.buttonName = 'I have completed the payment';
+        if(this.buttonData.customName === false){
+          this.buttonName = 'I have completed the payment';
+        }
         return;
       }
-      if(this.buttonData.triggerNum > 1){
+      if(this.buttonData.triggerNum > 1 && this.buttonData.customName === false){
         this.$parent.$parent.tipsState = true;
       }
     }

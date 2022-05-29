@@ -1,7 +1,7 @@
 <template>
   <!-- Payment information -->
   <div class="paymentInformation">
-    <div class="paymentInformation-line">
+    <div class="paymentInformation-line" v-if="titleStatus !== false">
       <div class="line_name detailsName">{{ payCommission.symbol }}{{ routerParams.amount }} is all you pay</div>
       <div class="line_number details" @click="expandCollapse">Details</div>
     </div>
@@ -46,12 +46,15 @@
 <script>
 /**
  * 费用展示组件
+ * titleStatus 标题展示状态
+ * showState 详情展示状态
+ * network 部分情况接口所需添加网络信息
  */
 import common from "../utils/common";
 
 export default {
   name: "includedDetails",
-  props: ['network','showState'],
+  props: ['network','showState','titleStatus'],
   data(){
     return{
       triggerType: "hover",
@@ -76,11 +79,17 @@ export default {
         this.queryFee();
         this.timingSetting();
       }
-    }
+    },
+    //接收父组件是否需要展开费用
+    'showState':{
+      immediate: true,
+      deep: true,
+      handler(val){
+        this.detailsState = val;
+      }
+    },
   },
   activated(){
-    //接收父组件是否需要展开费用
-    this.detailsState = this.showState;
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息

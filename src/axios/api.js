@@ -20,4 +20,9 @@ export default {
   "post_mxnSubmit": '/pay/mxn/submit',
   //查询货币支持的支付方式
   "get_payMethods": '/crypto/payment/',
+
+  //卖币查询费用
+  "get_inquiryFeeSell": '/crypto/sell/fee',
+  //银行列表
+  "get_bank": '/world/bank/list',
 }

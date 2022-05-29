@@ -23,7 +23,7 @@
 import { querySubmitToken } from "../../../../../utils/publicRequest";
 import CryptoCurrencyAddress from '@/components/CryptoCurrencyAddress';
 import AuthorizationInfo from '@/components/AuthorizationInfo';
-import IncludedDetails from '@/components/includedDetails';
+import IncludedDetails from '@/components/IncludedDetails';
 import VA from './VA';
 import OPM from './OPM';
 

@@ -1,49 +1,93 @@
 <template>
-  <div id="formBankInfo">
-    <div class="content">
-      <div class="formLine">
-        <div class="formTitle">Bank</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
+  <div id="formBankInfo_box">
+    <Search viewName="bank" :allBasicData="bankList" routerFrom="payForm" v-if="searchViewState"/> <!--   -->
+    <div id="formBankInfo" v-else>
+      <div class="content">
+        <div class="formLine">
+          <div class="formTitle">Bank</div>
+          <div class="formContent" @click="openSearch"><input type="tel" v-model="bankInfo.bankName" disabled="true"></div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">Bankbranch Code</div>
+          <div class="formContent"><input type="tel" v-model="bankInfo.bankCode" disabled="true"></div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">Account No</div>
+          <div class="formContent"><input type="tel" v-model="sellForm.cardNumber"></div>
+        </div>
       </div>
-      <div class="formLine">
-        <div class="formTitle">Bankbranch Code</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
-      </div>
-      <div class="formLine">
-        <div class="formTitle">Account No</div>
-        <div class="formContent"><input type="email" v-model="params.firstname"></div>
-      </div>
+      <button class="continue" :disabled="buttonState" @click="next">Continue</button>
     </div>
-    <button class="continue" :disabled="!buttonState" @click="next">Continue</button>
   </div>
 </template>
 
 <script>
+import Search from "../../../components/search";
+
 export default {
   name: "formBankInfo",
+  components: { Search },
   data(){
     return{
-      params: {
-        firstname: "",
-        lastname: "",
+      bankInfo: {
+        bankName: "",
+        bankCode: "",
       },
-      agreement: false
+      agreement: false,
+      sellForm: {
+        cardNumber: "",  //  传值需要加密处理
+        worldBankId: "", // 选择银行id
+        userCardId: "90", // //修改信用卡信息需要带上userCardId
+        source: "1", // 来源 1=卖币添加 0=买币添加
+      },
+      bankList: [],
+      searchViewState: false,
+      name: 1,
     }
   },
   computed: {
     buttonState(){
-      return true;
+      if(this.bankInfo.bankName !== '' && this.bankInfo.bankCode !== '' && this.sellForm.cardNumber !== ''){
+        return false;
+      }else{
+        return true;
+      }
     }
   },
+  activated(){
+    this.queryBank();
+  },
   methods: {
+    openSearch(){
+      this.searchViewState = true;
+      this.$parent.$refs.viewTab.tabState = false;
+    },
+    queryBank(){
+      this.$axios.get(this.$api.get_bank,'').then(res=>{
+        if(res && res.returnCode === "0000"){
+          this.bankList = res.data;
+        }
+      })
+    },
     next(){
-
+      if(sessionStorage.getItem("sellForm")){
+        let params = JSON.parse(sessionStorage.getItem("sellForm"));
+        this.sellForm = {...this.sellForm,params};
+      }
+      this.$axios.get(this.$api.post_saveCardInfo,this.sellForm).then(res=>{
+        if(res && res.returnCode === "0000"){
+          this.$router.push(`/${this.$route.query.goPath}`);
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+#formBankInfo_box,#formBankInfo{
+  height: 100%;
+}
 #formBankInfo{
   display: flex;
   flex-direction: column;
@@ -139,7 +183,7 @@ export default {
   .continue{
     width: 100%;
     height: 0.6rem;
-    background: rgba(68, 121, 217, 0.5);
+    background: #4479D9;
     border-radius: 4px;
     text-align: center;
     line-height: 0.6rem;
@@ -150,6 +194,9 @@ export default {
     margin: 0.1rem 0 0 0;
     cursor: no-drop;
     border: none;
+    &:disabled{
+      background: rgba(68, 121, 217, 0.5);
+    }
   }
 }
 </style>

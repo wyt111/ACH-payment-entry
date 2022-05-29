@@ -149,7 +149,8 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formBankInfo.vue"),
     meta: {
       requireAuth: true,
-      title: 'Enter card details'
+      title: 'Enter card details',
+      goPath: 'configSell',
     }
   },
   {

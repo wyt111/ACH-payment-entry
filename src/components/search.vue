@@ -55,10 +55,43 @@
       </ul>
 
       <!-- country payCurrency -->
-      <ul v-else-if="viewName === 'payCurrency'">
+      <ul v-else-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting"><img :src="item.flag">{{ item.enCommonName }}</p>
           <p class="seach_li_rightIcon">{{ item.code }}<img src="../assets/images/rightIcon.png"></p>
+        </li>
+      </ul>
+
+      <!-- 买币 currency -->
+      <ul v-else-if="viewName === 'currency-sell'">
+        <div v-if="searchText===''">
+          <div class="screen_title">Popular</div>
+          <li v-for="(item,index) in popularList" :key="index" @click="choiseItem('currency-sell',item)">
+            <p class="seach_li_img"><img :src="item.logoUrl"></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+          </li>
+          <div class="screen_title">All</div>
+          <li v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency-sell',item)">
+            <p class="seach_li_img"><img :src="item.logoUrl"></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+          </li>
+        </div>
+        <div v-else>
+          <li v-for="(item,index) in searchData" :key="'search_'+index" @click="choiseItem('currency-sell',item)">
+            <p class="seach_li_img"><img :src="item.logoUrl"></p>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
+            <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
+          </li>
+        </div>
+      </ul>
+
+      <!-- bank -->
+      <ul v-else-if="viewName === 'bank'">
+        <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('bank',item)">
+          <p class="seach_li_text currencyCopywriting">{{ item.bank }}</p>
+          <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
         </li>
       </ul>
     </div>
@@ -111,7 +144,7 @@ export default {
         all_resultArray_country = [...new Set(all_resultArray_country)];
         return all_resultArray_country;
       }
-      if(this.searchText && this.viewName === 'payCurrency') { //country
+      if(this.searchText && (this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell')) { //country
         let resultArray_country1 = [],resultArray_country2 = [],resultArray_country3 = [],resultArray_country4 = [],all_resultArray_country = [];
         resultArray_country1 = this.basicData.filter((value) => {
           return value.enCommonName.includes(this.searchText)
@@ -152,6 +185,55 @@ export default {
         all_resultArray = [...new Set(all_resultArray)];
         return all_resultArray;
       }
+      //所有支持卖的币
+      if(this.searchText && this.viewName === 'currency-sell'){
+        let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
+        //Match full name
+        resultArray1 = this.cryptoCurrencyVOList.filter((value) => {
+          return value.fullName.includes(this.searchText)
+        })
+        //Match full name - Initial to capital
+        resultArray2 = this.cryptoCurrencyVOList.filter((value) => {
+          // let text =
+          return value.fullName.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+        })
+        //Matching abbreviations - Capitalize
+        resultArray3 = this.cryptoCurrencyVOList.filter((value) => {
+          return value.name.includes(this.searchText.toUpperCase())
+        })
+        //Matching abbreviations
+        resultArray4 = this.cryptoCurrencyVOList.filter((value) => {
+          return value.name.includes(this.searchText)
+        })
+        all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
+        all_resultArray = [...new Set(all_resultArray)];
+        return all_resultArray;
+      }
+      //搜索银行
+      if(this.searchText && this.viewName === 'bank'){
+        let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
+        //Match full name
+        console.log(this.searchText.toUpperCase(),"---this.searchText.toUpperCase()")
+        console.log(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+        resultArray1 = this.basicData.filter((value) => {
+          return value.bank.includes(this.searchText)
+        })
+        //Match full name - Initial to capital
+        resultArray2 = this.basicData.filter((value) => {
+          // let text =
+          return value.bank.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+        })
+        //Matching abbreviations - Capitalize
+        resultArray3 = this.basicData.filter((value) => {
+          return value.bank.includes(this.searchText.toUpperCase())
+        })
+        resultArray4 = this.basicData.filter((value) => {
+          return value.bank.includes(this.searchText.toLowerCase())
+        })
+        all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
+        all_resultArray = [...new Set(all_resultArray)];
+        return all_resultArray;
+      }
     }
   },
   watch: {
@@ -173,7 +255,8 @@ export default {
         this.viewTitle = 'Select Country';
         return;
       }
-      if(this.viewName === 'currency'){
+      console.log(this.viewName)
+      if(this.viewName === 'currency' || this.viewName === 'currency-sell'){
         this.viewTitle = 'Select Crypto';
         return;
       }
@@ -183,6 +266,10 @@ export default {
       }
       if(this.viewName === 'payCurrency'){
         this.viewTitle = 'Select Country';
+        return;
+      }
+      if(this.viewName === 'bank'){
+        this.viewTitle = 'Select Bank';
         return;
       }
     },
@@ -222,17 +309,44 @@ export default {
           })
         });
         this.basicData = newWorldList;
+        return;
+      }
+      if(this.viewName === 'payCurrency-sell'){
+        this.basicData = [];
+        let newWorldList = [];
+        this.allBasicData.worldList.forEach(item=>{
+          item.fiatList.forEach(item2=>{
+            let fiat = {
+              code: item2.code,
+            }
+            fiat = {...fiat,...item};
+            newWorldList.push(fiat);
+          })
+        });
+        this.basicData = newWorldList.filter(item=>{return item.sellEnable === 1});;
+        return;
+      }
+      if(this.viewName === 'currency-sell'){
+        this.basicData = this.allBasicData;
+        this.$nextTick(()=>{
+          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
+          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
+        })
+        return;
+      }
+      if(this.viewName === 'bank'){
+        this.basicData = this.allBasicData;
       }
     },
 
     //close component
     closeView(){
-      if(this.viewName === 'country' && this.routerFrom !== 'home'){
+      if(( this.viewName === 'country'|| this.viewName === 'bank' )&& this.routerFrom !== 'home'){
         this.$parent.$parent.$refs.viewTab.tabState = true;
         this.$parent.searchViewState = false;
         return;
       }
-      if(this.viewName === 'country' || this.viewName === 'currency' || this.viewName === 'payCurrency') {
+      if(this.viewName === 'country' || this.viewName === 'currency' || this.viewName === 'currency-sell' || this.viewName === 'payCurrency-sell' || this.viewName === 'payCurrency') {
         this.$parent.searchState = true;
         return;
       }
@@ -283,14 +397,34 @@ export default {
           }
           return;
         }
-        if(type === 'payCurrency'){
-          //country
-          this.$parent.$refs.buyCrypto_ref.handlePayWayList(item,2);
-          //payCurrency
-          //Filter exchange rate
-          // this.$parent.$refs.buyCrypto_ref.exchangeRate = this.$parent.$refs.buyCrypto_ref.basicData.usdToEXR[item.currency];
-          this.$parent.$refs.buyCrypto_ref.amountControl();
+        if(this.viewName === 'currency-sell'){ //卖币
+          this.$parent.$refs.sellCrypto_ref.currencyData.icon = item.logoUrl;
+          this.$parent.$refs.sellCrypto_ref.currencyData.name = item.name;
+          this.$parent.$refs.sellCrypto_ref.payCommission.payMax = item.maxSell;
+          this.$parent.$refs.sellCrypto_ref.payCommission.payMin = item.minSell;
+          this.$parent.$refs.sellCrypto_ref.feeParams.symbol = item.symbol;
+          console.log(this.$parent.$refs.sellCrypto_ref.payCommission,item)
+          this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
+          return;
+        }
+        //country payCurrency
+        if(type === 'payCurrency'){
+          if(this.viewName === 'payCurrency'){ //买币
+            this.$parent.$refs.buyCrypto_ref.handlePayWayList(item,2);
+            this.$parent.$refs.buyCrypto_ref.amountControl();
+          }else if(this.viewName === 'payCurrency-sell'){ //卖币
+            this.$parent.$refs.sellCrypto_ref.handlePayWayList(item,2);
+          }
+          this.$parent.searchState = true;
+          return;
+        }
+        if(type === 'bank'){
+          this.$parent.bankInfo.bankName = item.bank;
+          this.$parent.bankInfo.bankCode = item.bankCode;
+          this.$parent.sellForm.worldBankId = item.id;
+          this.$parent.$parent.$refs.viewTab.tabState = true;
+          this.$parent.searchViewState = false;
           return;
         }
       })
