@@ -1,13 +1,5 @@
 [
   {
-    "bankCardName": "BCA",
-    "bankCardFullName": "Bank Central Asia",
-    "bankCode": "IBCA",
-    "bankLogo": "bankCard8.png",
-    "allHelpTips": [],
-    "check": false
-  },
-  {
     "bankCardName": "Mandiri",
     "bankCardFullName": "Bank Mandiri",
     "bankCode": "M1",
@@ -154,75 +146,6 @@
     "check": false
   },
   {
-    "bankCardName": "BNI",
-    "bankCardFullName": "Bank Negara Indonesia",
-    "bankCode": "I1",
-    "bankLogo": "bankCard7.png",
-    "allHelpTips": [
-      {
-        "helpTitle": "BNI ATM",
-        "helpInfo": [
-          {"text": "Other menus"},
-          {"text": "Select Transfer"},
-          {"text": "Select a Savings Account"},
-          {"text": "Select To BNI Account"},
-          {"text": "Enter the virtual account number"},
-          {"text": "Input nominal transfer"},
-          {"text": "Book-entry confirmation"}
-        ]
-      },
-      {
-        "helpTitle": "BNI INTERNET BANKING",
-        "helpInfo": [
-          {"text": "Transfer menu"},
-          {"text": "Select Add Favorite Account"},
-          {"text": "Choose Between BNI Accounts"},
-          {"text": "When using the desktop to add accounts: Transaction menu, then Set Destination Account, Add Destination Account"},
-          {"text": "Enter the name and number of the virtual account"},
-          {"text": "Input token authentication code"},
-          {"text": "The destination account was successfully added"},
-          {"text": "Return to the Transfer menu"},
-          {"text": "Select Transfer Between BNI Accounts"},
-          {"text": "Select Destination Account"},
-          {"text": "Choose a debit account and input nominal transfer"},
-          {"text": "Input token authentication code"}
-        ]
-      },
-      {
-        "helpTitle": "BNI MOBILE BANKING",
-        "helpInfo": [
-          {"text": "Transfer menu"},
-          {"text": "Choose between BNI Account and Input New Account"},
-          {"text": "Input debit account, virtual account number in the destination account, and transfer nominal"},
-          {"text": "Enter password and confirm transaction"}
-        ]
-      },
-      {
-        "helpTitle": "OTHER INTERNET BANKING",
-        "helpInfo": [
-          {"text": "Transfer menu"},
-          {"text": "Choose Another Bank Account"},
-          {"text": "Input the virtual account number in the destination account"},
-          {"text": "Input nominal payment"},
-          {"text": "Input recipient bank with BNI"},
-          {"text": "The type of transfer used is online / realtime"},
-          {"text": "Confirmation and payment process"}
-        ]
-      },
-      {
-        "helpTitle": "OTHER BANK ATMs Transfer menu",
-        "helpInfo": [
-          {"text": "Choose Another Bank Account"},
-          {"text": "Enter bank code 009"},
-          {"text": "Input the virtual account number in the destination account"},
-          {"text": "Input nominal payment"},
-          {"text": "Confirmation and payment process"}
-        ]
-      }
-    ],
-    "check": false
-  },
-  {
     "bankCardName": "BRI",
     "bankCardFullName": "Bank Rakyat Indonesia",
     "bankCode": "BRI",
@@ -283,50 +206,6 @@
           {"text": "Fill out the form according to BANK BRI regulations"},
           {"text": "Give forms and money to teller"},
           {"text": "Receive the receipt as proof of successful payment"}
-        ]
-      }
-    ],
-    "check": false
-  },
-  {
-    "bankCardName": "Maybank",
-    "bankCardFullName": "Bank Maybank",
-    "bankCode": "VA",
-    "bankLogo": "bankCard6.png",
-    "allHelpTips": [
-      {
-        "helpTitle": "MAYBANK ATM",
-        "helpInfo": [
-          {"text": "Input PIN"},
-          {"text": "Select Transfer"},
-          {"text": "Select Virtual Account"},
-          {"text": "Enter the virtual account number"},
-          {"text": "A payment confirmation screen will appear"}
-        ]
-      },
-      {
-        "helpTitle": "OTHER ATMs",
-        "helpInfo": [
-          {"text": "Select the \"Other Transactions\" menu."},
-          {"text": "Select the “To Other Bank Account” menu."},
-          {"text": "Enter Maybank’s bank code (016) and press “Yes”."},
-          {"text": "EnterVirtual Account number"},
-          {"text": "Enter the transfer amount."},
-          {"text": "Press the \"Yes\" button and the ATM receipt is proof that the transaction will come out."}
-        ]
-      },
-      {
-        "helpTitle": "MAYBANK INET BANKING",
-        "helpInfo": [
-          {"text": "Login on the Maybank Internet Banking Personal (M2U) website"},
-          {"text": "Select the Transfer menu"},
-          {"text": "Select Virtual Account"},
-          {"text": "Select Savings Source"},
-          {"text": "Enter the Virtual Account number, click \"CONTINUE\""},
-          {"text": "Enter the Amount of Transfer, click \"PROCESS\""},
-          {"text": "Click \"CONFIRM & ASK TAC\" "},
-          {"text": "Enter \"SMS Token / TAC\", Click \"OK\" "},
-          {"text": "Transaction is complete"}
         ]
       }
     ],

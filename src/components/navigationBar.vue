@@ -17,7 +17,7 @@
 
 <script>
 /**
- * tabState - Used to hide the menu bar of other routing pages except the home page  eg:'/receiveCoins' Using search components
+ * tabState - Used to hide the menu bar of other routing pages except the home page  eg:'/receivingMode' Using search components
  */
 export default {
   name: "navigationBar",
@@ -32,11 +32,11 @@ export default {
     $route:{
       immediate: true,
       handler: function(val,oldVal){
-        if(val.name === 'Home') {
+        if(val.meta.title === 'Home') {
           this.tabState = false;
         } else {
           this.tabState = true;
-          this.routerName = val.name;
+          this.routerName = val.meta.title;
         }
         oldVal ? this.routerPath = oldVal.path : "";
       },
@@ -48,11 +48,11 @@ export default {
         this.$router.push('/')
         return;
       }
-      if(this.$route.path === '/paymentReSult'){
+      if(this.$route.path === '/paymentResult'){
         this.$router.push('/');
         return;
       }
-      if(this.routerPath === '/emailCode' && this.$route.path === '/receiveCoins'){
+      if(this.routerPath === '/emailCode' && this.$route.path === '/receivingMode'){
         this.$router.go(-2);
         return;
       }
@@ -60,15 +60,15 @@ export default {
         this.$router.back(-2);
         return;
       }
-      if(this.$route.path === '/internationalCardPay' && this.routerPath === '/basisIdAuth'){
+      if(this.$route.path === '/creditCardForm-cardInfo' && this.routerPath === '/basisIdAuth'){
         this.$router.go(-6);
         return;
       }
-      if(this.$route.path === '/internationalCardConfigPag' && this.routerPath === '/internationalCardPay'){
+      if(this.$route.path === '/creditCardConfig' && this.routerPath === '/creditCardForm-cardInfo'){
         this.$router.go(-2);
         return;
       }
-      // if(this.$route.path === '/internationalCardConfigPag' && this.routerPath === '/basisIdAuth'){
+      // if(this.$route.path === '/creditCardConfig' && this.routerPath === '/basisIdAuth'){
       //   this.$router.go(-2);
       //   return;
       // }
@@ -90,7 +90,7 @@ export default {
     display: flex;
     align-items: center;
     font-size: 0.2rem;
-    font-family: Jost-Bold, Jost;
+    font-family: 'Jost', sans-serif;
     font-weight: bold;
     color: #232323;
     .icon {

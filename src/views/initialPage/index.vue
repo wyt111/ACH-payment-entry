@@ -4,8 +4,8 @@
       <div class="homePage_view" v-if="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{ 'tabClass': tabstate==='buyCrypto' }">Buy Crypto</div>
-            <div :class="{ 'tabClass': tabstate==='sellCrypto' }">Sell Crypto</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="tabstate='buyCrypto'">Buy Crypto</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="tabstate='sellCrypto'">Sell Crypto</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -13,7 +13,7 @@
         </div>
         <div class="home-children">
           <buyCrypto v-if="tabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>
-          <sellCrypto v-else-if="tabstate === 'sellCrypto'"/>
+          <sellCrypto v-else-if="tabstate === 'sellCrypto'" :allBasicData="basicData" ref="sellCrypto_ref"/>
         </div>
       </div>
       <!--  menu view  -->
@@ -28,7 +28,7 @@
       </div>
     </div>
     <!-- search Public organization -->
-    <search v-if="!searchState" ref="search_ref" :viewName="viewName" :choiseItemData='choiseItem' :allBasicData="basicData"/>
+    <search v-if="!searchState" ref="search_ref" :viewName="viewName" :choiseItemData='choiseItem' :allBasicData="basicData" routerFrom="home"/>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       menuState: false,
-      tabstate: 'buyCrypto',
+      tabstate: 'sellCrypto',//buyCrypto
       searchState: true,
       viewName: "",
       basicData: {},
@@ -68,6 +68,7 @@ export default {
       this.$axios.get(this.$api.get_buyCryptoInfo,"").then(res=>{
         if(res && res.returnCode === "0000"){
           _this.basicData = res.data;
+          localStorage.setItem("allBasicData",JSON.stringify(res.data));
         }
       })
     },
@@ -95,7 +96,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
       display: flex;
       align-items: center;
       font-size: 0.2rem;
-      font-family: Jost-Bold, Jost;
+      font-family: 'Jost', sans-serif;
       font-weight: bold;
       color: #999999;
       div{
@@ -104,7 +105,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
       }
       div:nth-of-type(2){
         margin-left: 0.4rem;
-        cursor: no-drop;
+        cursor: pointer;
       }
       .tabClass{
         color: #232323;
@@ -129,7 +130,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     display: flex;
     align-items: center;
     font-size: 0.2rem;
-    font-family: Jost-Bold, Jost;
+    font-family: 'Jost', sans-serif;
     font-weight: bold;
     color: #232323;
   }

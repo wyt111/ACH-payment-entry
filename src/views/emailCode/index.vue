@@ -1,6 +1,6 @@
 <template>
   <div id="emailCode">
-    <div class="form-title">We will notify you of the purchase result by email</div>
+    <div class="form-title">Enter your emai address</div>
     <div class="form-input"><input type="text" placeholder="Email Address" v-model="email">
       <span class="formOptions" :class="{'getCodeClass': email===''}" @click="getCode" v-if="timeDown===60">Get code</span>
       <span class="formOptions" v-else>{{ timeDown }}S</span>
@@ -14,7 +14,7 @@
     <!-- Permission agreement -->
     <div class="agreement-content">
       <div class="agreement-radio"><input type="checkbox" v-model="agreement"></div>
-      <div class="agreement-text">I have read and agree to Alchemy Pay’s <span>《Terms of Service》</span> and <span>《Privacy Policy》</span>.</div>
+      <div class="agreement-text">I have read and agree to Alchemy Pay’s <span @click="goProtocol('termsUse')">{{ '<' }}Terms of Use{{ '>' }}</span> and <span @click="goProtocol('privacyPolicy')">{{ '<' }}Privacy Policy{{ '>' }}</span>.</div>
     </div>
     <includedDetails v-if="includedDetails_state"/>
     <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div>
@@ -22,8 +22,10 @@
 </template>
 
 <script>
-import includedDetails from "../../components/includedDetails";
+import includedDetails from "../../components/IncludedDetails";
 import axios from 'axios';
+import { debounce } from '../../utils/index';
+import { AES_Encrypt } from '@/utils/encryp.js';
 
 export default {
   name: "emailCode",
@@ -31,6 +33,7 @@ export default {
   data(){
     return{
       timeDown: 60,
+      timeVal: null,
       emailErrorState: false,
       emailError: '',
       detailsState: true,
@@ -40,19 +43,23 @@ export default {
       codeErrorState: false,
       codeError: '',
       includedDetails_state: false,
+
+      getCode_state: true,
+      login_state: true,
     }
   },
-  mounted(){
+  activated(){
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
+    if(sessionStorage.getItem("accessMerchantInfo") !== "{}"){
+      this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
+    }
+  },
+  deactivated(){
+    clearInterval(this.timeVal)
   },
   methods: {
-    getCode() {
-      //verification
-      if(this.email === ''){
-        // this.emailError = "Please fill in the email.";
-        // this.emailErrorState = true;
-        return;
-      }
+    getCode:debounce(function () {
+      this.getCode_state = false;
       var reg = new RegExp(".+@.+\\..+");
       if(!reg.test(this.email)){
         this.emailErrorState = true;
@@ -62,31 +69,33 @@ export default {
       this.emailErrorState = false;
       //Get code
       let params = {
-        email: this.email
+        email: AES_Encrypt(this.email)
       }
-      this.$axios.post(this.$api.post_sendEmail,params).then(res=>{
+      this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
+        this.getCode_state = true;
         if(res.returnCode === '0000'){
           this.timeDown -= 1;
-          var timeDown = setInterval(()=>{
+          this.timeVal = setInterval(()=>{
             this.timeDown -= 1;
             if(this.timeDown === 1){
-              clearInterval(timeDown)
+              clearInterval(this.timeVal)
               this.timeDown = 60;
             }
           },1000)
         }
       })
-    },
+    },500,false),
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
     },
-    toLogin(){
+    toLogin:debounce(function (){
+      this.login_state = false;
       let _this = this;
       if(this.email!==''&&this.code.length===6&&this.agreement===true){
         var FormData = require('form-data');
         var data = new FormData();
-        data.append('email', this.email);
-        data.append('verificationCode', this.code);
+        data.append('email', AES_Encrypt(this.email));
+        data.append('verificationCode', AES_Encrypt(this.code));
         var config = {
           method: 'post',
           url: process.env.VUE_APP_BASE_API + this.$api.post_login,
@@ -102,13 +111,13 @@ export default {
           return Promise.reject(error);
         })
         axios(config).then(function (response) {
+          _this.login_state = true;
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
-            console.log(_this.$route.query.fromName)
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
-              _this.$router.push(`/receiveCoins?routerParams=${_this.$route.query.routerParams}`);
+              _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
             _this.codeErrorState = true;
@@ -118,7 +127,18 @@ export default {
           console.log(error);
         });
       }
-    },
+    },300,false),
+
+    goProtocol(name){
+      if(name === 'privacyPolicy'){
+        window.location = 'https://alchemypay.org/privacy-policy/';
+        return;
+      }
+      if(name === 'termsUse'){
+        window.location = 'https://alchemypay.org/terms-of-use/';
+        return;
+      }
+    }
   }
 }
 </script>
@@ -127,7 +147,7 @@ export default {
 #emailCode{
   .form-title{
     font-size: 0.14rem;
-    font-family: Jost-Medium, Jost;
+    font-family: 'Jost', sans-serif;
     font-weight: 500;
     color: #232323;
     margin-top: 0.2rem;
@@ -146,7 +166,7 @@ export default {
       border-radius: 10px;
       font-size: 0.16rem;
       color: #232323;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       padding: 0 1rem 0 0.2rem;
       border: none;
@@ -161,7 +181,7 @@ export default {
   }
   .errorMessage{
     font-size: 0.14rem;
-    font-family: Jost-Regular, Jost;
+    font-family: "Jost", sans-serif;
     font-weight: 400;
     color: #FF0000;
     margin: 0.1rem 0 0 0.2rem;
@@ -171,7 +191,7 @@ export default {
     top: 0.19rem;
     right: 0.2rem;
     font-size: 0.16rem;
-    font-family: Jost-Bold, Jost;
+    font-family: 'Jost', sans-serif;
     font-weight: bold;
     color: #4479D9;
     cursor: pointer;
@@ -186,14 +206,16 @@ export default {
     padding-bottom: 0.4rem;
     .agreement-radio{
       display: flex;
-      margin-top: 0.02rem;
+      margin-top: 0.05rem;
       input{
         cursor: pointer;
+        width: 0.13rem;
+        height: 0.13rem;
       }
     }
     .agreement-text{
       font-size: 0.14rem;
-      font-family: Jost-Regular, Jost;
+      font-family: "Jost", sans-serif;
       font-weight: 400;
       color: #333333;
       margin-left: 0.2rem;
@@ -213,7 +235,7 @@ export default {
     text-align: center;
     line-height: 0.6rem;
     font-size: 0.18rem;
-    font-family: Jost-Medium, Jost;
+    font-family: 'Jost', sans-serif;
     font-weight: 500;
     color: #FAFAFA;
     margin-top: 0.4rem;

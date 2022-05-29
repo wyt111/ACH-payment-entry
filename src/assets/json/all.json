@@ -1,0 +1,343 @@
+[
+  {
+    "bankCardName": "BCA",
+    "bankCardFullName": "Bank Central Asia",
+    "bankCode": "IBCA",
+    "bankLogo": "bankCard8.png",
+    "allHelpTips": [],
+    "check": false
+  },
+  {
+    "bankCardName": "Mandiri",
+    "bankCardFullName": "Bank Mandiri",
+    "bankCode": "M1",
+    "bankLogo": "bankCard1.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "ATM MANDIRI",
+        "helpInfo": [
+          {"text": "Select the Pay / Buy menu"},
+          {"text": "Select the Multipayment menu"},
+          {"text": "Enter the Bank Mandiricompany code(5 digits before payment code), press Correct"},
+          {"text": "Enter the virtual account number then press Correct"},
+          {"text": "Select Number 1 or according to the bill to be paid then press YES"}
+        ]
+      },
+      {
+        "helpTitle": "ONLINE BANKING",
+        "helpInfo": [
+          {"text": "Enter User ID & Password."},
+          {"text": "Select the payment menu."},
+          {"text": "Select the Multipayment menu."},
+          {"text": "In the Service Provider Column, select the corresponding service provider(Enter the first 5 digits of the payment code) ."},
+          {"text": "Enter the virtual account number."},
+          {"text": "Select Continue."},
+          {"text": "Web:",
+            "children": [
+              {"number": "a.","text": " OTP sent to mobile number."},
+              {"number": "b.","text": " The OTP obtained is inputted inToken to getchallenge code."},
+              {"number": "c.","text": " Chanllenge code input to Mandiri online, then click Continue."}
+            ]
+          },
+          {"text": "Apps:",
+            "children": [
+              {"number": "a.","text": " After the transaction confirmation appears Select Send."},
+              {"number": "b.","text": " Input MPIN (6 digits)."}
+            ]
+          }
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "Permata",
+    "bankCardFullName": "Bank Permata",
+    "bankCode": "BT",
+    "bankLogo": "bankCard2.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "ATM PERMATA",
+        "helpInfo": [
+          {"text": "Select the Other Transaction menu"},
+          {"text": "Select Payment"},
+          {"text": "Choose Other Payments"},
+          {"text": "Select Virtual Account"},
+          {"text": "Enter the virtual account number"},
+          {"text": "A payment confirmation screen will appear"}
+        ]
+      },
+      {
+        "helpTitle": "MOBILE INTERNET",
+        "helpInfo": [
+          {"text": "Enter User ID & Password"},
+          {"text": "Select Bill Payment"},
+          {"text": "Select a virtual account"},
+          {"text": "Enter the virtual account number"},
+          {"text": "Input nominal payment"},
+          {"text": "If the data matches the transaction / Token authentication input"}
+        ]
+      },
+      {
+        "helpTitle": "ATM BERSAMA, ALTO& PRIMA",
+        "helpInfo": [
+          {"text": "Select the Transfer menu"},
+          {"text": "Choose Transfer to Other Bank If through ATM Bersama& Alto: Enter Permata Bank code (013) +16 digit pay code If via ATM Prima: Enter the PermataBank code (013) press BENAR, followed by the 16 digit pay code"},
+          {"text": "Input nominal payment"},
+          {"text": "The payment name & nominal payment confirmation screen will appear"}
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "CIMB",
+    "bankCardFullName": "Commerce International Merchant Bank",
+    "bankCode": "B1",
+    "bankLogo": "bankCard3.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "CIMB ATM",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Select Between CIMB NIAGA Accounts"},
+          {"text": "Input nominal transfer"},
+          {"text": "Input the virtual account number in the destination account"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "CIMB CLICKS",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Input nominal transfer"},
+          {"text": "Select Other Account - Bank CIMB Niaga / Rekening Ponsel"},
+          {"text": "The recipient's account is filled with a virtual account number"},
+          {"text": "Input MPIN"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "GO MOBILE",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Select Transfer to Other CIMB Niaga Account"},
+          {"text": "Input virtual account number and payment nominal"},
+          {"text": "PIN input"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "OTHER INTERNET BANKING",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Choose Another Bank Account"},
+          {"text": "Input the virtual account number in the destination account"},
+          {"text": "Input nominal payment"},
+          {"text": "Enter beneficiary bank input with CIMB Niaga"},
+          {"text": "The type of transfer used is online / realtime"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "OTHER BANK ATMs",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Choose Another Bank Account"},
+          {"text": "Enter bank code 022"},
+          {"text": "Input the virtual account number in the destination account"},
+          {"text": "Input nominal payment"},
+          {"text": "Confirmation and payment process"}
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "BNI",
+    "bankCardFullName": "Bank Negara Indonesia",
+    "bankCode": "I1",
+    "bankLogo": "bankCard7.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "BNI ATM",
+        "helpInfo": [
+          {"text": "Other menus"},
+          {"text": "Select Transfer"},
+          {"text": "Select a Savings Account"},
+          {"text": "Select To BNI Account"},
+          {"text": "Enter the virtual account number"},
+          {"text": "Input nominal transfer"},
+          {"text": "Book-entry confirmation"}
+        ]
+      },
+      {
+        "helpTitle": "BNI INTERNET BANKING",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Select Add Favorite Account"},
+          {"text": "Choose Between BNI Accounts"},
+          {"text": "When using the desktop to add accounts: Transaction menu, then Set Destination Account, Add Destination Account"},
+          {"text": "Enter the name and number of the virtual account"},
+          {"text": "Input token authentication code"},
+          {"text": "The destination account was successfully added"},
+          {"text": "Return to the Transfer menu"},
+          {"text": "Select Transfer Between BNI Accounts"},
+          {"text": "Select Destination Account"},
+          {"text": "Choose a debit account and input nominal transfer"},
+          {"text": "Input token authentication code"}
+        ]
+      },
+      {
+        "helpTitle": "BNI MOBILE BANKING",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Choose between BNI Account and Input New Account"},
+          {"text": "Input debit account, virtual account number in the destination account, and transfer nominal"},
+          {"text": "Enter password and confirm transaction"}
+        ]
+      },
+      {
+        "helpTitle": "OTHER INTERNET BANKING",
+        "helpInfo": [
+          {"text": "Transfer menu"},
+          {"text": "Choose Another Bank Account"},
+          {"text": "Input the virtual account number in the destination account"},
+          {"text": "Input nominal payment"},
+          {"text": "Input recipient bank with BNI"},
+          {"text": "The type of transfer used is online / realtime"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "OTHER BANK ATMs Transfer menu",
+        "helpInfo": [
+          {"text": "Choose Another Bank Account"},
+          {"text": "Enter bank code 009"},
+          {"text": "Input the virtual account number in the destination account"},
+          {"text": "Input nominal payment"},
+          {"text": "Confirmation and payment process"}
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "BRI",
+    "bankCardFullName": "Bank Rakyat Indonesia",
+    "bankCode": "BRI",
+    "bankLogo": "bankCard5.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "BRImo",
+        "helpInfo": [
+          {"text": "Login to the BRImo application (enter username and password)"},
+          {"text": "Select the BRIVA menu"},
+          {"text": "Select a source of funds"},
+          {"text": "Input BRIVA code"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "BRI INET BANKING",
+        "helpInfo": [
+          {"text": "Input card and PIN"},
+          {"text": "Select the menu Other Transactions> Payment> Others> BRIVA"},
+          {"text": "Input the BRIVA code"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "ATMBRI",
+        "helpInfo": [
+          {"text": "Input card and PIN"},
+          {"text": "Select the menu Other Transactions> Payment> Others> BRIVA"},
+          {"text": "Input the BRIVA code"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "ATM BANK LAINNYA",
+        "helpInfo": [
+          {"text": "Input card and PIN"},
+          {"text": "Select the menu Other Transactions> Transfer> To Other Bank Accounts"},
+          {"text": "Input bank code 002"},
+          {"text": "Input nominal transfer"},
+          {"text": "Input the BRIVA code"},
+          {"text": "Select the account to be debited"},
+          {"text": "Confirmation and process payments"}
+        ]
+      },
+      {
+        "helpTitle": "MOBILE BANKING BRI",
+        "helpInfo": [
+          {"text": "Select the Info menu> BRIVA Info"},
+          {"text": "Input BRIVA code"},
+          {"text": "Input password"},
+          {"text": "Confirmation and payment process"}
+        ]
+      },
+      {
+        "helpTitle": "BRI BY TELLER",
+        "helpInfo": [
+          {"text": "Fill out the form according to BANK BRI regulations"},
+          {"text": "Give forms and money to teller"},
+          {"text": "Receive the receipt as proof of successful payment"}
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "Maybank",
+    "bankCardFullName": "Bank Maybank",
+    "bankCode": "VA",
+    "bankLogo": "bankCard6.png",
+    "allHelpTips": [
+      {
+        "helpTitle": "MAYBANK ATM",
+        "helpInfo": [
+          {"text": "Input PIN"},
+          {"text": "Select Transfer"},
+          {"text": "Select Virtual Account"},
+          {"text": "Enter the virtual account number"},
+          {"text": "A payment confirmation screen will appear"}
+        ]
+      },
+      {
+        "helpTitle": "OTHER ATMs",
+        "helpInfo": [
+          {"text": "Select the \"Other Transactions\" menu."},
+          {"text": "Select the “To Other Bank Account” menu."},
+          {"text": "Enter Maybank’s bank code (016) and press “Yes”."},
+          {"text": "EnterVirtual Account number"},
+          {"text": "Enter the transfer amount."},
+          {"text": "Press the \"Yes\" button and the ATM receipt is proof that the transaction will come out."}
+        ]
+      },
+      {
+        "helpTitle": "MAYBANK INET BANKING",
+        "helpInfo": [
+          {"text": "Login on the Maybank Internet Banking Personal (M2U) website"},
+          {"text": "Select the Transfer menu"},
+          {"text": "Select Virtual Account"},
+          {"text": "Select Savings Source"},
+          {"text": "Enter the Virtual Account number, click \"CONTINUE\""},
+          {"text": "Enter the Amount of Transfer, click \"PROCESS\""},
+          {"text": "Click \"CONFIRM & ASK TAC\" "},
+          {"text": "Enter \"SMS Token / TAC\", Click \"OK\" "},
+          {"text": "Transaction is complete"}
+        ]
+      }
+    ],
+    "check": false
+  },
+  {
+    "bankCardName": "Danamon",
+    "bankCardFullName": "Bank Danamon",
+    "bankCode": "I2",
+    "bankLogo": "bankCard4.png",
+    "allHelpTips": [],
+    "check": false
+  }
+]

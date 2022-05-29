@@ -44,10 +44,12 @@ function requestPrompt(response){
       case "10005":
         Toast(response.returnMsg);
         break;
+      case "80007":
+        Toast(response.returnMsg);
+        break;
     }
   }
 }
-
 
 //request interceptor
 axios.interceptors.request.use(function (config) {
@@ -66,22 +68,29 @@ axios.interceptors.response.use(function (response) {
     localStorage.setItem("userNo",response.data.data.userNo);
     localStorage.setItem("kycStatus",response.data.data.kycStatus);
   }
+
   //token effect: Multiple trigger interface verification
-  if(response.config.url === process.env.VUE_APP_BASE_API + '/crypto/wallet/check'){
+  if(response.config.url !== process.env.VUE_APP_BASE_API + '/user/login' && response.headers.token){
     localStorage.setItem("submit-token",response.headers.token);
   }
-  if(response.config.url === process.env.VUE_APP_BASE_API + '/trade/create'){
-    localStorage.setItem("submit-token",response.headers.token);
-  }
+
   //no login info
-  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== "/emailCode"){
-    router.path !== '/emailCode' ? router.push(`/emailCode?routerParams${router.currentRoute.query.routerParams}`) : '';
+  if((response.data.returnCode === '70006' || response.data.returnCode === '70008') && router.currentRoute.path !== '/emailCode'){
     localStorage.removeItem("sign");
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userNo");
     localStorage.removeItem("userId");
     localStorage.removeItem("kycStatus");
+    if(fromRouter === '/receivingMode' && toRouter === '/'){
+      router.replace(`/emailCode?routerParams=${router.currentRoute.query.routerParams}`);
+      return;
+    }
+    if(fromRouter === '/tradeHistory'){
+      router.replace('/emailCode?fromName=tradeList');
+      return;
+    }
+    router.replace('/emailCode');
   }
   //Request callback prompt
   requestPrompt(response.data);
@@ -89,6 +98,15 @@ axios.interceptors.response.use(function (response) {
 });
 
 axios.defaults.timeout = 30000; // Set the request timeout (MS) to no more than half a minute
+
+//Store which route to jump over
+var fromRouter = '';
+var toRouter = '';
+router.beforeEach((from,to,next)=>{
+  fromRouter = from.path;
+  toRouter = to.path;
+  next();
+})
 
 export default {
   /**
@@ -114,10 +132,11 @@ export default {
     }).then((response) => {
       if (response.returnCode === "0000") {
         return Promise.resolve(response);
-      } else {
-        // Toast(response.returnMsg);
-        return Promise.reject('data');
       }
+      // else {
+        // Toast(response.returnMsg);
+        // return Promise.reject('data');
+      // }
     }).catch(error => {
       console.log('failed', error);
     })
@@ -144,10 +163,11 @@ export default {
     }).then((response) => {
       if (response.returnCode === "0000") {
         return Promise.resolve(response);
-      } else {
-        // Toast(response.returnMsg);
-        return Promise.reject('data');
       }
+      // else {
+        // Toast(response.returnMsg);
+        // return Promise.reject(response);
+      // }
     }).catch(function (error) {
       console.log('failed', error);
     });
