@@ -26,6 +26,7 @@ export default {
   "get_networkList":'/crypto/sell/network',
   "get_userCard":'/user/card/query/sell',
   "get_PlayCurrencyStatus":'/trade/query/sellOrder',
+  "post_setNetwork":'/trade/confirm/sell/order',
 
   //卖币查询费用
   "get_inquiryFeeSell": '/crypto/sell/fee',
