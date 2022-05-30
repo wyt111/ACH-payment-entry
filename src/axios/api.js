@@ -21,6 +21,12 @@ export default {
   //查询货币支持的支付方式
   "get_payMethods": '/crypto/payment/',
 
+
+  "get_countryList": '/crypto/world/list',
+  "get_networkList":'/crypto/sell/network',
+  "get_userCard":'/user/card/query/sell',
+  "get_PlayCurrencyStatus":'/trade/query/sellOrder',
+
   //卖币查询费用
   "get_inquiryFeeSell": '/crypto/sell/fee',
   //银行列表

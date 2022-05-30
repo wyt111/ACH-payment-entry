@@ -4,19 +4,22 @@
     <div class="order-state-title">Wait Crypto…</div>
     <div class="order-state">
       <div class="state">
-        <div v-if="state===0">1</div>
-        <div :class="state===2?'stateSuccessful':''" v-if="state===1||state===2"><img src="../../assets/images/icon4.png" alt=""></div>
+        <!-- <div v-if="state===0">1</div> -->
+        <div  v-if="[0,1,2,3,4].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
+        <div :class="playMoneyState===5?'stateSuccessful':''" v-if="playMoneyState===5"><img src="../../assets/images/icon4.png" alt=""></div>
+        <div :class="[6,7].includes(playMoneyState)?'stateError':''" v-if="[6,7].includes(playMoneyState)"><img src="../../assets/images/errorIcon.png" alt=""></div>
         
       </div>
-      <div class="state-content">
-        <div ></div>
+      <div :class="playMoneyState===5?'state-content success':'state-content'">
+        <div></div>
         <div></div>
         <div></div>
         <div></div>
       </div>
       <div class="state">
-        <div v-if="state===0">2</div>
-       <div :class="state===2?'stateSuccessful':''" v-if="state===1||state===2"><img src="../../assets/images/icon1.png" alt=""></div>
+        <div v-if="[0,1,2,3,4,6,7].includes(playMoneyState)">2</div>
+        <div  v-if="playMoneyState===5"><img src="../../assets/images/icon1.png" alt=""></div>
+       <div :class="state===7?'stateSuccessful':''" v-if="state===1||state===2"><img src="../../assets/images/icon1.png" alt=""></div>
       </div>
       <div class="state-content">
         <div></div>
@@ -47,8 +50,8 @@
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
-        <div class="order-con order-conId" @click="copy" data-clipboard-text="23hd8932bcxcbmiw3455ert76e4rre2345">
-          <p>23hd8932bcxcbmiw3455ert76e4rre2345</p>
+        <div class="order-con order-conId" @click="copy" :data-clipboard-text="orderStateData.orderId">
+          <p>{{ orderStateData.orderId }}</p>
           <img src="../../assets/images/copy.png" alt="">
         </div>
         <div class="order-title">Network</div>
@@ -84,7 +87,7 @@
       
     </van-popup>
     <van-popup v-model="Network_show" position="bottom" :style="{ height: '30%' }" >
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item.name)">{{ item.name }}</div>
+        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item.networkName)">{{ item.networkName }}</div>
     </van-popup>
   </div>
 </template>
@@ -96,8 +99,9 @@ export default{
   data(){
     return {
       state:0,
+      playMoneyState:0,
       show:false,
-      handleQrAddress:'23hd8932bcxcbmiw3455',
+      orderStateData:'',
       Network:'Bitcoin',
       Network_data:[
         {id:0,name:'Bitcoin'},
@@ -140,7 +144,60 @@ export default{
     SetNetwork(text){
       this.Network_show=false
       this.Network = text
+    },
+    getNetworkList(){
+      let params = {
+        coin:'USDT'
+      }
+      this.$axios.get(this.$api.get_networkList,params).then(res=>{
+        if(res && res.data){
+          this.Network_data = res.data
+        }
+      })
+    },
+    getUserCard(){
+      // let params = {
+      //   "country":'CN',
+      //   "fiatName":'USDT'
+      // }
+      // this.$axios.get(this.$api.get_userCard,params).then(res=>{
+      //   // console.log(res);
+      // })
+    },
+    //获取打币状态
+    getCurrencyStatus(){
+      let parmas = {
+        id:'5'
+      }
+      this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
+        console.log(res.data);
+        if(res && res.data){
+          this.orderStateData = res.data
+          switch(this.orderStateData.orderStatus){
+            case 0:this.playMoneyState = 0;break;
+            case 1:this.playMoneyState = 1;break;
+            case 2:this.playMoneyState = 2;break;
+            case 3:this.playMoneyState = 3;break;
+            case 4:this.playMoneyState = 4;break;
+            case 5:this.playMoneyState = 5;break;
+            case 6:this.playMoneyState = 6;break;
+            case 7:this.playMoneyState = 7;break;
+          }
+        }
+      })
+    },
+    //确认订单
+    makeOrder(){
+      
     }
+
+  },
+  mounted(){
+    this.getNetworkList()
+    this.getUserCard()
+    // setInterval(()=>{
+      this.getCurrencyStatus()
+    // },1000)
   }
 }
 
@@ -241,6 +298,16 @@ export default{
     text-align: center;
     padding-top: .03rem;
      background: #02AF38 !important;
+  }
+  .stateError{
+    text-align: center;
+    padding-top: .03rem;
+     background: #FF0000 !important;
+  }
+  .success{
+    div{
+      background:#02AF38 !important;
+    }
   }
   .Network-content:first-child{
     margin-top: .1rem;
