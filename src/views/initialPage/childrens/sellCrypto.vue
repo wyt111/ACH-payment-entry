@@ -48,7 +48,7 @@
               <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
-          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }}{{ feeInfo.rampFee }}</div>
+          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }}{{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(2) : '' }}</div>
         </div>
         <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
         <div class="calculationProcess_line">
@@ -82,6 +82,7 @@ export default {
         positionValue: '',
         positionImg: '',
         alpha2: '',
+        fiatCode: ''
       },
 
       payAmount: '',
@@ -94,7 +95,6 @@ export default {
       timeDownNumber: 15,
       detailedInfo_state: false,
 
-      feeParams: {},
       feeState: false,
       feeText: 'View fees',
 
@@ -103,10 +103,10 @@ export default {
         icon: '',
         name: '',
         price: '',
+        maxSell: '',
+        minSell: ''
       },
 
-      //Payment methods
-      allPayMethods: [],
       //Payment method information
       payCommission: {},
       allPayCommission: [],
@@ -117,7 +117,7 @@ export default {
   computed: {
     //you pay input status - Data can only be entered after loading
     payAmountState(){
-      if(this.payCommission.payMax > 0 && this.payCommission.payMin > 0){
+      if(this.currencyData.maxSell > 0 && this.currencyData.minSell > 0){
         return false
       }else{
         return true
@@ -126,8 +126,8 @@ export default {
     //确认按钮状态
     continueState(){
       if(this.positionData.positionValue !== ''&&
-          this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
-          Number(this.payAmount) <= this.payCommission.payMax && this.getAmount !== '' &&
+          this.payAmount !== '' && Number(this.payAmount) >= this.currencyData.minSell &&
+          Number(this.payAmount) <= this.currencyData.maxSell && this.getAmount !== '' &&
           Number(this.payAmount) > 0){
         return true
       }else{
@@ -173,23 +173,22 @@ export default {
         this.warningTextState = false;
         return;
       }
-
       //Purchase amount prompt
-      if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+      if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         this.warningTextState = false;
         //How many digital currencies can I exchange
         this.payinfo();
       }else{
-        var minError = `The minimum transaction amount is ${this.payCommission.payMin}.`;
-        var maxError = `The maximum transaction amount is ${this.payCommission.payMax}.`;
-        if(Number(this.payAmount) < this.payCommission.payMin){
+        var minError = `The minimum transaction amount is ${this.currencyData.minSell}.`;
+        var maxError = `The maximum transaction amount is ${this.currencyData.maxSell}.`;
+        if(Number(this.payAmount) < this.currencyData.minSell){
           this.payAmount_tips = minError;
-        }else if(Number(this.payAmount) > this.payCommission.payMax){
+        }else if(Number(this.payAmount) > this.currencyData.maxSell){
           this.payAmount_tips = maxError;
         }
         this.warningTextState = true;
         this.getAmount = "";
-        this.detailedInfo_state = false;
+          this.detailedInfo_state = false;
         clearInterval(this.timeDown);
       }
     },
@@ -197,7 +196,7 @@ export default {
     //Purchase information details - Scheduled refresh
     payinfo(){
       clearInterval(this.timeDown);
-      if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+      if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         this.detailedInfo_state = true;
         setTimeout(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
@@ -212,8 +211,8 @@ export default {
     //Purchase information details
     queryFee(){
       this.timeDownNumber = 15;
-      this.$axios.get(this.$api.get_inquiryFeeSell,this.feeParams).then(res=>{
-        if(res.data){
+      this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+        if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
           this.calculationAmount();
         }
@@ -221,8 +220,8 @@ export default {
       this.timeDown = setInterval(()=> {
         if (this.timeDownNumber === 1) {
           this.timeDownNumber = 15;
-          this.$axios.get(this.$api.get_inquiryFeeSell,this.feeParams).then(res=>{
-            if(res.data){
+          this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+            if(res && res.returnCode === "0000"){
               this.feeInfo = res.data;
               this.calculationAmount();
             }
@@ -235,7 +234,7 @@ export default {
 
     //Real time calculation getAmount
     calculationAmount(){
-      if(Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+      if(Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         //Filter exchange rate - Calculate cost and accepted quantity
         // this.feeInfo.price = this.exchangeRate * this.feeInfo.price;
         this.feeInfo.rampFee = (this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
@@ -274,12 +273,16 @@ export default {
 
     handlePayWayList(data,state){
       //展示所需国家参数
-      this.positionData.positionValue = data.enCommonName;
-      this.positionData.positionImg = data.flag;
-      this.positionData.alpha2 = data.alpha2;
+      this.positionData = {
+        positionValue: data.enCommonName,
+        positionImg: data.flag,
+        alpha2: data.alpha2,
+        fiatCode: data.fiatCode,
+      };
       //费用所需参数
-      this.feeParams.fiatCode = data.fiatCode;
-      this.feeParams.worldId = data.worldId;
+      this.$store.state.feeParams.fiatCode = data.fiatCode;
+      this.$store.state.feeParams.worldId = data.worldId;
+      this.positionData.worldId = data.worldId;
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
@@ -289,46 +292,54 @@ export default {
             this.currencyData = {
               icon: item.logoUrl,
               name: item.name,
+              maxSell: item.maxSell,
+              minSell: item.minSell,
+              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId
             }
-            //取最大值最小值
-            this.payCommission.payMax = item.maxSell
-            this.payCommission.payMin = item.minSell;
-            this.feeParams.symbol = item.symbol;
+            this.$store.state.feeParams.symbol = item.symbol;
           }
         })
       }else{
-        data.fiatList.forEach(item=>{
-          if(item.code === data.code){
-            this.payCommission = item;
-          }
-        })
-        console.log(data,this.payCommission)
+        this.payCommission = this.basicData.fiatCurrencyList.filter(item=>{return item.code === data.code})[0];
       }
-
       this.amountControl();
     },
 
     nextStep(){
-      /**
-       * - No token jump /emailCode
-       * post_coinSupportedWallet - How to get acceptable currency - ACh Wallet OR Chain address
-       * - User selected verification
-       * choice Indonesian payment /creditCardForm-cardInfo
-       * Other payment jump /receivingMode
-       * */
+      this.payCommission.symbol = this.$store.state.feeParams.symbol;
       let routerParams = {
-        cryptoCurrency: this.currencyData.name,
         amount: this.payAmount,
         getAmount: this.getAmount,
+        cryptoCurrency: this.currencyData.name,
+        currencyData: this.currencyData,
         payCommission: this.payCommission,
         positionData: this.positionData
       }
+      this.$store.state.routerParams = routerParams;
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
+        this.$store.state.emailFromPath = 'buyCrypto';
         this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
         return;
       }
-      this.$router.push(`/receivingMode?routerParams=${JSON.stringify(routerParams)}`)
+
+      this.$router.push('/sell-formUserInfo')
+
+      //获取用户卡信息
+      let params = {
+        country: this.positionData.alpha2,
+        fiatName: this.positionData.fiatCode,
+      };
+      this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+        //data - null 没有填写过表单,跳转到表单页
+        //data - !null 有填写过表单,跳转到确认订单页
+        if(res && res.returnCode === "0000" && res.data === null){
+          this.$router.push('/sell-formUserInfo')
+        }else if(res && res.returnCode === "0000" && res.data !== null){
+          this.$store.state.sellForm = res.data;
+          this.$router.push('/configSell')
+        }
+      })
     },
   }
 }

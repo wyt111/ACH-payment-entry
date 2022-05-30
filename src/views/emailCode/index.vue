@@ -49,8 +49,9 @@ export default {
     }
   },
   activated(){
+    this.code = "";
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
-    if(sessionStorage.getItem("accessMerchantInfo") !== "{}"){
+    if(sessionStorage.getItem("accessMerchantInfo") !== "{}" && sessionStorage.getItem("accessMerchantInfo") !== null){
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
     }
   },

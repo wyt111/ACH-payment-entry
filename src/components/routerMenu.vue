@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted(){
-    this.email = AES_Decrypt(localStorage.getItem("email"));
+    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
   },
   methods: {
     //Select menu
@@ -70,6 +70,7 @@ export default {
       }
 
       if(!localStorage.getItem("token")){
+        this.$store.state.emailFromPath = this.$parent.tabstate;
         this.$router.push('/emailCode?fromName=tradeList').catch(()=>{});
       }else{
         this.$router.push(name);

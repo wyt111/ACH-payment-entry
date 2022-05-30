@@ -35,7 +35,7 @@
         <div class="formContent"><input type="email" v-model="sellForm.idNumber"></div>
       </div>
     </div>
-    <button class="continue" :disabled="!buttonState" @click="next">Continue</button>
+    <button class="continue" :disabled="buttonState" @click="next">Continue</button>
   </div>
 </template>
 
@@ -72,14 +72,13 @@ export default {
     }
   },
   activated(){
-    if(sessionStorage.getItem("sellForm")){
-      let oldSellFrom = JSON.parse(sessionStorage.getItem("sellForm"));
-      this.sellForm = {...oldSellFrom,...this.sellForm};
+    if(this.$store.state.sellForm){
+      this.sellForm = {...this.$store.state.sellForm,...this.sellForm};
     }
   },
   methods: {
     next(){
-      sessionStorage.setItem("sellForm",JSON.stringify(this.sellForm));
+      this.$store.state.sellForm = this.sellForm;
       this.$router.push(`/sell-formAddress?goPath=${this.$route.query.goPath}`);
     }
   }
