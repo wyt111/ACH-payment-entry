@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="calculationProcess">
-      <div class="calculationProcess_line">
+      <div class="calculationProcess_line" v-if="timeDownState">
         <div class="line_name">Remaining time</div>
         <div class="line_number">
           <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
@@ -36,10 +36,19 @@
 </template>
 
 <script>
+/**
+ * timeDownState 定时刷新状态
+ */
 import common from "../utils/common";
 
 export default {
   name: "includedDetails",
+  props: {
+    timeDownState: {
+      type: Object,
+      default: null
+    },
+  },
   data(){
     return{
       triggerType: "hover",
@@ -53,6 +62,17 @@ export default {
       routerParams: {},
       currencyData: {},
       timeDownNumber: 15,
+    }
+  },
+  watch: {
+    'timeDownState': {
+      deep: true,
+      immediate: true,
+      handler(val){
+        if(val === false){
+          clearInterval(this.timeOut);
+        }
+      }
     }
   },
   activated(){
