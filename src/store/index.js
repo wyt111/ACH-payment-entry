@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import getters from './getters'
-//
 Vue.use(Vuex)
 
 //
@@ -23,15 +22,9 @@ const store = new Vuex.Store({
   // getters
     state: {
         routerParams: {},
+        feeParams: {},
+        sellForm: {},
     }
 })
 
 export default store
-
-//localStorage strore state
-if(localStorage.getItem("store")){
-    store.replaceState(Object.assign({},store.state),JSON.parse(localStorage.getItem("store")));
-}
-window.addEventListener("beforeunload",()=>{
-    localStorage.setItem("store",JSON.stringify(store.state));
-})

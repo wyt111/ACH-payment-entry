@@ -25,4 +25,8 @@ export default {
   "get_inquiryFeeSell": '/crypto/sell/fee',
   //银行列表
   "get_bank": '/world/bank/list',
+  //获取卖币用户卡信息
+  "get_userSellCardInfo": '/user/card/query/sell',
+  //卖币确认订单接口
+  "post_sellConfirmOrder": '/trade/confirm/sell/order',
 }

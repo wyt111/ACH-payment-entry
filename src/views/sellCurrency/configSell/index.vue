@@ -5,25 +5,26 @@
         <div class="bankCardInfo-title">Bank Card</div>
         <div class="bankCardInfo-view">
           <div class="bankCardInfo-view-left">
-            <div>Taiwan Business Bank,Sydney Branch</div>
-            <div>John Tan <span>1234 **** **** 1234</span></div>
+            <div>{{ bankInfo.bankName }}</div>
+            <div>{{ sellForm.firstname }} {{ sellForm.lastname }} <span>{{ sellForm.cardNumber ? sellForm.cardNumber.substring(0,3) : '' }} **** **** {{ sellForm.cardNumber ? sellForm.cardNumber.substring(sellForm.cardNumber.length-4,sellForm.cardNumber.length) : '' }}</span></div>
           </div>
           <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightIcon.png" alt=""></div>
         </div>
       </div>
-      <IncludedDetails class="includedDetails-view" :showState="true" :titleStatus="false"/>
+      <IncludedDetails-sell class="includedDetails-view"/>
     </div>
     <Button :buttonData="buttonData" :disabled="false" @click.native="submit">Confirm</Button>
   </div>
 </template>
 
 <script>
-import IncludedDetails from '../../../components/IncludedDetails';
+import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
 import Button from '../../../components/Button';
+import { AES_Decrypt } from "../../../utils/encryp";
 
 export default {
   name: "index",
-  components: { IncludedDetails, Button },
+  components: { IncludedDetailsSell, Button },
   data(){
     return{
       //按钮状态
@@ -32,12 +33,46 @@ export default {
         triggerNum: 0,
         customName: true,
       },
+
+      routerParams: {},
+      sellForm: {},
+      bankInfo: {},
     }
   },
+  mounted(){
+    this.reveiveInfo();
+  },
   methods: {
+    reveiveInfo(){
+      this.sellForm = this.$store.state.sellForm;
+      this.bankInfo = this.$store.state.bankInfo;
+      this.routerParams = this.$store.state.routerParams;
+      this.sellForm.firstname = AES_Decrypt(this.sellForm.firstname);
+      this.sellForm.lastname = AES_Decrypt(this.sellForm.lastname);
+      this.sellForm.cardNumber = AES_Decrypt(this.sellForm.cardNumber);
+      this.sellForm.phone = AES_Decrypt(this.sellForm.phone);
+      this.sellForm.email = AES_Decrypt(this.sellForm.email);
+      this.sellForm.idNumber = AES_Decrypt(this.sellForm.idNumber);
+    },
     submit(){
       if(this.buttonData.triggerNum === 1){
+        let params = {
+          cryptoCurrency: this.routerParams.cryptoCurrency,
+          sellVolume: this.routerParams.amount,
+          worldId: this.routerParams.positionData.worldId,
+          symbol: this.routerParams.payCommission.symbol,
+          cardNumber: this.$store.state.sellForm.cardNumber,
+          swiftCode: this.bankInfo.bankCode,
+          bank: this.bankInfo.bankName,
+          cryptoCurrencyNetworkId: this.routerParams.currencyData.cryptoCurrencyNetworkId,
+          fiatName: this.routerParams.payCommission.code
+        };
+        this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{
+          this.buttonData.triggerNum = 0;
+          if(res && res.returnCode === "0000"){
 
+          }
+        })
       }
     }
   }

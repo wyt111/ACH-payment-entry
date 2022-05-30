@@ -8,8 +8,8 @@
           <div class="formContent" @click="openSearch"><input type="tel" v-model="bankInfo.bankName" disabled="true"></div>
         </div>
         <div class="formLine">
-          <div class="formTitle">Bankbranch Code</div>
-          <div class="formContent"><input type="tel" v-model="bankInfo.bankCode" disabled="true"></div>
+          <div class="formTitle">Swit Code</div>
+          <div class="formContent"><input type="tel" v-model="bankInfo.bankCode"></div>
         </div>
         <div class="formLine">
           <div class="formTitle">Account No</div>
@@ -23,6 +23,7 @@
 
 <script>
 import Search from "../../../components/search";
+import { AES_Encrypt } from '../../../utils/encryp';
 
 export default {
   name: "formBankInfo",
@@ -70,11 +71,21 @@ export default {
       })
     },
     next(){
-      if(sessionStorage.getItem("sellForm")){
-        let params = JSON.parse(sessionStorage.getItem("sellForm"));
-        this.sellForm = {...this.sellForm,params};
+      //合并参数
+      if(this.$store.state.sellForm){
+        this.sellForm = {...this.sellForm,...this.$store.state.sellForm};
       }
-      this.$axios.get(this.$api.post_saveCardInfo,this.sellForm).then(res=>{
+      //加密参数
+      this.sellForm.firstname = AES_Encrypt(this.sellForm.firstname);
+      this.sellForm.lastname = AES_Encrypt(this.sellForm.lastname);
+      this.sellForm.cardNumber = AES_Encrypt(this.sellForm.cardNumber);
+      this.sellForm.phone = AES_Encrypt(this.sellForm.phone);
+      this.sellForm.email = AES_Encrypt(this.sellForm.email);
+      this.sellForm.idNumber = AES_Encrypt(this.sellForm.idNumber);
+      //存储数据
+      this.$store.state.sellForm = this.sellForm;
+      this.$store.state.bankInfo = this.bankInfo;
+      this.$axios.post(this.$api.post_saveCardInfo,this.sellForm,'').then(res=>{
         if(res && res.returnCode === "0000"){
           this.$router.push(`/${this.$route.query.goPath}`);
         }

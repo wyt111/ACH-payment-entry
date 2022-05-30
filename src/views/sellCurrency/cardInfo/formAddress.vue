@@ -58,14 +58,13 @@ export default {
     }
   },
   activated(){
-    if(sessionStorage.getItem("sellForm")){
-      let oldSellFrom = JSON.parse(sessionStorage.getItem("sellForm"));
-      this.sellForm = {...oldSellFrom,...this.sellForm};
+    if(this.$store.state.sellForm){
+      this.sellForm = {...this.$store.state.sellForm,...this.sellForm};
     }
   },
   methods: {
     next(){
-      sessionStorage.setItem("sellForm",JSON.stringify(this.sellForm));
+      this.$store.state.sellForm = this.sellForm;
       this.$router.push(`/sell-formBankInfo?goPath=${this.$route.query.goPath}`);
     }
   }

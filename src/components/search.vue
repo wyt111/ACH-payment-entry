@@ -213,8 +213,6 @@ export default {
       if(this.searchText && this.viewName === 'bank'){
         let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
         //Match full name
-        console.log(this.searchText.toUpperCase(),"---this.searchText.toUpperCase()")
-        console.log(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
         resultArray1 = this.basicData.filter((value) => {
           return value.bank.includes(this.searchText)
         })
@@ -255,7 +253,6 @@ export default {
         this.viewTitle = 'Select Country';
         return;
       }
-      console.log(this.viewName)
       if(this.viewName === 'currency' || this.viewName === 'currency-sell'){
         this.viewTitle = 'Select Crypto';
         return;
@@ -339,6 +336,11 @@ export default {
       }
     },
 
+    //银行列表、搜索
+    queryBankList(){
+
+    },
+
     //close component
     closeView(){
       if(( this.viewName === 'country'|| this.viewName === 'bank' )&& this.routerFrom !== 'home'){
@@ -400,10 +402,10 @@ export default {
         if(this.viewName === 'currency-sell'){ //卖币
           this.$parent.$refs.sellCrypto_ref.currencyData.icon = item.logoUrl;
           this.$parent.$refs.sellCrypto_ref.currencyData.name = item.name;
-          this.$parent.$refs.sellCrypto_ref.payCommission.payMax = item.maxSell;
-          this.$parent.$refs.sellCrypto_ref.payCommission.payMin = item.minSell;
-          this.$parent.$refs.sellCrypto_ref.feeParams.symbol = item.symbol;
-          console.log(this.$parent.$refs.sellCrypto_ref.payCommission,item)
+          this.$parent.$refs.sellCrypto_ref.currencyData.maxSell = item.maxSell;
+          this.$parent.$refs.sellCrypto_ref.currencyData.minSell = item.minSell;
+          this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.cryptoCurrencyNetworkId;
+          this.$store.state.feeParams.symbol = item.symbol;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
           return;
@@ -421,7 +423,6 @@ export default {
         }
         if(type === 'bank'){
           this.$parent.bankInfo.bankName = item.bank;
-          this.$parent.bankInfo.bankCode = item.bankCode;
           this.$parent.sellForm.worldBankId = item.id;
           this.$parent.$parent.$refs.viewTab.tabState = true;
           this.$parent.searchViewState = false;

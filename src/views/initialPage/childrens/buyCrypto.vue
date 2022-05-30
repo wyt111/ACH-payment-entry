@@ -454,6 +454,7 @@ export default {
       }
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
+        this.$store.state.emailFromPath = 'buyCrypto';
         this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
         return;
       }
