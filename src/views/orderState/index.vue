@@ -222,6 +222,7 @@ export default{
     },
     //获取买币状态
     getCurrencyStatus(){
+      console.log(this.$store.state.sellOrderId);
       let parmas = {
         // id:'15'
         id:this.$store.state.sellOrderId
