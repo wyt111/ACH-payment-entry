@@ -102,7 +102,7 @@
 
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
-    <!-- <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="orderStateData"/> -->
+    <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="orderStateData"/>
     <van-popup v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
@@ -119,11 +119,11 @@
 import Clipboard from 'clipboard'
 import QRCode from 'qrcodejs2';
 import {AES_Decrypt} from '../../utils/encryp'
-// import IncludedDetailsSell from '../../components/IncludedDetailsSell'
+import IncludedDetailsSell from '../../components/IncludedDetailsSell'
 export default{
   name:'orderState',
   components:{
-    // IncludedDetailsSell
+    IncludedDetailsSell
   },
   data(){
     return {
@@ -188,8 +188,8 @@ export default{
       }
       this.Network = text
       let params = {
-        id:'15',
-        // id:this.$store.state.sellOrderId
+        // id:'15',
+        id:this.$store.state.sellOrderId,
         cryptoCurrencyNetworkId:text.id
       }
       this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
@@ -223,8 +223,8 @@ export default{
     //获取买币状态
     getCurrencyStatus(){
       let parmas = {
-        id:'15'
-        // id:this.$store.state.sellOrderId
+        // id:'15'
+        id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
@@ -278,7 +278,7 @@ export default{
         second = second>9?second:"0"+second;
         minute = minute>9?minute:"0"+minute;
         this.timeText = minute+":"+second;
-        console.log(this.timeText);
+        // console.log(this.timeText);
       }
     },
     //Decrypt

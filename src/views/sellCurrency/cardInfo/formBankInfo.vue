@@ -36,7 +36,7 @@ export default {
         worldBankId: "", // 选择银行id
         bank: "",
         swiftCode: "",
-        userCardId: "90", // //修改信用卡信息需要带上userCardId
+        userCardId: "", // //修改信用卡信息需要带上userCardId
         source: "1", // 来源 1=卖币添加 0=买币添加
       },
       bankList: [],
