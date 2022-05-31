@@ -1,14 +1,14 @@
 <template>
   <div class="order-container">
-    <div class="timing" v-if="playMoneyState===0">Please transfer ACH to the address within <span>45:00</span></div>
+    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer ACH to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[1,2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount }} for {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount-orderStateData.fee }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>请点击您的卡信息进行修改</span></div>
     <div class="timing" v-if="playMoneyState===7">If you still want to sell crypto,Return to home page</div>
-    <div class="order-state-title" v-if="playMoneyState===0">Wait Crypto…</div>
-    <div class="order-state-title" v-if="playMoneyState===1">Order Confirming…</div>
-    <div class="order-state-title" v-if="playMoneyState===2">Order Confirmed</div>
-    <div class="order-state-title" v-if="playMoneyState===4 || playMoneyState===3">Payment Processing…</div>
+    <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
+    <div class="order-state-title" v-if="playMoneyState===2">Order Confirming…</div>
+    <div class="order-state-title" v-if="playMoneyState===3">Order Confirmed</div>
+    <div class="order-state-title" v-if="playMoneyState===4">Payment Processing…</div>
     <div class="order-state-title" v-if="playMoneyState===5">Payment Success</div>
     <div class="order-state-title" v-if="playMoneyState===6">Payment Fail</div>
     <div class="order-state-title" v-if="playMoneyState===7">Order expired！</div>
@@ -16,20 +16,10 @@
     <div class="order-state">
       <div class="state">
         <!-- <div v-if="state===0">1</div> -->
-        <div  v-if="playMoneyState===0"><img src="../../assets/images/icon4.png" alt=""></div>
-        <div :class="[1,2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[1,2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
+        <div  v-if="[1,0].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
+        <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
         
-      </div>
-      <div :class="[1,2,3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,7].includes(playMoneyState)">2</div>
-        <div  v-if="[1,2,3,4,5,6].includes(playMoneyState)" :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''"><img src="../../assets/images/icon1.png" alt=""></div>
       </div>
       <div :class="[2,3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
         <div></div>
@@ -38,8 +28,18 @@
         <div></div>
       </div>
       <div class="state">
-        <div v-if="[0,1,7].includes(playMoneyState)">3</div>
-        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
+        <div v-if="[0,1,7].includes(playMoneyState)">2</div>
+        <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':''"><img src="../../assets/images/icon1.png" alt=""></div>
+      </div>
+      <div :class="[3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="state">
+        <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
+        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
       </div>
       <div :class="[4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
         <div></div>
@@ -54,10 +54,10 @@
       </div>
     </div>
     <div class="order-state-content">
-      <div :style="{color:playMoneyState===0?'':'#000'}">Pay Coins</div>
-      <div :style="{color:[0,1].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
+      <div :style="{color:[0,1].includes(playMoneyState)?'':'#000'}">Pay Coins</div>
+      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4].includes(playMoneyState)?'':'#000'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{ playMoneyState===6?'Fail':'Payment Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{ playMoneyState===6?'Fail':'Payment Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -66,25 +66,31 @@
           <img src="../../assets/images/copy.png" alt="">
         </div>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Network</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_show=true">
+        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
           <p>{{ Network.networkName }}</p>
           <img src="../../assets/images/rightIcon.png" alt="">
+        </div>
+        <div class="network-content" v-show="Network_show1">
+          <div v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">
+            <p>{{ item.networkName }}</p>
+            <img src="../../assets/images/rightIcon.png" alt="">
+          </div>
         </div>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Address</div>
         <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)"  @click="copy" :data-clipboard-text="orderStateData.address">
           <p>{{ orderStateData.address }}</p>
-          <div style="margin-top:.03rem" v-if="playMoneyState===0">
+          <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
             <img style="margin-right:.2rem" @click.stop="qrCode" src="../../assets/images/Qrcode.png" alt="">
             <img src="../../assets/images/copy.png"  alt="">
           </div>
         </div>
         <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">Card</div>
-        <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState)">
-          <div>
-            <p style="width:100%">Taiwan Business Bank,Sydney Branch</p>
+        <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
+          <div style="width:80%">
+            <p style="width:100%">{{ orderStateData.bank }}</p>
             <div style="display:flex;margin-top:.1rem">
-              <p style="width:36%">John Tan</p>
-               <p style="margin-left:.2rem">{{ orderStateData.cardNumber }}</p><!--1234 **** **** 1234 -->
+              <p style="width:36%">{{ AES(orderStateData.firstname) }} {{ AES(orderStateData.lastname) }}</p>
+               <p style="margin-left:.2rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
             </div>
           </div>
           <img src="../../assets/images/rightIcon.png" alt="">
@@ -96,14 +102,15 @@
 
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
+    <!-- <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="orderStateData"/> -->
     <van-popup v-model="show" round>
       <div class="qrcode" >
-        <div  ref="qrCodeUrl"></div>
+        <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
         <p>Scan QR Code</p>
       </div>
-      
     </van-popup>
-    <van-popup v-model="Network_show" position="bottom" :style="{ height: '30%' }" >
+    <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }" >
+        <div class="Network-title">Network</div>
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">{{ item.networkName }}</div>
     </van-popup>
   </div>
@@ -111,24 +118,38 @@
 <script>
 import Clipboard from 'clipboard'
 import QRCode from 'qrcodejs2';
-import {AES_Encrypt,AES_Decrypt} from '../../utils/encryp'
+import {AES_Decrypt} from '../../utils/encryp'
+// import IncludedDetailsSell from '../../components/IncludedDetailsSell'
 export default{
   name:'orderState',
+  components:{
+    // IncludedDetailsSell
+  },
   data(){
     return {
-      state:0,
       playMoneyState:0,
       show:false,
       orderStateData:'',
       Network:'',
       Network_data:[],
       Network_show:false,
+      Network_show1:false,
       timer:null,
-      timeText:''
+      timeText:'',
+      time:7200
       
     }
   },
   methods:{
+    Network_isShow(){
+      let _chiletWidth = document.documentElement.clientWidth 
+      if(_chiletWidth<750){
+        this.Network_show = true
+      }else{
+        this.Network_show1 = !this.Network_show1
+      }
+    },
+    
     copy(){
         let clipboard = new Clipboard('.order-con');
       clipboard.on('success', () => {
@@ -159,30 +180,38 @@ export default{
     },
     //设置网络
     SetNetwork(text){
-      this.Network_show=false
+      let _chiletWidth = document.documentElement.clientWidth 
+      if(_chiletWidth<750){
+        this.Network_show = false
+      }else{
+        this.Network_show1 = false
+      }
       this.Network = text
       let params = {
-        id:'5',
+        id:'15',
+        // id:this.$store.state.sellOrderId
         cryptoCurrencyNetworkId:text.id
       }
       this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
+        
         if(res && res.data){
           this.orderStateData = res.data
           this.$toast(res.returnMsg)
-          clearInterval(this.timer)
-          // setTimeout(()=>{
-          //   this.timer = setInterval(()=>{
-          //     this.getCurrencyStatus()
-          //     this.playMoneyState>=7?this.playMoneyState=0:this.playMoneyState++
-          //   },2000)
-          // },2000)
+          
         }
       })
+      clearInterval( this.timer)
+      setTimeout(()=>{
+            this.timer = setInterval(()=>{
+              this.getCurrencyStatus()
+              },1000)
+          },2000)
     },
     //获取网络列表
     getNetworkList(){
+      
       let params = {
-        coin:'USDT'
+        coin:this.$store.state.orderStatus.cryptoCurrency
       }
       this.$axios.get(this.$api.get_networkList,params).then(res=>{
         if(res && res.data){
@@ -191,25 +220,47 @@ export default{
         }
       })
     },
-    //获取打币状态
+    //获取买币状态
     getCurrencyStatus(){
       let parmas = {
-        id:'5'
+        id:'15'
+        // id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
-        // console.log(res.data);
         if(res && res.data){
           this.orderStateData = res.data
-          // this.playMoneyState = res.data.orderStatus
-          this.playMoneyState = 7
+          this.$store.state.orderStatus = res.data
+          this.playMoneyState = res.data.orderStatus
+          // this.playMoneyState = 
+          // res.data.expirationTime = -1
+          
+          if(this.playMoneyState==7){
+            clearInterval(this.timer)
+            return 
+          }
+          
+          if(res.data.expirationTime<=0 && this.playMoneyState!= 7){
+            this.playMoneyState = 7
+            clearInterval(this.timer)
+            return 
+          }
+          if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
+            this.turnMinute(res.data.expirationTime)
+          }else{
+            this.turnMinute = null
+            return false
+          }
          
         }
       })
     },
     //进入银行卡信息页
-    goBank(state){
+    goBank(state,orderData){
       if(state == 6){
-        alert(true)
+        // clearInterval(this.timer)
+        this.$store.state.sellForm = orderData
+        this.$store.state.cardInfoFromPath = '/order'
+        this.$router.push('/sell-formBankInfo',)
       }else{
         this.$toast('Cant modify')
       }
@@ -227,22 +278,28 @@ export default{
         second = second>9?second:"0"+second;
         minute = minute>9?minute:"0"+minute;
         this.timeText = minute+":"+second;
-        
-        this.timeValue = (value / 900) * 100;
         console.log(this.timeText);
-        // this.timeValue > 100 ? this.timeValue = 100 : '';
       }
     },
+    //Decrypt
+    AES(value){
+      if(value){
+        return AES_Decrypt(value)
+      }else{
+        return value 
+      }
+      
+    }
   },
   mounted(){
-    this.getNetworkList()
-    this.getCurrencyStatus()
-    this.turnMinute(7200000)
     
-    // this.timer = setInterval(()=>{
-    //   this.getCurrencyStatus()
-    //   this.playMoneyState>=7?this.playMoneyState=0:this.playMoneyState++
-    // },2000)
+    this.getCurrencyStatus()
+    this.timer = setInterval(()=>{
+      this.getCurrencyStatus()
+    },1000)
+    setTimeout(()=>{
+      this.getNetworkList()
+    },1000)
   },
   beforeDestroy(){
     clearInterval(this.timer)
@@ -273,7 +330,7 @@ export default{
     margin: .1rem 0 .1rem 0;
   }
   .order-state{
-    // padding: 0 .1rem 0;
+    padding: 0 .1rem 0;
     display: flex;
     justify-content: space-between;
     // align-items: center;
@@ -308,12 +365,16 @@ export default{
   }
   .order-state-content{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: .1rem;
     div{
+      width: 24%;
       font-family: Jost-Bold, Jost;
       font-size: .12rem;
       color: #999999;
+    }
+    div:last-child{
+      text-align: center;
     }
   }
   .order-content{
@@ -374,9 +435,12 @@ export default{
     width: 3rem;
     height: 3rem;
     background: #FFFFFF;
-    
-    padding: .5rem;
+    padding-top: .35rem;
     box-sizing: border-box;
+    .qrCodeUrl{
+      width: 2rem;
+      margin: 0 auto 0;
+    }
     p{
       font-size: .14rem;
       font-family:Jost-Bold, Jost ;
@@ -400,6 +464,28 @@ export default{
     position: absolute;
     left: 5%;
     bottom: .5rem;
+  }
+  .Network-title{
+    padding: .2rem 0 0 0;
+    font-family: Jost-Bold, Jost;
+    font-size: .16rem;
+    text-align: center;
+  }
+  .network-content{
+    width: 100%;
+    background: #F3F4F5;
+    border-radius: .1rem;
+    margin-top: .2rem;
+    div{
+      cursor: pointer;
+      padding: .2rem;
+      display: flex;
+      justify-content: space-between;
+      img{
+        width: .15rem;
+        height: .15rem;
+      }
+    }
   }
 }
 </style>
