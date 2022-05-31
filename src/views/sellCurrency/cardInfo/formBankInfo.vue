@@ -84,12 +84,13 @@ export default {
       //加密字段 浅拷贝数据避免影响原数据
       let params = JSON.parse(JSON.stringify(this.sellForm));
       params.cardNumber = AES_Encrypt(params.cardNumber);
+      params.fiatName = this.$store.state.routerParams.positionData.fiatCode;
       this.$axios.post(this.$api.post_saveCardInfo,params,'').then(res=>{
         if(res && res.returnCode === "0000"){
           //存储数据
           this.sellForm.cardNumber = AES_Encrypt(this.sellForm.cardNumber);
           this.$store.state.sellForm = this.sellForm;
-          if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'configSell'){
+          if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'sellOrder'){
             this.$router.replace(`/${this.$store.state.cardInfoFromPath}`);
             return;
           }
