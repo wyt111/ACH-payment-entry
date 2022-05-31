@@ -24,6 +24,9 @@ const store = new Vuex.Store({
         routerParams: {},
         feeParams: {},
         sellForm: {},
+        sellOrderId: '',
+        emailFromPath: '',
+        cardInfoFromPath: '',
     }
 })
 

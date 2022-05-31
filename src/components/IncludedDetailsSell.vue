@@ -2,7 +2,7 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="calculationProcess">
-      <div class="calculationProcess_line" v-if="timeDownState">
+      <div class="calculationProcess_line" v-if="timeDownState_child">
         <div class="line_name">Remaining time</div>
         <div class="line_number">
           <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
@@ -45,13 +45,15 @@ export default {
   name: "includedDetails",
   props: {
     timeDownState: {
-      type: Object,
+      type: Boolean,
       default: null
     },
   },
   data(){
     return{
       triggerType: "hover",
+
+      timeDownState_child: true,
 
       timeDown: 60,
       timeOut: null,
@@ -69,6 +71,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val){
+        this.timeDownState_child = (val !== null && val === false) ? false : true;
         if(val === false){
           clearInterval(this.timeOut);
         }

@@ -19,7 +19,7 @@
         <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.getAmount)))" placeholder="0.00" disabled="true">
         <div class="pay_company" @click="openSearch('payCurrency-sell')">
           <div class="countryIcon"><img :src="positionData.positionImg"></div>
-          <div>{{ payCommission.code }}</div>
+          <div>{{ payCommission.fiatCode }}</div>
           <img class="rightIcon" src="@/assets/images/rightIcon.png">
         </div>
       </div>
@@ -286,7 +286,7 @@ export default {
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.payCommission = data.fiatList[0];
+        this.payCommission = data;
         this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{
           if(item.name === "BTC"){
             this.currencyData = {
@@ -300,7 +300,8 @@ export default {
           }
         })
       }else{
-        this.payCommission = this.basicData.fiatCurrencyList.filter(item=>{return item.code === data.code})[0];
+        // this.payCommission = this.basicData.fiatCurrencyList.filter(item=>{return item.code === data.code})[0];
+        this.payCommission = data;
       }
       this.amountControl();
     },
@@ -316,20 +317,13 @@ export default {
         positionData: this.positionData
       }
       this.$store.state.routerParams = routerParams;
-      // Login information
-      if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
-        this.$store.state.emailFromPath = 'buyCrypto';
-        this.$router.push(`/emailCode?routerParams=${JSON.stringify(routerParams)}`);
-        return;
-      }
-
-      this.$router.push('/sell-formUserInfo')
-
       //获取用户卡信息
       let params = {
         country: this.positionData.alpha2,
         fiatName: this.positionData.fiatCode,
       };
+      // Login information
+      this.$store.state.emailFromPath = 'sellCrypto';
       this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
         //data - null 没有填写过表单,跳转到表单页
         //data - !null 有填写过表单,跳转到确认订单页

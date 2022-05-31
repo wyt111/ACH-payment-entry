@@ -72,6 +72,16 @@ export default {
       //   this.$router.go(-2);
       //   return;
       // }
+
+      //卖币
+      if(this.$route.path === '/configSell' && this.routerPath === '/sell-formBankInfo'){
+        this.$router.go(-2);
+        return;
+      }
+      if(this.$route.path === '/configSell' && this.routerPath === '/'){
+        this.$router.push('/');
+        return;
+      }
       this.$router.go(-1);
     },
     openMenu(){

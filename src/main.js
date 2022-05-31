@@ -14,9 +14,10 @@ rem_size();
 import Button from './components/Button.vue'
 Vue.component('Button', Button)
 
-import { Popover } from 'element-ui';
+import { Popover,InfiniteScroll } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Popover);
+Vue.use(InfiniteScroll);
 
 import Vant from 'vant';
 import 'vant/lib/index.css';

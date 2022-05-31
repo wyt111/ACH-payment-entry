@@ -74,7 +74,7 @@ export default {
   color: #FAFAFA;
   border: none;
   cursor: pointer;
-  margin-bottom: 0.15rem;
+  //margin-bottom: 0.15rem;
   margin-top: 0.15rem;
   i{
     font-size: 0.24rem;

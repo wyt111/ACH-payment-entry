@@ -118,7 +118,26 @@ export default {
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
-              _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
+              let emailFromPath;
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                emailFromPath = "receivingMode";
+              }else{
+                let params = {
+                  country: _this.$store.state.routerParams.positionData.alpha2,
+                  fiatName: _this.$store.state.routerParams.positionData.fiatCode,
+                };
+                _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
+                  //data - null 没有填写过表单,跳转到表单页
+                  //data - !null 有填写过表单,跳转到确认订单页
+                  if(res && res.returnCode === "0000" && res.data === null){
+                    _this.$router.push('/sell-formUserInfo')
+                  }else if(res && res.returnCode === "0000" && res.data !== null){
+                    _this.$store.state.sellForm = res.data;
+                    _this.$router.push('/configSell')
+                  }
+                })
+              }
+              _this.$router.push(`/${emailFromPath}?routerParams=${_this.$route.query.routerParams}`);
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
             _this.codeErrorState = true;
