@@ -102,7 +102,7 @@
 
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
-    <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="orderStateData"/>
+    <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="[0,1,].includes(playMoneyState)?true:false"/>
     <van-popup v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
@@ -129,7 +129,7 @@ export default{
     return {
       playMoneyState:0,
       show:false,
-      orderStateData:'',
+      orderStateData:{},
       Network:'',
       Network_data:[],
       Network_show:false,
@@ -222,7 +222,7 @@ export default{
     },
     //获取买币状态
     getCurrencyStatus(){
-      console.log(this.$store.state.sellOrderId);
+      // console.log(this.$store.state.sellOrderId);
       let parmas = {
         // id:'15'
         id:this.$store.state.sellOrderId
@@ -292,8 +292,8 @@ export default{
       
     }
   },
-  mounted(){
-    
+
+  activated (){
     this.getCurrencyStatus()
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
@@ -302,7 +302,7 @@ export default{
       this.getNetworkList()
     },1000)
   },
-  beforeDestroy(){
+  deactivated (){
     clearInterval(this.timer)
   }
 }
