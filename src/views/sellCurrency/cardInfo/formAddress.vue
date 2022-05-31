@@ -1,41 +1,47 @@
 <template>
   <div id="formAddress">
-    <div class="content">
-      <div class="agreementView">
-        <div><input type="checkbox" v-model="agreement"></div>
-        <div>Use the address l have</div>
+    <Search v-show="searchViewState" viewName="country-sellForm" :allBasicData="allBasicData" routerFrom="payForm"/>
+    <div class="formAddress-view" v-show="!searchViewState">
+      <div class="content">
+        <div class="agreementView">
+          <div><input type="checkbox" v-model="agreement"></div>
+          <div>Use the address l have</div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">Country</div>
+          <div class="formContent" @click="openSearch"><input type="text" v-model="countryName" disabled="true"></div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">Address</div>
+          <div class="formContent"><input type="text" v-model="sellForm.address"></div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">City</div>
+          <div class="formContent"><input type="text" v-model="sellForm.city"></div>
+        </div>
+        <div class="formLine">
+          <div class="formTitle">State</div>
+          <div class="formContent"><input type="text" v-model="sellForm.state" @input="sellForm.state = sellForm.state.replace(/[^\x00-\xff]/g, '')"></div>
+        </div>
       </div>
-      <div class="formLine">
-        <div class="formTitle">Country</div>
-        <div class="formContent"><input type="text" v-model="sellForm.country"></div>
-      </div>
-      <div class="formLine">
-        <div class="formTitle">Address</div>
-        <div class="formContent"><input type="text" v-model="sellForm.address"></div>
-      </div>
-      <div class="formLine">
-        <div class="formTitle">City</div>
-        <div class="formContent"><input type="text" v-model="sellForm.city"></div>
-      </div>
-      <div class="formLine">
-        <div class="formTitle">State</div>
-        <div class="formContent"><input type="text" v-model="sellForm.state"></div>
-      </div>
+      <button class="continue" :disabled="buttonState" @click="next">Continue</button>
     </div>
-    <button class="continue" :disabled="buttonState" @click="next">Continue</button>
   </div>
 </template>
 
 <script>
+import Search from '../../../components/search';
+
 export default {
   name: "formAddress",
+  components: { Search },
   data(){
     return{
-      params: {
-        firstname: "",
-        lastname: "",
-      },
+      searchViewState: false,
+      allBasicData: {},
+
       agreement: false,
+      countryName: "",
       sellForm: {
         country: "",
         city: "",
@@ -47,8 +53,6 @@ export default {
   },
   computed: {
     buttonState(){
-      console.log(this.sellForm.country === ''||this.sellForm.address === ''||
-          this.sellForm.city === '' || this.sellForm.state === '')
       if(this.sellForm.country === ''||this.sellForm.address === ''||
       this.sellForm.city === '' || this.sellForm.state === ''){
         return true;
@@ -58,21 +62,31 @@ export default {
     }
   },
   activated(){
+    this.allBasicData = JSON.parse(localStorage.getItem("allBasicData"));
     if(this.$store.state.sellForm){
       this.sellForm = {...this.$store.state.sellForm,...this.sellForm};
     }
   },
   methods: {
+    openSearch(){
+      this.searchViewState = true;
+      this.$parent.$refs.viewTab.tabState = false;
+    },
     next(){
       this.$store.state.sellForm = this.sellForm;
-      this.$router.push(`/sell-formBankInfo?goPath=${this.$route.query.goPath}`);
+      this.$store.state.cardInfoFromPath = "configSell";
+      this.$router.push('/sell-formBankInfo');
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#formAddress{
+#formAddress,.formAddress-view{
+  width: 100%;
+  height: 100%;
+}
+.formAddress-view{
   display: flex;
   flex-direction: column;
   .content{

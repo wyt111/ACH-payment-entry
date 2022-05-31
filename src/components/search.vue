@@ -7,13 +7,13 @@
         <div class="icon"><img src="../assets/images/closeIcon.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'"> <!--  && viewName !== 'payCurrency' -->
-        <input type="text" placeholder="Search here…" v-model="searchText">
+        <input type="text" placeholder="Search here…" v-model="searchText" @input="searchBankData">
         <div class="searchIcon"><img src="../assets/images/searchIcon.svg"></div>
       </div>
     </div>
     <div class="search_core">
       <!-- country content -->
-      <ul v-if="viewName === 'country'">
+      <ul v-if="viewName === 'country' || viewName === 'country-sellForm'">
         <li v-for="(item,index) in searchText==='' ? countryList : searchData" :key="index" @click="choiseItem('country',item)">
           <p class="seach_li_img"><img :src="item.flag"></p>
           <p class="seach_li_text">{{ item.enCommonName }}</p>
@@ -88,12 +88,20 @@
       </ul>
 
       <!-- bank -->
-      <ul v-else-if="viewName === 'bank'">
-        <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('bank',item)">
+<!--      <ul v-else-if="viewName === 'bank'">-->
+<!--        <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('bank',item)">-->
+<!--          <p class="seach_li_text currencyCopywriting">{{ item.bank }}</p>-->
+<!--          <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>-->
+<!--        </li>-->
+<!--      </ul>-->
+
+      <ul class="infinite-list" v-infinite-scroll="bankListload" infinite-scroll-delay="300" :infinite-scroll-distance="300" style="overflow:auto" v-else-if="viewName === 'bank'">
+        <li v-for="(item,index) in basicData" :key="index" class="infinite-list-item" @click="choiseItem('bank',item)">
           <p class="seach_li_text currencyCopywriting">{{ item.bank }}</p>
           <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
         </li>
       </ul>
+
     </div>
   </div>
 </template>
@@ -120,13 +128,21 @@ export default {
       popularList: [],
       //Support digital currency list
       cryptoCurrencyVOList: [],
+
+      //银行列表请求参数
+      bankListloadState: true,
+      bankQuery: {
+        bank: "",
+        pageIndex: 1,
+        pageSize: 20,
+      },
     }
   },
   computed: {
     //Fuzzy search
     searchData(){
       //country - card form
-      if(this.searchText && this.viewName === 'country') {
+      if(this.searchText && (this.viewName === 'country' || this.viewName === 'country-sellForm')) {
         let resultArray_country1 = [],resultArray_country2 = [],resultArray_country3 = [],resultArray_country4 = [],all_resultArray_country = [];
         resultArray_country1 = this.countryList.filter((value) => {
           return value.enCommonName.includes(this.searchText)
@@ -210,28 +226,28 @@ export default {
         return all_resultArray;
       }
       //搜索银行
-      if(this.searchText && this.viewName === 'bank'){
-        let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
-        //Match full name
-        resultArray1 = this.basicData.filter((value) => {
-          return value.bank.includes(this.searchText)
-        })
-        //Match full name - Initial to capital
-        resultArray2 = this.basicData.filter((value) => {
-          // let text =
-          return value.bank.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
-        })
-        //Matching abbreviations - Capitalize
-        resultArray3 = this.basicData.filter((value) => {
-          return value.bank.includes(this.searchText.toUpperCase())
-        })
-        resultArray4 = this.basicData.filter((value) => {
-          return value.bank.includes(this.searchText.toLowerCase())
-        })
-        all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
-        all_resultArray = [...new Set(all_resultArray)];
-        return all_resultArray;
-      }
+      // if(this.searchText && this.viewName === 'bank'){
+      //   let resultArray1 = [],resultArray2 = [],resultArray3 = [],resultArray4 = [],all_resultArray = [];
+      //   //Match full name
+      //   resultArray1 = this.basicData.filter((value) => {
+      //     return value.bank.includes(this.searchText)
+      //   })
+      //   //Match full name - Initial to capital
+      //   resultArray2 = this.basicData.filter((value) => {
+      //     // let text =
+      //     return value.bank.includes(this.searchText.replace(/^\S/, s => s['toUpperCase']()))
+      //   })
+      //   //Matching abbreviations - Capitalize
+      //   resultArray3 = this.basicData.filter((value) => {
+      //     return value.bank.includes(this.searchText.toUpperCase())
+      //   })
+      //   resultArray4 = this.basicData.filter((value) => {
+      //     return value.bank.includes(this.searchText.toLowerCase())
+      //   })
+      //   all_resultArray = all_resultArray.concat(resultArray1).concat(resultArray2).concat(resultArray3).concat(resultArray4);
+      //   all_resultArray = [...new Set(all_resultArray)];
+      //   return all_resultArray;
+      // }
     }
   },
   watch: {
@@ -249,7 +265,7 @@ export default {
   methods: {
     //Judge title name
     customComponentTitle(){
-      if(this.viewName === 'country'){
+      if(this.viewName === 'country' || this.viewName === 'country-sellForm'){
         this.viewTitle = 'Select Country';
         return;
       }
@@ -273,7 +289,7 @@ export default {
 
     //Get and call component path, processing data
     initializationData(){
-      if(this.viewName === 'country') {
+      if(this.viewName === 'country' || this.viewName === 'country-sellForm') {
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
           this.countryList = this.basicData.worldList;
@@ -332,18 +348,13 @@ export default {
         return;
       }
       if(this.viewName === 'bank'){
-        this.basicData = this.allBasicData;
+        this.basicData = this.allBasicData.result;
       }
-    },
-
-    //银行列表、搜索
-    queryBankList(){
-
     },
 
     //close component
     closeView(){
-      if(( this.viewName === 'country'|| this.viewName === 'bank' )&& this.routerFrom !== 'home'){
+      if(( this.viewName === 'country' || this.viewName === 'bank' || this.viewName === 'country-sellForm')&& this.routerFrom !== 'home'){
         this.$parent.$parent.$refs.viewTab.tabState = true;
         this.$parent.searchViewState = false;
         return;
@@ -359,6 +370,34 @@ export default {
       }
     },
 
+    //银行列表、搜索
+    searchBankData(){
+      if(this.viewName === "bank"){
+        this.bankQuery.bank = this.searchText;
+        this.bankQuery.pageIndex = 1;
+        this.basicData = [];
+        this.requestBank();
+      }
+    },
+    bankListload(){
+      if(this.bankListloadState === true && this.bankQuery.bank === ''){
+        this.bankQuery.pageIndex += 1;
+        this.requestBank();
+      }
+    },
+    requestBank(){
+      this.$axios.get(this.$api.get_bank,this.bankQuery).then(res=> {
+        if (res && res.returnCode === "0000") {
+          if(this.bankQuery.pageIndex * this.bankQuery.pageSize > res.total){
+            this.bankListloadState = false;
+          }else{
+            this.bankListloadState = true;
+            this.basicData = this.basicData.concat(res.data.result);
+          }
+        }
+      })
+    },
+
     //Select data
     choiseItem(type,item){
       setTimeout(()=>{
@@ -371,8 +410,13 @@ export default {
           return;
         }
         if(type === 'country' && this.routerFrom !== 'home'){
-          this.$parent.params.country = item.alpha2;
-          this.$parent.countryAbbreviation = item.enCommonName;
+          if(this.viewName === 'country-sellForm'){ //卖币表单选择国家
+            this.$parent.sellForm.country = item.alpha2;
+            this.$parent.countryName = item.enCommonName;
+          }else { //买币表单选择国家
+            this.$parent.params.country = item.alpha2;
+            this.$parent.countryAbbreviation = item.enCommonName;
+          }
           this.$parent.$parent.$refs.viewTab.tabState = true;
           this.$parent.searchViewState = false;
           return;
@@ -422,7 +466,8 @@ export default {
           return;
         }
         if(type === 'bank'){
-          this.$parent.bankInfo.bankName = item.bank;
+          this.$parent.sellForm.bank = item.bank;
+          // this.$parent.sellForm.swiftCode = item.swiftCode;
           this.$parent.sellForm.worldBankId = item.id;
           this.$parent.$parent.$refs.viewTab.tabState = true;
           this.$parent.searchViewState = false;
@@ -452,6 +497,7 @@ export default {
       margin-top: 0.1rem;
     }
     ul{
+      height: 100%;
       li{
         display: flex;
         align-items: center;

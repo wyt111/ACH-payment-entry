@@ -8,20 +8,20 @@
       <div class="formLine formLine_flex">
         <div class="formLine_flex_child">
           <div class="formTitle">First Name</div>
-          <div class="formContent"><input type="text" v-model="sellForm.firstname" maxlength="50"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.firstname" maxlength="50" @input="sellForm.firstname = sellForm.firstname.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine_flex_child">
           <div class="formTitle">Last Name</div>
-          <div class="formContent"><input type="text" v-model="sellForm.lastname" maxlength="50"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.lastname" maxlength="50" @input="sellForm.lastname = sellForm.lastname.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
       </div>
       <div class="formLine">
         <div class="formTitle">Phone</div>
-        <div class="formContent"><input type="email" v-model="sellForm.phone"></div>
+        <div class="formContent"><input type="email" v-model="sellForm.phone" @input="sellForm.phone = sellForm.phone.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">Email</div>
-        <div class="formContent"><input type="email" v-model="sellForm.email"></div>
+        <div class="formContent"><input type="email" v-model="sellForm.email" @input="sellForm.email = sellForm.email.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
       <div class="formLine">
         <div class="formTitle">Idtype</div>
@@ -32,7 +32,7 @@
       </div>
       <div class="formLine">
         <div class="formTitle">Idnumber</div>
-        <div class="formContent"><input type="email" v-model="sellForm.idNumber"></div>
+        <div class="formContent"><input type="email" v-model="sellForm.idNumber" @input="sellForm.idNumber = sellForm.idNumber.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
     </div>
     <button class="continue" :disabled="buttonState" @click="next">Continue</button>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import {AES_Encrypt} from "../../../utils/encryp";
+
 export default {
   name: "formUserInfo",
   data(){
@@ -71,15 +73,16 @@ export default {
       }
     }
   },
-  activated(){
-    if(this.$store.state.sellForm){
-      this.sellForm = {...this.$store.state.sellForm,...this.sellForm};
-    }
-  },
   methods: {
     next(){
+      //需要加密字段
+      this.sellForm.firstname = AES_Encrypt(this.sellForm.firstname);
+      this.sellForm.lastname = AES_Encrypt(this.sellForm.lastname);
+      this.sellForm.phone = AES_Encrypt(this.sellForm.phone);
+      this.sellForm.email = AES_Encrypt(this.sellForm.email);
+      this.sellForm.idNumber = AES_Encrypt(this.sellForm.idNumber);
       this.$store.state.sellForm = this.sellForm;
-      this.$router.push(`/sell-formAddress?goPath=${this.$route.query.goPath}`);
+      this.$router.push('/sell-formAddress');
     }
   }
 }

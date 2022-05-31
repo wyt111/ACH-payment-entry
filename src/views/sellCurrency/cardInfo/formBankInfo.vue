@@ -5,15 +5,15 @@
       <div class="content">
         <div class="formLine">
           <div class="formTitle">Bank</div>
-          <div class="formContent" @click="openSearch"><input type="tel" v-model="bankInfo.bankName" disabled="true"></div>
+          <div class="formContent" @click="openSearch"><input type="tel" v-model="sellForm.bank" disabled="true"></div>
         </div>
         <div class="formLine">
           <div class="formTitle">Swit Code</div>
-          <div class="formContent"><input type="tel" v-model="bankInfo.bankCode"></div>
+          <div class="formContent"><input type="tel" v-model="sellForm.swiftCode" @input="sellForm.swiftCode = sellForm.swiftCode.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine">
           <div class="formTitle">Account No</div>
-          <div class="formContent"><input type="tel" v-model="sellForm.cardNumber"></div>
+          <div class="formContent"><input type="tel" v-model="sellForm.cardNumber" @input="sellForm.cardNumber = sellForm.cardNumber.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
       </div>
       <button class="continue" :disabled="buttonState" @click="next">Continue</button>
@@ -23,21 +23,19 @@
 
 <script>
 import Search from "../../../components/search";
-import { AES_Encrypt } from '../../../utils/encryp';
+import {AES_Decrypt, AES_Encrypt} from '../../../utils/encryp';
 
 export default {
   name: "formBankInfo",
   components: { Search },
   data(){
     return{
-      bankInfo: {
-        bankName: "",
-        bankCode: "",
-      },
       agreement: false,
       sellForm: {
         cardNumber: "",  //  传值需要加密处理
         worldBankId: "", // 选择银行id
+        bank: "",
+        swiftCode: "",
         userCardId: "90", // //修改信用卡信息需要带上userCardId
         source: "1", // 来源 1=卖币添加 0=买币添加
       },
@@ -48,7 +46,7 @@ export default {
   },
   computed: {
     buttonState(){
-      if(this.bankInfo.bankName !== '' && this.bankInfo.bankCode !== '' && this.sellForm.cardNumber !== ''){
+      if(this.sellForm.bank !== '' && this.sellForm.swiftCode !== '' && this.sellForm.cardNumber !== ''){
         return false;
       }else{
         return true;
@@ -56,6 +54,18 @@ export default {
     }
   },
   activated(){
+    //合并解密参数
+    if(this.$store.state.sellForm){
+      let oldSellForm = {...this.sellForm,...this.$store.state.sellForm};
+      oldSellForm.cardNumber = AES_Decrypt(oldSellForm.cardNumber);
+      //清除所有null数据
+      Object.keys(oldSellForm).forEach(item => {
+        if (!oldSellForm[item] && oldSellForm[item] != 0) {
+          delete oldSellForm[item]
+        }
+      })
+      this.sellForm = oldSellForm;
+    }
     this.queryBank();
   },
   methods: {
@@ -71,23 +81,19 @@ export default {
       })
     },
     next(){
-      //合并参数
-      if(this.$store.state.sellForm){
-        this.sellForm = {...this.sellForm,...this.$store.state.sellForm};
-      }
-      //加密参数
-      this.sellForm.firstname = AES_Encrypt(this.sellForm.firstname);
-      this.sellForm.lastname = AES_Encrypt(this.sellForm.lastname);
-      this.sellForm.cardNumber = AES_Encrypt(this.sellForm.cardNumber);
-      this.sellForm.phone = AES_Encrypt(this.sellForm.phone);
-      this.sellForm.email = AES_Encrypt(this.sellForm.email);
-      this.sellForm.idNumber = AES_Encrypt(this.sellForm.idNumber);
-      //存储数据
-      this.$store.state.sellForm = this.sellForm;
-      this.$store.state.bankInfo = this.bankInfo;
-      this.$axios.post(this.$api.post_saveCardInfo,this.sellForm,'').then(res=>{
+      //加密字段 浅拷贝数据避免影响原数据
+      let params = JSON.parse(JSON.stringify(this.sellForm));
+      params.cardNumber = AES_Encrypt(params.cardNumber);
+      this.$axios.post(this.$api.post_saveCardInfo,params,'').then(res=>{
         if(res && res.returnCode === "0000"){
-          this.$router.push(`/${this.$route.query.goPath}`);
+          //存储数据
+          this.sellForm.cardNumber = AES_Encrypt(this.sellForm.cardNumber);
+          this.$store.state.sellForm = this.sellForm;
+          if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'configSell'){
+            this.$router.replace(`/${this.$store.state.cardInfoFromPath}`);
+            return;
+          }
+          this.$router.push(`/${this.$store.state.cardInfoFromPath}`);
         }
       })
     }
