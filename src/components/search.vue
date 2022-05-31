@@ -448,7 +448,8 @@ export default {
           this.$parent.$refs.sellCrypto_ref.currencyData.name = item.name;
           this.$parent.$refs.sellCrypto_ref.currencyData.maxSell = item.maxSell;
           this.$parent.$refs.sellCrypto_ref.currencyData.minSell = item.minSell;
-          this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.cryptoCurrencyNetworkId;
+          this.$parent.$refs.sellCrypto_ref.currencyData.cryptoCurrencyNetworkId = item.cryptoCurrencyNetworkId;
+          this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.symbol;
           this.$store.state.feeParams.symbol = item.symbol;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
