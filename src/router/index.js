@@ -31,16 +31,6 @@ export const constantRoutes = [
     }
   },
   {
-    path: "/order",
-    name: "order",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/orderState/index.vue"),
-    meta: {requireAuth: true}
-  },
-  {
     path: "/tradeHistory",
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
@@ -171,6 +161,16 @@ export const constantRoutes = [
       requireAuth: true,
       title: 'Confirm'
     }
+  },
+  {
+    path: "/sellOrder",
+    name: "order",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/orderState/index.vue"),
+    meta: {requireAuth: true}
   },
 ]
 
