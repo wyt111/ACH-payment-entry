@@ -87,7 +87,7 @@ export default {
         this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{
           this.buttonData.triggerNum = 0;
           if(res && res.returnCode === "0000"){
-            this.$store.state.sellOrderId = res.data.orderId;
+            this.$store.state.sellOrderId = res.data.id;
             this.$router.push("/sellOrder");
           }
         })
