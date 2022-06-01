@@ -48,10 +48,12 @@ export default {
         this.$router.push('/')
         return;
       }
-      if(this.$route.path === '/paymentResult'){
+      //add sellOrder page back home
+      if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder'){
         this.$router.push('/');
         return;
       }
+      
       if(this.routerPath === '/emailCode' && this.$route.path === '/receivingMode'){
         this.$router.go(-2);
         return;

@@ -2,7 +2,7 @@
   <div class="order-container">
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer ACH to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount-orderStateData.fee }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount-orderStateData.fee?orderStateData.fee.toFixed(6):0 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>请点击您的卡信息进行修改</span></div>
     <div class="timing" v-if="playMoneyState===7">If you still want to sell crypto,Return to home page</div>
     <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
@@ -48,25 +48,25 @@
         <div></div>
       </div>
       <div class="state">
-        <div v-if="[0,1,2,3,7].includes(playMoneyState)">4</div>
-        <div :class="playMoneyState===5?'stateSuccessful':''" v-if="[4,5].includes(playMoneyState)"><img src="../../assets/images/icon3.png" alt=""></div>
+        <div v-if="[0,1,2,3,4,7].includes(playMoneyState)">4</div>
+        <div :class="playMoneyState===5?'stateSuccessful':''" v-if="[5].includes(playMoneyState)"><img src="../../assets/images/icon3.png" alt=""></div>
         <div :class="[6].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===6"><img src="../../assets/images/errorIcon.png" alt=""></div>
       </div>
     </div>
     <div class="order-state-content">
-      <div :style="{color:[0,1].includes(playMoneyState)?'':'#000'}">Pay Coins</div>
+      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Pay Coins</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{ playMoneyState===6?'Fail':'Payment Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',margin:playMoneyState==6?'0 .1rem 0 .1rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
-        <div class="order-con order-conId" @click="copy" :data-clipboard-text="orderStateData.orderId">
+        <div class="order-con order-conId" style="cursor: pointer;" @click="copy" :data-clipboard-text="orderStateData.orderId">
           <p>{{ orderStateData.orderId }}</p>
           <img src="../../assets/images/copy.png" alt="">
         </div>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Network</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
+        <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
           <p>{{ Network.networkName }}</p>
           <img src="../../assets/images/rightIcon.png" alt="">
         </div>
@@ -77,7 +77,7 @@
           </div>
         </div>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Address</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)"  @click="copy" :data-clipboard-text="orderStateData.address">
+        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="orderStateData.address">
           <p>{{ orderStateData.address }}</p>
           <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
             <img style="margin-right:.2rem" @click.stop="qrCode" src="../../assets/images/Qrcode.png" alt="">
@@ -102,7 +102,7 @@
 
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
-    <IncludedDetailsSell v-if="playMoneyState!==7" :time-down-state="[0,1,].includes(playMoneyState)?true:false"/>
+    <IncludedDetailsSell style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,].includes(playMoneyState)?true:false"/>
     <van-popup v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
@@ -136,7 +136,6 @@ export default{
       Network_show1:false,
       timer:null,
       timeText:'',
-      time:7200
       
     }
   },
@@ -186,7 +185,7 @@ export default{
       }else{
         this.Network_show1 = false
       }
-      this.Network = text
+      
       let params = {
         // id:'15',
         id:this.$store.state.sellOrderId,
@@ -197,8 +196,10 @@ export default{
         if(res && res.data){
           this.orderStateData = res.data
           this.$toast(res.returnMsg)
-          
+          this.Network = text
+          return
         }
+        this.$toast('error')
       })
       clearInterval( this.timer)
       setTimeout(()=>{
@@ -232,7 +233,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 
+          // this.playMoneyState = 7
           // res.data.expirationTime = -1
           
           if(this.playMoneyState==7){
@@ -304,6 +305,7 @@ export default{
   },
   deactivated (){
     clearInterval(this.timer)
+    // this.$store.state = {}
   }
 }
 
@@ -311,6 +313,7 @@ export default{
 <style lang="scss" scoped>
 .order-container{
   // padding: 0 .2rem 0;
+  
   .timing{
     font-size: .16rem;
     font-family: Jost-Bold, Jost;
@@ -344,8 +347,12 @@ export default{
         border-radius: 50%;
         background: #EAEAEA;
         color: #ffffff;
-        text-align: center;
-        line-height: .4rem;
+        // text-align: center;
+        // line-height: .4rem;
+        // padding-top: .09rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       
     }
@@ -369,7 +376,7 @@ export default{
     justify-content: space-around;
     margin-top: .1rem;
     div{
-      width: 24%;
+      // width: 24%;
       font-family: Jost-Bold, Jost;
       font-size: .12rem;
       color: #999999;
@@ -465,6 +472,7 @@ export default{
     position: absolute;
     left: 5%;
     bottom: .5rem;
+    cursor: pointer;
   }
   .Network-title{
     padding: .2rem 0 0 0;
@@ -487,6 +495,10 @@ export default{
         height: .15rem;
       }
     }
+  }
+  .payCions{
+    position: absolute;
+    left: .2rem;
   }
 }
 </style>
