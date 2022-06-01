@@ -53,7 +53,7 @@
         <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
         <div class="calculationProcess_line">
           <div class="line_name">Total</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ payAmount }}</div>
+          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ getAmount }}</div>
         </div>
       </div>
     </div>
@@ -300,7 +300,6 @@ export default {
           }
         })
       }else{
-        // this.payCommission = this.basicData.fiatCurrencyList.filter(item=>{return item.code === data.code})[0];
         this.payCommission = data;
       }
       this.amountControl();
@@ -378,9 +377,6 @@ html,body,#buyCrypto{
   position: relative;
 }
 
-.pay_title{
-  //margin-top: 0.4rem;
-}
 .pay_input{
   width: 100%;
   height: 100%;
@@ -493,7 +489,7 @@ html,body,#buyCrypto{
 }
 
 .calculationProcess{
-  padding: 0 0.2rem;
+  padding: 0.4rem 0.2rem 0 0.2rem;
   .calculationProcess_line{
     display: flex;
     align-items: center;
