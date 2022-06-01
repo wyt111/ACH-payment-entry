@@ -29,7 +29,7 @@
       <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
       <div class="calculationProcess_line">
         <div class="line_name">Total</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ routerParams.amount }}</div>
+        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ routerParams.getAmount }}</div>
       </div>
     </div>
   </div>
@@ -106,7 +106,8 @@ export default {
     queryFee(){
       this.$axios.get(this.$api.get_inquiryFeeSell,this.feeParams).then(res=>{
         if(res && res.returnCode === "0000"){
-          this.feeInfo = res.data
+          this.feeInfo = res.data;
+          this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
         }
       })
     },
@@ -128,7 +129,7 @@ export default {
 <style lang="scss" scoped>
 .paymentInformation{
   border-top: 1px solid #F3F4F5;
-  padding: 0.2rem 0.2rem 0 0.1rem;
+  padding: 0.2rem 0 0 0;
   .calculationProcess{
     padding: 0 0.2rem;
     .calculationProcess_line{

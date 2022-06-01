@@ -20,7 +20,7 @@
 <script>
 import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
 import Button from '../../../components/Button';
-import { AES_Encrypt,AES_Decrypt } from "../../../utils/encryp";
+import { AES_Decrypt } from "../../../utils/encryp";
 
 export default {
   name: "index",

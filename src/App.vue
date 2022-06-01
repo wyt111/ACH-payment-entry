@@ -17,7 +17,7 @@
         <div><img src="./assets/images/pcLogo.png"></div>
       </div>
       <!-- 版本号 -->
-<!--      <span class="version">V: {{ version }}</span>-->
+      <span class="version">V: {{ version }}</span>
     </div>
   </div>
 </template>
