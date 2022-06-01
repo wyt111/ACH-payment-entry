@@ -212,7 +212,7 @@ export default{
     getNetworkList(){
       
       let params = {
-        coin:this.$store.state.orderStatus.cryptoCurrency
+        coin:this.$store.state.orderStatus
       }
       this.$axios.get(this.$api.get_networkList,params).then(res=>{
         if(res && res.data){
@@ -231,18 +231,20 @@ export default{
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
-          this.$store.state.orderStatus = res.data
+          this.$store.state.orderStatus = res.data.cryptoCurrency
           this.playMoneyState = res.data.orderStatus
           // this.playMoneyState = 7
           // res.data.expirationTime = -1
           
           if(this.playMoneyState==7){
             clearInterval(this.timer)
+            this.$store.replaceState({})
             return 
           }
           
-          if(res.data.expirationTime<=0 && this.playMoneyState!= 7){
+          if(res.data.expirationTime<=0 ||(res.data.expirationTime<=0 && this.playMoneyState!= 7)){
             this.playMoneyState = 7
+            this.$store.replaceState({})
             clearInterval(this.timer)
             return 
           }
@@ -305,14 +307,15 @@ export default{
   },
   deactivated (){
     clearInterval(this.timer)
-    // this.$store.state = {}
+    // this.$store.replaceState({})
   }
 }
 
 </script>
 <style lang="scss" scoped>
 .order-container{
-  // padding: 0 .2rem 0;
+  // padding: 0 .2rem .3rem;
+  padding-bottom: .2rem;
   
   .timing{
     font-size: .16rem;
