@@ -69,12 +69,12 @@
       <!-- 买币 currency -->
       <ul v-else-if="viewName === 'currency-sell'">
         <div v-if="searchText===''">
-          <div class="screen_title">Popular</div>
+          <!-- <div class="screen_title">Popular</div>
           <li v-for="(item,index) in popularList" :key="index" @click="choiseItem('currency-sell',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
-          </li>
+          </li> -->
           <div class="screen_title">All</div>
           <li v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency-sell',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>

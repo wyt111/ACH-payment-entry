@@ -189,7 +189,9 @@ export default{
         // this.$toast('error')
         return false
       }
-      
+      if(this.$store.state.orderStatus.payStatus==3){
+        return false
+      }
       let params = {
         // id:'15',
         id:this.$store.state.sellOrderId,
@@ -213,9 +215,9 @@ export default{
     },
     //获取网络列表
     getNetworkList(){
-      
+      // console.log(this.$store.state.orderStatus);
       let params = {
-        coin:this.$store.state.orderStatus
+        coin:this.$store.state.orderStatus.cryptoCurrency
       }
       this.$axios.get(this.$api.get_networkList,params).then(res=>{
         if(res && res.data){
@@ -234,9 +236,9 @@ export default{
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
-          this.$store.state.orderStatus = res.data.cryptoCurrency
+          this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 7
+          // this.playMoneyState = 3
           
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
