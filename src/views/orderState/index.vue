@@ -233,7 +233,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data.cryptoCurrency
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 7
+          // this.playMoneyState = 6
           // res.data.expirationTime = -1
           
           if(this.playMoneyState==7){
@@ -261,10 +261,17 @@ export default{
     //进入银行卡信息页
     goBank(state,orderData){
       if(state == 6){
-        // clearInterval(this.timer)
-        this.$store.state.sellForm = orderData
-        this.$store.state.cardInfoFromPath = '/order'
-        this.$router.push('/sell-formBankInfo',)
+        let params = {
+          id:orderData.userCardId,
+        }
+        this.$axios.get(this.$api.get_userCard,params).then(res=>{
+          if(res && res.returnCode =='0000'){
+            this.$store.state.sellForm = res.data
+            this.$store.state.cardInfoFromPath = '/sellOrder'
+            this.$router.push('/sell-formBankInfo')
+          }
+        })
+        
       }else{
         this.$toast('Cant modify')
       }
@@ -313,12 +320,13 @@ export default{
 
 </script>
 <style lang="scss" scoped>
+
 .order-container{
   // padding: 0 .2rem .3rem;
   padding-bottom: .2rem;
   
   .timing{
-    font-size: .16rem;
+    font-size: .15rem;
     font-family: Jost-Bold, Jost;
     font-weight: 500;
     color: #232323;
