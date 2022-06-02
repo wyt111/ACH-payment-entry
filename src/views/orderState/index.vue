@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer ACH to the address within <span>{{ timeText }}</span></div>
+    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer {{orderStateData.cryptoCurrency}} to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount-orderStateData.fee?orderStateData.fee.toFixed(6):0 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>请点击您的卡信息进行修改</span></div>
@@ -111,7 +111,7 @@
     </van-popup>
     <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }" >
         <div class="Network-title">Network</div>
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">{{ item.networkName }}</div>
+        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img src="../../assets/images/rightIcon.png" alt=""></div>
     </van-popup>
   </div>
 </template>
@@ -185,6 +185,10 @@ export default{
       }else{
         this.Network_show1 = false
       }
+      if(this.Network.id === text.id){
+        this.$toast('error')
+        return false
+      }
       
       let params = {
         // id:'15',
@@ -192,7 +196,6 @@ export default{
         cryptoCurrencyNetworkId:text.id
       }
       this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
-        
         if(res && res.data){
           this.orderStateData = res.data
           this.$toast(res.returnMsg)
@@ -233,7 +236,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data.cryptoCurrency
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 7
+          // this.playMoneyState = 0
           // res.data.expirationTime = -1
           
           if(this.playMoneyState==7){
@@ -261,10 +264,18 @@ export default{
     //进入银行卡信息页
     goBank(state,orderData){
       if(state == 6){
-        // clearInterval(this.timer)
-        this.$store.state.sellForm = orderData
-        this.$store.state.cardInfoFromPath = '/order'
-        this.$router.push('/sell-formBankInfo',)
+        let params = {
+          id:orderData.userCardId,
+        }
+        this.$axios.get(this.$api.get_userCard,params).then(res=>{
+          if(res && res.returnCode =='0000'){
+            this.$store.state.sellForm = res.data
+            this.$store.state.sellForm.sellOrderId = orderData.id
+            this.$store.state.cardInfoFromPath = 'sellOrder'
+            this.$router.push('/sell-formBankInfo')
+          }
+        })
+        
       }else{
         this.$toast('Cant modify')
       }
@@ -285,7 +296,7 @@ export default{
         // console.log(this.timeText);
       }
     },
-    //Decrypt
+    //解密了一些数据
     AES(value){
       if(value){
         return AES_Decrypt(value)
@@ -313,12 +324,13 @@ export default{
 
 </script>
 <style lang="scss" scoped>
+
 .order-container{
   // padding: 0 .2rem .3rem;
   padding-bottom: .2rem;
   
   .timing{
-    font-size: .16rem;
+    font-size: .15rem;
     font-family: Jost-Bold, Jost;
     font-weight: 500;
     color: #232323;
@@ -429,9 +441,9 @@ export default{
       background:#02AF38 !important;
     }
   }
-  .Network-content:first-child{
-    margin-top: .1rem;
-  }
+  // .Network-content:first-child{
+  //   margin-top: .1rem;
+  // }
   .Network-content{
     // height: .4rem;
     width: 90%;
@@ -441,6 +453,12 @@ export default{
     font-family:Jost-Bold, Jost ;
     border-bottom: 1px solid #EAEAEA;
     margin: .1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+      height: .18rem;
+    }
   }
   .qrcode{
     width: 3rem;
