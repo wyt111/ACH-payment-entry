@@ -3,10 +3,10 @@
     <Search v-show="searchViewState" viewName="country-sellForm" :allBasicData="allBasicData" routerFrom="payForm"/>
     <div class="formAddress-view" v-show="!searchViewState">
       <div class="content">
-        <div class="agreementView">
-          <div><input type="checkbox" v-model="agreement"></div>
-          <div>Use the address l have</div>
-        </div>
+<!--        <div class="agreementView">-->
+<!--          <div><input type="checkbox" v-model="agreement"></div>-->
+<!--          <div>Use the address l have</div>-->
+<!--        </div>-->
         <div class="formLine">
           <div class="formTitle">Country</div>
           <div class="formContent" @click="openSearch"><input type="text" v-model="countryName" disabled="true"></div>
@@ -65,6 +65,8 @@ export default {
     this.allBasicData = JSON.parse(localStorage.getItem("allBasicData"));
     if(this.$store.state.sellForm){
       this.sellForm = {...this.$store.state.sellForm,...this.sellForm};
+      this.sellForm.country = this.$store.state.routerParams.positionData.alpha2;
+      this.countryName = this.$store.state.routerParams.positionData.positionValue;
     }
   },
   methods: {
@@ -190,10 +192,11 @@ export default {
     font-weight: 500;
     color: #FAFAFA;
     margin: 0.1rem 0 0 0;
-    cursor: no-drop;
+    cursor: pointer;
     border: none;
     &:disabled{
       background: rgba(68, 121, 217, 0.5);
+      cursor: no-drop;
     }
   }
 }

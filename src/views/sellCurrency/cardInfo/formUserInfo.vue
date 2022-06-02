@@ -1,10 +1,10 @@
 <template>
   <div id="formUserInfo">
     <div class="content">
-      <div class="agreementView">
-        <div><input type="checkbox" v-model="agreement"></div>
-        <div>Use the information l have</div>
-      </div>
+<!--      <div class="agreementView">-->
+<!--        <div><input type="checkbox" v-model="agreement"></div>-->
+<!--        <div>Use the information l have</div>-->
+<!--      </div>-->
       <div class="formLine formLine_flex">
         <div class="formLine_flex_child">
           <div class="formTitle">First Name</div>
@@ -17,7 +17,9 @@
       </div>
       <div class="formLine">
         <div class="formTitle">Phone</div>
-        <div class="formContent"><input type="email" v-model="sellForm.phone" @input="sellForm.phone = sellForm.phone.replace(/[^\x00-\xff]/g, '')"></div>
+        <div class="formContent">
+          <van-field class="number_input" type="digit" v-model="sellForm.phone"/>
+        </div>
       </div>
       <div class="formLine">
         <div class="formTitle">Email</div>
@@ -46,11 +48,8 @@ export default {
   name: "formUserInfo",
   data(){
     return{
-      params: {
-        firstname: "",
-        lastname: "",
-      },
       agreement: false,
+      phone:0,
       sellForm: {
         firstname: "", // 传值需要加密处理
         lastname: "",   //  传值需要加密处理
@@ -75,13 +74,20 @@ export default {
   },
   methods: {
     next(){
+      //email verification
+      if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.sellForm.email)){
+        this.$toast("not a valid email.");
+        return;
+      }
+
       //需要加密字段
-      this.sellForm.firstname = AES_Encrypt(this.sellForm.firstname);
-      this.sellForm.lastname = AES_Encrypt(this.sellForm.lastname);
-      this.sellForm.phone = AES_Encrypt(this.sellForm.phone);
-      this.sellForm.email = AES_Encrypt(this.sellForm.email);
-      this.sellForm.idNumber = AES_Encrypt(this.sellForm.idNumber);
-      this.$store.state.sellForm = this.sellForm;
+      let newForm = JSON.parse(JSON.stringify(this.sellForm));
+      newForm.firstname = AES_Encrypt(newForm.firstname);
+      newForm.lastname = AES_Encrypt(newForm.lastname);
+      newForm.phone = AES_Encrypt(newForm.phone);
+      newForm.email = AES_Encrypt(newForm.email);
+      newForm.idNumber = AES_Encrypt(newForm.idNumber);
+      this.$store.state.sellForm = newForm;
       this.$router.push('/sell-formAddress');
     }
   }
@@ -197,11 +203,33 @@ export default {
       font-weight: 500;
       color: #FAFAFA;
       margin: 0.1rem 0 0 0;
-      cursor: no-drop;
       border: none;
+      cursor: pointer;
       &:disabled{
         background: rgba(68, 121, 217, 0.5);
+        cursor: no-drop;
       }
+    }
+  }
+
+
+  //数字输入框
+  .van-cell{
+    padding: 0 !important;
+  }
+  .number_input ::v-deep .van-field__control{
+    width: 100%;
+    min-height: 0.6rem;
+    background: #F3F4F5;
+    border-radius: 10px;
+    font-size: 0.16rem;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    padding: 0 0.2rem;
+    &::placeholder{
+      color: #999999 !important;
     }
   }
 </style>

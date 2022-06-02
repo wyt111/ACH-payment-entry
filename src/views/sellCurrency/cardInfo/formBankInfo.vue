@@ -9,11 +9,15 @@
         </div>
         <div class="formLine">
           <div class="formTitle">Swit Code</div>
-          <div class="formContent"><input type="tel" v-model="sellForm.swiftCode" @input="sellForm.swiftCode = sellForm.swiftCode.replace(/[^\x00-\xff]/g, '')"></div>
+          <div class="formContent">
+            <van-field class="number_input" type="digit" v-model="sellForm.swiftCode"/>
+          </div>
         </div>
         <div class="formLine">
           <div class="formTitle">Account No</div>
-          <div class="formContent"><input type="tel" v-model="sellForm.cardNumber" @input="sellForm.cardNumber = sellForm.cardNumber.replace(/[^\x00-\xff]/g, '')"></div>
+          <div class="formContent">
+            <van-field class="number_input" type="digit" v-model="sellForm.cardNumber"/>
+          </div>
         </div>
       </div>
       <button class="continue" :disabled="buttonState" @click="next">Continue</button>
@@ -210,11 +214,32 @@ export default {
     font-weight: 500;
     color: #FAFAFA;
     margin: 0.1rem 0 0 0;
-    cursor: no-drop;
+    cursor: pointer;
     border: none;
     &:disabled{
       background: rgba(68, 121, 217, 0.5);
+      cursor: no-drop;
     }
+  }
+}
+
+//数字输入框
+.van-cell{
+  padding: 0 !important;
+}
+.number_input ::v-deep .van-field__control{
+  width: 100%;
+  min-height: 0.6rem;
+  background: #F3F4F5;
+  border-radius: 10px;
+  font-size: 0.16rem;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  padding: 0 0.2rem;
+  &::placeholder{
+    color: #999999 !important;
   }
 }
 </style>

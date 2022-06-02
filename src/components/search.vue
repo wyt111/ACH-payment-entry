@@ -58,7 +58,11 @@
       <ul v-else-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting"><img :src="item.flag">{{ item.enCommonName }}</p>
-          <p class="seach_li_rightIcon">{{ item.code }}<img src="../assets/images/rightIcon.png"></p>
+          <p class="seach_li_rightIcon">
+            <span v-if="viewName === 'payCurrency'">{{ item.code }}</span>
+            <span v-else-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
+            <img src="../assets/images/rightIcon.png">
+          </p>
         </li>
       </ul>
 
@@ -326,17 +330,7 @@ export default {
       }
       if(this.viewName === 'payCurrency-sell'){
         this.basicData = [];
-        let newWorldList = [];
-        this.allBasicData.worldList.forEach(item=>{
-          item.fiatList.forEach(item2=>{
-            let fiat = {
-              code: item2.code,
-            }
-            fiat = {...fiat,...item};
-            newWorldList.push(fiat);
-          })
-        });
-        this.basicData = newWorldList.filter(item=>{return item.sellEnable === 1});;
+        this.basicData = this.allBasicData.worldList.filter(item=>{return item.sellEnable === 1});
         return;
       }
       if(this.viewName === 'currency-sell'){
