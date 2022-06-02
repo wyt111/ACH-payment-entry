@@ -186,7 +186,7 @@ export default{
         this.Network_show1 = false
       }
       if(this.Network.id === text.id){
-        this.$toast('error')
+        // this.$toast('error')
         return false
       }
       
@@ -236,23 +236,27 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data.cryptoCurrency
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 0
-          // res.data.expirationTime = -1
+          // this.playMoneyState = 7
           
           if(this.playMoneyState==7){
+            sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             clearInterval(this.timer)
             this.$store.replaceState({})
+            this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             return 
           }
           
           if(res.data.expirationTime<=0 ||(res.data.expirationTime<=0 && this.playMoneyState!= 7)){
             this.playMoneyState = 7
-            this.$store.replaceState({})
+            sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             clearInterval(this.timer)
+            this.$store.replaceState({})
+            this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             return 
           }
           if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
             this.turnMinute(res.data.expirationTime)
+            return
           }else{
             this.turnMinute = null
             return false
