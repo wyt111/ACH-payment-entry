@@ -252,6 +252,7 @@ export default{
             clearInterval(this.timer)
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
+            
             return 
           }
           if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
@@ -316,7 +317,11 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
+    
     setTimeout(()=>{
+      if(this.playMoneyState == 7)
+      this.getNetworkList = null
+      else
       this.getNetworkList()
     },1000)
   },
