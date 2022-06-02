@@ -3,7 +3,7 @@
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer {{orderStateData.cryptoCurrency}} to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ orderStateData.fiatAmount-orderStateData.fee?orderStateData.fee.toFixed(6):0 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
-    <div class="timing" v-if="playMoneyState===6"> <span>请点击您的卡信息进行修改</span></div>
+    <div class="timing" v-if="playMoneyState===6"> <span>Please modify your card details</span></div>
     <div class="timing" v-if="playMoneyState===7">If you still want to sell crypto,Return to home page</div>
     <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
     <div class="order-state-title" v-if="playMoneyState===2">Order Confirming…</div>
