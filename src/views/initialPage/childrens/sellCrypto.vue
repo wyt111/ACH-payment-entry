@@ -4,8 +4,8 @@
     <div class="buyCrypto_content">
       <div class="form_title pay_title">You Pay</div>
       <div class="methods_select cursor">
-        <!-- @keydown="inputChange"   @input="inputChange"    @blur="youPayBlur" -->
-        <van-field class="pay_input" :type="youPaytype" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" :disabled="payAmountState" placeholder="0.00"/>
+        <!-- @keydown="inputChange"  @blur="youPayBlur" -->
+        <van-field class="pay_input" :type="youPaytype" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
         <div class="get_company" @click="openSearch('currency-sell')">
           <div class="getImg"><img :src="currencyData.icon"></div>
           <div class="getText">{{ currencyData.name }}</div>
@@ -153,6 +153,10 @@ export default {
   deactivated(){
     clearInterval(this.timeDown);
   },
+  beforeRouteEnter(to,from,next){
+    console.log(to,from)
+    next()
+  },
   methods: {
     openSearch(view){
       //The address bar contains merchant information. It is forbidden to select
@@ -166,6 +170,18 @@ export default {
       this.feeState = this.feeState === true ? false : true;
       this.feeText = this.feeState === true ? 'Hide fees' : 'View fees';
     },
+
+    //限制输入六位小数
+    inputChange(val){
+      if(val.indexOf('.') > 0){
+        this.payAmount = val.substr(0,val.indexOf('.')+7);
+      }
+    },
+    // youPayBlur(){
+    //   if(this.payAmount > 0){
+    //     this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(2);
+    //   }
+    // },
 
     //Process the quantity and display status of received legal currency
     amountControl(){
