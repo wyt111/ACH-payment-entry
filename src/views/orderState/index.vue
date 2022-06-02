@@ -141,12 +141,19 @@ export default{
   },
   methods:{
     Network_isShow(){
-      let _chiletWidth = document.documentElement.clientWidth 
+      if(this.playMoneyState==3 || this.playMoneyState==2){
+        this.Network_show = false
+         this.Network_show1 = false
+         return false
+      }else{
+        let _chiletWidth = document.documentElement.clientWidth 
       if(_chiletWidth<750){
         this.Network_show = true
       }else{
         this.Network_show1 = !this.Network_show1
       }
+      }
+      
     },
     
     copy(){
@@ -179,19 +186,19 @@ export default{
     },
     //设置网络
     SetNetwork(text){
+      
       let _chiletWidth = document.documentElement.clientWidth 
       if(_chiletWidth<750){
         this.Network_show = false
       }else{
         this.Network_show1 = false
       }
+      
       if(this.Network.id === text.id){
         // this.$toast('error')
         return false
       }
-      if(this.$store.state.orderStatus.payStatus==3){
-        return false
-      }
+      // console.log(this.playMoneyState);
       let params = {
         // id:'15',
         id:this.$store.state.sellOrderId,
@@ -238,7 +245,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 3
+          // this.playMoneyState = 2
           
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
