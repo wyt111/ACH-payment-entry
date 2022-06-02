@@ -153,10 +153,6 @@ export default {
   deactivated(){
     clearInterval(this.timeDown);
   },
-  beforeRouteEnter(to,from,next){
-    console.log(to,from)
-    next()
-  },
   methods: {
     openSearch(view){
       //The address bar contains merchant information. It is forbidden to select

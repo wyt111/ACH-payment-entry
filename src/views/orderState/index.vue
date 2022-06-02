@@ -12,14 +12,14 @@
     <div class="order-state-title" v-if="playMoneyState===5">Payment Success</div>
     <div class="order-state-title" v-if="playMoneyState===6">Payment Fail</div>
     <div class="order-state-title" v-if="playMoneyState===7">Order expired！</div>
-    
+
     <div class="order-state">
       <div class="state">
         <!-- <div v-if="state===0">1</div> -->
         <div  v-if="[1,0].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
-        
+
       </div>
       <div :class="[2,3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
         <div></div>
@@ -136,26 +136,25 @@ export default{
       Network_show1:false,
       timer:null,
       timeText:'',
-      
+
     }
   },
   methods:{
     Network_isShow(){
       if(this.playMoneyState==3 || this.playMoneyState==2){
         this.Network_show = false
-         this.Network_show1 = false
-         return false
+        this.Network_show1 = false
+        return false
       }else{
-        let _chiletWidth = document.documentElement.clientWidth 
-      if(_chiletWidth<750){
-        this.Network_show = true
-      }else{
-        this.Network_show1 = !this.Network_show1
+        let _chiletWidth = document.documentElement.clientWidth
+        if(_chiletWidth<750){
+          this.Network_show = true
+        }else{
+          this.Network_show1 = !this.Network_show1
+        }
       }
-      }
-      
     },
-    
+
     copy(){
         let clipboard = new Clipboard('.order-con');
       clipboard.on('success', () => {
@@ -182,23 +181,23 @@ export default{
       setTimeout(()=>{
         this.generateQRcode()
       },500)
-      
+
     },
     //设置网络
     SetNetwork(text){
-      
-      let _chiletWidth = document.documentElement.clientWidth 
+      let _chiletWidth = document.documentElement.clientWidth
+
       if(_chiletWidth<750){
         this.Network_show = false
       }else{
         this.Network_show1 = false
       }
-      
+
       if(this.Network.id === text.id){
         // this.$toast('error')
         return false
       }
-      // console.log(this.playMoneyState);
+
       let params = {
         // id:'15',
         id:this.$store.state.sellOrderId,
@@ -245,24 +244,27 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 2
-          
+
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
+            sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             clearInterval(this.timer)
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
-            return 
+            this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
+            return
           }
-          
+
           if(res.data.expirationTime<=0 ||(res.data.expirationTime<=0 && this.playMoneyState!= 7)){
             this.playMoneyState = 7
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
+            sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             clearInterval(this.timer)
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
-            
-            return 
+            this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
+
+            return
           }
           if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
             this.turnMinute(res.data.expirationTime)
@@ -271,7 +273,7 @@ export default{
             this.turnMinute = null
             return false
           }
-         
+
         }
       })
     },
@@ -286,10 +288,10 @@ export default{
             this.$store.state.sellForm = res.data
             this.$store.state.sellForm.sellOrderId = orderData.id
             this.$store.state.cardInfoFromPath = 'sellOrder'
-            this.$router.push('/sell-formBankInfo')
+            this.$router.push('/sell-formUserInfo')
           }
         })
-        
+
       }else{
         this.$toast('Cant modify')
       }
@@ -315,9 +317,9 @@ export default{
       if(value){
         return AES_Decrypt(value)
       }else{
-        return value 
+        return value
       }
-      
+
     }
   },
 
@@ -326,7 +328,7 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-    
+
     setTimeout(()=>{
       if(this.playMoneyState == 7)
       this.getNetworkList = null
@@ -346,7 +348,7 @@ export default{
 .order-container{
   // padding: 0 .2rem .3rem;
   padding-bottom: .2rem;
-  
+
   .timing{
     font-size: .15rem;
     font-family: Jost-Bold, Jost;
@@ -387,7 +389,7 @@ export default{
         justify-content: center;
         align-items: center;
       }
-      
+
     }
     .state-content{
       display: flex;

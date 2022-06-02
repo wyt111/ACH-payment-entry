@@ -75,7 +75,7 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       fromPage: 'basisIdAuth',
-      title: 'Enter card billing address'
+      title: 'Enter personal address'
     }
   },
   {
@@ -140,7 +140,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formAddress.vue"),
     meta: {
       requireAuth: true,
-      title: 'Enter card billing address'
+      title: 'Enter personal address'
     }
   },
   {

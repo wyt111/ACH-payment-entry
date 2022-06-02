@@ -1,19 +1,19 @@
 <template>
   <div id="routerMenu">
-    <div class="routerMenu_line" @click="goView('/')">
+    <div class="routerMenu_line" @click="goView('/','buyCrypto')">
       <div class="lineIcon"><img src="../assets/images/menu/icon1.png"></div>
       <div class="lineName">Buy Crypto</div>
       <div class="lineRight">
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
-<!--    <div class="routerMenu_line">-->
-<!--      <div class="lineIcon"><img src="../assets/images/menu/icon2.png"></div>-->
-<!--      <div class="lineName">Sell Crypto</div>-->
-<!--      <div class="lineRight">-->
-<!--        <div><img src="../assets/images/rightIcon.png"></div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="routerMenu_line" @click="goView('/','sellCrypto')">
+      <div class="lineIcon"><img src="../assets/images/menu/icon2.png"></div>
+      <div class="lineName">Sell Crypto</div>
+      <div class="lineRight">
+        <div><img src="../assets/images/rightIcon.png"></div>
+      </div>
+    </div>
     <div class="routerMenu_line" @click="goView('/tradeHistory')">
       <div class="lineIcon"><img src="../assets/images/menu/icon3.png"></div>
       <div class="lineName">Trade History</div>
@@ -61,10 +61,11 @@ export default {
   },
   methods: {
     //Select menu
-    goView(name){
+    goView(name,homeTab){
       this.$parent.routerViewState = true;
       this.$parent.menuState = false;
       if(name === '/'){
+        this.$store.state.homeTabstate = homeTab;
         this.$router.push(name);
         return;
       }

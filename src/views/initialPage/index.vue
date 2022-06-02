@@ -4,8 +4,8 @@
       <div class="homePage_view" v-if="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="tabstate='buyCrypto'">Buy Crypto</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="tabstate='sellCrypto'">Sell Crypto</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="$store.state.homeTabstate='buyCrypto'">Buy Crypto</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="$store.state.homeTabstate='sellCrypto'">Sell Crypto</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       menuState: false,
-      tabstate: 'sellCrypto',//buyCrypto
+      // tabstate:
       searchState: true,
       viewName: "",
       basicData: {},
@@ -54,8 +54,10 @@ export default {
   mounted(){
     this.queryInfo();
   },
-  activated(){
-    this.tabstate = this.$store.state.homeTabstate;
+  computed: {
+    tabstate(){
+      return this.$store.state.homeTabstate;
+    }
   },
   methods: {
     openSearch(view,choiseItem) {
