@@ -54,6 +54,9 @@ export default {
   mounted(){
     this.queryInfo();
   },
+  activated(){
+    this.tabstate = this.$store.state.homeTabstate;
+  },
   methods: {
     openSearch(view,choiseItem) {
       this.searchState = false;

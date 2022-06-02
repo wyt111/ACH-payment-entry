@@ -47,6 +47,14 @@ function requestPrompt(response){
       case "80007":
         Toast(response.returnMsg);
         break;
+      //买币表单 - 中国卡提示
+      case "10004":
+        Toast(response.returnMsg);
+        break;
+      //登陆获取验证码超过5次提示
+      case "1025":
+        Toast(response.returnMsg);
+        break;
     }
   }
 }

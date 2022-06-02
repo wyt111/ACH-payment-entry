@@ -39,6 +39,11 @@ export default {
     }
   },
   activated(){
+    this.buttonData = {
+      loading: false,
+      triggerNum: 0,
+      customName: true,
+    };
     this.reveiveInfo();
   },
   methods: {

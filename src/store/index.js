@@ -21,12 +21,15 @@ const store = new Vuex.Store({
   // modules,
   // getters
     state: {
+        emailFromPath: '',
+        cardInfoFromPath: '',
+        //返回首页状态
+        homeTabstate: 'sellCrypto',
+
         routerParams: {},
         feeParams: {},
         sellForm: {},
         sellOrderId: '',
-        emailFromPath: '',
-        cardInfoFromPath: '',
     }
 })
 
