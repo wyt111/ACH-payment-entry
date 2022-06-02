@@ -111,7 +111,7 @@
     </van-popup>
     <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }" >
         <div class="Network-title">Network</div>
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">{{ item.networkName }}</div>
+        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img src="../../assets/images/rightIcon.png" alt=""></div>
     </van-popup>
   </div>
 </template>
@@ -185,6 +185,10 @@ export default{
       }else{
         this.Network_show1 = false
       }
+      if(this.Network.id === text.id){
+        this.$toast('error')
+        return false
+      }
       
       let params = {
         // id:'15',
@@ -192,7 +196,6 @@ export default{
         cryptoCurrencyNetworkId:text.id
       }
       this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
-        
         if(res && res.data){
           this.orderStateData = res.data
           this.$toast(res.returnMsg)
@@ -438,9 +441,9 @@ export default{
       background:#02AF38 !important;
     }
   }
-  .Network-content:first-child{
-    margin-top: .1rem;
-  }
+  // .Network-content:first-child{
+  //   margin-top: .1rem;
+  // }
   .Network-content{
     // height: .4rem;
     width: 90%;
@@ -450,6 +453,12 @@ export default{
     font-family:Jost-Bold, Jost ;
     border-bottom: 1px solid #EAEAEA;
     margin: .1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+      height: .18rem;
+    }
   }
   .qrcode{
     width: 3rem;
