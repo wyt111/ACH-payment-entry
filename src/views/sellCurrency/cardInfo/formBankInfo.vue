@@ -10,7 +10,7 @@
         <div class="formLine">
           <div class="formTitle">Swit Code</div>
           <div class="formContent">
-            <van-field class="number_input" type="digit" v-model="sellForm.swiftCode"/>
+            <input type="text" v-model="sellForm.swiftCode" @input="sellForm.swiftCode = sellForm.swiftCode.replace(/[^\x00-\xff]/g, '')"/>
           </div>
         </div>
         <div class="formLine">

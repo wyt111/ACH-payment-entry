@@ -73,7 +73,7 @@ export default {
 
     goCardForm(){
       this.$store.state.cardInfoFromPath = "configSell";
-      this.$router.push("/sell-formBankInfo");
+      this.$router.push("/sell-formUserInfo");
     },
 
     submit(){

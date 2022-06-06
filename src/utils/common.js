@@ -1,5 +1,5 @@
 export default {
     uiSize: 1920,
     equipmentEnd: 'pc',
-    version: '1.0.2', //买币 1.0.4
+    version: '1.0.5', //买币 1.0.4
 }

@@ -53,7 +53,7 @@ export default {
         this.$router.push('/');
         return;
       }
-      
+
       if(this.routerPath === '/emailCode' && this.$route.path === '/receivingMode'){
         this.$router.go(-2);
         return;
@@ -76,8 +76,8 @@ export default {
       // }
 
       //卖币
-      if(this.$route.path === '/configSell' && this.routerPath === '/sell-formBankInfo'){
-        this.$router.go(-2);
+      if((this.$route.path === '/configSell' || this.$route.path === '/sellOrder') && this.routerPath === '/sell-formBankInfo'){
+        this.$router.go(-4);
         return;
       }
       if(this.$route.path === '/configSell' && this.routerPath === '/'){

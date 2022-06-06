@@ -26,14 +26,14 @@
         <div class="formContent"><input type="email" v-model="sellForm.email" @input="sellForm.email = sellForm.email.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
       <div class="formLine">
-        <div class="formTitle">Idtype</div>
+        <div class="formTitle">ID Type</div>
         <div class="formContent">
           <div class="radio" :class="{'radioClass': sellForm.idType === 1}" @click="sellForm.idType=1">ID Card</div>
           <div class="radio" :class="{'radioClass': sellForm.idType === 2}" @click="sellForm.idType=2">Passport</div>
         </div>
       </div>
       <div class="formLine">
-        <div class="formTitle">Idnumber</div>
+        <div class="formTitle">ID Number</div>
         <div class="formContent"><input type="email" v-model="sellForm.idNumber" @input="sellForm.idNumber = sellForm.idNumber.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
     </div>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {AES_Encrypt} from "../../../utils/encryp";
+import {AES_Decrypt, AES_Encrypt} from "../../../utils/encryp";
 
 export default {
   name: "formUserInfo",
@@ -72,10 +72,21 @@ export default {
       }
     }
   },
+  activated() {
+    //合并解密参数
+    if (this.$store.state.sellForm) {
+      this.sellForm = this.$store.state.sellForm;
+      this.sellForm.firstname = AES_Decrypt(this.sellForm.firstname);
+      this.sellForm.lastname = AES_Decrypt(this.sellForm.lastname);
+      this.sellForm.phone = AES_Decrypt(this.sellForm.phone);
+      this.sellForm.email = AES_Decrypt(this.sellForm.email);
+      this.sellForm.idNumber = AES_Decrypt(this.sellForm.idNumber);
+    }
+  },
   methods: {
     next(){
       //email verification
-      if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.sellForm.email)){
+      if(!new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$").test(this.sellForm.email)){
         this.$toast("not a valid email.");
         return;
       }
@@ -88,7 +99,7 @@ export default {
       newForm.email = AES_Encrypt(newForm.email);
       newForm.idNumber = AES_Encrypt(newForm.idNumber);
       this.$store.state.sellForm = newForm;
-      this.$router.push('/sell-formAddress');
+      this.$router.replace('/sell-formAddress');
     }
   }
 }
