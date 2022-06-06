@@ -16,7 +16,7 @@
     <div class="order-state">
       <div class="state">
         <!-- <div v-if="state===0">1</div> -->
-        <div  v-if="[1,0].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
+        <div  v-if="[1,0].includes(playMoneyState)" style="background:#959595FF"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
 
@@ -29,7 +29,7 @@
       </div>
       <div class="state">
         <div v-if="[0,1,7].includes(playMoneyState)">2</div>
-        <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':''"><img src="../../assets/images/icon1.png" alt=""></div>
+        <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'"><img src="../../assets/images/icon1.png" alt=""></div>
       </div>
       <div :class="[3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
         <div></div>
@@ -39,7 +39,7 @@
       </div>
       <div class="state">
         <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
-        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
+        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
       </div>
       <div :class="[4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
         <div></div>
@@ -48,7 +48,7 @@
         <div></div>
       </div>
       <div class="state">
-        <div v-if="[0,1,2,3,4,7].includes(playMoneyState)">4</div>
+        <div v-if="[0,1,2,3,4,7].includes(playMoneyState)" :style="{background:playMoneyState===4?'#959595FF':''}">4</div>
         <div :class="playMoneyState===5?'stateSuccessful':''" v-if="[5].includes(playMoneyState)"><img src="../../assets/images/icon3.png" alt=""></div>
         <div :class="[6].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===6"><img src="../../assets/images/errorIcon.png" alt=""></div>
       </div>
@@ -57,7 +57,7 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Pay Coins</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',margin:playMoneyState==6?'0 .1rem 0 .1rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==5?'.7rem':playMoneyState==6?'.55rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -208,7 +208,7 @@ export default{
       this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
-          this.$toast(res.returnMsg)
+          // this.$toast(res.returnMsg)
           this.Network = text
           return
         }
@@ -250,6 +250,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
+          this.playMoneyState = 0
 
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -378,7 +379,7 @@ export default{
   .order-state{
     padding: 0 .1rem 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     // align-items: center;
     font-size: .18rem;
     box-sizing: border-box;
@@ -418,13 +419,23 @@ export default{
     justify-content: space-around;
     margin-top: .1rem;
     div{
-      // width: 24%;
+      width: 25%;
       font-family: Jost-Bold, Jost;
       font-size: .12rem;
       color: #999999;
+      // padding-left: .07rem;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap
     }
-    div:last-child{
-      text-align: center;
+    div:nth-of-type(2){
+      margin-left: -.2rem;
+    }
+    div:nth-of-type(3){
+      padding-left: .1rem;
+    }
+     div:nth-of-type(4){
+      padding-left: .2rem;
     }
   }
   .order-content{
@@ -457,6 +468,11 @@ export default{
     text-align: center;
     padding-top: .03rem;
      background: #02AF38 !important;
+  }
+  .stateLoading{
+    text-align: center;
+    padding-top: .03rem;
+     background: #959595FF !important;
   }
   .stateError{
     text-align: center;
