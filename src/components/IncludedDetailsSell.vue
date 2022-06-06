@@ -44,7 +44,7 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ orderState.cryptoCurrency }} price</div>
-        <div class="line_number">{{orderState.feeUnit}}{{ orderState.cryptoCurrencyRate }}{{ orderState.fiatRate }}</div>
+        <div class="line_number">{{orderState.feeUnit}}{{ orderState.cryptoCurrencyRate *orderState.fiatRate }}</div>
       </div>
       <div class="calculationProcess_line" v-show="feeState">
         <div class="line_name">

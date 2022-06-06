@@ -250,7 +250,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 3
+          // this.playMoneyState = 5
 
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -261,7 +261,10 @@ export default{
             this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
             return
           }
-
+          if(this.playMoneyState==5){
+            clearInterval(this.timer)
+             this.$store.replaceState({})
+          }
           if(res.data.expirationTime<=0 ||(res.data.expirationTime<=0 && this.playMoneyState!= 7)){
             this.playMoneyState = 7
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -270,7 +273,6 @@ export default{
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
-
             return
           }
           
