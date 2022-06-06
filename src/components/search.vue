@@ -269,7 +269,7 @@ export default {
   methods: {
     //Judge title name
     customComponentTitle(){
-      if(this.viewName === 'country' || this.viewName === 'country-sellForm'){
+      if(this.viewName === 'country' || this.viewName === 'country-sellForm' || this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell'){
         this.viewTitle = 'Select Country';
         return;
       }
@@ -279,10 +279,6 @@ export default {
       }
       if(this.viewName === 'network'){
         this.viewTitle = 'Select Network';
-        return;
-      }
-      if(this.viewName === 'payCurrency'){
-        this.viewTitle = 'Select Country';
         return;
       }
       if(this.viewName === 'bank'){
@@ -444,7 +440,7 @@ export default {
           this.$parent.$refs.sellCrypto_ref.currencyData.minSell = item.minSell;
           this.$parent.$refs.sellCrypto_ref.currencyData.cryptoCurrencyNetworkId = item.cryptoCurrencyNetworkId;
           this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.symbol;
-          this.$store.state.feeParams.symbol = item.symbol;
+          this.$store.state.feeParams.symbol = item.name;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
           return;

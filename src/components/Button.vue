@@ -42,9 +42,13 @@ export default {
       }
     }
   },
+  activated(){
+    console.log(window.performance.navigation.type)
+  },
   methods: {
     submit(){
       this.buttonData.triggerNum += 1;
+      console.log(this.buttonData.triggerNum,"----this.buttonData.triggerNum")
       if(this.buttonData.triggerNum === 1){
         this.buttonData.loading = true;
         if(this.buttonData.customName === false){
@@ -79,7 +83,7 @@ export default {
   i{
     font-size: 0.24rem;
     position: absolute;
-    right: 0.35rem;
+    right: 0.22rem;
   }
 }
 .button[disabled] {

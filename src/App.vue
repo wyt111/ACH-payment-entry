@@ -4,14 +4,21 @@
         <div id="App">
           <!-- logo view for phone -->
           <div class="logoView_phone" v-if="!logoState"><img src="./assets/images/phoneLogo.svg"></div>
+          <!-- 导航栏 -->
           <tab ref="viewTab"/>
-          <keep-alive>
-            <router-view class="routerView" v-show="routerViewState"/>
-          </keep-alive>
+          <!-- 页面内容 -->
+          <div class="routerView" v-show="routerViewState">
+            <keep-alive v-if="keepAlive">
+              <router-view/>
+            </keep-alive>
+            <router-view v-else/>
+          </div>
+          <!-- 菜单栏 -->
           <routerMenu class="routerView" v-if="!routerViewState" />
           <!-- 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
         </div>
+      <!-- pc端展示logo -->
       <div class="logoView" v-if="logoState">
         <div>Powered By</div>
         <div><img src="./assets/images/pcLogo.png"></div>
@@ -38,6 +45,12 @@ export default {
       logoState: true,
       tipsState: false,
       version: '',
+    }
+  },
+  computed:{
+    //赋值路由是否需要缓存状态
+    keepAlive(){
+      return this.$route.meta.keepAlive;
     }
   },
   mounted(){
@@ -176,10 +189,12 @@ html,body,#app,#viewBox{
   width: 100%;
   display: flex;
   flex-direction: column;
-
   .routerView{
     flex: 1;
     overflow: auto;
+    &>div{
+      height: 100%;
+    }
   }
 }
 .van-overlay{

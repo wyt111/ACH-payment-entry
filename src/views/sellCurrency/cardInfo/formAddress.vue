@@ -66,6 +66,7 @@ export default {
     //合并参数
     if(this.$store.state.sellForm){
       this.sellForm = this.$store.state.sellForm;
+      this.countryName = this.$store.state.sellForm.enCommonName;
       if(this.$store.state.cardInfoFromPath === ''){
         this.sellForm.country = this.$store.state.routerParams.positionData.alpha2;
         this.countryName = this.$store.state.routerParams.positionData.positionValue;

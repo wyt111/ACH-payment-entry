@@ -35,7 +35,7 @@
         </div>
         <div class="calculationProcess_line">
           <div class="line_name">{{ currencyData.name }} price</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ feeInfo.price }}</div>
+          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ (feeInfo.price * feeInfo.rate).toFixed(6) }}</div>
         </div>
         <div class="calculationProcess_line" v-show="feeState">
           <div class="line_name">
@@ -248,7 +248,7 @@ export default {
     calculationAmount(){
       if(Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         //Filter exchange rate - Calculate cost and accepted quantity
-        // this.feeInfo.price = this.exchangeRate * this.feeInfo.price;
+        // this.feeInfo.price = this.feeInfo.rate * this.feeInfo.price;
         this.feeInfo.rampFee = ((this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee) + this.feeInfo.fixedFee) * this.feeInfo.rate;
         let newGetAmount = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
         newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
@@ -308,7 +308,7 @@ export default {
               minSell: item.minSell,
               cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId
             }
-            this.$store.state.feeParams.symbol = item.symbol;
+            this.$store.state.feeParams.symbol = item.name; //name -- popularList币种
           }
         })
       }else{
@@ -340,6 +340,7 @@ export default {
         //data - !null 有填写过表单,跳转到确认订单页
         if(res && res.returnCode === "0000" && res.data === null){
           this.$store.state.homeTabstate = 'sellCrypto';
+          delete this.$store.state.sellForm;
           this.$router.push('/sell-formUserInfo')
         }else if(res && res.returnCode === "0000" && res.data !== null){
           this.$store.state.sellForm = res.data;

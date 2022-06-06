@@ -25,7 +25,7 @@
         </div>
         <div v-if="checkModel[0]==='address'">
           <div class="methods_myAddress">
-            <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…" :disabled="addressDefault"></div>
+            <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…" @blur="networkAddressBlur" :disabled="addressDefault"></div>
             <div class="methods_errorText" v-if="walletAddress_state">Not a valid {{ buyParams.cryptoCurrency }} address.</div>
           </div>
           <div class="methods_myAddress">
@@ -98,6 +98,13 @@ export default {
     this.routingInformation();
   },
   methods: {
+    networkAddressBlur(){
+      if(this.checkModel[0] === 'address' && !new RegExp(this.networkRegular).test(this.buyParams.address)){
+        this.walletAddress_state = true;
+      }else{
+        this.walletAddress_state = false;
+      }
+    },
     //Get address bar information
     routingInformation(){
       localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : this.email = '';

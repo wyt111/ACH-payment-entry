@@ -1,5 +1,5 @@
 <template>
-  <div class="addressForm" v-if="routerParams.receiveMethods === 'address'">
+  <div class="addressForm"> <!--  v-if="routerParams.receiveMethods === 'address'"  -->
     <div class="formLine">
       <div class="formTitle" >{{ routerParams.networkDefault }} Address</div>
       <div class="formContent" :data-clipboard-text="routerParams.addressDefault" @click="copy">
