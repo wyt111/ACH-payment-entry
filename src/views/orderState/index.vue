@@ -57,7 +57,7 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Pay Coins</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==5?'.7rem':playMoneyState==6?'.55rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.69rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -130,7 +130,7 @@ export default{
   data(){
     return {
       NetworkCheck:require('../../assets/images/cardCheckIcon.png'),
-      playMoneyState:0,
+      playMoneyState:3,
       show:false,
       orderStateData:{},
       Network:'',
@@ -242,15 +242,15 @@ export default{
     getCurrencyStatus(){
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        // id:'15'
-        id:this.$store.state.sellOrderId
+        id:'400'
+        // id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 0
+          this.playMoneyState = 6
 
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -273,6 +273,7 @@ export default{
 
             return
           }
+          
           if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
             this.turnMinute(res.data.expirationTime)
             return
@@ -280,8 +281,9 @@ export default{
             this.turnMinute = null
             return false
           }
-
+          
         }
+        // this.playMoneyState = 4
       })
     },
     //进入银行卡信息页
@@ -416,7 +418,7 @@ export default{
   }
   .order-state-content{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: .1rem;
     div{
       width: 25%;
@@ -424,18 +426,19 @@ export default{
       font-size: .12rem;
       color: #999999;
       // padding-left: .07rem;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      // overflow:hidden;
+      // text-overflow:ellipsis;
       white-space:nowrap
     }
     div:nth-of-type(2){
-      margin-left: -.2rem;
+      margin-left: -.14rem;
     }
     div:nth-of-type(3){
-      padding-left: .1rem;
+      padding-left: -.2rem;
     }
      div:nth-of-type(4){
-      padding-left: .2rem;
+       width: 18%;
+      text-align: center;
     }
   }
   .order-content{
