@@ -70,12 +70,14 @@
           <p>{{ Network.networkName }}</p>
           <img src="../../assets/images/rightIcon.png" alt="">
         </div>
+        <transition name="fade">
         <div class="network-content" v-show="Network_show1">
           <div v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">
             <p>{{ item.networkName }}</p>
-            <img src="../../assets/images/rightIcon.png" alt="">
+            <img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" style="border:none" alt="">
           </div>
         </div>
+        </transition>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Address</div>
         <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="orderStateData.address">
           <p>{{ orderStateData.address }}</p>
@@ -111,7 +113,7 @@
     </van-popup>
     <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }" >
         <div class="Network-title">Network</div>
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img src="../../assets/images/rightIcon.png" alt=""></div>
+        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
   </div>
 </template>
@@ -127,6 +129,7 @@ export default{
   },
   data(){
     return {
+      NetworkCheck:require('../../assets/images/cardCheckIcon.png'),
       playMoneyState:0,
       show:false,
       orderStateData:{},
@@ -195,7 +198,6 @@ export default{
       }
       
       if(this.Network.id === text.id){
-        // this.$toast('error')
         return false
       }
       // console.log(this.playMoneyState);
@@ -222,14 +224,18 @@ export default{
     },
     //获取网络列表
     getNetworkList(){
-      // console.log(this.$store.state.orderStatus);
       let params = {
         coin:this.$store.state.orderStatus.cryptoCurrency
       }
       this.$axios.get(this.$api.get_networkList,params).then(res=>{
         if(res && res.data){
           this.Network_data = res.data
-          this.Network = this.Network_data[0]
+          //获取选中的网络
+          res.data.forEach(item => {
+            if(item.network==this.orderStateData.cryptoCurrencyNetwork){
+              this.Network = item
+            }
+          });
         }
       })
     },
@@ -342,6 +348,7 @@ export default{
 
 </script>
 <style lang="scss" scoped>
+
 
 .order-container{
   // padding: 0 .2rem .3rem;
@@ -474,9 +481,9 @@ export default{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    img{
-      height: .18rem;
-    }
+      img{
+        height: .18rem;
+      } 
   }
   .qrcode{
     width: 3rem;
@@ -521,16 +528,18 @@ export default{
   }
   .network-content{
     width: 100%;
+    max-height: 180px;
     background: #F3F4F5;
     border-radius: .1rem;
-    margin-top: .2rem;
+    margin-top: .1rem;
+    overflow-y: scroll;
     div{
       cursor: pointer;
       padding: .2rem;
       display: flex;
       justify-content: space-between;
       img{
-        width: .15rem;
+        // width: .15rem;
         height: .15rem;
       }
     }
@@ -539,5 +548,17 @@ export default{
     position: absolute;
     left: .2rem;
   }
+  .fade-enter-active {
+    transition: all 0.3s ease-in;
+}
+
+.fade-leave-active {
+    transition: all 0.3s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+    max-height: 0;
+}
 }
 </style>
