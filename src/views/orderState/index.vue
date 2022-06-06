@@ -99,7 +99,7 @@
         </div>
         <div class="order-title" v-if="playMoneyState===6">Fail Reason</div>
         <div class="order-con order-conId" v-if="playMoneyState===6" >
-          <p>To find your bank account.</p>
+          <p>{{ orderStateData.errorMsg }}</p>
         </div>
 
     </div>
