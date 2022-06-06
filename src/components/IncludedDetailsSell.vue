@@ -1,6 +1,6 @@
 <template>
   <!-- Payment information -->
-  <div class="paymentInformation">
+  <div class="paymentInformation" v-if="orderState===null">
     <div class="calculationProcess">
       <div class="calculationProcess_line" v-if="timeDownState_child">
         <div class="line_name">Remaining time</div>
@@ -33,6 +33,39 @@
       </div>
     </div>
   </div>
+  <div class="paymentInformation" v-else>
+    <div class="calculationProcess">
+      <div class="calculationProcess_line" v-if="timeDownState_child">
+        <div class="line_name">Remaining time</div>
+        <div class="line_number">
+          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
+          <div class="line_number_red">{{ timeDownNumber }}S</div>
+        </div>
+      </div>
+      <div class="calculationProcess_line">
+        <div class="line_name">{{ orderState.cryptoCurrency }} price</div>
+        <div class="line_number">{{orderState.feeUnit}}{{ orderState.cryptoCurrencyRate *orderState.fiatRate }}</div>
+      </div>
+      <div class="calculationProcess_line" v-show="feeState">
+        <div class="line_name">
+          Ramp fee
+          <el-popover
+              placement="top"
+              :trigger="triggerType"
+              :offset="-18"
+              content="Based on payment method">
+            <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
+          </el-popover>
+        </div>
+        <div class="line_number"><span class="minText">as low as</span>{{ orderState.feeUnit }}{{ orderState.fee }}</div>
+      </div>
+      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
+      <div class="calculationProcess_line">
+        <div class="line_name">Total</div>
+        <div class="line_number">{{ orderState.feeUnit }}{{ orderState.fiatAmount - orderState.fee }}</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,6 +81,10 @@ export default {
       type: Boolean,
       default: null
     },
+    orderState:{
+      type:Object,
+      default:null
+    }
   },
   data(){
     return{
