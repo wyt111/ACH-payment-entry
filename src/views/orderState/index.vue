@@ -242,8 +242,8 @@ export default{
     getCurrencyStatus(){
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        id:'400'
-        // id:this.$store.state.sellOrderId
+        // id:'400'
+        id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
