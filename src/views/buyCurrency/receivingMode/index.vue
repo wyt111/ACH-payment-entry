@@ -195,38 +195,39 @@ export default {
 
     //跳转选择支付方式页 整理下单接口和routerParams路由信息
     transaction(){
+      let buyParams = JSON.parse(JSON.stringify(this.buyParams));
       //下单接口参数
-      if(this.checkModel[0] === 'address' && (this.buyParams.address === '' || this.buyParams.network === '')){
+      if(this.checkModel[0] === 'address' && (buyParams.address === '' || buyParams.network === '')){
         return;
       }
-      if(this.checkModel[0] === 'address' && !new RegExp(this.networkRegular).test(this.buyParams.address)){
+      if(this.checkModel[0] === 'address' && !new RegExp(this.networkRegular).test(buyParams.address)){
         this.walletAddress_state = true;
         return;
       }
       this.walletAddress_state = false;
       if(this.checkModel[0] === 'ach'){
-        this.buyParams.depositType = 1;
-        this.buyParams.address = AES_Decrypt(localStorage.getItem("email"));
-        this.buyParams.network = "";
+        buyParams.depositType = 1;
+        buyParams.address = AES_Decrypt(localStorage.getItem("email"));
+        buyParams.network = "";
       }else{
-        this.buyParams.depositType = 2;
+        buyParams.depositType = 2;
       }
       let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
       delete merchantInfo.networkDefault;
       delete merchantInfo.addressDefault;
-      this.buyParams = {...this.buyParams, ...merchantInfo};
+      buyParams = {...buyParams, ...merchantInfo};
 
       //跳转选择支付方式 支付方式页调取下单接口
       let ordParams = JSON.parse(this.$route.query.routerParams);
       let newParams = {
-        depositType: this.buyParams.depositType,
+        depositType: buyParams.depositType,
         receiveMethods: this.checkModel[0],
-        networkDefault: this.buyParams.network,
-        addressDefault: this.buyParams.address
+        networkDefault: buyParams.network,
+        addressDefault: buyParams.address
       }
       this.checkModel[0] === 'ach' ? (delete newParams.network,delete newParams.address) : '';
       Object.assign(newParams, ordParams);
-      this.$router.push(`/paymentMethod?routerParams=${JSON.stringify(newParams)}&placeOrderQuery=${JSON.stringify(this.buyParams)}`);
+      this.$router.push(`/paymentMethod?routerParams=${JSON.stringify(newParams)}&placeOrderQuery=${JSON.stringify(buyParams)}`);
     },
   }
 }

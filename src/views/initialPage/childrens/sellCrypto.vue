@@ -249,8 +249,8 @@ export default {
       if(Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         //Filter exchange rate - Calculate cost and accepted quantity
         // this.feeInfo.price = this.exchangeRate * this.feeInfo.price;
-        this.feeInfo.rampFee = (this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
-        let newGetAmount = this.payAmount * this.feeInfo.price * this.feeInfo.rate - this.feeInfo.rampFee;
+        this.feeInfo.rampFee = ((this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee) + this.feeInfo.fixedFee) * this.feeInfo.rate;
+        let newGetAmount = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
         newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
       }
     },
