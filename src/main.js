@@ -30,12 +30,7 @@ Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;
-router.beforeEach((to,from,next)=>{
-  if(to.path==='/sellOrder' && to.query.id){
-    sessionStorage.setItem('sellOrderId',to.query.id)
-  }
-  next()
-})
+
 new Vue({
   router,
   store,

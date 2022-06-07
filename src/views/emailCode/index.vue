@@ -119,9 +119,10 @@ export default {
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
                 _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
-              }else{
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 let params = {
                   country: _this.$store.state.routerParams.positionData.alpha2,
                   fiatName: _this.$store.state.routerParams.positionData.fiatCode,
@@ -137,6 +138,8 @@ export default {
                     _this.$router.push('/configSell')
                   }
                 })
+              }else{
+                _this.$router.push('/sellOrder');
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
