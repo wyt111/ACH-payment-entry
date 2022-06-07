@@ -18,7 +18,7 @@
       <div class="formLine" v-if="newCvvState">
         <div class="formTitle">CVV</div>
         <div class="formContent">
-          <input type="text" v-model="newCvv" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4">
+          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4">
           <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">
         </div>
       </div>
@@ -52,6 +52,7 @@ export default {
 
       newCvvState: false,
       newCvv: '',
+      cvvDisabled: false,
 
       //勾选协议
       childData: {
@@ -67,6 +68,12 @@ export default {
     }
   },
   activated(){
+    //清空按钮状态
+    this.buttonData = {
+      loading: false,
+      triggerNum: 0,
+    };
+
     this.reviceInfo();
   },
   computed:{
@@ -109,6 +116,7 @@ export default {
       }
 
       if(this.buttonData.triggerNum === 1){
+        this.cvvDisabled = true;
         await this.pay();
       }else{
         this.queryOrderStatus();
@@ -139,7 +147,10 @@ export default {
             }
           }else {
             this.submitState = true;
+            this.cvvDisabled = false;
           }
+        }).catch(()=>{
+          this.cvvDisabled = false;
         })
       }
     },
@@ -161,7 +172,7 @@ export default {
   },
   deactivated(){
     clearInterval(this.timeDown);
-  }
+  },
 }
 </script>
 

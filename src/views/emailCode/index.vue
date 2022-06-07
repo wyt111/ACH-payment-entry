@@ -131,6 +131,7 @@ export default {
                   //data - null 没有填写过表单,跳转到表单页
                   //data - !null 有填写过表单,跳转到确认订单页
                   if(res && res.returnCode === "0000" && res.data === null){
+                    delete _this.$store.state.sellForm;
                     _this.$router.push('/sell-formUserInfo')
                   }else if(res && res.returnCode === "0000" && res.data !== null){
                     _this.$store.state.sellForm = res.data;

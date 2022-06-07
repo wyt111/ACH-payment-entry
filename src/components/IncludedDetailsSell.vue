@@ -11,7 +11,7 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ currencyData.name }} price</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ feeInfo.price }}</div>
+        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ (feeInfo.price * feeInfo.rate).toFixed(6) }}</div>
       </div>
       <div class="calculationProcess_line" v-show="feeState">
         <div class="line_name">

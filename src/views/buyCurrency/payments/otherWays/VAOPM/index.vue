@@ -74,10 +74,10 @@ export default {
       }
     }
   },
-  activated() {
+  mounted() {
     this.receiveInfo();
   },
-  deactivated(){
+  destroyed(){
     //va
     if(this.routerParams.payWayCode === '10003'){
       clearInterval(this.$refs.va_ref.paystateTimeOut);

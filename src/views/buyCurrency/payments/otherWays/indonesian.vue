@@ -19,7 +19,7 @@
       </div>
       <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">Open OVO app to complete payment.</div>
       <!-- 选择接收方式的网络地址和名称 -->
-      <CryptoCurrencyAddress/>
+      <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
       <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
       <IncludedDetails class="IncludedDetails"/>
     </div>
@@ -67,10 +67,11 @@ export default {
       buttonData: {
         loading: false,
         triggerNum: 0,
+        customName: false,
       }
     }
   },
-  activated(){
+  mounted(){
     this.receiveInfo();
   },
   computed: {
@@ -85,7 +86,6 @@ export default {
   methods: {
     receiveInfo(){
       this.parameter = JSON.parse(this.$route.query.routerParams);
-
       //Restore the data before refreshing the page
       if(sessionStorage.getItem("indonesiaPayment")) {
         let data = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -223,7 +223,7 @@ export default {
       })
     },
   },
-  deactivated(){
+  destroyed(){
     clearInterval(this.paystateTimeOut);
     clearInterval(this.paymentCountDown);
     sessionStorage.removeItem("indonesiaPayment");
@@ -328,5 +328,9 @@ export default {
   color: #4479D9;
   margin-top: 0.1rem;
   margin-bottom: 0.2rem;
+}
+
+.CryptoCurrencyAddress{
+  margin-top: 0.4rem;
 }
 </style>
