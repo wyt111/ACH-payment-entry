@@ -97,9 +97,9 @@
           </div>
           <img src="../../assets/images/rightIcon.png" alt="">
         </div>
-        <div class="order-title" v-if="playMoneyState===6">Fail Reason</div>
-        <div class="order-con order-conId" v-if="playMoneyState===6" >
-          <p>{{ orderStateData.errorMsg }}</p>
+        <div class="order-state_title" v-if="playMoneyState===6">Fail Reason</div>
+        <div class="order-state_content" v-if="playMoneyState===6" >
+          {{ orderStateData.errorMsg }}
         </div>
 
     </div>
@@ -242,7 +242,7 @@ export default{
     getCurrencyStatus(){
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        // id:'400'
+        // id:'426'
         id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
@@ -250,7 +250,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          this.playMoneyState = 0
+          // this.playMoneyState = 6
 
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -585,5 +585,23 @@ export default{
 .fade-leave-to {
     max-height: 0;
 }
+.order-state_title{
+  font-size: .14rem;
+  font-family: Jost-Bold, Jost;
+  font-weight: 500;
+  margin: .2rem 0 .05rem 0;
+  
+}
+.order-state_content{
+    width: 100%;
+    min-height: .3rem;
+    background: #F3F4F5FF;
+    font-size: 16px;
+    font-family: Jost-Bold, Jost;
+    font-weight: 500;
+    color: #232323;
+    padding: .1rem 0 .1rem .2rem;
+    border-radius: .1rem;
+  }
 }
 </style>
