@@ -241,9 +241,11 @@ export default{
     //获取买币状态
     getCurrencyStatus(){
       // console.log(this.$store.state.sellOrderId);
+      let sellOrderId = sessionStorage.getItem('sellOrderId')
       let parmas = {
         // id:'426'
-        id:this.$store.state.sellOrderId
+        
+        id:sellOrderId?sellOrderId:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
