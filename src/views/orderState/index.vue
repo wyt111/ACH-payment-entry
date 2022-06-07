@@ -245,7 +245,7 @@ export default{
       let parmas = {
         // id:'426'
         
-        id:sellOrderId?sellOrderId:this.$store.state.sellOrderId
+        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
@@ -337,6 +337,8 @@ export default{
   },
 
   activated (){
+    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
+    this.$store.state.emailFromPath = 'sellOrder'
     this.getCurrencyStatus()
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
@@ -347,7 +349,7 @@ export default{
       this.getNetworkList = null
       else
       this.getNetworkList()
-    },1000)
+    },600)
   },
   deactivated (){
     clearInterval(this.timer)
