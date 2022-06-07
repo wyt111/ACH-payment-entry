@@ -130,9 +130,9 @@ export default {
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
-      if(this.orderState){
-        return false
-      }
+      // if(this.orderState){
+      //   return false
+      // }
       this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {

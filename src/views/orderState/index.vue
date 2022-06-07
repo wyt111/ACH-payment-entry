@@ -104,7 +104,7 @@
 
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
-    <IncludedDetailsSell :orderState="[3,4,5].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,].includes(playMoneyState)?true:false"/>
+    <IncludedDetailsSell :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,].includes(playMoneyState)?true:false"/>
     <van-popup v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
@@ -130,7 +130,7 @@ export default{
   data(){
     return {
       NetworkCheck:require('../../assets/images/cardCheckIcon.png'),
-      playMoneyState:3,
+      playMoneyState:0,
       show:false,
       orderStateData:{},
       Network:'',
@@ -598,7 +598,7 @@ export default{
 }
 .order-state_content{
     width: 100%;
-    min-height: .3rem;
+    min-height: .5rem;
     background: #F3F4F5FF;
     font-size: 16px;
     font-family: Jost-Bold, Jost;
