@@ -44,7 +44,7 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ orderState.cryptoCurrency }} price</div>
-        <div class="line_number">{{orderState.feeUnit}}{{ orderState.cryptoCurrencyRate *orderState.fiatRate }}</div>
+        <div class="line_number">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate *orderState.fiatRate)*100) /100 }}</div>
       </div>
       <div class="calculationProcess_line" v-show="feeState">
         <div class="line_name">
@@ -62,7 +62,7 @@
       <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
       <div class="calculationProcess_line">
         <div class="line_name">Total</div>
-        <div class="line_number">{{ orderState.feeUnit }}{{ orderState.fiatAmount - orderState.fee }}</div>
+        <div class="line_number">{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</div>
       </div>
     </div>
   </div>
