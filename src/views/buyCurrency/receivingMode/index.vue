@@ -3,45 +3,47 @@
     <!-- select network -->
     <search v-if="searchViewState" :viewName="viewName" :allBasicData="networkList"/>
     <!-- Select acceptance method -->
-    <div class="receiveCoins-content" v-show="!searchViewState" ref="includedDetails_ref">
-      <div class="promptInformation">
-        <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
-        <span v-else>Enter your wallet address.</span>
-      </div>
-      <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">
-        <div class="methods">
-          <div class="methods_name">Deposit to Alchemy Pay Wallet</div>
-          <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>
+    <div class="receiveCoins-view" v-show="!searchViewState" ref="includedDetails_ref">
+      <div class="receiveCoins-content">
+        <div class="promptInformation">
+          <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
+          <span v-else>Enter your wallet address.</span>
         </div>
-        <div v-if="checkModel[0]==='ach'">
-          <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>
-          <div class="methods_account">Account: <span>{{ email }}</span></div>
-        </div>
-      </div>
-      <div class="collectionMethod" @click="checkMethods('address')">
-        <div class="methods">
-          <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
-          <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>
-        </div>
-        <div v-if="checkModel[0]==='address'">
-          <div class="methods_myAddress">
-            <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…" @blur="networkAddressBlur" :disabled="addressDefault"></div>
-            <div class="methods_errorText" v-if="walletAddress_state">Not a valid {{ buyParams.cryptoCurrency }} address.</div>
+        <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">
+          <div class="methods">
+            <div class="methods_name">Deposit to Alchemy Pay Wallet</div>
+            <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>
           </div>
-          <div class="methods_myAddress">
-            <div class="methods_title">Network</div>
-            <div class="methods_input network_input" @click="openSelect">
-              <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>
-              <span class="rightIcon"><img src="../../../assets/images/rightIcon.png"></span>
+          <div v-if="checkModel[0]==='ach'">
+            <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>
+            <div class="methods_account">Account: <span>{{ email }}</span></div>
+          </div>
+        </div>
+        <div class="collectionMethod" @click="checkMethods('address')">
+          <div class="methods">
+            <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
+            <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>
+          </div>
+          <div v-if="checkModel[0]==='address'">
+            <div class="methods_myAddress">
+              <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…" @blur="networkAddressBlur" :disabled="addressDefault"></div>
+              <div class="methods_errorText" v-if="walletAddress_state">Not a valid {{ buyParams.cryptoCurrency }} address.</div>
+            </div>
+            <div class="methods_myAddress">
+              <div class="methods_title">Network</div>
+              <div class="methods_input network_input" @click="openSelect">
+                <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>
+                <span class="rightIcon"><img src="../../../assets/images/rightIcon.png"></span>
+              </div>
             </div>
           </div>
         </div>
+        <!-- Expense information -->
+        <includedDetails class="includedDetails_view" :network="buyParams.network"/>
       </div>
-      <!-- Expense information -->
-      <includedDetails :network="buyParams.network"/>
-    </div>
-    <div class="continueBox" v-show="!searchViewState">
-      <button class="continue" @click="transaction" :disabled="disabled">Continue</button>
+      <div class="continueBox" v-show="!searchViewState">
+        <button class="continue" @click="transaction" :disabled="disabled">Continue</button>
+      </div>
     </div>
   </div>
 </template>
@@ -242,9 +244,14 @@ export default {
 
 <style lang="scss" scoped>
 #receiveCoins{
-  margin-bottom: 0.8rem;
-  .receiveCoins-content{
-    position: relative;
+  .receiveCoins-view{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .receiveCoins-content{
+      flex: 1;
+      overflow: auto;
+    }
   }
   .promptInformation{
     font-size: 0.14rem;
@@ -354,13 +361,13 @@ export default {
     }
   }
 
+  .includedDetails_view{
+    margin-bottom: 0.2rem;
+  }
+
   .continueBox{
     width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     background: white;
-    padding: 0 15px 15px 15px;
     border-radius: 25px;
     z-index: 2020;
     display: flex;

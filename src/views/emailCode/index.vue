@@ -119,9 +119,8 @@ export default {
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{
-              let emailFromPath;
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                emailFromPath = "receivingMode";
+                _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
               }else{
                 let params = {
                   country: _this.$store.state.routerParams.positionData.alpha2,
@@ -139,7 +138,6 @@ export default {
                   }
                 })
               }
-              _this.$router.push(`/${emailFromPath}?routerParams=${_this.$route.query.routerParams}`);
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
             _this.codeErrorState = true;
@@ -172,7 +170,7 @@ export default {
     font-family: 'Jost', sans-serif;
     font-weight: 500;
     color: #232323;
-    margin-top: 0.2rem;
+    padding-top: 0.2rem;
   }
   .form-input{
     height: 0.6rem;

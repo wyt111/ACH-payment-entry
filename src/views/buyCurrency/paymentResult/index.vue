@@ -38,7 +38,7 @@ Three channels for successful payment --- 'depositType'
         </div>
         <div class="paymentInformation-line achWallet" v-if="depositType===1">
           <div class="line_name">ACH Wallet</div>
-          <div class="line_number">12345678hg9876543df765xzZxdfgh54321</div>
+          <div class="line_number">{{ detailsParameters.address }}</div>
         </div>
         <div class="paymentInformation-line" v-if="depositType===1">
           <div class="line_name">Password</div>

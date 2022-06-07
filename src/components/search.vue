@@ -322,6 +322,7 @@ export default {
           })
         });
         this.basicData = newWorldList;
+        // this.basicData = newWorldList.filter(item=>{console.log(item)}); //return item.sellEnable === 0
         return;
       }
       if(this.viewName === 'payCurrency-sell'){

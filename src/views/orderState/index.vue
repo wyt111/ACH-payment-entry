@@ -205,7 +205,7 @@ export default{
         id:this.$store.state.sellOrderId,
         cryptoCurrencyNetworkId:text.id
       }
-      this.$axios.post(this.$api.post_setNetwork,params).then(res=>{
+      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
           // this.$toast(res.returnMsg)
@@ -277,7 +277,7 @@ export default{
             this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
             return
           }
-          
+
           if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
             this.turnMinute(res.data.expirationTime)
             return
@@ -285,7 +285,7 @@ export default{
             this.turnMinute = null
             return false
           }
-          
+
         }
         // this.playMoneyState = 4
       })
@@ -296,7 +296,7 @@ export default{
         let params = {
           id:orderData.userCardId,
         }
-        this.$axios.get(this.$api.get_userCard,params).then(res=>{
+        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
           if(res && res.returnCode =='0000'){
             this.$store.state.sellForm = res.data
             this.$store.state.sellForm.sellOrderId = orderData.id
@@ -510,7 +510,7 @@ export default{
     align-items: center;
       img{
         height: .18rem;
-      } 
+      }
   }
   .qrcode{
     width: 3rem;
