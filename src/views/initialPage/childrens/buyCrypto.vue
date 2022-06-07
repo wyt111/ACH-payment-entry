@@ -238,7 +238,7 @@ export default {
       clearInterval(this.timeDown);
       if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
         this.detailedInfo_state = true;
-        setTimeout(()=>{
+        this.$nextTick(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
         })
         this.queryFee();
@@ -304,13 +304,15 @@ export default {
 
       //将you pay的币种和国家数据合并在一起
       this.basicData.worldList.forEach((item,index)=>{
-        item.fiatList.forEach((item2,index2)=>{
-          this.basicData.fiatCurrencyList.forEach(item3=>{
-            if(item3.code === item2){
-              this.basicData.worldList[index].fiatList[index2] = item3;
-            }
+        if(item.fiatList){
+          item.fiatList.forEach((item2,index2)=>{
+            this.basicData.fiatCurrencyList.forEach(item3=>{
+              if(item3.code === item2){
+                this.basicData.worldList[index].fiatList[index2] = item3;
+              }
+            })
           })
-        })
+        }
       })
 
       //获取定位的国家信息

@@ -54,6 +54,7 @@ export default {
       buttonData: {
         loading: false,
         triggerNum: 0,
+        customName: false,
       }
     }
   },
@@ -77,19 +78,19 @@ export default {
   mounted() {
     this.receiveInfo();
   },
-  destroyed(){
-    //va
-    if(this.routerParams.payWayCode === '10003'){
-      clearInterval(this.$refs.va_ref.paystateTimeOut);
-      clearInterval(this.$refs.va_ref.paymentCountDown);
-      sessionStorage.removeItem("indonesiaPayment");
-      return;
-    }
-    //opm
-    clearInterval(this.$refs.opm_ref.paystateTimeOut);
-    clearInterval(this.$refs.opm_ref.paymentCountDown);
-    sessionStorage.removeItem("indonesiaPayment");
-  },
+  // destroyed(){
+  //   //va
+  //   if(this.routerParams.payWayCode === '10003'){
+  //     clearInterval(this.$refs.va_ref.paystateTimeOut);
+  //     clearInterval(this.$refs.va_ref.paymentCountDown);
+  //     sessionStorage.removeItem("indonesiaPayment");
+  //     return;
+  //   }
+  //   //opm
+  //   clearInterval(this.$refs.opm_ref.paystateTimeOut);
+  //   clearInterval(this.$refs.opm_ref.paymentCountDown);
+  //   sessionStorage.removeItem("indonesiaPayment");
+  // },
   methods: {
     receiveInfo(){
       this.routerParams = JSON.parse(this.$route.query.routerParams);
@@ -102,7 +103,8 @@ export default {
         };
         this.buttonData = {
           loading: true,
-          triggerNum: 1
+          triggerNum: 1,
+          customName: false,
         };
       }
     },

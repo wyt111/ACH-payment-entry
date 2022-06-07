@@ -29,7 +29,7 @@ export default {
       payCode: '',
     }
   },
-  activated(){
+  mounted(){
     this.receiveinfo();
   },
   methods:{
@@ -124,6 +124,11 @@ export default {
       })
     }
   },
+  destroyed(){
+    clearInterval(this.paystateTimeOut);
+    clearInterval(this.paymentCountDown);
+    sessionStorage.removeItem("indonesiaPayment");
+  }
 }
 </script>
 

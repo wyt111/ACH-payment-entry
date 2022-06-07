@@ -21,7 +21,7 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
       <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
-      <IncludedDetails class="IncludedDetails"/>
+      <IncludedDetails class="IncludedDetails" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}"/>
     </div>
 
     <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
@@ -111,7 +111,8 @@ export default {
         };
         this.buttonData = {
           loading: true,
-          triggerNum: 1
+          triggerNum: 1,
+          customName: false,
         };
       }
     },
@@ -272,13 +273,12 @@ export default {
 }
 
 .QRISView{
-  margin-bottom: 0.2rem;
   .QRISCode{
     min-height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
   }
   .QRISText{
     font-size: 0.15rem;
@@ -331,6 +331,10 @@ export default {
 }
 
 .CryptoCurrencyAddress{
+  margin-top: 0.2rem;
+}
+
+.IncludedDetails_top{
   margin-top: 0.4rem;
 }
 </style>

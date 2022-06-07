@@ -89,6 +89,14 @@ export default {
       }
     },
   },
+  mounted(){
+    //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
+    this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
+    //接收路由信息
+    let routerParams = JSON.parse(this.$route.query.routerParams);
+    this.routerParams = routerParams;
+    this.payCommission = routerParams.payCommission;
+  },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
@@ -96,6 +104,9 @@ export default {
     let routerParams = JSON.parse(this.$route.query.routerParams);
     this.routerParams = routerParams;
     this.payCommission = routerParams.payCommission;
+  },
+  destroyed(){
+    clearInterval(this.timeOut)
   },
   deactivated(){
     clearInterval(this.timeOut)

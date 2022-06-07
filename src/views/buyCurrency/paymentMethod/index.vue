@@ -145,6 +145,13 @@ export default {
         //确认下单 获取订单id
         this.buyParams = JSON.parse(this.$route.query.placeOrderQuery);
         this.buyParams.payWayCode = this.payMethod.payWayCode;
+        //商户接入字段
+        if(sessionStorage.getItem("accessMerchantInfo")){
+          let merchantParam = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
+          delete merchantParam.addressDefault;
+          delete merchantParam.networkDefault;
+          JSON.stringify(merchantParam) !== '{}' ? this.buyParams.merchantParam = JSON.stringify(merchantParam) : '';
+        }
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){
             let oldRouterQuery = JSON.parse(this.$route.query.routerParams);
@@ -277,15 +284,15 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 0.56rem;
+    height: 0.6rem;
     background: #4479D9;
     border-radius: 4px;
-    font-size: 0.17rem;
+    font-size: 0.18rem;
+    font-weight: 500;
     font-family: 'Jost', sans-serif;
     color: #FAFAFA;
     border: none;
     cursor: pointer;
-    margin-bottom: 0.15rem;
     i{
       font-size: 0.24rem;
       position: absolute;

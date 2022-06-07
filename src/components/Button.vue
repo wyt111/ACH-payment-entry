@@ -28,7 +28,7 @@ export default {
   },
   data(){
     return{
-      buttonName: 'Confirm Payment', //I have completed the payment
+      buttonName: 'Confirm Payment', // Confirm Payment ｜ I have completed the payment
     }
   },
   watch:{
@@ -42,13 +42,9 @@ export default {
       }
     }
   },
-  activated(){
-    console.log(window.performance.navigation.type)
-  },
   methods: {
     submit(){
       this.buttonData.triggerNum += 1;
-      console.log(this.buttonData.triggerNum,"----this.buttonData.triggerNum")
       if(this.buttonData.triggerNum === 1){
         this.buttonData.loading = true;
         if(this.buttonData.customName === false){
