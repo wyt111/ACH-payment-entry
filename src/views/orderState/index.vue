@@ -242,15 +242,15 @@ export default{
     getCurrencyStatus(){
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        id:'400'
-        // id:this.$store.state.sellOrderId
+        // id:'400'
+        id:this.$store.state.sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 1
+          this.playMoneyState = 0
 
           if(this.playMoneyState==7){
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -336,8 +336,6 @@ export default{
 
   activated (){
     this.getCurrencyStatus()
-    this.Network_show = false
-    this.Network_show1 = false
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
@@ -351,6 +349,8 @@ export default{
   },
   deactivated (){
     clearInterval(this.timer)
+    this.Network_show = false
+    this.Network_show1 = false
     // this.$store.replaceState({})
   }
 }
