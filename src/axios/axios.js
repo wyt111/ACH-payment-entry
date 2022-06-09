@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Toast } from 'vant';
 import router from "../router";
+import store from '../store/index';
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
 
 //Request service address
@@ -61,7 +62,11 @@ function requestPrompt(response){
 
 //request interceptor
 axios.interceptors.request.use(function (config) {
-  return config;
+  config.cancelToken = new axios.CancelToken(function (cancel) {
+    store.commit('pushToken', {cancelToken: cancel})
+  })
+  return config
+  // return config;
 }, function (error) {
   return Promise.reject(error)
 });

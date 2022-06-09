@@ -240,11 +240,9 @@ export default{
     },
     //获取买币状态
     getCurrencyStatus(){
-      // console.log(this.$store.state.sellOrderId);
       let sellOrderId = sessionStorage.getItem('sellOrderId')
       let parmas = {
         // id:'426'
-        
         id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
@@ -594,7 +592,7 @@ export default{
   font-family: Jost-Bold, Jost;
   font-weight: 500;
   margin: .2rem 0 .05rem 0;
-  
+
 }
 .order-state_content{
     width: 100%;

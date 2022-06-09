@@ -49,7 +49,6 @@ export default {
   data(){
     return{
       agreement: false,
-      phone:0,
       sellForm: {
         firstname: "", // 传值需要加密处理
         lastname: "",   //  传值需要加密处理
@@ -60,6 +59,22 @@ export default {
         source: "1", // 来源 1=卖币添加 0=买币添加
       }
     }
+  },
+  //首页进入卖币卡表单页面清空缓存
+  beforeRouteEnter(to,from,next){
+    next(vm => {
+      if(to.path === '/sell-formUserInfo' && from.path === '/' && vm.$store.state.cardInfoFromPath !== 'sellOrder'){
+        vm.sellForm = {
+          firstname: "",
+          lastname: "",
+          phone: "",
+          email: "",
+          idType: "",
+          idNumber: "",
+          source: "1",
+        };
+      }
+    });
   },
   computed: {
     buttonState(){
@@ -81,6 +96,10 @@ export default {
       this.sellForm.phone = AES_Decrypt(this.sellForm.phone);
       this.sellForm.email = AES_Decrypt(this.sellForm.email);
       this.sellForm.idNumber = AES_Decrypt(this.sellForm.idNumber);
+    }
+    //首页进入卖币卡表单页面赋值默认值
+    if(this.$store.state.cardInfoFromPath === 'configSell'){
+      this.sellForm.email = AES_Decrypt(localStorage.getItem("email"));
     }
   },
   methods: {

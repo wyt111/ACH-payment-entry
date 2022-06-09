@@ -4,8 +4,8 @@
     <div class="buyCrypto_content">
       <div class="form_title pay_title">You Pay</div>
       <div class="methods_select cursor">
-        <!-- @keydown="inputChange"  @blur="youPayBlur" -->
-        <van-field class="pay_input" :type="youPaytype" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
+        <!-- @blur="youPayBlur" -->
+        <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
         <div class="get_company" @click="openSearch('currency-sell')">
           <div class="getImg"><img :src="currencyData.icon"></div>
           <div class="getText">{{ currencyData.name }}</div>
@@ -35,7 +35,7 @@
         </div>
         <div class="calculationProcess_line">
           <div class="line_name">{{ currencyData.name }} price</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ (feeInfo.price * feeInfo.rate).toFixed(6) }}</div>
+          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
         </div>
         <div class="calculationProcess_line" v-show="feeState">
           <div class="line_name">
@@ -48,12 +48,12 @@
               <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
-          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }}{{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(2) : '' }}</div>
+          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>
         </div>
         <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
         <div class="calculationProcess_line">
           <div class="line_name">Total</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }}{{ getAmount }}</div>
+          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ getAmount }}</div>
         </div>
       </div>
     </div>
@@ -86,7 +86,6 @@ export default {
       },
 
       payAmount: '',
-      youPaytype: 'Number', // Number | digit
       getAmount: '',
 
       //Expense information
@@ -251,7 +250,7 @@ export default {
         // this.feeInfo.price = this.feeInfo.rate * this.feeInfo.price;
         this.feeInfo.rampFee = ((this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee) + this.feeInfo.fixedFee) * this.feeInfo.rate;
         let newGetAmount = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
-        newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
+        newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(this.feeInfo.accuracy) : this.getAmount = 0;
       }
     },
 
@@ -264,13 +263,15 @@ export default {
 
       //将you pay的币种和国家数据合并在一起
       this.basicData.worldList.forEach((item,index)=>{
-        item.fiatList.forEach((item2,index2)=>{
-          this.basicData.fiatCurrencyList.forEach(item3=>{
-            if(item3.code === item2){
-              this.basicData.worldList[index].fiatList[index2] = item3;
-            }
+        if(item.fiatList){
+          item.fiatList.forEach((item2,index2)=>{
+            this.basicData.fiatCurrencyList.forEach(item3=>{
+              if(item3.code === item2){
+                this.basicData.worldList[index].fiatList[index2] = item3;
+              }
+            })
           })
-        })
+        }
       })
 
       //获取定位的国家信息
@@ -340,6 +341,7 @@ export default {
         //data - !null 有填写过表单,跳转到确认订单页
         if(res && res.returnCode === "0000" && res.data === null){
           this.$store.state.homeTabstate = 'sellCrypto';
+          this.$store.state.cardInfoFromPath = 'configSell';
           delete this.$store.state.sellForm;
           this.$router.push('/sell-formUserInfo')
         }else if(res && res.returnCode === "0000" && res.data !== null){
@@ -349,7 +351,7 @@ export default {
         }
       })
     },
-  }
+  },
 }
 </script>
 

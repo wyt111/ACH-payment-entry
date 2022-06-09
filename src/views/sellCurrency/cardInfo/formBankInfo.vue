@@ -8,7 +8,7 @@
           <div class="formContent" @click="openSearch"><input type="tel" v-model="sellForm.bank" disabled="true"></div>
         </div>
         <div class="formLine">
-          <div class="formTitle">Swit Code</div>
+          <div class="formTitle">Swift Code / BIC Code</div>
           <div class="formContent">
             <input type="text" v-model="sellForm.swiftCode" @input="sellForm.swiftCode = sellForm.swiftCode.replace(/[^\x00-\xff]/g, '')"/>
           </div>
@@ -45,7 +45,6 @@ export default {
       },
       bankList: [],
       searchViewState: false,
-      name: 1,
     }
   },
   computed: {
@@ -56,6 +55,21 @@ export default {
         return true;
       }
     }
+  },
+  //首页进入卖币卡表单页面清空缓存
+  beforeRouteEnter(to,from,next){
+    next(vm => {
+      if(to.path === '/sell-formBankInfo' && from.path === '/sell-formAddress'){
+        vm.sellForm = {
+          cardNumber: "",
+          worldBankId: "",
+          bank: "",
+          swiftCode: "",
+          userCardId: "",
+          source: "1",
+        };
+      }
+    });
   },
   activated(){
     //合并解密参数

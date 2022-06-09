@@ -58,8 +58,8 @@ Three channels for successful payment --- 'depositType'
 export default {
   data(){
     return{
-      orderStatus: 5, // 5: success 0: error 6: timeOut
-      depositType: 1, // 1 :ach钱包 2: address
+      orderStatus: '', // 5: success 0: error 6: timeOut
+      depositType: '', // 1 :ach钱包 2: address
       resultText: '',
       detailsParameters: {},
       countDown: null,

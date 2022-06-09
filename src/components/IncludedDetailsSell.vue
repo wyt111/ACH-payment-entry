@@ -11,7 +11,7 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ currencyData.name }} price</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ (feeInfo.price * feeInfo.rate).toFixed(6) }}</div>
+        <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
       </div>
       <div class="calculationProcess_line" v-show="feeState">
         <div class="line_name">
@@ -24,12 +24,12 @@
             <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
           </el-popover>
         </div>
-        <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }}{{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(2) : '' }}</div>
+        <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>
       </div>
       <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
       <div class="calculationProcess_line">
         <div class="line_name">Total</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }}{{ routerParams.getAmount }}</div>
+        <div class="line_number">{{ feeInfo.fiatSymbol }} {{ routerParams.getAmount }}</div>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
       </div>
       <div class="calculationProcess_line">
         <div class="line_name">{{ orderState.cryptoCurrency }} price</div>
-        <div class="line_number">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate *orderState.fiatRate)*100) /100 }}</div>
+        <div class="line_number">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate * orderState.fiatRate)*100) /100 }}</div>
       </div>
       <div class="calculationProcess_line" v-show="feeState">
         <div class="line_name">

@@ -91,6 +91,7 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
+            this.$router.push('/');
           }
         })
       }

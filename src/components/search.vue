@@ -313,13 +313,15 @@ export default {
         this.basicData = [];
         let newWorldList = [];
         this.allBasicData.worldList.forEach(item=>{
-          item.fiatList.forEach(item2=>{
-            let fiat = {
-              code: item2.code,
-            }
-            fiat = {...fiat,...item};
-            newWorldList.push(fiat);
-          })
+          if(item.fiatList){
+            item.fiatList.forEach(item2=>{
+              let fiat = {
+                code: item2.code,
+              }
+              fiat = {...fiat,...item};
+              newWorldList.push(fiat);
+            })
+          }
         });
         this.basicData = newWorldList;
         // this.basicData = newWorldList.filter(item=>{console.log(item)}); //return item.sellEnable === 0

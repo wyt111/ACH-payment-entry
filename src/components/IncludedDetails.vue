@@ -15,7 +15,7 @@
       </div>
       <div class="paymentInformation-line">
         <div class="line_name">{{ routerParams.name }} price</div>
-        <div class="line_number">{{ payCommission.symbol }}{{ (feeInfo.price * routerParams.exchangeRate).toFixed(6) }}</div>
+        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
       </div>
       <div class="paymentInformation-line" v-show="feeState">
         <div class="line_name">
@@ -28,16 +28,16 @@
             <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
           </el-popover>
         </div>
-        <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }}{{ payCommission.rampFee }}</div>
+        <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
       </div>
       <div class="paymentInformation-line" v-show="feeState">
         <div class="line_name">Network fee</div>
-        <div class="line_number">{{ payCommission.symbol }}{{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(2) }}</div>
+        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
       </div>
       <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
       <div class="paymentInformation-line">
         <div class="line_name">Total</div>
-        <div class="line_number">{{ payCommission.symbol }}{{ routerParams.amount }}</div>
+        <div class="line_number">{{ payCommission.symbol }} {{ routerParams.amount }}</div>
       </div>
     </div>
   </div>

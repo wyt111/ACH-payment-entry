@@ -14,7 +14,7 @@
             <router-view v-else/>
           </div>
           <!-- 菜单栏 -->
-          <routerMenu class="routerView" v-if="!routerViewState" />
+          <routerMenu v-if="!routerViewState" />
           <!-- 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
         </div>
@@ -53,6 +53,7 @@ export default {
       return this.$route.meta.keepAlive;
     }
   },
+
   mounted(){
     this.obtainWidth();
     //Vuex store data

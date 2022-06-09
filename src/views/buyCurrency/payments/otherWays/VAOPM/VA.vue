@@ -7,7 +7,7 @@
         <div class="logo"><img :src='require(`@/assets/images/bankCard/${item.bankLogo}`)'></div>
         <div class="name">{{ item.bankCardName }} <span>- {{ item.bankCardFullName }}</span></div>
         <div class="option">
-          <input type="checkbox" v-model="item.check" :value="item.check">
+          <input type="checkbox" v-model="item.check" :value="item.check" @click="bankCardList[index].check=false">
         </div>
       </div>
     </div>
@@ -59,11 +59,13 @@ export default {
       codeState: false,
     }
   },
+
   mounted(){
     this.receiveinfo();
   },
   methods:{
     receiveinfo(){
+      this.routerParams = JSON.parse(this.$route.query.routerParams)
       //Selected Receive local data
       if(sessionStorage.getItem("indonesiaPayment")){
         this.payExplain = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -75,17 +77,16 @@ export default {
         this.$parent.paymentCountDownMinute = this.payExplain.paymentCountDownMinute;
         this.$parent.startPayment = true;
         this.refreshPaystate();
-        this.routerParams = JSON.parse(this.$route.query.routerParams);
         return;
       }
-      this.routerParams = JSON.parse(this.$route.query.routerParams)
       //No choice Initialization data
       this.initializationData();
     },
 
     //Help information add drop-down status add Fetch data
     initializationData(){
-      let newData = allBankCards.filter(item => {
+      let newData = allBankCards.filter((item,index) => {
+        allBankCards[index].check = false;
         return item.allHelpTips.filter(value => {
           return value.openState = false
         })

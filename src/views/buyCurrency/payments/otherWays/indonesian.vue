@@ -14,7 +14,10 @@
         <div class="payAmountInfo-title">Paying with</div>
         <div class="payAmountInfo-box ovoPhone">
           <div class="region">+ 62</div>
-          <div class="input"><input type="text" v-model="phone" :disabled="ovoLoading"  oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="10"><sapn class="loading" v-if="ovoLoading"><van-loading color="#1989fa" /></sapn></div>
+          <div class="input">
+            <van-field class="number_input" type="digit" v-model="phone" :disabled="ovoLoading" maxlength="10"/>
+            <sapn class="loading" v-if="ovoLoading"><van-loading color="#1989fa" /></sapn>
+          </div>
         </div>
       </div>
       <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">Open OVO app to complete payment.</div>
@@ -76,7 +79,9 @@ export default {
   },
   computed: {
     disabled() {
-      if(this.childData.agreement === true){
+      if(this.childData.agreement === true && (this.parameter.payWayCode === '10005' || this.parameter.payWayCode === '10004')){
+        return false;
+      }else if(this.childData.agreement === true && this.phone !== '' && this.parameter.payWayCode === '10006'){
         return false;
       }else{
         return true;
@@ -225,6 +230,8 @@ export default {
     },
   },
   destroyed(){
+    this.$store.commit("clearToken"); //取消请求
+    this.$store.commit("emptyToken"); // 清空token数组
     clearInterval(this.paystateTimeOut);
     clearInterval(this.paymentCountDown);
     sessionStorage.removeItem("indonesiaPayment");
@@ -336,5 +343,12 @@ export default {
 
 .IncludedDetails_top{
   margin-top: 0.4rem;
+}
+
+.number_input{
+  background: #F3F4F5;
+}
+.number_input ::v-deep .van-field__control{
+  letter-spacing: 4px !important;
 }
 </style>

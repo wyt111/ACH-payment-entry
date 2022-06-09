@@ -96,6 +96,24 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to,from,next) {
+    next(vm => {
+      if (from.path === '/' && to.path === '/receivingMode') {
+        vm.buyParams = {
+          cryptoCurrency: "",
+          address: "",
+          network: "",
+          fiatCurrency: "",
+          amount: 0,
+          depositType: 1,
+          payWayCode: '' //支付方式
+        };
+        vm.checkModel = [];
+        vm.networkRegular = '';
+        vm.walletAddress_state = false;
+      }
+    })
+  },
   activated() {
     this.routingInformation();
   },
@@ -221,10 +239,12 @@ export default {
       }else{
         buyParams.depositType = 2;
       }
+
+      //商户接入字段 下单接口参数
       let merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
-      delete merchantInfo.networkDefault;
-      delete merchantInfo.addressDefault;
-      buyParams = {...buyParams, ...merchantInfo};
+      if(merchantInfo.merchantParam_state === true){
+        buyParams.merchantParam = merchantInfo.merchantParam;
+      }
 
       //跳转选择支付方式 支付方式页调取下单接口
       let ordParams = JSON.parse(this.$route.query.routerParams);

@@ -28,8 +28,25 @@ const store = new Vuex.Store({
 
         routerParams: {},
         feeParams: {},
-        sellForm: {},
         sellOrderId: '',
+
+        cancelTokenArr: [],
+    },
+    mutations: {
+        pushToken (state, payload) {
+            state.cancelTokenArr.push(payload.cancelToken)
+        },
+        clearToken ({ cancelTokenArr }) {
+            cancelTokenArr.forEach(item => {
+                if(item){
+                    item('路由跳转取消请求')
+                }
+            })
+            cancelTokenArr = []
+        },
+        emptyToken (state, payload) {
+            state.cancelTokenArr = []
+        }
     }
 })
 

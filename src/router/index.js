@@ -85,7 +85,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-address.vue"),
     meta: {
       requireAuth: true,
-      fromPage: 'basisIdAuth',
+      // fromPage: 'basisIdAuth',
       title: 'Enter personal address',
       keepAlive: true,
     }
@@ -97,7 +97,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue"),
     meta: {
       requireAuth: true,
-      fromPage: 'basisIdAuth',
+      // fromPage: 'basisIdAuth',
       title: 'Enter card details',
       keepAlive: true,
     }
@@ -150,13 +150,12 @@ export const constantRoutes = [
   {
     path: "/sell-formUserInfo",
     name: 'sell-formUserInfo',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
+    component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
     meta: {
       requireAuth: true,
       title: 'Enter Information',
       keepAlive: true,
-    }
+    },
   },
   {
     path: "/sell-formAddress",

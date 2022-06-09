@@ -61,6 +61,7 @@ export default {
   data(){
     return{
       routerParams: {},
+      buyParams: {},
 
       cardCheck: '',
       savedCard: [],
@@ -83,16 +84,26 @@ export default {
       }
     }
   },
-  activated(){
-    this.routerParams = JSON.parse(this.$route.query.routerParams);
-    this.cardCheck = '';
-    this.savedCard = [];
-    this.paymethodCheck = '';
-    this.paymethodList = [];
-    this.payMethod = {};
-    this.queryPayMethods();
+  beforeRouteEnter(to,from,next){
+    next(vm => {
+      if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
+        vm.InitializationData();
+      }
+    })
+  },
+  mounted(){
+    this.InitializationData();
   },
   methods: {
+    InitializationData(){
+      this.routerParams = JSON.parse(this.$route.query.routerParams);
+      this.cardCheck = '';
+      this.savedCard = [];
+      this.paymethodCheck = '';
+      this.paymethodList = [];
+      this.payMethod = {};
+      this.queryPayMethods();
+    },
     queryPayMethods(){
       let _this = this;
       this.$axios.get(this.$api.get_payMethods + this.routerParams.payCommission.code,'').then(res=>{
@@ -145,13 +156,6 @@ export default {
         //确认下单 获取订单id
         this.buyParams = JSON.parse(this.$route.query.placeOrderQuery);
         this.buyParams.payWayCode = this.payMethod.payWayCode;
-        //商户接入字段
-        if(sessionStorage.getItem("accessMerchantInfo")){
-          let merchantParam = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
-          delete merchantParam.addressDefault;
-          delete merchantParam.networkDefault;
-          JSON.stringify(merchantParam) !== '{}' ? this.buyParams.merchantParam = JSON.stringify(merchantParam) : '';
-        }
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){
             let oldRouterQuery = JSON.parse(this.$route.query.routerParams);

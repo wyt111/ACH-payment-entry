@@ -74,7 +74,6 @@ export default {
   color: #FAFAFA;
   border: none;
   cursor: pointer;
-  //margin-bottom: 0.15rem;
   margin-top: 0.15rem;
   i{
     font-size: 0.24rem;
@@ -84,5 +83,6 @@ export default {
 }
 .button[disabled] {
   background: rgba(68, 121, 217, 0.5) !important;
+  cursor: no-drop;
 }
 </style>

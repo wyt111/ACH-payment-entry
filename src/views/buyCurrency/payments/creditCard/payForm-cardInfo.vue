@@ -13,10 +13,10 @@
             <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
           </div>
         </div>
-        <div class="formLine">
-          <div class="formTitle">Email</div>
-          <div class="formContent"><input type="email" v-model="params.email"></div>
-        </div>
+<!--        <div class="formLine">-->
+<!--          <div class="formTitle">Email</div>-->
+<!--          <div class="formContent"><input type="email" v-model="params.email"></div>-->
+<!--        </div>-->
 
         <div class="formLine">
           <div class="formTitle">
@@ -26,7 +26,9 @@
               <img v-if="masterState" src="../../../../assets/images/masterIcon.png">
             </div>
           </div>
-          <div class="formContent cardNumber"><input type="text" v-model="params.cardNumber" @input="cardChange" maxlength="23"></div>
+          <div class="formContent">
+            <van-field class="number_input" type="digit" v-model="params.cardNumber" @input="cardChange" @blur="cardBlur" maxlength="23"/>
+          </div>
         </div>
         <!-- error tips -->
         <div class="errorTips" v-if="errorCard">Please enter a valid card number.</div>
@@ -89,26 +91,31 @@ export default {
       }
     },
   },
-  // beforeRouteEnter(to,from,next){
-  //   if(from.path === '/creditCardConfig'){
-  //     to.meta.fromPage = 'creditCardConfig'
-  //   }else{
-  //     to.meta.fromPage = 'basisIdAuth'
-  //   }
-  //   next();
-  // },
+  //选择支付方式页选择新增卡信息进入 - configPaymentFrom判断是否是新增卡信息
+  beforeRouteEnter(to,from,next){
+    next(vm => {
+      if(from.path === '/paymentMethod' && to.path === '/creditCardForm-cardInfo' && !from.query.configPaymentFrom){
+        vm.params = {
+          firstname: "",
+          lastname: "",
+          email: AES_Decrypt(localStorage.getItem("email")),
+          cardNumber: "",
+          cardCvv: "",
+          cardExpireYear: "",
+          cardExpireMonth: "",
+        };
+        vm.timeData = "";
+        vm.visaState = true;
+        vm.masterState = true;
+        vm.errorCard = false;
+        vm.errorCvv = false;
+        vm.errorTime = false
+      }
+    });
+  },
   activated(){
-    this.params = {
-      firstname: "",
-      lastname: "",
-      email: "",
-      cardNumber: "",
-      cardCvv: "",
-      cardExpireYear: "",
-      cardExpireMonth: "",
-    };
     //获取地址卡信息或历史卡信息
-    if(this.$route.query.submitForm){
+    if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
       (addressForm.cardNumber !== undefined && addressForm.cardNumber !== "") ? addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+')) : '';
       //去除地址栏穿参导致参数中拼有空格问题
@@ -130,14 +137,6 @@ export default {
     }
   },
   watch: {
-    //Add a space between every four digits of the credit card number
-    ['params.cardNumber'](val) {
-      this.$nextTick(() => {
-        if(val !== '' && val !== undefined){
-          this.params.cardNumber = val.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
-        }
-      });
-    },
     //Enter date limit manually - Store value before change
     timeData(val,oldVal){
       this.oldTimeData = oldVal;
@@ -184,14 +183,31 @@ export default {
       })
     },
 
-    cardChange(val){
+    //卡号验证
+    cardBlur(){
+      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
+      let firstCardNumber = cardNumber.substring(0,1);
+      let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
+      if(this.params.cardNumber === '' || !regular.test(cardNumber)){
+        this.errorCard = true;
+      }else {
+        this.errorCard = false;
+      }
+    },
+
+    cardChange(value){
+      //Add a space between every four digits of the credit card number
+      if(value !== '' && value !== undefined){
+        this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
+      }
+      //判断卡号是Visa or Master
       setTimeout(()=>{
-        if(Number(val.target.value) === 4){
+        if(Number(value) === 4){
           this.masterState = false;
           this.visaState = true;
           return;
         }
-        if(Number(val.target.value) === 5){
+        if(Number(value) === 5){
           this.masterState = true;
           this.visaState = false;
           return;
@@ -204,10 +220,10 @@ export default {
     //验证、提交卡信息
     submitPay(){
       //email验证
-      if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.params.email)){
-        this.$toast("not a valid email.");
-        return;
-      }
+      // if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.params.email)){
+      //   this.$toast("not a valid email.");
+      //   return;
+      // }
 
       //卡号验证
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
@@ -238,7 +254,7 @@ export default {
 
       queryParams.firstname = AES_Encrypt(queryParams.firstname);
       queryParams.lastname = AES_Encrypt(queryParams.lastname);
-      queryParams.email = AES_Encrypt(queryParams.email);
+      queryParams.email = localStorage.getItem("email");
 
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
         if(res && res.returnCode === '0000'){
@@ -363,6 +379,26 @@ export default {
   left: 0;
   box-shadow: 0 0 40px #4479D9;
   border-radius: 0 0 25px 25px;
+}
+
+//数字输入框
+.van-cell{
+  padding: 0 !important;
+}
+.number_input ::v-deep .van-field__control{
+  width: 100%;
+  min-height: 0.6rem;
+  background: #F3F4F5;
+  border-radius: 10px;
+  font-size: 0.16rem;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  padding: 0 0.2rem;
+  &::placeholder{
+    color: #999999 !important;
+  }
 }
 </style>
 <style>

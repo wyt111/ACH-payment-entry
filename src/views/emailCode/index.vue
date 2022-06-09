@@ -138,8 +138,10 @@ export default {
                     _this.$router.push('/configSell')
                   }
                 })
-              }else{
+              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
                 _this.$router.push('/sellOrder');
+              }else{
+                _this.$router.push('/');
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){

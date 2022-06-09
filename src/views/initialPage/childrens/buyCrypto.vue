@@ -35,7 +35,7 @@
         </div>
         <div class="calculationProcess_line">
           <div class="line_name">{{ currencyData.name }} price</div>
-          <div class="line_number">{{ payCommission.symbol }}{{ Number(feeInfo.price).toFixed(6) }}</div>
+          <div class="line_number">{{ payCommission.symbol }} {{ Number(feeInfo.price).toFixed(payCommission.decimalDigits) }}</div>
         </div>
         <div class="calculationProcess_line" v-show="feeState">
           <div class="line_name">
@@ -48,16 +48,16 @@
               <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
-          <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }}{{ payCommission.rampFee }}</div>
+          <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
         </div>
         <div class="calculationProcess_line" v-show="feeState">
           <div class="line_name">Network fee</div>
-          <div class="line_number">{{ payCommission.symbol }}{{ Number(feeInfo.networkFee).toFixed(2) }}</div>
+          <div class="line_number">{{ payCommission.symbol }} {{ Number(feeInfo.networkFee).toFixed(payCommission.decimalDigits) }}</div>
         </div>
         <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
         <div class="calculationProcess_line">
           <div class="line_name">Total</div>
-          <div class="line_number">{{ payCommission.symbol }}{{ payAmount }}</div>
+          <div class="line_number">{{ payCommission.symbol }} {{ payAmount }}</div>
         </div>
       </div>
     </div>
@@ -286,7 +286,7 @@ export default {
         //取出费用最小的值rampFee
         let rampFeeList = [];
         this.payCommission.payCommission.forEach(item=>{
-          rampFeeList.push((Number(item.feeRate) * Number(this.payAmount) + item.fixedFee).toFixed(2));
+          rampFeeList.push((Number(item.feeRate) * Number(this.payAmount) + item.fixedFee).toFixed(this.payCommission.decimalDigits));
         })
         this.payCommission.rampFee = Math.min(...rampFeeList);
         //Filter exchange rate - Calculate cost and accepted quantity
@@ -364,17 +364,8 @@ export default {
       //There is no merchant information in the address column - Copy local cache
       let oldMerchantParams = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : {};
       //Obtain merchant order information in the address bar
-      let merchantParams = {
-        merchantNo: this.$route.query.merchantNo,
-        mail: this.$route.query.mail,
-        crypto: this.$route.query.crypto,
-        network: this.$route.query.network,
-        address: this.$route.query.address,
-        redirectUrl: this.$route.query.redirectUrl,
-        callbackUrl: this.$route.query.callbackUrl,
-        sign: this.$route.query.sign,
-      }
-
+      let merchantParams = {};
+      merchantParams = this.$route.query;
       if(((merchantParams.merchantNo === undefined || merchantParams.merchantNo === '')&&oldMerchantParams!=={} && oldMerchantParams.merchantNo !== '' && oldMerchantParams.merchantNo !== undefined)){
         merchantParams = oldMerchantParams
       }
@@ -399,6 +390,17 @@ export default {
       delete params.networkDefault;
       delete params.addressDefault;
       this.$axios.get(this.$api.get_orderVerification, params).then(res=>{
+        //商户信息接口success创建订单添加merchantParam参数
+        if(res && res.returnCode === "0000"){
+          this.cryptoSate = true;
+          merchantParams.merchantParam = this.$route.fullPath.substring(2,this.$route.fullPath.length)
+          merchantParams.merchantParam_state = true;
+          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
+        }else{
+          this.cryptoSate = true;
+          merchantParams.merchantParam_state = false;
+          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
+        }
         //network address All passed the verification
         if(res && res.returnCode === "0000" && res.success === true && res.data === null){
           this.cryptoSate = false;
