@@ -35,7 +35,7 @@
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="outLogin">
+    <div class="routerMenu_line" @click="outLogin" v-if="email !== ''">
       <div class="lineIcon"><img src="../assets/images/menu/icon6.png"></div>
       <div class="lineName">Log Out</div>
       <div class="lineRight">

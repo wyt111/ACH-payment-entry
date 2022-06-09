@@ -43,7 +43,9 @@
         <div class="formLine">
           <div>
             <div class="formTitle">CVV</div>
-            <div class="formContent"><input type="text" v-model="params.cardCvv" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4"></div>
+            <div class="formContent">
+              <van-field class="number_input" type="digit" v-model="params.cardCvv" maxlength="4"/>
+            </div>
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
@@ -69,6 +71,7 @@ export default {
         cardCvv: "",
         cardExpireYear: "",
         cardExpireMonth: "",
+        source: 0,
       },
 
       timeData: '',
@@ -95,6 +98,7 @@ export default {
   beforeRouteEnter(to,from,next){
     next(vm => {
       if(from.path === '/paymentMethod' && to.path === '/creditCardForm-cardInfo' && !from.query.configPaymentFrom){
+        console.log("触发")
         vm.params = {
           firstname: "",
           lastname: "",
@@ -115,7 +119,7 @@ export default {
   },
   activated(){
     //获取地址卡信息或历史卡信息
-    if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
+      if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
       (addressForm.cardNumber !== undefined && addressForm.cardNumber !== "") ? addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+')) : '';
       //去除地址栏穿参导致参数中拼有空格问题
@@ -255,6 +259,7 @@ export default {
       queryParams.firstname = AES_Encrypt(queryParams.firstname);
       queryParams.lastname = AES_Encrypt(queryParams.lastname);
       queryParams.email = localStorage.getItem("email");
+      queryParams.source = 0;
 
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
         if(res && res.returnCode === '0000'){

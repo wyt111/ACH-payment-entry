@@ -7,11 +7,13 @@
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
-          <div class="routerView" v-show="routerViewState">
-            <keep-alive v-if="keepAlive">
-              <router-view/>
-            </keep-alive>
-            <router-view v-else/>
+          <div class="routerView_box" v-if="routerViewState">
+            <div class="routerView" v-show="keepAlive">
+              <keep-alive class="keepAlive">
+                <router-view/>
+              </keep-alive>
+            </div>
+            <div class="routerView" v-show="!keepAlive"><router-view class="noKeepAlive"/></div>
           </div>
           <!-- 菜单栏 -->
           <routerMenu v-if="!routerViewState" />
@@ -190,9 +192,15 @@ html,body,#app,#viewBox{
   width: 100%;
   display: flex;
   flex-direction: column;
-  .routerView{
+  .routerView_box{
     flex: 1;
     overflow: auto;
+  }
+  .routerView{
+    height: 100%;
+    .noKeepAlive,.KeepAlive{
+      height: 100%;
+    }
     &>div{
       height: 100%;
     }

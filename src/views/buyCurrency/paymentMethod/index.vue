@@ -84,53 +84,62 @@ export default {
       }
     }
   },
-  beforeRouteEnter(to,from,next){
-    next(vm => {
-      if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
-        vm.InitializationData();
-      }
-    })
-  },
+  // beforeRouteEnter(to,from,next){
+  //   next(vm => {
+  //     if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
+  //       console.log(vm)
+  //       vm.InitializationData();
+  //     }
+  //   })
+  // },
   mounted(){
+    // this.InitializationData();
+  },
+  activated() {
     this.InitializationData();
+    // console.log(this.paymethodList,'---this.paymethodList')
   },
   methods: {
-    InitializationData(){
+    async InitializationData(){
       this.routerParams = JSON.parse(this.$route.query.routerParams);
       this.cardCheck = '';
       this.savedCard = [];
       this.paymethodCheck = '';
       this.paymethodList = [];
       this.payMethod = {};
-      this.queryPayMethods();
+      await this.queryPayMethods();
     },
-    queryPayMethods(){
-      let _this = this;
-      this.$axios.get(this.$api.get_payMethods + this.routerParams.payCommission.code,'').then(res=>{
+    async queryPayMethods(){
+      // let _this = this;
+      await this.$axios.get(this.$api.get_payMethods + this.routerParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
-          _this.paymethodList = res.data.fiatPayment;
-          _this.userPayment = res.data.userPayment;
-          _this.savedCard = [];
-          //处理历史交易方式 - 匹配货币支持的支付方式,添加payWayCode、payWayName
-          Object.keys(res.data.userPayment).forEach(item=>{
-            res.data.userPayment[item].forEach((item2,index2)=>{
-              res.data.userPayment[item][index2].cardNumber = AES_Decrypt(item2.cardNumber);
-              _this.paymethodList.forEach(item3=>{
-                if(item === item3.payWayCode){
-                  res.data.userPayment[item][index2].payWayCode = item3.payWayCode;
-                  res.data.userPayment[item][index2].payWayName = item3.payWayName;
-                  _this.savedCard.push(item2);
-                }
+          this.$nextTick(()=>{
+            this.paymethodList = res.data.fiatPayment;
+            this.userPayment = res.data.userPayment;
+            this.savedCard = [];
+            //处理历史交易方式 - 匹配货币支持的支付方式,添加payWayCode、payWayName
+            Object.keys(res.data.userPayment).forEach(item=>{
+              res.data.userPayment[item].forEach((item2,index2)=>{
+                res.data.userPayment[item][index2].cardNumber = AES_Decrypt(item2.cardNumber);
+                console.log(res.data.userPayment[item][index2].cardNumber,"-----AES_Decrypt(item2.cardNumber)")
+                this.paymethodList.forEach(item3=>{
+                  if(item === item3.payWayCode){
+                    res.data.userPayment[item][index2].payWayCode = item3.payWayCode;
+                    res.data.userPayment[item][index2].payWayName = item3.payWayName;
+                    this.savedCard.push(item2);
+                  }
+                })
               })
+            });
+            //只有10001放开历史卡信息功能 - 筛选10001信息
+            this.savedCard = this.savedCard.filter(item=>{
+              return item.payWayCode === '10001';
             })
-          });
-          //只有10001放开历史卡信息功能 - 筛选10001信息
-          _this.savedCard = _this.savedCard.filter(item=>{
-            return item.payWayCode === '10001';
+            //只有信用卡开放历史卡信息功能
+            this.savedCard.length !== 0 ? this.choiseSavedCard(this.savedCard[0],0) : '';
+            this.$forceUpdate();
           })
-          //只有信用卡开放历史卡信息功能
-          _this.savedCard.length !== 0 ? _this.choiseSavedCard(_this.savedCard[0],0) : '';
         }
       })
     },

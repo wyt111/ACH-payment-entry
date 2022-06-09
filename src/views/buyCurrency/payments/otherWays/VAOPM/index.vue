@@ -131,6 +131,11 @@ export default {
       })
     },
   },
+  destroyed() {
+    console.log("close")
+    this.$store.commit("clearToken"); //取消请求
+    this.$store.commit("emptyToken"); // 清空token数组
+  }
 }
 </script>
 
