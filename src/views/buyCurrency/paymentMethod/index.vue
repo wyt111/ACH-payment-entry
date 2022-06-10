@@ -84,19 +84,18 @@ export default {
       }
     }
   },
-  // beforeRouteEnter(to,from,next){
-  //   next(vm => {
-  //     if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
-  //       console.log(vm)
-  //       vm.InitializationData();
-  //     }
-  //   })
-  // },
+  beforeRouteEnter(to,from,next){
+    next(vm => {
+      if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
+        vm.InitializationData();
+      }
+    })
+  },
   mounted(){
-    // this.InitializationData();
+    this.InitializationData();
   },
   activated() {
-    this.InitializationData();
+    // this.InitializationData();
     // console.log(this.paymethodList,'---this.paymethodList')
   },
   methods: {
@@ -122,7 +121,6 @@ export default {
             Object.keys(res.data.userPayment).forEach(item=>{
               res.data.userPayment[item].forEach((item2,index2)=>{
                 res.data.userPayment[item][index2].cardNumber = AES_Decrypt(item2.cardNumber);
-                console.log(res.data.userPayment[item][index2].cardNumber,"-----AES_Decrypt(item2.cardNumber)")
                 this.paymethodList.forEach(item3=>{
                   if(item === item3.payWayCode){
                     res.data.userPayment[item][index2].payWayCode = item3.payWayCode;
@@ -314,6 +312,7 @@ export default {
   }
   .continue:disabled{
     background: rgba(68, 121, 217, 0.5) !important;
+    cursor: no-drop;
   }
 }
 .IncludedDetails{

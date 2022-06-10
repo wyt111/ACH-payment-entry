@@ -5,10 +5,12 @@
       <div class="content">
         <div class="formLine">
           <div class="formTitle">Bank</div>
-          <div class="formContent" @click="openSearch"><input type="tel" v-model="sellForm.bank" disabled="true"></div>
+          <div class="formContent" @click="openSearch">
+            <input type="tel" v-model="sellForm.bank" disabled="true">
+          </div>
         </div>
         <div class="formLine">
-          <div class="formTitle">Swift Code / BIC Code</div>
+          <div class="formTitle">{{ dynamicFormTitle }}</div>
           <div class="formContent">
             <input type="text" v-model="sellForm.swiftCode" @input="sellForm.swiftCode = sellForm.swiftCode.replace(/[^\x00-\xff]/g, '')"/>
           </div>
@@ -16,7 +18,8 @@
         <div class="formLine">
           <div class="formTitle">Account No</div>
           <div class="formContent">
-            <van-field class="number_input" type="digit" v-model="sellForm.cardNumber"/>
+<!--            <van-field class="number_input" type="digit" v-model="sellForm.cardNumber" />-->
+            <input type="text" v-model="sellForm.cardNumber" @input="sellForm.cardNumber = sellForm.cardNumber.replace(/[^\x00-\xff]/g, '')"/>
           </div>
         </div>
       </div>
@@ -45,6 +48,7 @@ export default {
       },
       bankList: [],
       searchViewState: false,
+      dynamicFormTitle: "Swift Code / BIC Code", //ACH Code
     }
   },
   computed: {
@@ -72,6 +76,7 @@ export default {
     });
   },
   activated(){
+    this.$store.state.routerParams.payCommission.fiatCode === 'USD' ? this.dynamicFormTitle = "ACH Code" : this.dynamicFormTitle = 'Swift Code / BIC Code';
     //合并解密参数
     if(this.$store.state.sellForm){
       let oldSellForm = {...this.sellForm,...this.$store.state.sellForm};

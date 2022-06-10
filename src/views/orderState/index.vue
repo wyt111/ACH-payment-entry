@@ -250,15 +250,17 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 5
+          // this.playMoneyState = 7
 
           if(this.playMoneyState==7){
-            sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
-            sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
-            clearInterval(this.timer)
-            this.$store.replaceState({})
-            this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
-            this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
+            // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
+            // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
+            // sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
+            // clearInterval(this.timer)
+            // this.$store.replaceState({})
+            // this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
+            // this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
+            // this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
             return
           }
           if(this.playMoneyState==5){
@@ -269,10 +271,12 @@ export default{
             this.playMoneyState = 7
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
+            sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
             clearInterval(this.timer)
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
+            this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
             return
           }
 

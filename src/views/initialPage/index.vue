@@ -1,23 +1,23 @@
 <template>
   <div id="homePage">
     <div class="homePage_content" v-show="searchState">
-      <div class="homePage_view" v-if="!menuState">
+      <div class="homePage_view" v-show="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="$store.state.homeTabstate='buyCrypto'">Buy Crypto</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="$store.state.homeTabstate='sellCrypto'">Sell Crypto</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')">Buy Crypto</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')">Sell Crypto</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
           </div>
         </div>
         <div class="home-children">
-          <buyCrypto v-if="tabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>
-          <sellCrypto v-else-if="tabstate === 'sellCrypto'" :allBasicData="basicData" ref="sellCrypto_ref"/>
+          <buyCrypto v-if="$store.state.homeTabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>
+          <sellCrypto v-else-if="$store.state.homeTabstate === 'sellCrypto'" :allBasicData="basicData" ref="sellCrypto_ref"/>
         </div>
       </div>
       <!--  menu view  -->
-      <div v-else>
+      <div v-show="menuState">
         <div class="navigationBar_view">
           <div class="navigationBar_view_left">Menu</div>
           <div class="navigationBar_view_right">
@@ -51,11 +51,22 @@ export default {
       choiseItem: {},
     }
   },
-  mounted(){
+  activated(){
+    console.log(this.$store.state,"teed")
     this.queryInfo();
+  },
+  watch: {
+    '$store.state': {
+      deep: true,
+      immediate: true,
+      handler(val){
+        console.log(val,"---val")
+      }
+    }
   },
   computed: {
     tabstate(){
+      // console.log(this.$store.state.homeTabstate,"teed")
       return this.$store.state.homeTabstate;
     }
   },
@@ -67,6 +78,10 @@ export default {
     },
     openMenu(){
       this.menuState = this.menuState === true ? false : true;
+    },
+    switchTab(tab){
+      this.$store.state.homeTabstate = tab;
+      console.log(tab,this.$store.state.homeTabstate)
     },
     queryInfo(){
       let _this = this;

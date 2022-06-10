@@ -6,19 +6,19 @@
     <div class="receiveCoins-view" v-show="!searchViewState" ref="includedDetails_ref">
       <div class="receiveCoins-content">
         <div class="promptInformation">
-          <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
+          <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span> <!-- Please provide cryptocurrency address to receive your order -->
           <span v-else>Enter your wallet address.</span>
         </div>
-        <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">
-          <div class="methods">
-            <div class="methods_name">Deposit to Alchemy Pay Wallet</div>
-            <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>
-          </div>
-          <div v-if="checkModel[0]==='ach'">
-            <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>
-            <div class="methods_account">Account: <span>{{ email }}</span></div>
-          </div>
-        </div>
+<!--        <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">-->
+<!--          <div class="methods">-->
+<!--            <div class="methods_name">Deposit to Alchemy Pay Wallet</div>-->
+<!--            <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>-->
+<!--          </div>-->
+<!--          <div v-if="checkModel[0]==='ach'">-->
+<!--            <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>-->
+<!--            <div class="methods_account">Account: <span>{{ email }}</span></div>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="collectionMethod" @click="checkMethods('address')">
           <div class="methods">
             <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
@@ -65,7 +65,7 @@ export default {
     return{
       routerParams: {},
       email: "",
-      checkModel: [],
+      checkModel: ['address'],
       //ach支持的币种可以选择
       supportCurrency: true,
       //select network
@@ -89,7 +89,9 @@ export default {
   },
   computed: {
     disabled(){
-      if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
+      console.log(this.buyParams.network,this.buyParams.address,this.checkModel)
+      // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
+      if(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!==''){
         return false
       }else{
         return true
@@ -159,8 +161,9 @@ export default {
         this.supportCurrency = false;
         this.supportCurrency === false ? this.checkModel[0] = 'address' : '';
       }else {
-        this.supportCurrency = true;
-        this.receivingMode();
+        this.supportCurrency = false;
+        // this.receivingMode();
+        this.checkModel[0] = 'address'
       }
     },
 

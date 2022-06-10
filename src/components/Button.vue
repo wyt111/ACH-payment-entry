@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :disabled="disabled" @click="submit">
+  <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}">
     <slot v-if="buttonData.customName"/>
     <div v-else>{{ buttonName }}</div>
     <i v-if="buttonData.loading" class="el-icon-loading"></i>
@@ -22,6 +22,10 @@ export default {
       default: null
     },
     disabled: {
+      type: Boolean,
+      default: null
+    },
+    loadingDisabled: {
       type: Boolean,
       default: null
     },
@@ -84,5 +88,8 @@ export default {
 .button[disabled] {
   background: rgba(68, 121, 217, 0.5) !important;
   cursor: no-drop;
+}
+.loadingDisabled{
+  cursor: no-drop !important;
 }
 </style>

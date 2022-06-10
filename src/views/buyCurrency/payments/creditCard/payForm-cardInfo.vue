@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     buttonState(){
-      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.email !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false){
+      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false){
         return true;
       }else{
         return false;
@@ -98,7 +98,7 @@ export default {
   beforeRouteEnter(to,from,next){
     next(vm => {
       if(from.path === '/paymentMethod' && to.path === '/creditCardForm-cardInfo' && !from.query.configPaymentFrom){
-        console.log("触发")
+        vm.firstname = "";
         vm.params = {
           firstname: "",
           lastname: "",
@@ -118,6 +118,7 @@ export default {
     });
   },
   activated(){
+    console.log(this.params)
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
@@ -258,7 +259,7 @@ export default {
 
       queryParams.firstname = AES_Encrypt(queryParams.firstname);
       queryParams.lastname = AES_Encrypt(queryParams.lastname);
-      queryParams.email = localStorage.getItem("email");
+      queryParams.email === '' ? queryParams.email = localStorage.getItem("email") : '';
       queryParams.source = 0;
 
       this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{

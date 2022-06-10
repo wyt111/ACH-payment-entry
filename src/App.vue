@@ -7,13 +7,13 @@
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
-          <div class="routerView_box" v-if="routerViewState">
+          <div class="routerView_box" v-show="routerViewState">
             <div class="routerView" v-show="keepAlive">
               <keep-alive class="keepAlive">
                 <router-view/>
               </keep-alive>
             </div>
-            <div class="routerView" v-show="!keepAlive"><router-view class="noKeepAlive"/></div>
+            <div class="routerView" v-if="!keepAlive"><router-view class="noKeepAlive"/></div>
           </div>
           <!-- 菜单栏 -->
           <routerMenu v-if="!routerViewState" />

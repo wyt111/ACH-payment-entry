@@ -28,7 +28,7 @@
       <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
       <IncludedDetails/>
     </div>
-    <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
+    <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
   </div>
 </template>
 
