@@ -19,7 +19,7 @@
           <div class="formTitle">Account No</div>
           <div class="formContent">
 <!--            <van-field class="number_input" type="digit" v-model="sellForm.cardNumber" />-->
-            <input type="text" v-model="sellForm.cardNumber" @input="sellForm.cardNumber = sellForm.cardNumber.replace(/[^\x00-\xff]/g, '')"/>
+            <input type="text" v-model="sellForm.cardNumber" @input="sellForm.cardNumber = sellForm.cardNumber.replace(/[\u4e00-\u9fa5/\s+/]|[^a-zA-Z0-9\u4E00-\u9FA5]/g, '')"/>
           </div>
         </div>
       </div>

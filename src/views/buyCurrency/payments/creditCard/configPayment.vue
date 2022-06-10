@@ -68,12 +68,14 @@ export default {
     }
   },
   activated(){
-    //清空按钮状态
+    //恢复页面默认状态
     this.buttonData = {
       loading: false,
       triggerNum: 0,
     };
-
+    this.submitState = true;
+    this.cvvDisabled = false;
+    this.AuthorizationInfo_state = true;
     this.reviceInfo();
   },
   computed:{
@@ -172,6 +174,8 @@ export default {
     },
   },
   deactivated(){
+    this.$store.commit("clearToken"); //取消请求
+    this.$store.commit("emptyToken"); // 清空token数组
     clearInterval(this.timeDown);
   },
 }

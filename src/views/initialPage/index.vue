@@ -51,22 +51,11 @@ export default {
       choiseItem: {},
     }
   },
-  activated(){
-    console.log(this.$store.state,"teed")
+  mounted(){
     this.queryInfo();
-  },
-  watch: {
-    '$store.state': {
-      deep: true,
-      immediate: true,
-      handler(val){
-        console.log(val,"---val")
-      }
-    }
   },
   computed: {
     tabstate(){
-      // console.log(this.$store.state.homeTabstate,"teed")
       return this.$store.state.homeTabstate;
     }
   },
@@ -81,7 +70,6 @@ export default {
     },
     switchTab(tab){
       this.$store.state.homeTabstate = tab;
-      console.log(tab,this.$store.state.homeTabstate)
     },
     queryInfo(){
       let _this = this;

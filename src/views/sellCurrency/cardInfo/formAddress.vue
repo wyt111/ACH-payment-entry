@@ -13,11 +13,11 @@
         </div>
         <div class="formLine">
           <div class="formTitle">Address</div>
-          <div class="formContent"><input type="text" v-model="sellForm.address"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.address" @input="sellForm.address = sellForm.address.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine">
           <div class="formTitle">City</div>
-          <div class="formContent"><input type="text" v-model="sellForm.city"></div>
+          <div class="formContent"><input type="text" v-model="sellForm.city" @input="sellForm.city = sellForm.city.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine">
           <div class="formTitle">State</div>
@@ -96,7 +96,7 @@ export default {
     },
     next(){
       this.$store.state.sellForm = this.sellForm;
-      this.$router.replace('/sell-formBankInfo');
+      this.$router.push('/sell-formBankInfo');
     }
   }
 }

@@ -95,8 +95,8 @@ export default {
     this.InitializationData();
   },
   activated() {
-    // this.InitializationData();
-    // console.log(this.paymethodList,'---this.paymethodList')
+    //上一页返回还原解密数据
+    this.savedCard[this.cardCheck] ? this.savedCard[this.cardCheck].cardNumber = AES_Decrypt(this.savedCard[this.cardCheck].cardNumber) : '';
   },
   methods: {
     async InitializationData(){
@@ -109,34 +109,34 @@ export default {
       await this.queryPayMethods();
     },
     async queryPayMethods(){
-      // let _this = this;
+      let _this = this;
       await this.$axios.get(this.$api.get_payMethods + this.routerParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
-            this.paymethodList = res.data.fiatPayment;
-            this.userPayment = res.data.userPayment;
-            this.savedCard = [];
+            _this.paymethodList = res.data.fiatPayment;
+            _this.userPayment = res.data.userPayment;
+            _this.savedCard = [];
             //处理历史交易方式 - 匹配货币支持的支付方式,添加payWayCode、payWayName
             Object.keys(res.data.userPayment).forEach(item=>{
               res.data.userPayment[item].forEach((item2,index2)=>{
                 res.data.userPayment[item][index2].cardNumber = AES_Decrypt(item2.cardNumber);
-                this.paymethodList.forEach(item3=>{
+                _this.paymethodList.forEach(item3=>{
                   if(item === item3.payWayCode){
                     res.data.userPayment[item][index2].payWayCode = item3.payWayCode;
                     res.data.userPayment[item][index2].payWayName = item3.payWayName;
-                    this.savedCard.push(item2);
+                    _this.savedCard.push(item2);
                   }
                 })
               })
             });
             //只有10001放开历史卡信息功能 - 筛选10001信息
-            this.savedCard = this.savedCard.filter(item=>{
+            _this.savedCard = _this.savedCard.filter(item=>{
               return item.payWayCode === '10001';
             })
             //只有信用卡开放历史卡信息功能
-            this.savedCard.length !== 0 ? this.choiseSavedCard(this.savedCard[0],0) : '';
-            this.$forceUpdate();
+            _this.savedCard.length !== 0 ? _this.choiseSavedCard(_this.savedCard[0],0) : '';
+            // this.$forceUpdate();
           })
         }
       })
@@ -175,7 +175,7 @@ export default {
               payWayName: this.payMethod.payWayName,
             };
             newRouterQuery = {...newRouterQuery,...oldRouterQuery};
-            this.routerParams = newRouterQuery;
+            this.routerParams = JSON.parse(JSON.stringify(newRouterQuery));
             this.JumpRouter();
           }
         })

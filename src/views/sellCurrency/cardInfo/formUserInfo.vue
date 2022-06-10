@@ -118,7 +118,7 @@ export default {
       newForm.email = AES_Encrypt(newForm.email);
       newForm.idNumber = AES_Encrypt(newForm.idNumber);
       this.$store.state.sellForm = newForm;
-      this.$router.replace('/sell-formAddress');
+      this.$router.push('/sell-formAddress');
     }
   }
 }

@@ -35,7 +35,10 @@
         <div class="formLine">
           <div>
             <div class="formTitle">Expiration Date</div>
-            <div class="formContent"><input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY"></div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+<!--              <van-field class="number_input" type="digit" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7"/>-->
+            </div>
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorTime">Invaid expiry date</div>
@@ -102,7 +105,7 @@ export default {
         vm.params = {
           firstname: "",
           lastname: "",
-          email: AES_Decrypt(localStorage.getItem("email")),
+          email: localStorage.getItem("email"),
           cardNumber: "",
           cardCvv: "",
           cardExpireYear: "",
@@ -118,16 +121,15 @@ export default {
     });
   },
   activated(){
-    console.log(this.params)
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
-      (addressForm.cardNumber !== undefined && addressForm.cardNumber !== "") ? addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+')) : '';
+      addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+'));
       //去除地址栏穿参导致参数中拼有空格问题
       addressForm.firstname = AES_Decrypt(addressForm.firstname.replace(/ /g,'+'));
       addressForm.lastname = AES_Decrypt(addressForm.lastname.replace(/ /g,'+'));
       // addressForm.phone = AES_Decrypt(addressForm.phone.replace(/ /g,'+'));
-      addressForm.email = AES_Decrypt(addressForm.email.replace(/ /g,'+'));
+      addressForm.email = addressForm.email.replace(/ /g,'+');
       this.params = {...this.params,...addressForm};
       //获取历史卡信息中的日期
       if(this.$route.query.submitForm && this.params.cardExpireMonth !== '' && this.params.cardExpireYear !== ''){
@@ -251,7 +253,7 @@ export default {
       this.params.cardExpireMonth = this.timeData.substring(0,2);
       this.params.cardExpireYear = '20' + this.timeData.substring(5,7);
 
-      let queryParams = {...queryParams,...this.params};
+      let queryParams = JSON.parse(JSON.stringify(this.params));
 
       //需要加密的敏感字段
       queryParams.cardNumber = AES_Encrypt(cardNumber).replace(/ /g,'');
