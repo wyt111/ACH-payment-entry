@@ -1,5 +1,5 @@
 <template>
-  <div class="order-container">
+  <div class="order-container" v-if="Network">
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer {{orderStateData.cryptoCurrency}} to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
@@ -116,6 +116,7 @@
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
   </div>
+  <div v-else></div>
 </template>
 <script>
 import Clipboard from 'clipboard'
@@ -234,9 +235,6 @@ export default{
               this.Network = item
             }
           });
-          return true
-      }else{
-        return false
       }
       
     },
@@ -252,7 +250,6 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          // this.playMoneyState = 7
 
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -347,13 +344,18 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-    
-    setTimeout(()=>{
+  
+      setTimeout(()=>{
       if(this.playMoneyState == 7)
       this.getNetworkList = null
+      else if(this.$store.state.orderStatus.cryptoCurrency)
+      this.getNetworkList()
       else
       this.getNetworkList()
     },1200)
+    
+    
+   
     
   },
   deactivated (){
