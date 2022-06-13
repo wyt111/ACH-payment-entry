@@ -1,5 +1,5 @@
 <template>
-  <div class="order-container" v-if="Network">
+  <div class="order-container" >
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer {{orderStateData.cryptoCurrency}} to the address within <span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
@@ -67,7 +67,7 @@
         </div>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Network</div>
         <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
-          <p>{{ Network.networkName }}</p>
+          <p>{{ Network?Network.networkName: network1}}</p>
           <img v-if="[0,1].includes(playMoneyState)" src="../../assets/images/rightIcon.png" alt="">
         </div>
         <transition name="fade">
@@ -116,7 +116,7 @@
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
   </div>
-  <div v-else></div>
+
 </template>
 <script>
 import Clipboard from 'clipboard'
@@ -135,6 +135,7 @@ export default{
       show:false,
       orderStateData:{},
       Network:'',
+      network1:'',
       Network_data:[],
       Network_show:false,
       Network_show1:false,
@@ -250,6 +251,7 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
+          this.network1 = res.data.networkName
 
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
