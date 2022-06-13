@@ -222,21 +222,23 @@ export default{
           },2000)
     },
     //获取网络列表
-    getNetworkList(){
+    async  getNetworkList(){
       let params = {
         coin:this.$store.state.orderStatus.cryptoCurrency
       }
-      this.$axios.get(this.$api.get_networkList,params).then(res=>{
-        if(res && res.data){
-          this.Network_data = res.data
-          //获取选中的网络
-          res.data.forEach(item => {
+      let res  = await this.$axios.get(this.$api.get_networkList,params)
+      if(res.returnCode == '0000' && res.data){
+        this.Network_data = res.data
+        res.data.forEach(item => {
             if(item.network==this.orderStateData.cryptoCurrencyNetwork){
               this.Network = item
             }
           });
-        }
-      })
+          return true
+      }else{
+        return false
+      }
+      
     },
     //获取买币状态
     getCurrencyStatus(){
@@ -345,13 +347,14 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-
+    
     setTimeout(()=>{
       if(this.playMoneyState == 7)
       this.getNetworkList = null
       else
       this.getNetworkList()
-    },600)
+    },1200)
+    
   },
   deactivated (){
     clearInterval(this.timer)
