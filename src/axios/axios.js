@@ -66,7 +66,6 @@ axios.interceptors.request.use(function (config) {
     store.commit('pushToken', {cancelToken: cancel})
   })
   return config
-  // return config;
 }, function (error) {
   return Promise.reject(error)
 });

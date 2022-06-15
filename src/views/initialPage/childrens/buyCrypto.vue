@@ -411,7 +411,8 @@ export default {
         }
         //Judge whether a network｜address has passed
         if(res && res.returnCode === "0000" && res.success === true && res.data !== null){
-          this.cryptoSate = false;
+          let crypto = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).crypto;
+          this.cryptoSate = (crypto,crypto !== '') ? true : false;
           //you pay currency - address: false - Address is not brought out by default
           if(res.data.address === false){ //No parameter defaults
             merchantParams.addressDefault = false;

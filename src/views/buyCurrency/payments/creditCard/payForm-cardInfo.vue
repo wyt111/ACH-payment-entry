@@ -6,11 +6,11 @@
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">First Name</div>
-            <div class="formContent"><input type="text" v-model="params.firstname" maxlength="50"></div>
+            <div class="formContent"><input type="text" v-model="params.firstname" @input="sellForm.address = sellForm.address.replace(/[^\x00-\xff]/g, '')" maxlength="50"></div>
           </div>
           <div class="formLine_flex_child">
             <div class="formTitle">Last Name</div>
-            <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
+            <div class="formContent"><input type="text" v-model="params.lastname" maxlength=""></div>
           </div>
         </div>
 <!--        <div class="formLine">-->

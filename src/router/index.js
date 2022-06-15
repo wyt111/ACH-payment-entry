@@ -146,6 +146,17 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  {
+    path: "/testForm",
+    name: 'testForm',
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/testForm.vue"),
+    meta: {
+      requireAuth: true,
+      title: 'testForm',
+      keepAlive: true,
+    }
+  },
     //卖币路由
   {
     path: "/sell-formUserInfo",
