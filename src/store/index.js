@@ -24,7 +24,7 @@ const store = new Vuex.Store({
         emailFromPath: '',
         cardInfoFromPath: '',
         //返回首页状态
-        homeTabstate: 'sellCrypto', //sellCrypto buyCrypto
+        homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
 
         routerParams: {},
         feeParams: {},

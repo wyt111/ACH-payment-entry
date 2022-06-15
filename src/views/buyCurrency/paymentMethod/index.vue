@@ -161,7 +161,7 @@ export default {
       let submitToken = await querySubmitToken();
       if(submitToken === true){
         //确认下单 获取订单id
-        this.buyParams = JSON.parse(this.$route.query.placeOrderQuery);
+        this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){

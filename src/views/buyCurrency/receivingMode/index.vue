@@ -225,6 +225,7 @@ export default {
 
     //跳转选择支付方式页 整理下单接口和routerParams路由信息
     transaction(){
+      this.$store.state.placeOrderQuery = {};
       let buyParams = JSON.parse(JSON.stringify(this.buyParams));
       //下单接口参数
       if(this.checkModel[0] === 'address' && (buyParams.address === '' || buyParams.network === '')){
@@ -259,7 +260,8 @@ export default {
       }
       this.checkModel[0] === 'ach' ? (delete newParams.network,delete newParams.address) : '';
       Object.assign(newParams, ordParams);
-      this.$router.push(`/paymentMethod?routerParams=${JSON.stringify(newParams)}&placeOrderQuery=${JSON.stringify(buyParams)}`);
+      this.$store.state.placeOrderQuery = buyParams;
+      this.$router.push(`/paymentMethod?routerParams=${JSON.stringify(newParams)}`);
     },
   }
 }

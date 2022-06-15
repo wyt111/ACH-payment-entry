@@ -365,8 +365,8 @@ export default {
       let oldMerchantParams = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : {};
       //Obtain merchant order information in the address bar
       let merchantParams = {};
-      merchantParams = this.$route.query;
-      if(((merchantParams.merchantNo === undefined || merchantParams.merchantNo === '')&&oldMerchantParams!=={} && oldMerchantParams.merchantNo !== '' && oldMerchantParams.merchantNo !== undefined)){
+      JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
+      if(((merchantParams.merchantNo === undefined || merchantParams.merchantNo === '') && oldMerchantParams!=={} && oldMerchantParams.merchantNo !== '' && oldMerchantParams.merchantNo !== undefined)){
         merchantParams = oldMerchantParams
       }
 
@@ -393,7 +393,7 @@ export default {
         //商户信息接口success创建订单添加merchantParam参数
         if(res && res.returnCode === "0000"){
           this.cryptoSate = true;
-          merchantParams.merchantParam = this.$route.fullPath.substring(2,this.$route.fullPath.length)
+          merchantParams.merchantParam = JSON.stringify(this.$route.query) !== "{}" ? this.$route.fullPath.substring(2,this.$route.fullPath.length) : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam;
           merchantParams.merchantParam_state = true;
           sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
         }else{
