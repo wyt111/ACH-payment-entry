@@ -31,16 +31,12 @@ export default {
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
   },
   computed: {
-    //动态表单判空校验
+    //动态表单判空、正则校验
     disabled(){
       let resultArray = this.formJson.filter((value) => {
-        console.log(value.model === '' && value.required === true && value.tipsState === false && value.multinomialTipsState === false && new RegExp(value.regular).test(value.model))
-        return (value.model === '' && value.required === true) || value.tipsState === false || value.multinomialTipsState === false || new RegExp(value.regular).test(value.model)
+        return value.required === true && (value.model === '' || !new RegExp(value.regular).test(value.model) || value.tipsState === true || value.multinomialTipsState === true)
       })
-      console.log(resultArray,"----let")
-      // console.log(this.formJson[3])
-      console.log(resultArray.length === 0)
-      return resultArray.length === 0 ? false : tru;
+      return resultArray.length === 0 ? false : true;
     }
   },
   methods: {
@@ -62,7 +58,7 @@ export default {
       }
 
       //所有表单正则验证
-      if(!new RegExp(val.regular).test(this.formJson[index].model)){
+      if(!new RegExp(val.regular).test(this.formJson[index].model) && val.required === true){
         this.formJson[index].tipsState = true;
       }else{
         this.formJson[index].tipsState = false;
@@ -77,9 +73,9 @@ export default {
       // }else{
       //   this.formJson[index].tipsState = false;
       // }
-      console.log(this.formJson[index].tipsState)
     },
 
+    //表单 - 单选框
     chiseRadio(radioItem,index){
       this.formJson[index].model = radioItem;
       this.formJson[index].tipsState = false;
