@@ -36,6 +36,12 @@ export default {
       let resultArray = this.formJson.filter((value) => {
         return value.required === true && (value.model === '' || !new RegExp(value.regular).test(value.model) || value.tipsState === true || value.multinomialTipsState === true)
       })
+      console.log(this.formJson)
+      if(this.formJson.length !== 0 && this.currency === 'JPY' && this.formJson[4].model === '' && this.formJson[5].model === ''){
+        this.formJson[4].multinomialTipsState = true;
+        this.formJson[5].multinomialTipsState = true;
+        return true;
+      }
       return resultArray.length === 0 ? false : true;
     }
   },
@@ -62,6 +68,11 @@ export default {
         this.formJson[index].tipsState = true;
       }else{
         this.formJson[index].tipsState = false;
+      }
+
+      if(this.currency === 'JPY' && this.formJson[4].model === '' && this.formJson[5].model === ''){
+        this.formJson[4].multinomialTipsState = false;
+        this.formJson[5].multinomialTipsState = false;
       }
     },
     // 正则校验 展示提示信息
