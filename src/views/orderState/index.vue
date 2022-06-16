@@ -111,7 +111,7 @@
         <p>Scan QR Code</p>
       </div>
     </van-popup>
-    <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }" >
+    <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }">
         <div class="Network-title">Network</div>
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
@@ -237,7 +237,7 @@ export default{
             }
           });
       }
-      
+
     },
     //获取买币状态
     getCurrencyStatus(){
@@ -346,7 +346,7 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-  
+
       setTimeout(()=>{
       if(this.playMoneyState == 7)
       this.getNetworkList = null
@@ -355,10 +355,10 @@ export default{
       else
       this.getNetworkList()
     },1200)
-    
-    
-   
-    
+
+
+
+
   },
   deactivated (){
     clearInterval(this.timer)

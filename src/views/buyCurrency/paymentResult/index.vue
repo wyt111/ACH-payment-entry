@@ -50,7 +50,7 @@ Three channels for successful payment --- 'depositType'
         </div>
       </div>
     </div>
-    <div class="continue" @click="goHome">Buy more crypto</div>
+    <div class="continue" @click="goHome">{{ backText }}</div>
   </div>
 </template>
 
@@ -63,6 +63,7 @@ export default {
       resultText: '',
       detailsParameters: {},
       countDown: null,
+      backText: "Buy more crypto", //Return back
     }
   },
   activated(){
@@ -111,7 +112,7 @@ export default {
 
     goHome(){
       let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
-      if(this.depositType === 2 && sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
+      if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
         window.location = merchantInfo.redirectUrl;
         return;
       }
