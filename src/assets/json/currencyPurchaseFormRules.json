@@ -45,7 +45,7 @@
       },
       {
         "name": "Postcode",
-        "paramsName": "postCode",
+        "paramsName": "postcode",
         "model": "",
         "regular": "",
         "maxLength": "15",
@@ -65,7 +65,7 @@
       },
       {
         "name": "ACH Code",
-        "paramsName": "achCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{9}$",
         "maxLength": "9",
@@ -120,7 +120,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -130,7 +130,7 @@
       },
       {
         "name": "Branch Name",
-        "paramsName": "branchName",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "",
         "maxLength": "250",
@@ -181,7 +181,7 @@
         "model": "",
         "regular": "^[0-9]{4}$",
         "maxLength": "4",
-        "required": true,
+        "required": false,
         "tips": "Invalid Bank Code!",
         "multinomialTips": "Bank code and swift code cannot be empty at the same time",
         "tipsState": false,
@@ -189,7 +189,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -201,15 +201,13 @@
       },
       {
         "name": "Branch Code",
-        "paramsName": "branchCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
-        "required": false,
+        "required": true,
         "tips": "Invalid Branch Code!",
-        "multinomialTips": "Bank code and swift code cannot be empty at the same time",
-        "tipsState": false,
-        "multinomialTipsState": false
+        "tipsState": false
       }
     ]
   },
@@ -238,7 +236,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -273,7 +271,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -308,7 +306,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -343,7 +341,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -378,7 +376,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -413,7 +411,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -448,11 +446,11 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
-        "required": true,
+        "required": false,
         "tips": "Invalid Swift Code!",
         "multinomialTips": "Swift code and location id cannot be empty at the same time",
         "tipsState": false,
@@ -464,7 +462,7 @@
         "model": "",
         "regular": "^\\d{0,8}$|^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
-        "required": true,
+        "required": false,
         "tips": "Invalid Location Id!",
         "multinomialTips": "Swift code and location id cannot be empty at the same time",
         "tipsState": false,
@@ -559,8 +557,8 @@
         "name": "Address",
         "paramsName": "address",
         "model": "",
-        "regular": "",
-        "maxLength": "",
+        "regular": "^[A-Za-z0-9-./]{1,69}$",
+        "maxLength": "69",
         "required": false,
         "tips": "Invalid Address!",
         "multinomialTips": "Address can not be null",
@@ -579,7 +577,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -653,6 +651,16 @@
         "tipsState": false
       },
       {
+        "name": "Contact Number",
+        "paramsName": "contactNumber",
+        "model": "",
+        "regular": "^.{1,17}$",
+        "maxLength": "17",
+        "required": true,
+        "tips": "Invalid Contact Number!",
+        "tipsState": false
+      },
+      {
         "name": "CPF Number",
         "paramsName": "CPFNumber",
         "model": "",
@@ -660,6 +668,18 @@
         "maxLength": "20",
         "required": true,
         "tips": "Invalid CPF Number!",
+        "tipsState": false
+      },
+      {
+        "name": "Account Type",
+        "paramsName": "bankAccountType",
+        "model": "",
+        "type": "radio",
+        "radioList": ["Checking", "Saving"],
+        "regular": "",
+        "maxLength": "",
+        "required": true,
+        "tips": "Invalid Account Type!",
         "tipsState": false
       },
       {
@@ -674,7 +694,7 @@
       },
       {
         "name": "Branch Code",
-        "paramsName": "branchCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{1,6}$",
         "maxLength": "6",
@@ -688,7 +708,7 @@
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
-        "required": true,
+        "required": false,
         "tips": "Invalid Bank Code!",
         "multinomialTips": "Bank code and swift code cannot be empty at the same time",
         "tipsState": false,
@@ -696,10 +716,10 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
-        "maxLength": "3",
+        "maxLength": "11",
         "required": false,
         "tips": "Invalid Swift Code!",
         "multinomialTips": "Bank code and swift code cannot be empty at the same time",
@@ -745,7 +765,7 @@
       },
       {
         "name": "Account Type",
-        "paramsName": "accountType",
+        "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
         "radioList": ["Checking", "Saving", "Maestra"],
@@ -759,9 +779,7 @@
         "name": "Account Number",
         "paramsName": "accountNumber",
         "model": "",
-        "type": "radio",
-        "radioList": ["Checking", "Saving", "Maestra"],
-        "regular": "^{1,22}$",
+        "regular": "^.{22,22}$",
         "maxLength": "22",
         "required": true,
         "tips": "Invalid Account Number!",
@@ -798,7 +816,7 @@
         "name": "ID Number",
         "paramsName": "idNumber",
         "model": "",
-        "regular": "^{8,12}$",
+        "regular": "^.{8,12}$",
         "minLength": "8",
         "maxLength": "12",
         "required": true,
@@ -807,7 +825,7 @@
       },
       {
         "name": "Account Type",
-        "paramsName": "accountType",
+        "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
         "radioList": ["Checking", "Saving", "Maestra"],
@@ -821,7 +839,7 @@
         "name": "Account Number",
         "paramsName": "accountNumber",
         "model": "",
-        "regular": "^{18,20}$",
+        "regular": "^.{18,20}$",
         "maxLength": "20",
         "required": true,
         "tips": "Invalid Account Number!",
@@ -854,7 +872,7 @@
       },
       {
         "name": "Account Type",
-        "paramsName": "accountType",
+        "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
         "radioList": ["Checking", "Saving"],
@@ -868,7 +886,7 @@
         "name": "Account Number",
         "paramsName": "accountNumber",
         "model": "",
-        "regular": "^{1,45}$",
+        "regular": "^.{1,45}$",
         "maxLength": "45",
         "required": true,
         "tips": "Invalid Account Number!",
@@ -876,7 +894,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -941,7 +959,7 @@
       },
       {
         "name": "BSB Code",
-        "paramsName": "BSBCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{6}$",
         "maxLength": "6",
@@ -1031,7 +1049,7 @@
       },
       {
         "name": "Sort Code",
-        "paramsName": "sortCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "(^[0-9]{6}$) ",
         "maxLength": "6",
@@ -1066,7 +1084,7 @@
       },
       {
         "name": "IFSC",
-        "paramsName": "IFSC",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[A-Za-z]{4}[A-Z0-9a-z]{7}$",
         "maxLength": "7",
@@ -1093,7 +1111,7 @@
         "name": "Address",
         "paramsName": "address",
         "model": "",
-        "regular": "^{1,200}$",
+        "regular": "^.{1,200}$",
         "maxLength": "200",
         "required": true,
         "tips": "Invalid Address!",
@@ -1103,7 +1121,7 @@
         "name": "City",
         "paramsName": "city",
         "model": "",
-        "regular": "^{1,50}$",
+        "regular": "^.{1,50}$",
         "maxLength": "50",
         "required": true,
         "tips": "Invalid City!",
@@ -1121,7 +1139,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -1178,7 +1196,7 @@
       },
       {
         "name": "Account Type",
-        "paramsName": "accountType",
+        "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
         "radioList": ["Checking", "Saving"],
@@ -1192,7 +1210,7 @@
         "name": "Account Number",
         "paramsName": "accountNumber",
         "model": "",
-        "regular": "^{1,45}$",
+        "regular": "^.{1,45}$",
         "maxLength": "45",
         "required": true,
         "tips": "Invalid Account Number!",
@@ -1200,7 +1218,7 @@
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -1211,7 +1229,7 @@
     ]
   },
   {
-    "currency": "ARS",
+    "currency": "UYU",
     "form": [
       {
         "name": "Name",
@@ -1228,7 +1246,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["CUIT", "CUIL"],
+        "radioList": ["RUT", "CI"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1239,86 +1257,7 @@
         "name": "ID Number",
         "paramsName": "idNumber",
         "model": "",
-        "regular": "^[0-9]{11}$",
-        "maxLength": "11",
-        "required": true,
-        "tips": "Invalid ID Number!",
-        "tipsState": false
-      },
-      {
-        "name": "Account Type",
-        "paramsName": "accountType",
-        "model": "",
-        "type": "radio",
-        "radioList": ["Checking","Saving","Maestra"],
-        "regular": "",
-        "maxLength": "",
-        "required": true,
-        "tips": "Invalid Account Type!",
-        "tipsState": false
-      },
-      {
-        "name": "Account Number",
-        "paramsName": "accountNumber",
-        "model": "",
-        "regular": "^{1,22}$",
-        "maxLength": "22",
-        "required": true,
-        "tips": "Invalid Account Number!",
-        "tipsState": false
-      },
-      {
-        "name": "Swift Code",
-        "paramsName": "swiftCode",
-        "model": "",
-        "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
-        "maxLength": "11",
-        "required": true,
-        "tips": "Invalid Swift Code!",
-        "tipsState": false
-      },
-      {
-        "name": "Branch Code",
-        "paramsName": "branchCode",
-        "model": "",
-        "regular": "",
-        "maxLength": "",
-        "required": true,
-        "tips": "Invalid Branch Code!",
-        "tipsState": false
-      }
-    ]
-  },
-  {
-    "currency": "PEN",
-    "form": [
-      {
-        "name": "Name",
-        "paramsName": "name",
-        "model": "",
-        "regular": "^[A-Za-z0-9 ]{1,100}$",
-        "maxLength": "100",
-        "required": true,
-        "tips": "Invalid Name!",
-        "tipsState": false
-      },
-      {
-        "name": "ID Type",
-        "paramsName": "idType",
-        "model": "",
-        "type": "radio",
-        "radioList": ["DNI", "RUC", "CE", "PASS"],
-        "regular": "",
-        "maxLength": "",
-        "required": true,
-        "tips": "Invalid ID Type!",
-        "tipsState": false
-      },
-      {
-        "name": "ID Number",
-        "paramsName": "idNumber",
-        "model": "",
-        "regular": "^{8,12}$",
+        "regular": "^.{7,12}$",
         "maxLength": "12",
         "required": true,
         "tips": "Invalid ID Number!",
@@ -1326,10 +1265,10 @@
       },
       {
         "name": "Account Type",
-        "paramsName": "accountType",
+        "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving", "Maestra"],
+        "radioList": ["Checking", "Saving"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1340,15 +1279,15 @@
         "name": "Account Number",
         "paramsName": "accountNumber",
         "model": "",
-        "regular": "^{18,20}$",
-        "maxLength": "20",
+        "regular": "^.{1,45}$",
+        "maxLength": "45",
         "required": true,
         "tips": "Invalid Account Number!",
         "tipsState": false
       },
       {
         "name": "Swift Code",
-        "paramsName": "swiftCode",
+        "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
@@ -1358,10 +1297,10 @@
       },
       {
         "name": "Branch Code",
-        "paramsName": "branchCode",
+        "paramsName": "routingCodeValue2",
         "model": "",
-        "regular": "",
-        "maxLength": "",
+        "regular": "^[0-9]{3}$",
+        "maxLength": "3",
         "required": true,
         "tips": "Invalid Branch Code!",
         "tipsState": false
@@ -1405,7 +1344,7 @@
         "name": "State",
         "paramsName": "state",
         "model": "",
-        "regular": "^{1,50}$",
+        "regular": "^.{1,50}$",
         "maxLength": "50",
         "required": true,
         "tips": "Invalid State!",
@@ -1415,7 +1354,7 @@
         "name": "Postcode",
         "paramsName": "postcode",
         "model": "",
-        "regular": "{1,15}$",
+        "regular": "^.{1,15}$",
         "maxLength": "15",
         "required": true,
         "tips": "Invalid Postcode!",
@@ -1443,7 +1382,7 @@
       },
       {
         "name": "Transit Number",
-        "paramsName": "transitNumber",
+        "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{5}$",
         "maxLength": "5",

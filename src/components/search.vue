@@ -299,8 +299,8 @@ export default {
       if(this.viewName === 'currency'){
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList;
-          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList;
+          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{return item.purchaseSupported === 1});
+          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;
       }

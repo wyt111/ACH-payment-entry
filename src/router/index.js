@@ -146,51 +146,51 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+    //卖币路由
   {
-    path: "/testForm",
+    path: "/sell-formUserInfo",
     name: 'testForm',
     component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/testForm.vue"),
+        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/testForm.vue"),
     meta: {
       requireAuth: true,
       title: 'testForm',
       keepAlive: true,
     }
   },
-    //卖币路由
-  {
-    path: "/sell-formUserInfo",
-    name: 'sell-formUserInfo',
-    component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
-    meta: {
-      requireAuth: true,
-      title: 'Enter Information',
-      keepAlive: true,
-    },
-  },
-  {
-    path: "/sell-formAddress",
-    name: 'sell-formAddress',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formAddress.vue"),
-    meta: {
-      requireAuth: true,
-      title: 'Enter personal address',
-      keepAlive: true,
-    }
-  },
-  {
-    path: "/sell-formBankInfo",
-    name: 'sell-formBankInfo',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formBankInfo.vue"),
-    meta: {
-      requireAuth: true,
-      title: 'Enter card details',
-      goPath: 'configSell',
-      keepAlive: true,
-    }
-  },
+  // {
+  //   path: "/sell-formUserInfo",
+  //   name: 'sell-formUserInfo',
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
+  //   meta: {
+  //     requireAuth: true,
+  //     title: 'Enter Information',
+  //     keepAlive: true,
+  //   },
+  // },
+  // {
+  //   path: "/sell-formAddress",
+  //   name: 'sell-formAddress',
+  //   component: () =>
+  //       import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formAddress.vue"),
+  //   meta: {
+  //     requireAuth: true,
+  //     title: 'Enter personal address',
+  //     keepAlive: true,
+  //   }
+  // },
+  // {
+  //   path: "/sell-formBankInfo",
+  //   name: 'sell-formBankInfo',
+  //   component: () =>
+  //       import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formBankInfo.vue"),
+  //   meta: {
+  //     requireAuth: true,
+  //     title: 'Enter card details',
+  //     goPath: 'configSell',
+  //     keepAlive: true,
+  //   }
+  // },
   {
     path: "/configSell",
     name: 'configSell',
