@@ -68,6 +68,10 @@ export default {
   },
   activated(){
     this.queryDetails()
+    let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
+    if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
+      this.backText = "Return back";
+    }
   },
   methods: {
     //Get result information
