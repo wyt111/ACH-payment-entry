@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="tabState">
+  <div class="navigationBar_view" v-if="tabState  &&  $route.path !== '/emailCode'">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <div class="icon" @click="goBack"><img src="../assets/images/backIcon.png"></div>
@@ -8,7 +8,7 @@
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>Menu</div>
-    <div class="navigationBar_view_right">
+    <div class="navigationBar_view_right" v-if="$route.path === '/language'">
       <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
       <img src="../assets/images/closeIcon.png" v-else @click="openMenu">
     </div>
@@ -101,6 +101,7 @@ export default {
   .navigationBar_view_left {
     display: flex;
     align-items: center;
+
     font-size: 0.21rem;
     font-family: "GeoDemibold", GeoDemibold;
     font-weight: normal;
