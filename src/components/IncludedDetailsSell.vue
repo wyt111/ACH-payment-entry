@@ -5,7 +5,7 @@
       <div class="calculationProcess_line" v-if="timeDownState_child">
         <div class="line_name">Remaining time</div>
         <div class="line_number">
-          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
+          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
           <div class="line_number_red">{{ timeDownNumber }}S</div>
         </div>
       </div>
@@ -38,7 +38,7 @@
       <div class="calculationProcess_line" v-if="timeDownState_child">
         <div class="line_name">Remaining time</div>
         <div class="line_number">
-          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
+          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
           <div class="line_number_red">{{ timeDownNumber }}S</div>
         </div>
       </div>
@@ -119,8 +119,8 @@ export default {
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
-    this.currencyData = this.$store.state.routerParams.currencyData;
-    this.routerParams = this.$store.state.routerParams;
+    this.currencyData = this.$store.state.sellRouterParams.currencyData;
+    this.routerParams = this.$store.state.sellRouterParams;
     this.feeParams = this.$store.state.feeParams;
     this.timingSetting();
   },

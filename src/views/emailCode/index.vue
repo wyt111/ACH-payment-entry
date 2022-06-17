@@ -124,8 +124,8 @@ export default {
                 _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 let params = {
-                  country: _this.$store.state.routerParams.positionData.alpha2,
-                  fiatName: _this.$store.state.routerParams.positionData.fiatCode,
+                  country: _this.$store.state.sellRouterParams.positionData.alpha2,
+                  fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
                 };
                 _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
                   //data - null 没有填写过表单,跳转到表单页

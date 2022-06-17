@@ -99,14 +99,14 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .home-header {
     display: flex;
     align-items: center;
-    padding-bottom: 0.4rem;
+    padding-bottom: 0.32rem;
     .home-tab{
       display: flex;
       align-items: center;
       font-size: 0.2rem;
       font-family: 'GeoDemibold', GeoDemibold;
       font-weight: bold;
-      color: #999999;
+      color: #CCCCCC;
       div{
         display: flex;
         cursor: pointer;

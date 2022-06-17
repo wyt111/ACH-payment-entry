@@ -26,51 +26,24 @@
 
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
-        <div class="calculationProcess_line">
-          <div class="line_name">Remaining time</div>
-          <div class="line_number">
-            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
-            <div class="line_number_red">{{ timeDownNumber }}S</div>
-          </div>
-        </div>
-        <div class="calculationProcess_line">
-          <div class="line_name">{{ currencyData.name }} price</div>
-          <div class="line_number">{{ payCommission.symbol }} {{ Number(feeInfo.price).toFixed(payCommission.decimalDigits) }}</div>
-        </div>
-        <div class="calculationProcess_line" v-show="feeState">
-          <div class="line_name">
-            Ramp fee
-            <el-popover
-                placement="top"
-                :trigger="triggerType"
-                :offset="-18"
-                content="Based on payment method">
-              <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
-            </el-popover>
-          </div>
-          <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
-        </div>
-        <div class="calculationProcess_line" v-show="feeState">
-          <div class="line_name">Network fee</div>
-          <div class="line_number">{{ payCommission.symbol }} {{ Number(feeInfo.networkFee).toFixed(payCommission.decimalDigits) }}</div>
-        </div>
-        <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
-        <div class="calculationProcess_line">
-          <div class="line_name">Total</div>
-          <div class="line_number">{{ payCommission.symbol }} {{ payAmount }}</div>
-        </div>
+        <IncludedDetails :isHome="true"/>
       </div>
     </div>
 
-    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">Continue</button>
+    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
+      Continue
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+    </button>
   </div>
 </template>
 
 <script>
 import common from "../../../utils/common";
+import IncludedDetails from "../../../components/IncludedDetails";
 
 export default {
   name: "buyCrypto",
+  components: {IncludedDetails},
   props: ['allBasicData'],
   data(){
     return{
@@ -94,12 +67,7 @@ export default {
 
       //Expense information
       feeInfo: {},
-      timeDown: null,
-      timeDownNumber: 15,
       detailedInfo_state: false,
-
-      feeState: false,
-      feeText: 'View fees',
 
       //you get Currency information
       currencyData: {
@@ -158,9 +126,6 @@ export default {
       }
     },
   },
-  deactivated(){
-    clearInterval(this.timeDown);
-  },
   methods: {
     openSearch(view){
       //The address bar contains merchant information. It is forbidden to select
@@ -168,11 +133,6 @@ export default {
         return;
       }
       this.$parent.openSearch(view,this.allPayCommission);
-    },
-
-    expandFee(){
-      this.feeState = this.feeState === true ? false : true;
-      this.feeText = this.feeState === true ? 'Hide fees' : 'View fees';
     },
 
     //If less than two digits, 0 will be added automatically
@@ -229,55 +189,20 @@ export default {
         this.warningTextState = true;
         this.getAmount = "";
         this.detailedInfo_state = false;
-        clearInterval(this.timeDown);
       }
     },
 
     //Purchase information details - Scheduled refresh
     payinfo(){
-      clearInterval(this.timeDown);
       if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
+        this.$store.state.buyRouterParams.payAmount = this.payAmount;
         this.detailedInfo_state = true;
         this.$nextTick(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
         })
-        this.queryFee();
       }else{
-        clearInterval(this.timeDown);
         this.detailedInfo_state = false;
       }
-    },
-
-    //Purchase information details
-    queryFee(){
-      this.timeDownNumber = 15;
-      let params = {
-        symbol: this.currencyData.name + "USDT",
-        coin: this.currencyData.name,
-      }
-      this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
-        if(res.data){
-          this.feeInfo = res.data;
-          this.calculationAmount();
-        }
-      })
-      this.timeDown = setInterval(()=> {
-        if (this.timeDownNumber === 1) {
-          this.timeDownNumber = 15;
-          let params = {
-            symbol: this.currencyData.name + "USDT",
-            coin: this.currencyData.name,
-          }
-          this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
-            if(res.data){
-              this.feeInfo = res.data;
-              this.calculationAmount();
-            }
-          })
-        }else{
-          this.timeDownNumber -= 1;
-        }
-      },1000);
     },
 
     //Real time calculation getAmount
@@ -295,6 +220,9 @@ export default {
         this.feeInfo.networkFee = this.exchangeRate * this.feeInfo.networkFee;
         let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - this.payCommission.rampFee) / this.feeInfo.price;
         newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
+        this.$store.state.buyRouterParams.getAmount = this.getAmount;
+        this.$store.state.buyRouterParams.payCommission = this.payCommission;
+        this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       }
     },
 
@@ -335,6 +263,7 @@ export default {
       this.positionData.positionValue = data.enCommonName;
       this.positionData.positionImg = data.flag;
       this.positionData.alpha2 = data.alpha2;
+      this.$store.state.buyRouterParams.positionData = this.positionData;
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
@@ -355,6 +284,8 @@ export default {
       this.payCommission.payCommission.forEach(item=>{maxNumList.push(item.payMax);minNumList.push(item.payMin)});
       this.payCommission.payMax = Math.min(...maxNumList);
       this.payCommission.payMin = Math.max(...minNumList);
+      this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
+      this.$store.state.buyRouterParams.payCommission = this.payCommission;
 
       this.amountControl();
     },
@@ -371,8 +302,6 @@ export default {
       //   merchantParams = oldMerchantParams
       // }
 
-      console.log(merchantParams,"---merchantParams")
-
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
 
@@ -387,6 +316,7 @@ export default {
             price: item.price,
             serviceFee: item.serviceFee,
           }
+          this.$store.state.buyRouterParams.currencyData = this.currencyData;
         }
       })
       let params = merchantParams;
@@ -460,6 +390,7 @@ export default {
         exchangeRate: this.exchangeRate,
         positionData: this.positionData
       }
+      this.$store.state.buyRouterParams = routerParams;
       // Login information
       if(!localStorage.getItem('token') || localStorage.getItem('token')===''){
         this.$store.state.emailFromPath = 'buyCrypto';
@@ -493,7 +424,7 @@ html,body,#buyCrypto{
   font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
   color: #707070;
-  padding-bottom: 0.1rem;
+  padding-bottom: 0.08rem;
 }
 
 .methods_title{
@@ -513,9 +444,6 @@ html,body,#buyCrypto{
   position: relative;
 }
 
-.pay_title{
-  //margin-top: 0.4rem;
-}
 .pay_input{
   width: 100%;
   height: 100%;
@@ -541,14 +469,11 @@ html,body,#buyCrypto{
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-family: "GeoRegular", GeoRegular;
   font-size: 0.17rem;
   color: #232323;
   background: #EDEDEF;
-  img{
-    width: 0.12rem;
-    margin-left: 0.2rem;
-  }
   .countryIcon{
     display: flex;
     margin-right: 0.1rem;
@@ -558,17 +483,23 @@ html,body,#buyCrypto{
       border-radius: 50%;
     }
   }
+  .rightIcon{
+    width: 0.12rem;
+    margin-left: 0.2rem;
+  }
 }
+
 .warning_text{
-  font-size: 0.14rem;
-  font-family: "GeoDemibold", GeoDemibold;
+  position: absolute;
+  font-size: 0.13rem;
+  font-family: "GeoLight", GeoLight;
   font-weight: 400;
-  color: #FF0000;
-  margin: 0.1rem 0.2rem 0 0.2rem;
+  color: #E55643;
+  margin: 0.08rem 0.2rem 0 0.16rem;
 }
 
 .get_title{
-  margin-top: 0.2rem;
+  margin-top: 0.32rem;
 }
 .get_input{
   padding: 0 1.5rem 0 0;
@@ -609,18 +540,23 @@ html,body,#buyCrypto{
 
 .continue{
   width: 100%;
-  height: 0.6rem;
-  background: rgba(68, 121, 217, 0.5);
-  border-radius: 4px;
-  text-align: center;
-  line-height: 0.6rem;
-  font-size: 0.18rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #FAFAFA;
-  margin-top: 0.4rem;
+  height: 58px;
+  background: #0059DA;
+  border-radius: 0.29rem;
+  font-size: 0.17rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #FFFFFF;
+  margin-top: 0.26rem;
   cursor: no-drop;
   border: none;
+  position: relative;
+  .rightIcon{
+    position: absolute;
+    top: 0.22rem;
+    right: 0.32rem;
+    width: 0.24rem;
+  }
 }
 .continue_true{
   background: #4479D9;
@@ -630,68 +566,8 @@ html,body,#buyCrypto{
   cursor: auto;
 }
 
-.feeViewBtn{
-  text-align: right;
-  font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #4479D9;
-  margin-top: 0.1rem;
-  cursor: pointer;
-}
-
 .calculationProcess{
-  padding: 0 0.2rem;
-  .calculationProcess_line{
-    display: flex;
-    align-items: center;
-    margin-top: 0.13rem;
-    .line_name{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .tipsIcon{
-        width: 0.14rem;
-        height: 0.14rem;
-        margin-left: 0.1rem;
-        display: flex;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .line_number{
-      margin-left: auto;
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: bold;
-      color: #232323;
-      display: flex;
-      align-items: center;
-      .minText{
-        font-size: 0.14rem;
-        font-weight: 400;
-        color: #666666;
-        margin-right: 0.2rem;
-      }
-      .line_number_icon{
-        margin-right: 0.05rem;
-        img{
-          width: 0.12rem;
-        }
-      }
-      .line_number_red{
-        font-size: 0.14rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: 500;
-        color: #FF0000;
-      }
-    }
-  }
+  margin-top: 0.32rem;
 }
 
 @keyframes loadingIcon {

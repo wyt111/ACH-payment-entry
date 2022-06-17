@@ -89,11 +89,13 @@ export default {
   },
   computed: {
     disabled(){
-      console.log(this.buyParams.network,this.buyParams.address,this.checkModel)
       // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
+      console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
       if(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!==''){
+        console.log(false)
         return false
       }else{
+        console.log(true)
         return true
       }
     }
@@ -387,6 +389,7 @@ export default {
   }
 
   .includedDetails_view{
+    margin-top: 0.36rem;
     margin-bottom: 0.2rem;
   }
 
