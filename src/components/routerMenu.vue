@@ -1,12 +1,24 @@
 <template>
   <div id="routerMenu">
-    <div class="routerMenu_isLogo">
-        <img src="../assets/images/10004-icon.png" alt="">
+    <div class="routerMenu_isLogo" v-if="token===false">
+        <img src="../assets/images/slices/pay.png" alt="">
         <h2>Welcome to Alchemy Pay!</h2>
-        <p>Login to unlock; the full experience</p>
-        <div @click="$router.push('/emailCode')">Login <img src="../assets/images/10004-icon.png" alt=""></div>
+        <p>Login to unlock the full experience</p>
+        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">Login <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
+        <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
-    <div class="routerMenu_line" @click="goView('/','buyCrypto')">
+    <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
+      <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
+      <div class="lineName">
+        <p>Transactions</p>
+        <p>No history yet</p>
+      </div>
+      <div class="lineRight">
+        <div><img src="../assets/images/slices/right_icon.png"></div>
+        
+      </div>
+    </div>
+    <!-- <div class="routerMenu_line" @click="goView('/','buyCrypto')">
       <div class="lineIcon"><img src="../assets/images/menu/icon1.png"></div>
       <div class="lineName">Buy Crypto</div>
       <div class="lineRight">
@@ -19,34 +31,41 @@
       <div class="lineRight">
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
-    </div>
-    <div class="routerMenu_line" @click="goView('/tradeHistory')">
-      <div class="lineIcon"><img src="../assets/images/menu/icon3.png"></div>
-      <div class="lineName">Trade History</div>
+    </div> -->
+    <div class="routerMenu_line" @click="goView('Language')">
+      <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
+      <div class="lineName">Language</div>
       <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
+        <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
     <div class="routerMenu_line" @click="goProtocol('termsUse')">
-      <div class="lineIcon"><img src="../assets/images/menu/icon4.png"></div>
-      <div class="lineName">Terms of Use</div>
+      <div class="lineIcon"><img src="../assets/images/slices/terms.png"></div>
+      <div class="lineName">Terms of Service</div>
       <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
+        <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
     <div class="routerMenu_line" @click="goProtocol('privacyPolicy')">
-      <div class="lineIcon"><img src="../assets/images/menu/icon5.png"></div>
+      <div class="lineIcon"><img src="../assets/images/slices/privacy.png"></div>
       <div class="lineName">Privacy Policy</div>
       <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
+        <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="outLogin" v-if="email !== ''">
-      <div class="lineIcon"><img src="../assets/images/menu/icon6.png"></div>
+    <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">
+      <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
       <div class="lineName">Log Out</div>
       <div class="lineRight">
         <div class="email">{{ email }}</div>
-        <div><img src="../assets/images/rightIcon.png"></div>
+        <div><img src="../assets/images/slices/right_icon.png"></div>
+      </div>
+    </div>
+    <div class="routerMenu_loginOut" v-show="show" @click="show=false">
+      <div class="content" >
+        <h2>Are you sure you want to logout?</h2>
+        <div @click.stop="outLogin">Login <img src="../assets/images/slices/rightIcon.png" alt=""></div>
+        <p>Dismiss</p>
       </div>
     </div>
   </div>
@@ -60,9 +79,21 @@ export default {
   data(){
     return{
       email: '',
+      token:false,
+      show:false,
+      loading:false
     }
   },
+  activated(){
+    localStorage.getItem("token") ? this.token = true : false;
+    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+  },
+  deactivated(){
+     localStorage.getItem("token") ? this.token = true : false;
+    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+  },
   mounted(){
+    localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
   },
   methods: {
@@ -75,6 +106,10 @@ export default {
         this.$router.push(name);
         return;
       }
+      if(name === 'Language'){
+        this.$router.push(name);
+        return;
+      }
 
       if(!localStorage.getItem("token")){
         this.$store.state.emailFromPath = this.$parent.tabstate;
@@ -83,7 +118,9 @@ export default {
         this.$router.push(name);
       }
     },
-
+    onClose(){
+      this.show = false
+    },
     //Exit the login hidden menu and clear the login information
     outLogin(){
       if(this.email){
@@ -98,11 +135,11 @@ export default {
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
             this.$router.push('/');
+            window.location.reload()
           }
         })
       }
     },
-
     goProtocol(name){
       if(name === 'privacyPolicy'){
         window.location = 'https://alchemypay.org/privacy-policy/';
@@ -112,13 +149,24 @@ export default {
         window.location = 'https://alchemypay.org/terms-of-use/';
         return;
       }
-    }
+    },
+    goLogin(){
+      this.loading = true
+      if(this.$route.path === '/emailCode' || this.$route.path === '/verifyCode'){
+        this.loading = false
+        this.$toast('You re already logged in');
+      }else{
+        this.loading = false
+        this.$router.push('/emailCode')
+      }
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 #routerMenu{
+  position: relative;
   .routerMenu_line{
     display: flex;
     align-items: center;
@@ -127,12 +175,12 @@ export default {
     .lineIcon{
       display: flex;
       img{
-        width: 0.25rem;
+        width: 0.36rem;
       }
     }
     .lineName{
       font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
+      font-family: "GeoRegular";
       font-weight: 500;
       color: #232323;
       margin-left: 0.2rem;
@@ -152,7 +200,9 @@ export default {
         display: flex;
       }
       img{
-        width: 0.12rem;
+        // width: 0.6rem;
+        // height: ;
+        height: .2rem;
       }
     }
     &:nth-of-type(1){
@@ -175,7 +225,7 @@ export default {
     }
     h2{
       font-size: .21rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoBold";
       font-weight: normal;
       color: #232323;
       line-height: .25rem;
@@ -183,11 +233,11 @@ export default {
     }
     p{
       font-size: .15rem;
-      font-family: Fieldwork-GeoRegular, Fieldwork;
+      font-family: "GeoRegular";
       font-weight: normal;
       color: #232323;
     }
-    div{
+    >div{
       width: 90%;
       background: #0059DA;
       border-radius: .3rem;
@@ -197,13 +247,120 @@ export default {
       text-align: center;
       line-height: .58rem;
       color: #fff;
+      font-family: "GeoRegular";
       position: relative;
-      img{
+      .icon{
         width: .24rem;
         height: .24rem;
         position: absolute;
         right: .16rem;
-        top: .17rem;
+        top: .16rem;
+        span{
+          position: absolute;
+          // top: -.13rem;
+          right: .01rem;
+        }
+      }
+    }
+  }
+  .routerMenu_history{
+    width: 100%;
+    height: .8rem;
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E2E1E5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 .31rem 0 .24rem;
+    .lineName{
+      margin: 0 1rem 0 .16rem;
+      p:first-child{
+        font-family: GeoRegular;
+        font-size: .17rem;
+        font-weight: normal;
+        color: #232323;
+        line-height: .17rem;
+      }
+      p:last-child{
+        font-family: GeoLight;
+        font-weight: normal;
+        color: #C0C0C2;
+        line-height: 17px;
+        font-size: 15px;
+        margin-top: .04rem;
+      }
+    }
+    .lineIcon{
+      img{
+        width: .36rem;
+      }
+    }
+    .lineRight{
+      img{
+        // width: .1rem;
+        height: .23rem;
+      }
+    }
+    
+  }
+  .routerMenu_loginOut{
+    width: 100%;
+    height: 100%;
+    background: #00000080;
+    position: fixed;
+    left: 0;
+    top: 0;
+    .content{
+      width: 90%;
+      height: 2.6rem;
+      max-width: 3.5rem;
+      background: #FFFFFF;
+      border-radius: 16px;
+      position: absolute;
+      left:50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: .4rem 0 0 0;
+      box-sizing: border-box;
+      h2{
+        width: 2.4rem;
+        text-align: center;
+        font-weight: normal;
+        color: #232323;
+        line-height: .31rem;
+        font-family: GeoDemibold;
+        font-size: .21rem;
+      }
+      div{
+        width: 90%;
+        height: .58rem;
+        background: #E55643;
+        border-radius: .29rem;
+        text-align: center;
+        line-height: .58rem;
+        position: relative;
+        font-size: .17rem;
+        font-weight: normal;
+        color: #FFFFFF;
+        font-family: GeoRegular;
+        margin-top: .05rem;
+        img{
+          width: .24rem;
+          position: absolute;
+          right: .16rem;
+          top: .17rem;
+        }
+      }
+      p{
+        font-weight: normal;
+        color: #232323;
+        font-family: GeoDemibold;
+        font-size: .17rem;
+        margin-top: .24rem;
       }
     }
   }

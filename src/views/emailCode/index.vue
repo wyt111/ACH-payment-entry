@@ -21,18 +21,26 @@
 
   <!-- </div> -->
   <div class="emailCode-container">
+    <div class="emailCode_tab">
+      <img  @click="$router.replace('/')" src="@/assets/images/closeIcon.png" alt="">
+    </div>
       <div class="emailCode-container_top">
-        <img src="@/assets/images/10005-icon.png" alt="">
+        <img src="@/assets/images/slices/pay.png" alt="">
         <h2>Checkout with Alchemy Pay</h2>
         <p>The fastest and safest way to checkout on
           hundreds of crypto apps.</p>
       </div>
-      <div class="emailCode_content">
+      <div class="emailCode_content" ref="emailInput">
         <p>Enter email</p>
-        <img src="@/assets/images/10005-icon.png" alt="">
-        <input type="text" placeholder="john.doe@example.com">
+        <img src="@/assets/images/slices/emailIcon.png" alt="">
+        <input type="text"  v-model="email" placeholder="john.doe@example.com">
       </div>
-      <div class="emailCode_button" @click="$router.push('/verifyCode')">Continue <img src="@/assets/images/10005-icon.png" alt=""></div>
+      <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
+      
+      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined)?'#0059DAFF':login_loading && email?'':''}" @click="getCode">Continue
+        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!login_loading">
+        <van-loading class="icon" type="spinner" color="#fff" v-else/>
+      </div>
   </div>
 </template>
 
@@ -61,9 +69,11 @@ export default {
 
       getCode_state: true,
       login_state: true,
+      login_loading:false
     }
   },
   activated(){
+    this.login_loading= false
     this.code = "";
     this.timeDown = 60;
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
@@ -76,30 +86,32 @@ export default {
   },
   methods: {
     getCode:debounce(function () {
-      this.getCode_state = false;
+      // this.getCode_state = false;
+      
       var reg = new RegExp(".+@.+\\..+");
       if(!reg.test(this.email)){
         this.emailErrorState = true;
-        this.emailError = "Not a valid email address.";
+        // this.emailError = "Not a valid email address.";
+        this.emailError = "Required.";
+        // this.login_loading = false
+        this.$refs.emailInput.style = 'border:1px solid #D92D20'
         return;
       }
+      this.$refs.emailInput.style = 'border:none'
       this.emailErrorState = false;
       //Get code
       let params = {
         email: AES_Encrypt(this.email)
       }
       this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
+        
         this.getCode_state = true;
         if(res.returnCode === '0000'){
-          this.timeDown -= 1;
-          this.timeVal = setInterval(()=>{
-            this.timeDown -= 1;
-            if(this.timeDown === 1){
-              clearInterval(this.timeVal)
-              this.timeDown = 60;
-            }
-          },1000)
+          this.login_loading = false
+          this.$store.state.userEmail = AES_Encrypt(this.email)
+          this.$router.push('/verifyCode')
         }
+        this.login_loading = false
       })
     },500,false),
     expandCollapse(){
@@ -298,7 +310,7 @@ export default {
     align-items: center;
     h2{
       font-size: .21rem;
-      font-family: Fieldwork-GeoBold, Fieldwork;
+      font-family:"GeoBold";
       font-weight: normal;
       color: #232323;
       margin: .24rem 0 .16rem 0;
@@ -306,7 +318,7 @@ export default {
     p{
       width: 2.5rem;
       font-size: .13rem;
-      font-family: Fieldwork-GeoRegular, Fieldwork;
+      font-family: "GeoRegular";
       font-weight: normal;
       color: #232323;
       text-align: center;
@@ -330,11 +342,13 @@ export default {
       position: absolute;
       left: .42rem;
       background: transparent;
+      font-family: "GeoLight";
     }
     p{
       font-size: .13rem;
       color: #707070;
       position: absolute;
+      font-family: "GeoRegular";
       top: -.22rem;
     }
     img{
@@ -354,15 +368,37 @@ export default {
     text-align: center;
     line-height: .58rem;
     position: absolute;
-    bottom: .26rem;
+    bottom: 0rem;
     color: #FAFAFA;
-    img{
+    font-family: "GeoRegular";
+    .icon{
       width: .24rem;
-      height: .15rem;
+      height: .24rem;
       position: absolute;
       right: .16rem;
-      top: .21rem;
+      top: .2rem;
+      span{
+        position: absolute;
+        left: 0;
+        top: .0rem;
+      }
     }
+  }
+  .emailCode_tab{
+    width: 100%;
+    height: .35rem;
+    img{
+      height: .12rem;
+      float: right;
+    }
+  }
+  .errorMessage{
+    font-weight: normal;
+    color: #D92D20;
+    line-height: 17px;
+    font-size: 15px;
+    font-family:GeoRegular;
+    margin-top: .08rem;
   }
 }
 </style>

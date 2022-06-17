@@ -25,6 +25,7 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  //邮箱填写路由
   {
     path: "/emailCode",
     name: 'emailCode',
@@ -35,6 +36,7 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  //验证验证码的路由
   {
     path: "/verifyCode",
     name: 'verifyCode',
@@ -42,6 +44,17 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/emailCode/children/verifyCode"),
     meta: {
       title: 'Verification code',
+      keepAlive: true,
+    }
+  },
+  //切换语言的路由
+  {
+    path: "/language",
+    name: 'Language',
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/Language/Language"),
+    meta: {
+      title: 'Language',
       keepAlive: true,
     }
   },

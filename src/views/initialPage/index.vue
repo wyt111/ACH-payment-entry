@@ -138,7 +138,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     display: flex;
     align-items: center;
     font-size: 0.2rem;
-    font-family: 'Jost', sans-serif;
+    font-family: 'GeoDemibold';
     font-weight: bold;
     color: #232323;
   }
@@ -146,7 +146,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     display: flex;
     margin-left: auto;
     img {
-      width: 0.2rem;
+      width: 0.12rem;
       cursor: pointer;
     }
   }

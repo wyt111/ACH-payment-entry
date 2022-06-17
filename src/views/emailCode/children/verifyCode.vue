@@ -1,90 +1,159 @@
 <template>
   <div class="verifyCode-container">
-      <div class="verifyCode_title">Please enter the verification code sent to your email.</div>
-      <div class="security-code-wrap">
-		<label for="code2">
-			<ul class="security-code-container clear">
-				<li class="field-wrap" v-for="(item, index) in number" :key="index">
-					<i class="char-field">{{ value[index] || placeholder }}</i>
-				</li>
-			</ul>
-		</label>
-		<input
-			ref="input"
-			class="input-code"
-			v-model="value"
-			id="code2"
-			name="code2"
-			type="tel"
-			:maxlength="number"
-			autocorrect="off"
-			autocomplete="off"
-			autocapitalize="off"
-		/>
-	
-	</div>
-      <div class="verifyCode_title">Didn’t receive it? Resend code in 10s</div>
-      <div class="verifyCode_title">I agree with Alchemy Pay's &lt;Terms of Service&gt; and &lt;Privacy Policy.&gt;</div>
-      <div class="verifyCode_button">Continue
-        <img src="@/assets/images/10008-icon.png" alt="">
+      <div class="verifyCode_title">We’ve sent a confirmation code to your email.</div>
+      <div class="verifyCode_content">
+        <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
+        <input type="input" v-model="value" :maxlength="6" ref="input">
+      </div>
+      <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
+      <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
+      <div class="verifyCode_title bottom"> 
+        <input type="checkbox" v-model="checked"> <div> I agree with Alchemy Pay's <span>&lt;Terms of Service&gt;</span> and <span>&lt;Privacy Policy.&gt;</span></div></div>
+      <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
+        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
+        <van-loading class="icon" type="spinner" color="#fff" v-else/>
       </div>
   </div>
 </template>
 <script>
+import axios from 'axios';
+import { AES_Encrypt } from '@/utils/encryp.js';
   export default {
   name: "verifyCode",
   data(){
     return {
       number:6,
       value:'',
-      placeholder:''
+      checked:false,
+      codeTime:10,
+      timeVal:null,
+      showLoading:false
     }
   },
-  watch: {
-		value(val, oldV) {
-			// this.$toast(val);
-			this.$refs.input.value = val;
-			this.value = val;
-			if (this.value.length >= this.number) {
-				this.hideKeyboard();
-			}
-			this.handleSubmit();
-		},
-	},
-	methods: {
-		hideKeyboard() {
-			// 输入完成隐藏键盘
-			document.activeElement.blur(); // ios隐藏键盘
-			this.$refs.input.blur(); // android隐藏键盘
-		},
-		handleSubmit() {
-			this.$emit("input", this.value);
-		},
-		handleInput(e) {
-			this.$refs.input.value = this.value;
-			if (this.value.length >= this.number) {
-				this.hideKeyboard();
-			}
-			this.handleSubmit();
-		},
-		pasteInput(e) {
-			this.$toast(this.value);
-			console.log(this.value);
-			// 当进行粘贴时
-			e.clipboardData.items[0].getAsString((str) => {
-				this.value = str.toString();
-				console.log(e.clipboardData.items[0]);
-				this.$toast(this.value);
-				this.$refs.input.value = this.value;
-				if (this.value.length >= this.number) {
-					this.hideKeyboard();
-				}
-
-				this.handleSubmit();
-			});
-		},
-	},
-
+  mounted(){
+    setTimeout(()=>{
+      this.changeBlur()
+    },1000)
+    this.timeVal = setInterval(()=>{
+      this.codeTime--
+      if(this.codeTime <= 0){
+        // this.codeTime = 10
+        clearInterval(this.timeVal)
+      }
+    },1000)
+  },
+  activated(){
+    setTimeout(()=>{
+      this.changeBlur()
+    },1000)
+  },
+  methods:{
+    //input聚焦
+    changeBlur(){
+     this.$refs.input.focus()
+    },
+    //获取验证码
+    getEmailCode(){
+      // this.codeTime = 10
+      let params = {
+        email:this.$store.state.userEmail
+      }
+       this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
+         if(res.returnCode === '0000'){
+           this.codeTime = 10
+           clearInterval(this.timeVal)
+           this.timeVal = setInterval(()=>{
+            this.codeTime--
+            if(this.codeTime <= 0){
+              clearInterval(this.timeVal)
+            }
+          },1000)
+         }
+       })
+    },
+    toLogin(){
+     if(this.netActive){
+       let _this = this;
+       this.showLoading = true
+       var FormData = require('form-data');
+        var data = new FormData();
+         data.append('email', this.$store.state.userEmail);
+         data.append('verificationCode', AES_Encrypt(this.value));
+         var config = {
+          method: 'post',
+          url: process.env.VUE_APP_BASE_API + this.$api.post_login,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          data : data
+        };
+        axios.interceptors.response.use(function (config) {
+          return config;
+        }, function (error) {
+          // Do something with response error
+          return Promise.reject(error);
+        })
+        axios(config).then(function (response) {
+          
+          if(response.returnCode === '0000'){
+            _this.codeErrorState = false;
+            _this.showLoading = false
+            if(_this.$route.query.fromName === 'tradeList'){
+              _this.$router.replace('/tradeHistory');
+            }else{
+              //登陆跳转路径根据router.from的路由跳转不同页面
+              if(_this.$store.state.emailFromPath === 'buyCrypto'){
+                _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
+              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                let params = {
+                  country: _this.$store.state.routerParams.positionData.alpha2,
+                  fiatName: _this.$store.state.routerParams.positionData.fiatCode,
+                };
+                _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
+                  //data - null 没有填写过表单,跳转到表单页
+                  //data - !null 有填写过表单,跳转到确认订单页
+                  if(res && res.returnCode === "0000" && res.data === null){
+                    delete _this.$store.state.sellForm;
+                    _this.$router.push('/sell-formUserInfo')
+                  }else if(res && res.returnCode === "0000" && res.data !== null){
+                    _this.$store.state.sellForm = res.data;
+                    _this.$router.push('/configSell')
+                  }
+                })
+              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
+                _this.$router.push('/sellOrder');
+              }else{
+                _this.$router.push('/');
+              }
+            }
+          }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
+            _this.codeErrorState = true;
+            _this.codeError = response.returnMsg;
+          }
+        }).catch(function (error) {
+          _this.showLoading = false
+          console.log(error);
+        });
+     }else if(this.value.length < 6){
+       this.$toast('Please fill in the verification')
+       return
+     }else{
+       this.$toast('Please tick the User Agreement')
+     }
+       
+    }
+  },
+  computed:{
+    netActive(){
+      if(this.checked && this.value.length === 6){
+        return true
+      }else if(isNaN(this.value) === true){
+        return false
+      }else{
+        return false
+      }
+    }
+  }
   }
 </script>
 <style lang="scss" scoped>
@@ -92,60 +161,80 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
   .verifyCode_title{
     font-size: .13rem;
     color: #232323;
+    font-family: "GeoLight";
+    span{
+      color: #0059DAFF;
+    }
   }
-  // .verifyCode_content{
-  //   width: 100%;
-  //   height: .8rem;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   span{
-  //     display: inline-block;
-  //     width: .5rem;
-  //     height: .65rem;
-  //     border-radius: .12rem;
-  //     font-size: .24rem;
-  //   }
-  // }
-  .security-code-wrap {
-    height: .6rem;
-	overflow: hidden;
-}
-.security-code-container {
-  height: 100%;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	// justify-content: center;
-	justify-content: space-between;
-	.field-wrap {
-		text-align: center;
-		list-style: none;
-		display: block;
-		// width: 2.3rem;
-		// height: 2.5rem;
-		line-height: 3rem;
-		font-size: 1rem;
-		background: #fff;
-		border-bottom: 1px solid #888;
-		// margin: 0.8rem;
-		color: #000;
-		.char-field {
-			font-style: normal;
-		}
-	}
-}
-.input-code {
-	position: absolute;
-	left: -200%;
-	top: -200%;
-	opacity: 0;
-	overflow: visible;
-	z-index: -1;
-}
-
+  .verifyCode_content{
+    width: 100%;
+    height: .8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: .3rem;
+    span{
+      display: inline-block;
+      width: .5rem;
+      height: .65rem;
+      border-radius: .12rem;
+      font-size: .24rem;
+      background: #F3F4F5FF;
+      text-align: center;
+      line-height: .65rem;
+    }
+    .active{
+      border: 1px solid #0059DAFF;
+    }
+    input{
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+  .verifyCode_button{
+    width: 100%;
+    height: .58rem;
+    background: rgba(0, 89, 218, 0.5);
+    border-radius: .29rem;
+    font-size: .17rem;
+    text-align: center;
+    line-height: .58rem;
+    position: absolute;
+    bottom: 0rem;
+    color: #FAFAFA;
+    font-family: "GeoRegular";
+    .icon{
+      width: .24rem;
+      height: .15rem;
+      position: absolute;
+      right: .16rem;
+      top: .21rem;
+      span{
+        position: absolute;
+        left: 0;
+        top: .03rem;
+      }
+    }
+  }
+  .bottom{
+    display: flex;
+    position: absolute;
+    bottom: 1rem;
+    div{
+      line-height: .2rem;
+      margin-left: .11rem;
+    }
+    input{
+      margin-top: .1rem;
+    }
+  }
 }
 </style>
