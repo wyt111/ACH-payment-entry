@@ -11,7 +11,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          You get <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> for <span>{{ payCommission.code }}{{ payCommission.symbol }}{{ routerParams.amount }}</span>
+          You get <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> for <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right"><van-icon name="arrow-down" /></div>
       </div>

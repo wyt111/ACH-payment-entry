@@ -57,10 +57,13 @@
       <!-- country payCurrency -->
       <ul v-else-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
-          <p class="seach_li_text currencyCopywriting"><img :src="item.flag">{{ item.enCommonName }}</p>
+          <p class="seach_li_text currencyCopywriting">
+            <img :src="item.flag">
+            <span class="allName">{{ item.enCommonName }} -</span>
+            <span class="abbreviationName" v-if="viewName === 'payCurrency'"> {{ item.code }}</span>
+          </p>
           <p class="seach_li_rightIcon">
-            <span v-if="viewName === 'payCurrency'">{{ item.code }}</span>
-            <span v-else-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
+            <span v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
             <img src="../assets/images/rightIcon.png">
           </p>
         </li>
@@ -482,7 +485,7 @@ export default {
   .search_core{
     flex: 1;
     overflow: auto;
-    margin-top: 0.15rem;
+    margin-top: 0.28rem;
     .screen_title{
       font-size: 0.14rem;
       font-family: "GeoDemibold", GeoDemibold;
@@ -495,7 +498,8 @@ export default {
       li{
         display: flex;
         align-items: center;
-        height: 0.55rem;
+        //height: 0.55rem;
+        margin-top: 0.24rem;
         cursor: pointer;
         .seach_li_img{
           display: flex;
@@ -508,22 +512,31 @@ export default {
           font-family: "GeoDemibold", GeoDemibold;
           font-weight: 400;
           color: #232323;
-          margin-left: 0.2rem;
           display: flex;
           align-items: center;
           .seach_li_allText{
             color: #666666;
             font-weight: 400;
           }
+          .allName{
+            font-size: 0.16rem;
+            font-family: "GeoDemibold", GeoDemibold;
+            font-weight: normal;
+            color: #232323;
+          }
+          .abbreviationName{
+            font-family: "GeoLight",GeoLight;
+            margin-left: 0.03rem;
+          }
           img{
-            width: 0.3rem;
-            height: 0.3rem;
+            width: 0.36rem;
+            height: 0.36rem;
             border-radius: 50%;
-            margin-right: 0.2rem;
+            margin-right: 0.08rem;
           }
         }
         .currencyCopywriting{
-          margin-left: 0.1rem;
+          margin-left: 0.05rem;
         }
         .seach_li_rightIcon{
           display: flex;
@@ -533,10 +546,12 @@ export default {
           font-weight: 400;
           color: #232323;
           img{
-            width: 0.12rem;
-            //height: 0.14rem;
+            height: 0.22rem;
             margin-left: 0.21rem;
           }
+        }
+        &:first-child{
+          margin-top: 0;
         }
       }
     }
@@ -544,9 +559,8 @@ export default {
 }
 .searchHeader{
   .searchHeader_view1{
-    font-size: 0.2rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: bold;
+    font-size: 0.21rem;
+    font-family: "GeoDemibold", GeoDemibold;
     color: #232323;
     display: flex;
     align-items: center;
@@ -555,7 +569,7 @@ export default {
       margin-left: auto;
       cursor: pointer;
       img{
-        width: 0.2rem;
+        width: 0.24rem;
       }
     }
   }
@@ -566,14 +580,15 @@ export default {
     border-radius: 10px;
     border: 1px solid #4479D9;
     display: flex;
-    margin-top: 0.2rem;
+    margin-top: 0.16rem;
     position: relative;
     input{
       width: 100%;
       height: 100%;
       font-size: 0.16rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #999999;
       padding: 0 0.47rem;
       background: #F3F4F5;
       border-radius: 10px;

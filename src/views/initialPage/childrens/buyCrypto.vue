@@ -9,7 +9,7 @@
         <div class="pay_company" @click="openSearch('payCurrency')">
           <div class="countryIcon"><img :src="positionData.positionImg"></div>
           <div>{{ payCommission.code }}</div>
-          <img class="rightIcon" src="@/assets/images/rightIcon.png">
+          <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
@@ -20,7 +20,7 @@
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg"><img :src="currencyData.icon"></div>
           <div class="getText">{{ currencyData.name }}</div>
-          <div class="rightIcon"><img src="@/assets/images/rightIcon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
       </div>
 
@@ -484,7 +484,7 @@ html,body,#buyCrypto{
     }
   }
   .rightIcon{
-    width: 0.12rem;
+    width: 0.24rem;
     margin-left: 0.2rem;
   }
 }
@@ -509,6 +509,7 @@ html,body,#buyCrypto{
   top: 0;
   right: 0;
   min-width: 1.44rem;
+  height: 100%;
   border-radius: 0 0.12rem 0.12rem 0;
   display: flex;
   align-items: center;
@@ -532,8 +533,10 @@ html,body,#buyCrypto{
     margin-right: 0.2rem;
   }
   .rightIcon{
+    display: flex;
+    align-items: center;
     img{
-      width: 0.12rem;
+      width: 0.24rem;
     }
   }
 }
@@ -553,7 +556,7 @@ html,body,#buyCrypto{
   position: relative;
   .rightIcon{
     position: absolute;
-    top: 0.22rem;
+    top: 0.17rem;
     right: 0.32rem;
     width: 0.24rem;
   }
