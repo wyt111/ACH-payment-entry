@@ -79,7 +79,7 @@ export default {
   font-weight: normal;
   color: #FFFFFF;
   margin-top: 0.26rem;
-  cursor: no-drop;
+  cursor: pointer;
   border: none;
   position: relative;
   .rightIcon{

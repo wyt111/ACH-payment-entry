@@ -377,8 +377,8 @@ export default {
     font-family: "GeoRegular", GeoRegular;
     font-weight: normal;
     color: #FFFFFF;
-    margin-top: 0.26rem;
-    cursor: no-drop;
+    margin-top: 0.16rem;
+    cursor: pointer;
     border: none;
     position: relative;
     .rightIcon{

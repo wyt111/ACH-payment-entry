@@ -2,7 +2,6 @@
   <div id="internationalCardPay_box">
     <div id="internationalCardPay">
       <div class="view-content">
-
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">First Name</div>
@@ -13,11 +12,6 @@
             <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
           </div>
         </div>
-<!--        <div class="formLine">-->
-<!--          <div class="formTitle">Email</div>-->
-<!--          <div class="formContent"><input type="email" v-model="params.email"></div>-->
-<!--        </div>-->
-
         <div class="formLine">
           <div class="formTitle">
             <div>Card Number</div>
@@ -37,7 +31,6 @@
             <div class="formTitle">Expiration Date</div>
             <div class="formContent">
               <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-<!--              <van-field class="number_input" type="digit" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7"/>-->
             </div>
           </div>
           <!-- error tips -->
@@ -54,7 +47,10 @@
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
         </div>
       </div>
-      <button class="continue" :class="{'buttonTrue': buttonState}" :disabled="!buttonState" @click="submitPay">Continue</button>
+      <button class="continue" :class="{'buttonTrue': buttonState}" :disabled="!buttonState" @click="submitPay">
+        Continue
+        <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" alt="">
+      </button>
     </div>
   </div>
 </template>
@@ -226,12 +222,6 @@ export default {
 
     //验证、提交卡信息
     submitPay(){
-      //email验证
-      // if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.params.email)){
-      //   this.$toast("not a valid email.");
-      //   return;
-      // }
-
       //卡号验证
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
@@ -293,20 +283,21 @@ export default {
     overflow: auto;
     padding-bottom: 0.2rem;
     .errorTips{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
+      position: absolute;
+      font-size: 0.13rem;
+      font-family: "GeoLight", GeoLight;
       font-weight: 400;
-      color: #FF0000;
-      margin-top: 0.1rem;
+      color: #E55643;
+      margin: 0.08rem 0.2rem 0 0.16rem;
     }
   }
   .formLine{
-    margin-top: 0.2rem;
+    margin-top: 0.28rem;
     .formTitle{
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      color: #232323;
+      font-size: 0.13rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #707070;
       display: flex;
       align-items: flex-end;
       .formTitle_logo{
@@ -314,21 +305,25 @@ export default {
         color: darkgray;
         img{
           width: 0.4rem;
+          &:last-child{
+            margin-left: 0.08rem;
+          }
         }
       }
     }
     .formContent{
       display: flex;
-      margin-top: 0.12rem;
+      margin-top: 0.08rem;
       position: relative;
       input{
         width: 100%;
-        height: 0.6rem;
+        height: 0.56rem;
         background: #F3F4F5;
-        border-radius: 10px;
+        border-radius: 0.12rem;
         font-size: 0.16rem;
-        font-family: 'Jost', sans-serif;
+        font-family: "GeoRegular", GeoRegular;
         font-weight: 500;
+        color: #232323;
         border: none;
         outline: none;
         padding: 0 0.2rem;
@@ -353,24 +348,30 @@ export default {
       padding-left: 0.1rem;
     }
   }
+
   .continue{
     width: 100%;
-    height: 0.6rem;
-    background: rgba(68, 121, 217, 0.5);
-    border-radius: 4px;
-    text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.18rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #FAFAFA;
-    margin: 0.1rem 0 0 0;
-    cursor: no-drop;
-    border: none;
-  }
-  .buttonTrue{
-    background: #4479D9 !important;
+    height: 0.58rem;
+    background: #0059DA;
+    border-radius: 0.29rem;
+    font-size: 0.17rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin-top: 0.16rem;
     cursor: pointer;
+    border: none;
+    position: relative;
+    .rightIcon{
+      width: 0.24rem;
+      position: absolute;
+      top: 0.17rem;
+      right: 0.32rem;
+    }
+  }
+  .continue:disabled{
+    background: rgba(0, 89, 218, 0.5);
+    cursor: no-drop;
   }
 }
 .year ::v-deep .van-picker-column:nth-of-type(2){
@@ -397,7 +398,7 @@ export default {
   width: 100%;
   min-height: 0.6rem;
   background: #F3F4F5;
-  border-radius: 10px;
+  border-radius: 0.12rem;
   font-size: 0.16rem;
   font-family: 'Jost', sans-serif;
   font-weight: 500;

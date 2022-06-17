@@ -103,7 +103,6 @@ export default {
 //  font-weight: normal;
 //  font-style: normal;
 //}
-//Fieldwork7-GeoLight
 @font-face {
   font-family: "GeoDemibold";
   src: url('./assets/fonts/Fieldwork/Fieldwork13-SemiBoldGeo.otf');
@@ -169,7 +168,7 @@ html,body,#app,#viewBox{
   background: #FFFFFF;
   border-radius: 25px;
   position: relative;
-  padding: 15px;
+  padding: 0.26rem 0.16rem;
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
