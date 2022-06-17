@@ -44,12 +44,12 @@ export default {
 
 <style lang="scss" scoped>
 .formLine {
-  margin-top: 0.2rem;
+  margin-top: 0.32rem;
   .formTitle {
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
     display: flex;
     align-items: flex-end;
   }
@@ -57,9 +57,10 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 0.2rem;
-    margin-top: 0.1rem;
+    margin-top: 0.08rem;
     font-size: 0.16rem;
-    font-weight: 500;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
     color: #232323;
     height: 0.6rem;
     background: #F3F4F5;

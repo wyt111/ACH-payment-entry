@@ -29,7 +29,7 @@
         <div class="calculationProcess_line">
           <div class="line_name">Remaining time</div>
           <div class="line_number">
-            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.svg"></div>
+            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
             <div class="line_number_red">{{ timeDownNumber }}S</div>
           </div>
         </div>
@@ -328,7 +328,7 @@ export default {
         payCommission: this.payCommission,
         positionData: this.positionData
       }
-      this.$store.state.routerParams = routerParams;
+      this.$store.state.sellRouterParams = routerParams;
       //获取用户卡信息
       let params = {
         country: this.positionData.alpha2,

@@ -4,21 +4,21 @@
     <div class="feeTitle">
       <div class="feeTitle-name">Remaining time</div>
       <div class="feeTitle-value">
-        <div class="loading-svg"><img src="../assets/images/countDownIcon.svg" alt=""></div>
+        <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
         <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          You get <span>133.98 ACH</span> for <span>US$300.00</span>
+          You get <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> for <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right"><van-icon name="arrow-down" /></div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
-          <div class="title">ACH price</div>
-          <div class="value">USD$0.02254</div>
+          <div class="title">{{ routerParams.cryptoCurrency }} price</div>
+          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
@@ -31,11 +31,11 @@
               <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
-          <div class="value"><span class="minText">as low as</span> US$10.00</div>
+          <div class="value"><span class="minText">as low as</span> {{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">Network fee</div>
-          <div class="value">US$10.00</div>
+          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
 <!--      <div class="paymentInformation-line">-->
 <!--        <div class="line_name">Remaining time</div>-->
 <!--        <div class="line_number remainingTime">-->
-<!--          <div><img class="loadingIcon" src="../assets/images/countDownIcon.svg"></div>-->
+<!--          <div><img class="loadingIcon" src="../assets/images/countDownIcon.png"></div>-->
 <!--          <div>{{ timeDownNumber }}S</div>-->
 <!--        </div>-->
 <!--      </div>-->
@@ -95,7 +95,7 @@ import common from "../utils/common";
 
 export default {
   name: "includedDetails",
-  props: ['network','showState','titleStatus'],
+  props: ['isHome','network','showState','titleStatus'],
   data(){
     return{
       triggerType: "hover",
@@ -107,7 +107,17 @@ export default {
       feeText: 'View fees',
       feeInfo: {},
       routerParams: {},
-      payCommission: {},
+      payCommission: {
+        code: "",
+        decimalDigits: 0,
+        name: "",
+        payCommission: [],
+        payMax: 0,
+        payMin: 0,
+        rampFee: 0,
+        symbol: "",
+        symbolNative: ""
+      },
       timeDownNumber: 15,
     }
   },
@@ -134,17 +144,15 @@ export default {
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
-    let routerParams = JSON.parse(this.$route.query.routerParams);
-    this.routerParams = routerParams;
-    this.payCommission = routerParams.payCommission;
+    this.routerParams = this.$store.state.buyRouterParams;
+    this.payCommission = this.routerParams.payCommission;
   },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
-    let routerParams = JSON.parse(this.$route.query.routerParams);
-    this.routerParams = routerParams;
-    this.payCommission = routerParams.payCommission;
+    this.routerParams = this.$store.state.buyRouterParams;
+    this.payCommission = this.routerParams.payCommission;
   },
   destroyed(){
     clearInterval(this.timeOut)
@@ -166,13 +174,18 @@ export default {
     },
     queryFee(){
       let params = {
-        symbol: JSON.parse(this.$route.query.routerParams).cryptoCurrency+"USDT",
-        coin: JSON.parse(this.$route.query.routerParams).cryptoCurrency,
+        symbol: this.$store.state.buyRouterParams.cryptoCurrency+"USDT",
+        coin: this.$store.state.buyRouterParams.cryptoCurrency,
         network: this.network
       }
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
-          this.feeInfo = res.data
+          this.feeInfo = res.data;
+          //修改首页费用数据
+          if(this.isHome && this.isHome === true){
+            this.$parent.feeInfo = this.feeInfo;
+            this.$parent.calculationAmount();
+          }
         }
       })
     },
@@ -222,7 +235,7 @@ export default {
       .loading-svg{
         margin-right: 0.04rem;
         img{
-          width: 0.1rem;
+          height: 0.12rem;
         }
       }
     }
@@ -246,10 +259,13 @@ export default {
         font-weight: bold;
       }
       .left{
-        word-break: break-word;
+        word-break: break-all;
       }
       .right{
-        padding-left: 0.08rem;
+        width: 0.32rem;
+        height: 0.24rem;
+        text-align: center;
+        line-height: 0.24rem;
         margin-left: auto;
       }
     }

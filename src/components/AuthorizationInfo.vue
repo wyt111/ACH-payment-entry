@@ -1,7 +1,9 @@
 <template>
   <div id="AuthorizationInfo">
     <div class="agreement-content">
-      <div class="agreement-radio"><input type="checkbox" v-model="childData.agreement"></div>
+      <div class="agreement-radio">
+        <el-checkbox v-model="childData.agreement" size="mini"></el-checkbox>
+      </div>
       <div class="agreement-text">
         I authorise <span>AlchemyPay</span> to debit my chosen payment method
         for the amount above on today’s date and understand that this
@@ -25,29 +27,41 @@ export default {
 
 <style lang="scss" scoped>
 #AuthorizationInfo{
+  margin-top: 0.18rem;
   .agreement-content{
     display: flex;
-    margin-top: 0.2rem;
-    padding-bottom: 0.4rem;
     .agreement-radio{
       display: flex;
-      margin-top: 0.05rem;
-      input{
-        cursor: pointer;
-        width: 0.15rem;
-        height: 0.15rem;
-      }
     }
     .agreement-text{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
+      font-size: 0.13rem;
+      font-family: "GeoLight", GeoLight;
+      font-weight: normal;
       color: #333333;
-      margin-left: 0.2rem;
+      margin-left: 0.08rem;
+      margin-top: 0.02rem;
       span{
-        color: #4479D9;
+        color: #0059DA;
       }
     }
   }
 }
+
+.agreement-radio ::v-deep .el-checkbox__inner:hover{
+  border-color: #DFDFDF !important;
+}
+.agreement-radio ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #0059DA;
+  border: 1px solid #0059DA;
+  border-radius: 0.05rem;
+}
+.agreement-radio ::v-deep .el-checkbox__inner{
+  //width: 0.15rem;
+  //height: 0.15rem;
+  border: 1px solid #DFDFDF;
+}
+.agreement-radio ::v-deep .el-checkbox__inner::after{
+  //width: 0.04rem;
+}
+
 </style>

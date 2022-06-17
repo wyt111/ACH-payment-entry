@@ -48,13 +48,13 @@ export default {
   },
   methods: {
     reveiveInfo(){
-      this.routerParams = this.$store.state.routerParams;
+      this.routerParams = this.$store.state.sellRouterParams;
       this.queryCardInfo();
     },
     queryCardInfo(){
       let params = {
-        country: this.$store.state.routerParams.positionData.alpha2,
-        fiatName: this.$store.state.routerParams.positionData.fiatCode,
+        country: this.$store.state.sellRouterParams.positionData.alpha2,
+        fiatName: this.$store.state.sellRouterParams.positionData.fiatCode,
       };
       this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
         if(res && res.returnCode === "0000" && res.data !== null){

@@ -46,7 +46,10 @@
       </div>
       <IncludedDetails class="IncludedDetails" :showState="false" :titleStatus="true"/>
     </div>
-    <button class="continue" :disabled="disabled" @click="confirm">Continue</button>
+    <button class="continue" :disabled="disabled" @click="confirm">
+      Continue
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+    </button>
   </div>
 </template>
 
@@ -228,17 +231,18 @@ export default {
     flex: 1;
     overflow: auto;
     .payMethodsUl{
-      margin-top: 0.2rem;
+      margin-top: 0.28rem;
       .title{
-        font-size: 0.14rem;
-        font-weight: 500;
-        color: #232323;
+        font-size: 0.13rem;
+        font-family: "GeoRegular", GeoRegular;
+        font-weight: normal;
+        color: #707070;
       }
       .payMethodsLi{
-        min-height: 0.6rem;
-        background: #FFFFFF;
-        border-radius: 0.1rem;
-        border: 1px solid #C7C7C7;
+        min-height: 0.56rem;
+        background: #F3F4F5;
+        border-radius: 0.12rem;
+        border: 1px solid #F3F4F5;
         display: flex;
         align-items: center;
         padding: 0 0.21rem;
@@ -282,40 +286,41 @@ export default {
         }
       }
       .cardCheck{
-        border: 1px solid #4479D9;
+        border: 1px solid #0059DA;
       }
       &:nth-of-type(2){
         margin-bottom: 0.4rem;
       }
     }
   }
+
   .continue{
-    margin-top: 0.15rem;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 0.6rem;
-    background: #4479D9;
-    border-radius: 4px;
-    font-size: 0.18rem;
-    font-weight: 500;
-    font-family: 'Jost', sans-serif;
-    color: #FAFAFA;
+    height: 0.58rem;
+    background: #0059DA;
+    border-radius: 0.29rem;
+    font-size: 0.17rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin-top: 0.26rem;
+    cursor: no-drop;
     border: none;
-    cursor: pointer;
-    i{
-      font-size: 0.24rem;
+    position: relative;
+    .rightIcon{
+      width: 0.24rem;
       position: absolute;
-      right: 0.4rem;
+      top: 0.17rem;
+      right: 0.32rem;
     }
   }
   .continue:disabled{
-    background: rgba(68, 121, 217, 0.5) !important;
+    background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
   }
 }
 .IncludedDetails{
-  margin-top: 0.4rem;
+  margin-top: 0.32rem;
+  padding-bottom: 0.2rem;
 }
 </style>

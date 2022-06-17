@@ -97,13 +97,14 @@ export default {
 .navigationBar_view {
   display: flex;
   align-items: center;
-  padding-bottom: 0.2rem;
+  padding-bottom: 0.08rem;
   .navigationBar_view_left {
     display: flex;
     align-items: center;
-    font-size: 0.2rem;
-    font-family: 'GeoDemibold';
-    font-weight: bold;
+
+    font-size: 0.21rem;
+    font-family: "GeoDemibold", GeoDemibold;
+    font-weight: normal;
     color: #232323;
     .icon {
       cursor: pointer;

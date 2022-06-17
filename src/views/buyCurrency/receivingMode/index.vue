@@ -6,19 +6,9 @@
     <div class="receiveCoins-view" v-show="!searchViewState" ref="includedDetails_ref">
       <div class="receiveCoins-content">
         <div class="promptInformation">
-          <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span> <!-- Please provide cryptocurrency address to receive your order -->
+          <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
           <span v-else>Enter your wallet address.</span>
         </div>
-<!--        <div class="collectionMethod" v-if="supportCurrency" @click="checkMethods('ach')">-->
-<!--          <div class="methods">-->
-<!--            <div class="methods_name">Deposit to Alchemy Pay Wallet</div>-->
-<!--            <div class="methods_check"><input type="checkbox" v-model="checkModel" value="ach"></div>-->
-<!--          </div>-->
-<!--          <div v-if="checkModel[0]==='ach'">-->
-<!--            <div class="methods_tips">Since you have registered Alchemy Pay Wallet, the coins will be deposited into your account.</div>-->
-<!--            <div class="methods_account">Account: <span>{{ email }}</span></div>-->
-<!--          </div>-->
-<!--        </div>-->
         <div class="collectionMethod" @click="checkMethods('address')">
           <div class="methods">
             <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
@@ -42,7 +32,10 @@
         <includedDetails class="includedDetails_view" :network="buyParams.network"/>
       </div>
       <div class="continueBox" v-show="!searchViewState">
-        <button class="continue" @click="transaction" :disabled="disabled">Continue</button>
+        <button class="continue" @click="transaction" :disabled="disabled">
+          Continue
+          <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+        </button>
       </div>
     </div>
   </div>
@@ -89,11 +82,13 @@ export default {
   },
   computed: {
     disabled(){
-      console.log(this.buyParams.network,this.buyParams.address,this.checkModel)
       // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
+      console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
       if(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!==''){
+        console.log(false)
         return false
       }else{
+        console.log(true)
         return true
       }
     }
@@ -279,28 +274,24 @@ export default {
     }
   }
   .promptInformation{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
     color: #232323;
-    line-height: 0.24rem;
   }
   .collectionMethod:nth-of-type(1){
     margin-top: 0.1rem;
   }
   .collectionMethod{
     margin-top: 0.2rem;
-    background: #F3F4F5;
-    border-radius: 10px;
-    padding: 0.2rem;
     .methods{
       display: flex;
       align-items: center;
       .methods_name{
-        font-size: 0.16rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: 500;
-        color: #232323;
+        font-size: 0.13rem;
+        font-family: "GeoRegular", GeoRegular;
+        font-weight: normal;
+        color: #707070;
       }
       .methods_check{
         display: flex;
@@ -318,25 +309,22 @@ export default {
         align-items: center;
       }
       .methods_input{
-        height: 0.6rem;
+        height: 0.56rem;
         background: #FFFFFF;
-        border-radius: 10px;
-        margin-top: 0.2rem;
+        border-radius: 0.12rem;
+        margin-top: 0.08rem;
         position: relative;
         input{
           width: 100%;
           height: 100%;
-          background: #FFFFFF;
           border-radius: 10px;
           font-size: 0.16rem;
-          font-family: "GeoDemibold", GeoDemibold;
+          font-family: "GeoRegular", GeoRegular;
+          background: #F3F4F5;
           border: none;
           outline: none;
           padding: 0 0.21rem;
-          border: 1px solid #232323;
-        }
-        input:focus{
-          border: 1px solid #4479D9;
+          border: none;
         }
         .rightIcon{
           position: absolute;
@@ -351,42 +339,25 @@ export default {
         padding: 0 0.5rem 0 0.21rem;
       }
       .methods_errorText{
-        font-size: 0.14rem;
-        font-family: "GeoDemibold", GeoDemibold;
+        position: absolute;
+        font-size: 0.13rem;
+        font-family: "GeoLight", GeoLight;
         font-weight: 400;
-        color: #FF0000;
-        margin: 0.1rem 0 0 0.2rem;
+        color: #E55643;
+        margin: 0.08rem 0.2rem 0 0.16rem;
       }
       .methods_title{
-        font-size: 0.16rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: 500;
-        color: #232323;
-        margin-top: 0.2rem;
-      }
-    }
-    .methods_tips{
-      font-size: 0.154rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #999999;
-      line-height: 0.24rem;
-      margin-top: 0.1rem;
-    }
-    .methods_account{
-      font-size: 0.16rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #999999;
-      line-height: 0.24rem;
-      margin-top: 0.1rem;
-      span{
-        color: #4479D9;
+        font-size: 0.13rem;
+        font-family: "GeoRegular", GeoRegular;
+        font-weight: normal;
+        color: #707070;
+        margin-top: 0.32rem;
       }
     }
   }
 
   .includedDetails_view{
+    margin-top: 0.36rem;
     margin-bottom: 0.2rem;
   }
 
@@ -399,21 +370,26 @@ export default {
   }
   .continue{
     width: 100%;
-    height: 0.6rem;
-    margin-top: 0.1rem;
-    border-radius: 4px;
-    background: #4479D9;
-    text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.18rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #FAFAFA;
-    cursor: pointer;
+    height: 0.58rem;
+    background: #0059DA;
+    border-radius: 0.29rem;
+    font-size: 0.17rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin-top: 0.26rem;
+    cursor: no-drop;
     border: none;
+    position: relative;
+    .rightIcon{
+      width: 0.24rem;
+      position: absolute;
+      top: 0.17rem;
+      right: 0.32rem;
+    }
   }
   .continue:disabled{
-    background: rgba(68, 121, 217, 0.5);
+    background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
   }
 }

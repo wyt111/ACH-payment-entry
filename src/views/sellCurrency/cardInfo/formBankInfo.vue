@@ -76,7 +76,7 @@ export default {
     });
   },
   activated(){
-    this.$store.state.routerParams.payCommission.fiatCode === 'USD' ? this.dynamicFormTitle = "ACH Code" : this.dynamicFormTitle = 'Swift Code / BIC Code';
+    this.$store.state.sellRouterParams.payCommission.fiatCode === 'USD' ? this.dynamicFormTitle = "ACH Code" : this.dynamicFormTitle = 'Swift Code / BIC Code';
     //合并解密参数
     if(this.$store.state.sellForm){
       let oldSellForm = {...this.sellForm,...this.$store.state.sellForm};
@@ -107,7 +107,7 @@ export default {
       //加密字段 浅拷贝数据避免影响原数据
       let params = JSON.parse(JSON.stringify(this.sellForm));
       params.cardNumber = AES_Encrypt(params.cardNumber);
-      params.fiatName = this.$store.state.routerParams.positionData.fiatCode;
+      params.fiatName = this.$store.state.sellRouterParams.positionData.fiatCode;
       this.$axios.post(this.$api.post_saveCardInfo,params,'').then(res=>{
         if(res && res.returnCode === "0000"){
           //存储数据

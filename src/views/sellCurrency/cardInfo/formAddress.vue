@@ -85,8 +85,8 @@ export default {
     }
     //首页进入卖币卡表单页面赋值默认值
     if(this.$store.state.cardInfoFromPath === 'configSell'){
-      this.sellForm.country = this.$store.state.routerParams.positionData.alpha2;
-      this.countryName = this.$store.state.routerParams.positionData.positionValue;
+      this.sellForm.country = this.$store.state.sellRouterParams.positionData.alpha2;
+      this.countryName = this.$store.state.sellRouterParams.positionData.positionValue;
     }
   },
   methods: {
