@@ -261,19 +261,22 @@ export default {
           }
           .cardInfo{
             font-size: 0.16rem;
-            font-weight: 500;
+            font-family: "GeoRegular", GeoRegular;
+            font-weight: normal;
             color: #232323;
             margin-left: 0.2rem;
             span{
-              font-size: 0.15rem;
-              font-weight: 500;
-              color: #999999;
+              font-size: 0.13rem;
+              font-family: "GeoLight", GeoLight;
+              font-weight: normal;
+              color: #707070;
               margin-left: 0.1rem;
             }
             p:last-child{
-              font-size: 0.14rem;
-              font-weight: 400;
-              color: #999999;
+              font-size: 0.13rem;
+              font-family: "GeoLight", GeoLight;
+              font-weight: normal;
+              color: #707070;
             }
           }
         }
