@@ -1,8 +1,10 @@
 <template>
   <div id="tradeHistory">
     <div class="noData" v-if="historyList.length===0">
-      <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
-      <div class="noDataText">No transactions</div>
+      <div class="noData-content">
+        <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
+        <div class="noDataText">No transactions</div>
+      </div>
       <div class="continue" @click="goHome">Buy Crypto</div>
     </div>
     <div class="historyList" v-else>
@@ -159,24 +161,29 @@ html,body,#tradeHistory,.historyList,.van-list{
   }
 
   .noData{
-    width: 2rem;
-    height: 3rem;
-    margin: 0 auto;
-    .noDataImg{
-      display: flex;
-      justify-content: center;
-      margin-top: 1rem;
-      img{
-        width: 2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .noData-content{
+      flex: 1;
+      overflow: auto;
+      .noDataImg{
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+        img{
+          width: 2rem;
+        }
       }
-    }
-    .noDataText{
-      text-align: center;
-      margin-top: 0.4rem;
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      color: #AFC5D8;
+      .noDataText{
+        text-align: center;
+        margin-top: 0.4rem;
+        font-size: 0.14rem;
+        font-family: 'Jost', sans-serif;
+        font-weight: 500;
+        color: #AFC5D8;
+      }
     }
     .continue{
       width: 100%;
@@ -190,9 +197,6 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;
-      position: fixed;
-      bottom: 0;
-      left: 0;
     }
   }
 }
