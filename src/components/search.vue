@@ -515,8 +515,8 @@ export default {
           display: flex;
           align-items: center;
           .seach_li_allText{
-            color: #666666;
-            font-weight: 400;
+            font-family: "GeoLight",GeoLight;
+            margin-left: 0.04rem;
           }
           .allName{
             font-size: 0.16rem;

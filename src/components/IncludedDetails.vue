@@ -235,7 +235,7 @@ export default {
       .loading-svg{
         margin-right: 0.04rem;
         img{
-          width: 0.1rem;
+          height: 0.12rem;
         }
       }
     }

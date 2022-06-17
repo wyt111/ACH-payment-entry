@@ -485,7 +485,7 @@ html,body,#buyCrypto{
   }
   .rightIcon{
     width: 0.24rem;
-    margin-left: 0.2rem;
+    margin-left: 0.18rem;
   }
 }
 
@@ -530,7 +530,7 @@ html,body,#buyCrypto{
     font-family: 'GeoRegular', GeoRegular;
     font-weight: 500;
     color: #232323;
-    margin-right: 0.2rem;
+    margin-right: 0.18rem;
   }
   .rightIcon{
     display: flex;
@@ -571,6 +571,7 @@ html,body,#buyCrypto{
 
 .calculationProcess{
   margin-top: 0.32rem;
+  margin-bottom: 0.1rem;
 }
 
 @keyframes loadingIcon {

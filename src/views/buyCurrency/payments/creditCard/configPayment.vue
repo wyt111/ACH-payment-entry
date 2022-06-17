@@ -26,7 +26,7 @@
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
       <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
-      <IncludedDetails/>
+      <IncludedDetails class="includedDetails"/>
     </div>
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
   </div>
@@ -192,12 +192,12 @@ export default {
 }
 
 .formLine{
-  margin-top: 0.2rem;
+  margin-top: 0.32rem;
   .formTitle{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
     display: flex;
     align-items: flex-end;
     .formTitle_logo{
@@ -211,25 +211,27 @@ export default {
   .formContent{
     display: flex;
     align-items: center;
-    margin-top: 0.1rem;
+    margin-top: 0.08rem;
     position: relative;
-    height: 0.6rem;
+    height: 0.56rem;
     background: #F3F4F5;
-    border-radius: 10px;
-    font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    border-radius: 0.12rem;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
+    color: #707070;
     border: none;
     outline: none;
     padding: 0 0.2rem;
     input{
       width: 100%;
-      height: 0.6rem;
+      height: 0.56rem;
       background: #F3F4F5;
-      border-radius: 10px;
+      border-radius: 0.12rem;
       font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
+      color: #232323;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
       border: none;
       outline: none;
       padding: 0 0.08rem 0 0;
@@ -242,21 +244,23 @@ export default {
       align-items: center;
       .card-info{
         font-size: 0.16rem;
-        font-weight: 500;
+        font-family: "GeoRegular", GeoRegular;
+        font-weight: normal;
         color: #232323;
-        margin-left: 0.2rem;
+        margin-left: 0.16rem;
         span{
-          font-size: 0.16rem;
-          font-weight: 500;
-          color: #999999;
-          margin-left: 0.1rem;
+          font-size: 0.13rem;
+          font-family: "GeoLight", GeoLight;
+          font-weight: normal;
+          color: #707070;
+          margin-left: 0.08rem;
         }
       }
       .card-icon{
         display: flex;
         align-items: center;
         img{
-          width: 0.6rem;
+          width: 0.35rem;
         }
       }
     }
@@ -269,5 +273,9 @@ export default {
       }
     }
   }
+}
+.includedDetails{
+  margin-top: 0.32rem;
+  margin-bottom: 0.2rem;
 }
 </style>

@@ -2,7 +2,8 @@
   <button class="button" :disabled="disabled" @click="submit" :class="{'loadingDisabled': this.buttonData.triggerNum >= 1 && loadingDisabled}">
     <slot v-if="buttonData.customName"/>
     <div v-else>{{ buttonName }}</div>
-    <i v-if="buttonData.loading" class="el-icon-loading"></i>
+    <i v-if="buttonData.loading" class="el-icon-loading loadingIcon"></i>
+    <img v-else class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
   </button>
 </template>
 
@@ -67,29 +68,44 @@ export default {
 <style lang="scss" scoped>
 .button{
   width: 100%;
+  height: 0.58rem;
+  background: #0059DA;
+  border-radius: 0.29rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 0.56rem;
-  background: #4479D9;
-  border-radius: 4px;
   font-size: 0.17rem;
-  font-family: 'Jost', sans-serif;
-  color: #FAFAFA;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #FFFFFF;
+  margin-top: 0.26rem;
+  cursor: no-drop;
   border: none;
-  cursor: pointer;
-  margin-top: 0.15rem;
-  i{
+  position: relative;
+  .rightIcon{
+    width: 0.24rem;
+    position: absolute;
+    top: 0.17rem;
+    right: 0.32rem;
+  }
+  .loadingIcon{
     font-size: 0.24rem;
     position: absolute;
     right: 0.22rem;
   }
 }
 .button[disabled] {
-  background: rgba(68, 121, 217, 0.5) !important;
+  background: rgba(0, 89, 218, 0.5);
   cursor: no-drop;
 }
 .loadingDisabled{
   cursor: no-drop !important;
+}
+
+.continue{
+}
+.continue:disabled{
+  background: rgba(0, 89, 218, 0.5);
+  cursor: no-drop;
 }
 </style>

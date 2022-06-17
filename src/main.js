@@ -16,10 +16,11 @@ import Button from './components/Button.vue'
 Vue.component('Button', Button)
 
 //ui - element
-import { Popover,InfiniteScroll } from 'element-ui';
+import { Popover,InfiniteScroll,Checkbox } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Popover);
 Vue.use(InfiniteScroll);
+Vue.use(Checkbox);
 
 //ui - vant
 import Vant from 'vant';
