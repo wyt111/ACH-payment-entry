@@ -26,7 +26,9 @@ const store = new Vuex.Store({
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
 
-        routerParams: {},
+        buyRouterParams: {},
+        sellRouterParams: {},
+
         feeParams: {},
         sellOrderId: '',
 

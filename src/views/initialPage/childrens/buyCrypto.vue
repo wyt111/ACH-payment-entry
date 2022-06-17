@@ -195,7 +195,7 @@ export default {
     //Purchase information details - Scheduled refresh
     payinfo(){
       if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
-        this.$store.state.buyRouterParams.payAmount = this.payAmount;
+        this.$store.state.buyRouterParams.amount = this.payAmount;
         this.detailedInfo_state = true;
         this.$nextTick(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
@@ -316,7 +316,7 @@ export default {
             price: item.price,
             serviceFee: item.serviceFee,
           }
-          this.$store.state.buyRouterParams.currencyData = this.currencyData;
+          this.$store.state.buyRouterParams.cryptoCurrency = this.currencyData.name;
         }
       })
       let params = merchantParams;
@@ -433,7 +433,7 @@ html,body,#buyCrypto{
 .methods_select{
   min-height: 0.6rem;
   background: #F3F4F5;
-  border-radius: 12px;
+  border-radius: 0.12rem;
   font-size: 0.16rem;
   font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
@@ -540,8 +540,8 @@ html,body,#buyCrypto{
 
 .continue{
   width: 100%;
-  height: 58px;
-  background: #0059DA;
+  height: 0.58rem;
+  background: rgba(0, 89, 218, 0.5);
   border-radius: 0.29rem;
   font-size: 0.17rem;
   font-family: "GeoRegular", GeoRegular;
@@ -559,7 +559,7 @@ html,body,#buyCrypto{
   }
 }
 .continue_true{
-  background: #4479D9;
+  background: #0059DA;
   cursor: pointer;
 }
 .cursor{
