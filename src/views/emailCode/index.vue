@@ -388,7 +388,7 @@ export default {
     width: 100%;
     height: .35rem;
     img{
-      height: .12rem;
+      height: .24rem;
       float: right;
     }
   }

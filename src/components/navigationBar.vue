@@ -8,7 +8,8 @@
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>Menu</div>
-    <div class="navigationBar_view_right" v-if="$route.path === '/language'">
+    <!-- {{}} -->
+    <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
       <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
       <img src="../assets/images/closeIcon.png" v-else @click="openMenu">
     </div>
@@ -122,7 +123,7 @@ export default {
     display: flex;
     margin-left: auto;
     img {
-      width: 0.2rem;
+      width: 0.24rem;
       cursor: pointer;
     }
   }

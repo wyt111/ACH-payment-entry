@@ -146,7 +146,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
     display: flex;
     margin-left: auto;
     img {
-      width: 0.12rem;
+      width: 0.24rem;
       cursor: pointer;
     }
   }

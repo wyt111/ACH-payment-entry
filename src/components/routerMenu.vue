@@ -57,7 +57,7 @@
       <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
       <div class="lineName">Log Out</div>
       <div class="lineRight">
-        <div class="email">{{ email }}</div>
+        <div class="email">{{ emailSlice }}</div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -160,6 +160,13 @@ export default {
         this.$router.push('/emailCode')
       }
     },
+  },
+  computed:{
+    emailSlice(){
+      let email = this.email
+      let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
+      return email1
+    }
   }
 }
 </script>
