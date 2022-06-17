@@ -278,7 +278,7 @@ export default {
   background: #F3F4F5;
   border-radius: 10px;
   font-size: 0.14rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 400;
   color: #666666;
   padding: 0 0.2rem;
@@ -303,7 +303,7 @@ export default {
       display: flex;
       align-items: center;
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #666666;
       .serialNumber{

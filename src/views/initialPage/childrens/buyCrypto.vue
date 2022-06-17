@@ -2,7 +2,7 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">You Pay</div>
+      <div class="form_title pay_title">Y<span style="margin-left: 0.00001rem">ou</span> Pay</div>
       <div class="methods_select cursor">
         <!-- @keydown="inputChange" -->
         <van-field class="pay_input" :type="youPaytype" @input="inputChange" v-model.number="payAmount" pattern="[0-9]*" inputmode="decimal" @blur="youPayBlur" :disabled="payAmountState" placeholder="0.00"/>
@@ -14,7 +14,7 @@
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">You Get</div>
+      <div class="form_title get_title">Y<span style="margin-left: 0.00001rem">ou</span> Get</div>
       <div class="methods_select cursor">
         <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.getAmount)))" placeholder="0.00" disabled="true">
         <div class="get_company" @click="openSearch('currency')">
@@ -490,9 +490,9 @@ html,body,#buyCrypto{
 
 .form_title{
   font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
+  font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
-  color: #232323;
+  color: #707070;
   padding-bottom: 0.1rem;
 }
 
@@ -502,9 +502,9 @@ html,body,#buyCrypto{
 .methods_select{
   min-height: 0.6rem;
   background: #F3F4F5;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 0.16rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
   color: #232323;
   line-height: 0.6rem;
@@ -523,7 +523,7 @@ html,body,#buyCrypto{
   outline: none;
   background: #F3F4F5;
   font-size: 0.16rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
   color: #232323;
   padding: 0 0.6rem 0 0;
@@ -535,10 +535,16 @@ html,body,#buyCrypto{
   height: 100%;
   position: absolute;
   top: 0;
-  right: 0.2rem;
+  right: 0;
+  min-width: 1.44rem;
+  border-radius: 0 0.12rem 0.12rem 0;
   cursor: pointer;
   display: flex;
   align-items: center;
+  font-family: "GeoRegular", GeoRegular;
+  font-size: 0.17rem;
+  color: #232323;
+  background: #EDEDEF;
   img{
     width: 0.12rem;
     margin-left: 0.2rem;
@@ -546,14 +552,16 @@ html,body,#buyCrypto{
   .countryIcon{
     display: flex;
     margin-right: 0.1rem;
+    height: 0.27rem;
     img{
       width: 0.3rem;
+      border-radius: 50%;
     }
   }
 }
 .warning_text{
   font-size: 0.14rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 400;
   color: #FF0000;
   margin: 0.1rem 0.2rem 0 0.2rem;
@@ -568,9 +576,14 @@ html,body,#buyCrypto{
 .get_company{
   position: absolute;
   top: 0;
-  right: 0.2rem;
+  right: 0;
+  min-width: 1.44rem;
+  border-radius: 0 0.12rem 0.12rem 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-family: "GeoRegular", GeoRegular;
+  background: #EDEDEF;
   cursor: pointer;
   .getImg{
     display: flex;
@@ -582,7 +595,7 @@ html,body,#buyCrypto{
   .getText{
     display: flex;
     font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
+    font-family: 'GeoRegular', GeoRegular;
     font-weight: 500;
     color: #232323;
     margin-right: 0.2rem;
@@ -635,7 +648,7 @@ html,body,#buyCrypto{
     margin-top: 0.13rem;
     .line_name{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #232323;
       display: flex;
@@ -704,7 +717,7 @@ html,body,#buyCrypto{
   outline: none;
   background: #F3F4F5;
   font-size: 0.16rem !important;
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeoRegular', GeoRegular;
   font-weight: 500;
   color: #232323 !important;
   padding: 0 0.6rem 0 0;

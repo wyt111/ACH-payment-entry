@@ -97,9 +97,34 @@ export default {
 </script>
 
 <style lang="scss">
+//@font-face {
+//  font-family: "Jost-Bold";
+//  src: url('./assets/fonts/Jost-Medium.ttf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//Fieldwork7-GeoLight
 @font-face {
-  font-family: "Jost-Bold";
-  src: url('./assets/fonts/Jost-Medium.ttf');
+  font-family: "GeoDemibold";
+  src: url('./assets/fonts/Fieldwork/Fieldwork13-SemiBoldGeo.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GeoBold";
+  src: url('./assets/fonts/Fieldwork/Fieldwork16-GeoBold.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GeoLight";
+  src: url('./assets/fonts/Fieldwork/Fieldwork7-GeoLight.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GeoRegular";
+  src: url('./assets/fonts/Fieldwork/Fieldwork10-GeoRegular.otf');
   font-weight: normal;
   font-style: normal;
 }
@@ -127,6 +152,7 @@ a,img,button,input,textarea,span,div {
 html,body,#app,#viewBox{
   width: 100%;
   height: 100%;
+  font-size: 0.16rem;
 }
 
 #viewBox{
@@ -135,7 +161,7 @@ html,body,#app,#viewBox{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Jost', sans-serif;
+  //font-family: 'Jost', sans-serif;
 }
 .buyCrypto_iframe_view{
   width: 400px;

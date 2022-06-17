@@ -104,7 +104,7 @@ html,body,#homePage,.homePage_view,.homePage_content{
       display: flex;
       align-items: center;
       font-size: 0.2rem;
-      font-family: 'Jost', sans-serif;
+      font-family: 'GeoDemibold', GeoDemibold;
       font-weight: bold;
       color: #999999;
       div{

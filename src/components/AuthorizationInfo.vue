@@ -40,7 +40,7 @@ export default {
     }
     .agreement-text{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #333333;
       margin-left: 0.2rem;

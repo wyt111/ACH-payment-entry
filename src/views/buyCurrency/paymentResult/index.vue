@@ -50,7 +50,7 @@ Three channels for successful payment --- 'depositType'
         </div>
       </div>
     </div>
-    <div class="continue" @click="goHome">Buy more crypto</div>
+    <div class="continue" @click="goHome">{{ backText }}</div>
   </div>
 </template>
 
@@ -63,10 +63,15 @@ export default {
       resultText: '',
       detailsParameters: {},
       countDown: null,
+      backText: "Buy more crypto", //Return back
     }
   },
   activated(){
     this.queryDetails()
+    let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
+    if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
+      this.backText = "Return back";
+    }
   },
   methods: {
     //Get result information
@@ -111,7 +116,7 @@ export default {
 
     goHome(){
       let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
-      if(this.depositType === 2 && sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
+      if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
         window.location = merchantInfo.redirectUrl;
         return;
       }
@@ -176,7 +181,7 @@ export default {
     margin-top: 0.13rem;
     .line_name{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #333333;
     }

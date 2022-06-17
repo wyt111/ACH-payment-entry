@@ -299,8 +299,8 @@ export default {
       if(this.viewName === 'currency'){
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList;
-          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList;
+          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{return item.purchaseSupported === 1});
+          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;
       }
@@ -485,7 +485,7 @@ export default {
     margin-top: 0.15rem;
     .screen_title{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #232323;
       margin-top: 0.1rem;
@@ -505,7 +505,7 @@ export default {
         }
         .seach_li_text{
           font-size: 0.16rem;
-          font-family: "Jost", sans-serif;
+          font-family: "GeoDemibold", GeoDemibold;
           font-weight: 400;
           color: #232323;
           margin-left: 0.2rem;
@@ -572,7 +572,7 @@ export default {
       width: 100%;
       height: 100%;
       font-size: 0.16rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       padding: 0 0.47rem;
       background: #F3F4F5;

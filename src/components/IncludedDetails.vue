@@ -1,45 +1,86 @@
 <template>
   <!-- Payment information -->
   <div class="paymentInformation">
-    <div class="paymentInformation-line" v-if="titleStatus !== false">
-      <div class="line_name detailsName">{{ payCommission.symbol }}{{ routerParams.amount }} is all you pay</div>
-      <div class="line_number details" @click="expandCollapse">Details</div>
-    </div>
-    <div v-if="detailsState">
-      <div class="paymentInformation-line">
-        <div class="line_name">Remaining time</div>
-        <div class="line_number remainingTime">
-          <div><img class="loadingIcon" src="../assets/images/countDownIcon.svg"></div>
-          <div>{{ timeDownNumber }}S</div>
-        </div>
-      </div>
-      <div class="paymentInformation-line">
-        <div class="line_name">{{ routerParams.name }} price</div>
-        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
-      </div>
-      <div class="paymentInformation-line" v-show="feeState">
-        <div class="line_name">
-          Ramp fee
-          <el-popover
-              placement="top"
-              :trigger="triggerType"
-              :offset="-18"
-              content="Based on payment method">
-            <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
-          </el-popover>
-        </div>
-        <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
-      </div>
-      <div class="paymentInformation-line" v-show="feeState">
-        <div class="line_name">Network fee</div>
-        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
-      </div>
-      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
-      <div class="paymentInformation-line">
-        <div class="line_name">Total</div>
-        <div class="line_number">{{ payCommission.symbol }} {{ routerParams.amount }}</div>
+    <div class="feeTitle">
+      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-value">
+        <div class="loading-svg"><img src="../assets/images/countDownIcon.svg" alt=""></div>
+        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
       </div>
     </div>
+    <div class="fee-content">
+      <div class="fee-content-title" @click="expandCollapse">
+        <div class="left">
+          You get <span>133.98 ACH</span> for <span>US$300.00</span>
+        </div>
+        <div class="right"><van-icon name="arrow-down" /></div>
+      </div>
+      <div class="fee-content-details" v-if="detailsState">
+        <div class="fee-content-details-line">
+          <div class="title">ACH price</div>
+          <div class="value">USD$0.02254</div>
+        </div>
+        <div class="fee-content-details-line">
+          <div class="title">
+            Ramp fee
+            <el-popover
+                placement="top"
+                :trigger="triggerType"
+                :offset="-18"
+                content="Based on payment method">
+              <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
+            </el-popover>
+          </div>
+          <div class="value"><span class="minText">as low as</span> US$10.00</div>
+        </div>
+        <div class="fee-content-details-line">
+          <div class="title">Network fee</div>
+          <div class="value">US$10.00</div>
+        </div>
+      </div>
+    </div>
+
+
+
+<!--    <div class="paymentInformation-line" v-if="titleStatus !== false">-->
+<!--      <div class="line_name detailsName">{{ payCommission.symbol }}{{ routerParams.amount }} is all you pay</div>-->
+<!--      <div class="line_number details" @click="expandCollapse">Details</div>-->
+<!--    </div>-->
+<!--    <div v-if="detailsState">-->
+<!--      <div class="paymentInformation-line">-->
+<!--        <div class="line_name">Remaining time</div>-->
+<!--        <div class="line_number remainingTime">-->
+<!--          <div><img class="loadingIcon" src="../assets/images/countDownIcon.svg"></div>-->
+<!--          <div>{{ timeDownNumber }}S</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="paymentInformation-line">-->
+<!--        <div class="line_name">{{ routerParams.name }} price</div>-->
+<!--        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>-->
+<!--      </div>-->
+<!--      <div class="paymentInformation-line" v-show="feeState">-->
+<!--        <div class="line_name">-->
+<!--          Ramp fee-->
+<!--          <el-popover-->
+<!--              placement="top"-->
+<!--              :trigger="triggerType"-->
+<!--              :offset="-18"-->
+<!--              content="Based on payment method">-->
+<!--            <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>-->
+<!--          </el-popover>-->
+<!--        </div>-->
+<!--        <div class="line_number"><span class="minText">as low as</span>{{ payCommission.symbol }} {{ payCommission.rampFee }}</div>-->
+<!--      </div>-->
+<!--      <div class="paymentInformation-line" v-show="feeState">-->
+<!--        <div class="line_name">Network fee</div>-->
+<!--        <div class="line_number">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>-->
+<!--      </div>-->
+<!--      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>-->
+<!--      <div class="paymentInformation-line">-->
+<!--        <div class="line_name">Total</div>-->
+<!--        <div class="line_number">{{ payCommission.symbol }} {{ routerParams.amount }}</div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -163,71 +204,167 @@ export default {
 
 <style lang="scss" scoped>
 .paymentInformation{
-  border-top: 1px solid #F3F4F5;
-  padding: 0.2rem 0.2rem 0 0.1rem;
-  .paymentInformation-line{
+  .feeTitle{
+    font-size: 13px;
+    font-weight: normal;
+    color: #707070;
+    line-height: 15px;
     display: flex;
     align-items: center;
-    margin-top: 0.13rem;
-    .line_name{
-      font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
-      font-weight: 400;
-      color: #333333;
+    .feeTitle-name{
+      font-family: Fieldwork-GeoRegular, Fieldwork;
+    }
+    .feeTitle-value{
+      font-family: Fieldwork-GeoLight, Fieldwork;
       display: flex;
       align-items: center;
-      .tipsIcon{
-        width: 0.14rem;
-        height: 0.14rem;
-        margin-left: 0.1rem;
-        display: flex;
+      margin-left: auto;
+      .loading-svg{
+        margin-right: 0.04rem;
         img{
-          width: 100%;
-          height: 100%;
+          width: 0.1rem;
         }
       }
     }
-    .line_number{
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: bold;
-      color: #333333;
-      margin-left: auto;
-      .minText{
-        font-size: 0.14rem;
-        font-weight: 400;
-        color: #666666;
-        margin-right: 0.2rem;
-      }
-    }
-    .detailsName{
-      font-size: 0.16rem;
-      font-weight: 500;
-      color: #232323;
-    }
-    .details{
-      color: #4479D9;
-      cursor: pointer;
-    }
-    .remainingTime{
-      color: #FF0000;
+  }
+
+  .fee-content{
+    background: #F3F4F5;
+    border-radius: 0.12rem;
+    margin-top: 0.08rem;
+    padding: 0 0.16rem;
+    .fee-content-title{
+      padding: 0.19rem 0;
       display: flex;
       align-items: center;
-      img{
-        width: 0.12rem;
-        margin-right: 0.05rem;
+      font-size: 0.16rem;
+      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+      cursor: pointer;
+      span{
+        font-weight: bold;
+      }
+      .left{
+        word-break: break-word;
+      }
+      .right{
+        padding-left: 0.08rem;
+        margin-left: auto;
       }
     }
+
+    .fee-content-details{
+      border-top: 1px solid #E6E6E6;
+      padding: 0.04rem 0 0.16rem 0;
+      .fee-content-details-line{
+        display: flex;
+        align-items: center;
+        margin-top: 0.12rem;
+        .title{
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoLight", GeoLight;
+          font-weight: normal;
+          color: #232323;
+          .tipsIcon{
+            width: 0.16rem;
+            height: 0.16rem;
+            margin-left: 0.08rem;
+            display: flex;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        .value{
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoDemibold",GeoDemibold;
+          color: #232323;
+          font-weight: normal;
+          .minText{
+            font-family: "GeoLight", GeoLight;
+            font-weight: normal;
+            color: #848484;
+            margin-right: 0.04rem;
+            margin-top: -0.02rem;
+          }
+        }
+      }
+    }
+
   }
-  .feeViewBtn{
-    text-align: right;
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #4479D9;
-    margin-top: 0.1rem;
-    cursor: pointer;
-  }
+
+
+
+  //.paymentInformation-line{
+  //  display: flex;
+  //  align-items: center;
+  //  margin-top: 0.13rem;
+  //  .line_name{
+  //    font-size: 0.14rem;
+  //    font-family: "GeoDemibold", GeoDemibold;
+  //    font-weight: 400;
+  //    color: #333333;
+  //    display: flex;
+  //    align-items: center;
+  //    .tipsIcon{
+  //      width: 0.14rem;
+  //      height: 0.14rem;
+  //      margin-left: 0.1rem;
+  //      display: flex;
+  //      img{
+  //        width: 100%;
+  //        height: 100%;
+  //      }
+  //    }
+  //  }
+  //  .line_number{
+  //    font-size: 0.14rem;
+  //    font-family: 'Jost', sans-serif;
+  //    font-weight: bold;
+  //    color: #333333;
+  //    margin-left: auto;
+  //    .minText{
+  //      font-size: 0.14rem;
+  //      font-weight: 400;
+  //      color: #666666;
+  //      margin-right: 0.2rem;
+  //    }
+  //  }
+  //  .detailsName{
+  //    font-size: 0.16rem;
+  //    font-weight: 500;
+  //    color: #232323;
+  //  }
+  //  .details{
+  //    color: #4479D9;
+  //    cursor: pointer;
+  //  }
+  //  .remainingTime{
+  //    color: #FF0000;
+  //    display: flex;
+  //    align-items: center;
+  //    img{
+  //      width: 0.12rem;
+  //      margin-right: 0.05rem;
+  //    }
+  //  }
+  //}
+  //.feeViewBtn{
+  //  text-align: right;
+  //  font-size: 0.14rem;
+  //  font-family: 'Jost', sans-serif;
+  //  font-weight: 500;
+  //  color: #4479D9;
+  //  margin-top: 0.1rem;
+  //  cursor: pointer;
+  //}
 }
 
 @keyframes loadingIcon {

@@ -329,7 +329,7 @@ export default {
           background: #FFFFFF;
           border-radius: 10px;
           font-size: 0.16rem;
-          font-family: "Jost", sans-serif;
+          font-family: "GeoDemibold", GeoDemibold;
           border: none;
           outline: none;
           padding: 0 0.21rem;
@@ -352,7 +352,7 @@ export default {
       }
       .methods_errorText{
         font-size: 0.14rem;
-        font-family: "Jost", sans-serif;
+        font-family: "GeoDemibold", GeoDemibold;
         font-weight: 400;
         color: #FF0000;
         margin: 0.1rem 0 0 0.2rem;
@@ -367,7 +367,7 @@ export default {
     }
     .methods_tips{
       font-size: 0.154rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #999999;
       line-height: 0.24rem;
@@ -375,7 +375,7 @@ export default {
     }
     .methods_account{
       font-size: 0.16rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #999999;
       line-height: 0.24rem;
