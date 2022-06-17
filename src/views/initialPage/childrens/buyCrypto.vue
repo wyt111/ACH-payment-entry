@@ -362,17 +362,10 @@ export default {
     //接入商户信息接收、验证
     merchantOrderVerification(){
       //There is no merchant information in the address column - Copy local cache
-      // let oldMerchantParams = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : {};
       //Obtain merchant order information in the address bar
       let merchantParams = {};
       JSON.stringify(this.$route.query) !== "{}" ? merchantParams = this.$route.query : merchantParams = JSON.parse(sessionStorage.getItem("accessMerchantInfo"));
       merchantParams === null ? merchantParams = {} : '';
-      // if(((merchantParams.merchantNo === undefined || merchantParams.merchantNo === '') && oldMerchantParams!=={} && oldMerchantParams.merchantNo !== '' && oldMerchantParams.merchantNo !== undefined)){
-      //   merchantParams = oldMerchantParams
-      // }
-
-      console.log(merchantParams,"---merchantParams")
-
       merchantParams.networkDefault = false;
       merchantParams.addressDefault = false;
 
@@ -396,46 +389,44 @@ export default {
       this.$axios.get(this.$api.get_orderVerification, params).then(res=>{
         //商户信息接口success创建订单添加merchantParam参数
         if(res && res.returnCode === "0000"){
-          this.cryptoSate = true;
+          this.cryptoSate = merchantParams.crypto ? false : true;
           merchantParams.merchantParam = JSON.stringify(this.$route.query) !== "{}" ? this.$route.fullPath.substring(2,this.$route.fullPath.length) : JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam;
           merchantParams.merchantParam_state = true;
           sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
+          //network address All passed the verification
+          if(res.success === true && res.data === null){
+            merchantParams.addressDefault = true;
+            merchantParams.networkDefault = true;
+            sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
+            return;
+          }
+
+          //Judge whether a network｜address has passed
+          if(res.success === true && res.data !== null){
+            //you pay currency - address: false - Address is not brought out by default
+            if(res.data.address === false){ //No parameter defaults
+              merchantParams.addressDefault = false;
+            }else{
+              merchantParams.addressDefault = true;
+            }
+
+            //network: false - The network is not brought out by default
+            if(res.data.network === false) {
+              merchantParams.networkDefault = false;
+            }else{
+              merchantParams.networkDefault = true;
+            }
+            sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
+            return;
+          }
         }else{
+          //Verification failed. Release all permissions
           this.cryptoSate = true;
           merchantParams.merchantParam_state = false;
+          merchantParams.addressDefault = false;
+          merchantParams.networkDefault = false;
           sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
         }
-        //network address All passed the verification
-        if(res && res.returnCode === "0000" && res.success === true && res.data === null){
-          this.cryptoSate = false;
-          merchantParams.addressDefault = true;
-          merchantParams.networkDefault = true;
-          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-          return;
-        }
-        //Judge whether a network｜address has passed
-        if(res && res.returnCode === "0000" && res.success === true && res.data !== null){
-          this.cryptoSate = false;
-          //you pay currency - address: false - Address is not brought out by default
-          if(res.data.address === false){ //No parameter defaults
-            merchantParams.addressDefault = false;
-          }else{
-            merchantParams.addressDefault = true;
-          }
-          //network: false - The network is not brought out by default
-          if(res.data.network === false) {
-            merchantParams.networkDefault = false;
-          }else{
-            merchantParams.networkDefault = true;
-          }
-          sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
-          return;
-        }
-        //Verification failed. Release all permissions
-        this.cryptoSate = true;
-        merchantParams.addressDefault = false;
-        merchantParams.networkDefault = false;
-        sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
       }).catch(()=>{
         this.cryptoSate = true;
         merchantParams.addressDefault = false;
