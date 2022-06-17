@@ -133,7 +133,7 @@ html,body,#tradeHistory,.historyList,.van-list{
 
     .details_line{
       font-size: 0.16rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #232323;
       display: flex;

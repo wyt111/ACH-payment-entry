@@ -385,7 +385,7 @@ html,body,#buyCrypto{
   background: #F3F4F5;
   border-radius: 10px;
   font-size: 0.16rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
   color: #232323;
   line-height: 0.6rem;
@@ -401,7 +401,7 @@ html,body,#buyCrypto{
   outline: none;
   background: #F3F4F5;
   font-size: 0.16rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
   color: #232323;
   padding: 0 0.6rem 0 0;
@@ -431,7 +431,7 @@ html,body,#buyCrypto{
 }
 .warning_text{
   font-size: 0.14rem;
-  font-family: "Jost", sans-serif;
+  font-family: "GeoDemibold", GeoDemibold;
   font-weight: 400;
   color: #FF0000;
   margin: 0.1rem 0.2rem 0 0.2rem;
@@ -513,7 +513,7 @@ html,body,#buyCrypto{
     margin-top: 0.13rem;
     .line_name{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #232323;
       display: flex;

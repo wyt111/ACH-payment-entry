@@ -191,7 +191,7 @@ export default {
       border-radius: 10px;
       font-size: 0.16rem;
       color: #232323;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       padding: 0 1rem 0 0.2rem;
       border: none;
@@ -206,7 +206,7 @@ export default {
   }
   .errorMessage{
     font-size: 0.14rem;
-    font-family: "Jost", sans-serif;
+    font-family: "GeoDemibold", GeoDemibold;
     font-weight: 400;
     color: #FF0000;
     margin: 0.1rem 0 0 0.2rem;
@@ -240,7 +240,7 @@ export default {
     }
     .agreement-text{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #333333;
       margin-left: 0.2rem;

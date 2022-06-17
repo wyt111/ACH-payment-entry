@@ -294,7 +294,7 @@ export default {
     padding-bottom: 0.2rem;
     .errorTips{
       font-size: 0.14rem;
-      font-family: "Jost", sans-serif;
+      font-family: "GeoDemibold", GeoDemibold;
       font-weight: 400;
       color: #FF0000;
       margin-top: 0.1rem;
