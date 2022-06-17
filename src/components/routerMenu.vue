@@ -1,5 +1,11 @@
 <template>
   <div id="routerMenu">
+    <div class="routerMenu_isLogo">
+        <img src="../assets/images/10004-icon.png" alt="">
+        <h2>Welcome to Alchemy Pay!</h2>
+        <p>Login to unlock; the full experience</p>
+        <div @click="$router.push('/emailCode')">Login <img src="../assets/images/10004-icon.png" alt=""></div>
+    </div>
     <div class="routerMenu_line" @click="goView('/','buyCrypto')">
       <div class="lineIcon"><img src="../assets/images/menu/icon1.png"></div>
       <div class="lineName">Buy Crypto</div>
@@ -151,6 +157,54 @@ export default {
     }
     &:nth-of-type(1){
       margin-top: 0.2rem;
+    }
+  }
+  .routerMenu_isLogo{
+    width: 100%;
+    height: 2.26rem;
+    // text-align: center;
+    border-radius: .12rem;
+    border: 1px solid #E2E1E5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >img{
+      width: .5rem;
+      height: .5rem;
+      margin-top: .18rem;
+    }
+    h2{
+      font-size: .21rem;
+      font-family: "Jost", sans-serif;
+      font-weight: normal;
+      color: #232323;
+      line-height: .25rem;
+      margin: .2rem 0 .06rem 0;
+    }
+    p{
+      font-size: .15rem;
+      font-family: Fieldwork-GeoRegular, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+    }
+    div{
+      width: 90%;
+      background: #0059DA;
+      border-radius: .3rem;
+      height: .58rem;
+      font-size: .17rem;
+      margin-top: .16rem;
+      text-align: center;
+      line-height: .58rem;
+      color: #fff;
+      position: relative;
+      img{
+        width: .24rem;
+        height: .24rem;
+        position: absolute;
+        right: .16rem;
+        top: .17rem;
+      }
     }
   }
 }

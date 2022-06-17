@@ -1,23 +1,38 @@
 <template>
-  <div id="emailCode">
-    <div class="form-title">Enter your emai address</div>
+  <!-- <div id="emailCode"> -->
+    <!-- <div class="form-title">Enter your emai address</div>
     <div class="form-input"><input type="text" placeholder="Email Address" v-model="email">
       <span class="formOptions" :class="{'getCodeClass': email===''}" @click="getCode" v-if="timeDown===60">Get code</span>
       <span class="formOptions" v-else>{{ timeDown }}S</span>
-    </div>
+    </div> -->
     <!-- error message -->
-    <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
+    <!-- <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
     <div class="form-title">Enter the verification code you received</div>
-    <div class="form-input emailCode"><input type="text" v-model="code" placeholder="Login Code" maxlength="6"></div>
+    <div class="form-input emailCode"><input type="text" v-model="code" placeholder="Login Code" maxlength="6"></div> -->
     <!-- error message -->
-    <div class="errorMessage" v-if="codeErrorState" v-html="codeError">Verification code not match.</div>
+    <!-- <div class="errorMessage" v-if="codeErrorState" v-html="codeError">Verification code not match.</div> -->
     <!-- Permission agreement -->
-    <div class="agreement-content">
+    <!-- <div class="agreement-content">
       <div class="agreement-radio"><input type="checkbox" v-model="agreement"></div>
       <div class="agreement-text">I have read and agree to Alchemy Pay’s <span @click="goProtocol('termsUse')">{{ '<' }}Terms of Use{{ '>' }}</span> and <span @click="goProtocol('privacyPolicy')">{{ '<' }}Privacy Policy{{ '>' }}</span>.</div>
     </div>
     <includedDetails v-if="includedDetails_state"/>
-    <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div>
+    <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div> -->
+
+  <!-- </div> -->
+  <div class="emailCode-container">
+      <div class="emailCode-container_top">
+        <img src="@/assets/images/10005-icon.png" alt="">
+        <h2>Checkout with Alchemy Pay</h2>
+        <p>The fastest and safest way to checkout on
+          hundreds of crypto apps.</p>
+      </div>
+      <div class="emailCode_content">
+        <p>Enter email</p>
+        <img src="@/assets/images/10005-icon.png" alt="">
+        <input type="text" placeholder="john.doe@example.com">
+      </div>
+      <div class="emailCode_button" @click="$router.push('/verifyCode')">Continue <img src="@/assets/images/10005-icon.png" alt=""></div>
   </div>
 </template>
 
@@ -269,6 +284,85 @@ export default {
   .buttonTrue{
     background: #4479D9 !important;
     cursor: pointer;
+  }
+}
+.emailCode-container{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  .emailCode-container_top{
+    height: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2{
+      font-size: .21rem;
+      font-family: Fieldwork-GeoBold, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+      margin: .24rem 0 .16rem 0;
+    }
+    p{
+      width: 2.5rem;
+      font-size: .13rem;
+      font-family: Fieldwork-GeoRegular, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+      text-align: center;
+    }
+    img{
+      width: .4rem;
+      height: .4rem;
+    }
+  }
+  .emailCode_content{
+    width: 100%;
+    height: .56rem;
+    background: #F3F4F5;
+    border-radius: .12rem;
+    position: relative;
+    input{
+      width: calc(100% - .42rem);
+      height: 100%;
+      border: none;
+      font-size: .16rem;
+      position: absolute;
+      left: .42rem;
+      background: transparent;
+    }
+    p{
+      font-size: .13rem;
+      color: #707070;
+      position: absolute;
+      top: -.22rem;
+    }
+    img{
+      width: .16rem;
+      height: .13rem;
+      position: absolute;
+      left: .16rem;
+      top: .22rem;
+    }
+  }
+  .emailCode_button{
+    width: 100%;
+    height: .58rem;
+    background: rgba(0, 89, 218, 0.5);
+    border-radius: .29rem;
+    font-size: .17rem;
+    text-align: center;
+    line-height: .58rem;
+    position: absolute;
+    bottom: .26rem;
+    color: #FAFAFA;
+    img{
+      width: .24rem;
+      height: .15rem;
+      position: absolute;
+      right: .16rem;
+      top: .21rem;
+    }
   }
 }
 </style>

@@ -36,6 +36,16 @@ export const constantRoutes = [
     }
   },
   {
+    path: "/verifyCode",
+    name: 'verifyCode',
+    component: () =>
+        import(/* webpackChunkName: "about" */ "../views/emailCode/children/verifyCode"),
+    meta: {
+      title: 'Verification code',
+      keepAlive: true,
+    }
+  },
+  {
     path: "/tradeHistory",
     name: 'tradeHistory',
     component: () =>
