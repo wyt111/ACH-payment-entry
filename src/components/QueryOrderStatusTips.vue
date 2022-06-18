@@ -77,7 +77,7 @@ export default {
       font-weight: normal;
       color: #FFFFFF;
       text-align: center;
-      padding: 0.16rem 0;
+      line-height: 0.58rem;
       border-top: 1px solid #999999;
       cursor: pointer;
       margin-top: 0.16rem;
