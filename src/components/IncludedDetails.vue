@@ -90,6 +90,7 @@
  * titleStatus 标题展示状态
  * showState 详情展示状态
  * network 部分情况接口所需添加网络信息
+ * isHome 是否是首页使用
  */
 import common from "../utils/common";
 

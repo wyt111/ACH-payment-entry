@@ -9,8 +9,11 @@
           minutes, once we receive your payment, we will transfer
           the corresponding amount of USDT to you.
         </p>
+        <footer @click="closeView">
+          I Understand
+          <img class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
+        </footer>
       </div>
-      <footer @click="closeView">I Understand</footer>
     </div>
   </div>
 </template>
@@ -37,39 +40,54 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 0.3rem;
+  padding: 0 0.16rem;
   .QueryOrderStatusTips-content{
     background: #FFFFFF;
-    border-radius: 0.1rem;
+    border-radius: 0.16rem;
     backdrop-filter: blur(3px);
     .QueryOrderStatusTips-top{
-      padding: 0.17rem;
+      padding: 0.44rem 0.16rem;
       .title{
-        font-size: 0.22rem;
-        font-weight: 500;
+        font-size: 0.21rem;
+        font-family: "GeoDemibold", GeoDemibold;
+        font-weight: normal;
         color: #232323;
         text-align: center;
       }
       .tipsText{
         font-size: 0.13rem;
-        font-weight: 400;
+        font-family: "GeoLight", GeoLight;
+        font-weight: normal;
         color: #232323;
+        line-height: 0.2rem;
+        word-spacing: 0.02rem;
         text-align: center;
-        margin-top: 0.15rem;
+        margin-top: 0.08rem;
       }
     }
     footer{
-      font-size: 0.16rem;
-      font-weight: 500;
-      color: #4479D9;
+      height: 0.58rem;
+      background: #0059DA;
+      border-radius: 0.29rem;
+      font-size: 0.17rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #FFFFFF;
       text-align: center;
-      padding: 0.2rem 0;
+      padding: 0.16rem 0;
       border-top: 1px solid #999999;
       cursor: pointer;
+      margin-top: 0.16rem;
+      position: relative;
+      .rightIcon{
+        width: 0.24rem;
+        position: absolute;
+        top: 0.17rem;
+        right: 0.32rem;
+      }
     }
   }
 }

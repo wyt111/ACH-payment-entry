@@ -20,37 +20,79 @@ Three channels for successful payment --- 'depositType'
       </div>
 
       <div class="paymentInformation">
-        <div class="paymentInformation-line">
-          <div class="line_name">{{ detailsParameters.cryptoCurrency }} Price</div>
-          <div class="line_number">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
+        <div class="fee-content">
+          <div class="fee-content-title" @click="expandCollapse">
+            <div class="left">
+              You get <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> for <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
+            </div>
+            <div class="right"><van-icon name="arrow-down" /></div>
+          </div>
+          <div class="fee-content-details" v-if="detailsState">
+            <div class="fee-content-details-line">
+              <div class="title">{{ detailsParameters.cryptoCurrency }} Price</div>
+              <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
+            </div>
+            <div class="fee-content-details-line">
+              <div class="title">{{ detailsParameters.cryptoCurrency }} Amount</div>
+              <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="depositType===2||depositType===3">
+              <div class="title">Address</div>
+              <div class="value">{{ detailsParameters.address }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null">
+              <div class="title">Hash</div>
+              <div class="value">{{ detailsParameters.hashId }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="depositType===1">
+              <div class="title">ACH Wallet</div>
+              <div class="value">{{ detailsParameters.address }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="depositType===1">
+              <div class="title">Password</div>
+              <div class="value">{{ detailsParameters.password }}</div>
+            </div>
+            <div class="fee-content-details-line">
+              <div class="title">Total</div>
+              <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>
+            </div>
+          </div>
         </div>
-        <div class="paymentInformation-line">
-          <div class="line_name">{{ detailsParameters.cryptoCurrency }} Amount</div>
-          <div class="line_number">{{ detailsParameters.cryptoQuantity }}</div>
-        </div>
-        <div class="paymentInformation-line" v-if="depositType===2||depositType===3">
-          <div class="line_name">Address</div>
-          <div class="line_number">{{ detailsParameters.address }}</div>
-        </div>
-        <div class="paymentInformation-line" v-if="depositType===2 && detailsParameters.hashId !== null">
-          <div class="line_name">Hash</div>
-          <div class="line_number">{{ detailsParameters.hashId }}</div>
-        </div>
-        <div class="paymentInformation-line achWallet" v-if="depositType===1">
-          <div class="line_name">ACH Wallet</div>
-          <div class="line_number">{{ detailsParameters.address }}</div>
-        </div>
-        <div class="paymentInformation-line" v-if="depositType===1">
-          <div class="line_name">Password</div>
-          <div class="line_number">{{ detailsParameters.password }}</div>
-        </div>
-        <div class="paymentInformation-line">
-          <div class="line_name">Total</div>
-          <div class="line_number">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>
-        </div>
+        <!-- 老版本 -->
+        <!--        <div class="paymentInformation-line">-->
+<!--          <div class="line_name">{{ detailsParameters.cryptoCurrency }} Price</div>-->
+<!--          <div class="line_number">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line">-->
+<!--          <div class="line_name">{{ detailsParameters.cryptoCurrency }} Amount</div>-->
+<!--          <div class="line_number">{{ detailsParameters.cryptoQuantity }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line" v-if="depositType===2||depositType===3">-->
+<!--          <div class="line_name">Address</div>-->
+<!--          <div class="line_number">{{ detailsParameters.address }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line" v-if="depositType===2 && detailsParameters.hashId !== null">-->
+<!--          <div class="line_name">Hash</div>-->
+<!--          <div class="line_number">{{ detailsParameters.hashId }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line achWallet" v-if="depositType===1">-->
+<!--          <div class="line_name">ACH Wallet</div>-->
+<!--          <div class="line_number">{{ detailsParameters.address }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line" v-if="depositType===1">-->
+<!--          <div class="line_name">Password</div>-->
+<!--          <div class="line_number">{{ detailsParameters.password }}</div>-->
+<!--        </div>-->
+<!--        <div class="paymentInformation-line">-->
+<!--          <div class="line_name">Total</div>-->
+<!--          <div class="line_number">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>-->
+<!--        </div>-->
       </div>
     </div>
-    <div class="continue" @click="goHome">{{ backText }}</div>
+    <button class="continue" @click="goHome">
+      {{ backText }}
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+    </button>
   </div>
 </template>
 
@@ -63,7 +105,8 @@ export default {
       resultText: '',
       detailsParameters: {},
       countDown: null,
-      backText: "Buy more crypto", //Return back
+      detailsState: false,
+      backText: "Continue to buy crypto", //Return back
     }
   },
   activated(){
@@ -97,6 +140,17 @@ export default {
           this.judgeChannel();
         }
       })
+    },
+
+    //Control details display status
+    expandCollapse(){
+      this.detailsState = this.detailsState === true ? false : true;
+      if(this.$route.path === '/receivingMode' && this.detailsState === true){
+        this.$nextTick(()=>{
+          this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
+        })
+        return
+      }
     },
 
     //Judgment order status display text
@@ -140,67 +194,144 @@ export default {
 }
 
 .results_content{
-  margin-top: 0.3rem;
+  margin-top: 0.32rem;
   .results_img{
-    width: 1.43rem;
+    width: 0.97rem;
     margin: 0 auto;
     display: flex;
     img{
-      width: 1.43rem;
+      width: 0.97rem;
     }
   }
   .results_text{
-    margin-top: 0.4rem;
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    margin-top: 0.08rem;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
     color: #232323;
-    line-height: 0.24rem;
+    line-height: 0.2rem;
     text-align: center;
   }
   .results_text ::v-deep span{
-    color: #4479D9;
+    color: #0059DA;
     cursor: pointer;
   }
   .errorMessage{
-    margin-top: 0.4rem;
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #FF0000;
+    margin-top: 0.08rem;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
+    color: #E55643;
+    line-height: 0.2rem;
     text-align: center;
   }
 }
 .paymentInformation{
-  margin-top: 0.4rem;
-  border-top: 1px solid #F3F4F5;
-  padding: 0.2rem 0.2rem 0 0.1rem;
-  .paymentInformation-line{
-    display: flex;
-    align-items: flex-start;
-    margin-top: 0.13rem;
-    .line_name{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #333333;
+  margin-top: 0.32rem;
+  //padding: 0.2rem 0.2rem 0 0.1rem;
+  .fee-content{
+    background: #F3F4F5;
+    border-radius: 0.12rem;
+    margin-top: 0.08rem;
+    padding: 0 0.16rem;
+    .fee-content-title{
+      padding: 0.19rem 0;
+      display: flex;
+      align-items: center;
+      font-size: 0.16rem;
+      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+      cursor: pointer;
+      span{
+        font-weight: bold;
+      }
+      .left{
+        word-break: break-all;
+      }
+      .right{
+        width: 0.32rem;
+        height: 0.24rem;
+        text-align: center;
+        line-height: 0.24rem;
+        margin-left: auto;
+      }
     }
-    .line_number{
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      color: #333333;
-      margin-left: auto;
-      word-break: break-word;
-      max-width: 60%;
-      text-align: right;
+
+    .fee-content-details{
+      border-top: 1px solid #E6E6E6;
+      padding: 0.04rem 0 0.16rem 0;
+      .fee-content-details-line{
+        display: flex;
+        align-items: start;
+        margin-top: 0.12rem;
+        .title{
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoLight", GeoLight;
+          font-weight: normal;
+          color: #232323;
+          margin-right: 0.34rem;
+          .tipsIcon{
+            width: 0.16rem;
+            height: 0.16rem;
+            margin-left: 0.08rem;
+            display: flex;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        .value{
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoDemibold",GeoDemibold;
+          color: #232323;
+          font-weight: normal;
+          word-wrap:break-word;
+          word-break:break-all;
+          text-align: right;
+          .minText{
+            font-family: "GeoLight", GeoLight;
+            font-weight: normal;
+            color: #848484;
+            margin-right: 0.04rem;
+            margin-top: -0.02rem;
+          }
+        }
+      }
     }
   }
-  .achWallet{
-    .line_name{
-      min-width: 0.9rem;
-    }
-  }
+  //.paymentInformation-line{
+  //  display: flex;
+  //  align-items: flex-start;
+  //  margin-top: 0.13rem;
+  //  .line_name{
+  //    font-size: 0.14rem;
+  //    font-family: "GeoDemibold", GeoDemibold;
+  //    font-weight: 400;
+  //    color: #333333;
+  //  }
+  //  .line_number{
+  //    font-size: 0.14rem;
+  //    font-family: 'Jost', sans-serif;
+  //    font-weight: 500;
+  //    color: #333333;
+  //    margin-left: auto;
+  //    word-break: break-word;
+  //    max-width: 60%;
+  //    text-align: right;
+  //  }
+  //}
+  //.achWallet{
+  //  .line_name{
+  //    min-width: 0.9rem;
+  //  }
+  //}
 }
 
 .overtime{
@@ -209,16 +340,22 @@ export default {
 
 .continue{
   width: 100%;
-  height: 0.6rem;
-  background: #4479D9;
-  border-radius: 4px;
-  text-align: center;
-  line-height: 0.6rem;
-  font-size: 0.18rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #FAFAFA;
-  margin-top: 0.4rem;
+  height: 0.58rem;
+  background: #0059DA;
+  border-radius: 0.29rem;
+  font-size: 0.17rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #FFFFFF;
+  margin-top: 0.16rem;
   cursor: pointer;
+  border: none;
+  position: relative;
+  .rightIcon{
+    width: 0.24rem;
+    position: absolute;
+    top: 0.17rem;
+    right: 0.32rem;
+  }
 }
 </style>

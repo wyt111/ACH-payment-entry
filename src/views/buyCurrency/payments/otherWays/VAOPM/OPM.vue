@@ -134,24 +134,24 @@ export default {
 
 <style lang="scss" scoped>
 .payAmountInfo-title{
-  font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #232323;
-  margin-top: 0.2rem;
+  font-size: 0.13rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #707070;
+  margin-top: 0.32rem;
 }
 .payAmountInfo-box {
   width: 100%;
-  margin-top: 0.1rem;
-  min-height: 0.6rem;
+  margin-top: 0.08rem;
+  min-height: 0.56rem;
   background: #F3F4F5;
-  border-radius: 10px;
-  font-size: 0.16rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
+  border-radius: 0.12rem;
+  font-size: 0.21rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
   color: #232323;
-  line-height: 0.6rem;
-  padding: 0 0.2rem;
+  line-height: 0.56rem;
+  padding: 0 0.16rem;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -168,12 +168,5 @@ export default {
       width: 0.14rem;
     }
   }
-}
-.paymentCode{
-  font-size: 0.265rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #232323;
-  margin-bottom: 0.4rem;
 }
 </style>

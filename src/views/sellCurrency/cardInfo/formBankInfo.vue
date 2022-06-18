@@ -182,7 +182,7 @@ export default {
         font-weight: 500;
         border: none;
         outline: none;
-        padding: 0 0.2rem;
+        padding: 0 0.16rem;
       }
       .rightIcon{
         display: flex;
@@ -256,7 +256,7 @@ export default {
   font-weight: 500;
   border: none;
   outline: none;
-  padding: 0 0.2rem;
+  padding: 0 0.16rem;
   &::placeholder{
     color: #999999 !important;
   }

@@ -23,7 +23,7 @@
               <div class="methods_title">Network</div>
               <div class="methods_input network_input" @click="openSelect">
                 <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>
-                <span class="rightIcon"><img src="../../../assets/images/rightIcon.png"></span>
+                <span class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png"></span>
               </div>
             </div>
           </div>
@@ -283,7 +283,7 @@ export default {
     margin-top: 0.1rem;
   }
   .collectionMethod{
-    margin-top: 0.2rem;
+    margin-top: 0.32rem;
     .methods{
       display: flex;
       align-items: center;
@@ -331,7 +331,7 @@ export default {
           right: 0.21rem;
           display: flex;
           img{
-            width: 0.12rem;
+            width: 0.24rem;
           }
         }
       }

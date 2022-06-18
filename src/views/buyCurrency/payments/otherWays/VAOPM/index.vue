@@ -13,7 +13,7 @@
       <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
       <CryptoCurrencyAddress/>
       <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
-      <IncludedDetails/>
+      <IncludedDetails class="includedDetails"/>
     </div>
     <Button :buttonData="buttonData" :disabled="payState" @click.native="submit"></Button>
   </div>
@@ -144,7 +144,6 @@ html,body,#indonesianPayment{
   height: 100%;
 }
 #indonesianPayment{
-  padding: 0 0 0.2rem 0;
   display: flex;
   flex-direction: column;
   .view-content{
@@ -152,35 +151,40 @@ html,body,#indonesianPayment{
     overflow: auto;
   }
   .payTips{
-    margin: 0.2rem 0 0.1rem 0;
-    font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    margin: 0.08rem 0 0.1rem 0;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
     color: #232323;
     span{
-      color: #FF0000;
+      color: #E55643;
     }
   }
 
   .payAmountInfo-title{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
-    margin-top: 0.2rem;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
+    margin-top: 0.32rem !important;
   }
 
   .payAmountInfo-box {
     margin-top: 0.1rem;
-    min-height: 0.6rem;
+    min-height: 0.56rem;
     background: #F3F4F5;
-    border-radius: 10px;
+    border-radius: 0.12rem;
     font-size: 0.16rem;
     font-family: 'Jost', sans-serif;
     font-weight: 500;
     color: #232323;
     line-height: 0.6rem;
-    padding: 0 0.2rem;
+    padding: 0 0.16rem;
+  }
+
+  .includedDetails{
+    margin-top: 0.32rem;
+    margin-bottom: 0.2rem;
   }
 }
 

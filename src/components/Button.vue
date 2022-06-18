@@ -100,6 +100,7 @@ export default {
 }
 .loadingDisabled{
   cursor: no-drop !important;
+  background: rgba(0, 89, 218, 0.5) !important;
 }
 
 .continue{

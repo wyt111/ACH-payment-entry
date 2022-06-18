@@ -160,7 +160,7 @@ export default {
         font-weight: 500;
         border: none;
         outline: none;
-        padding: 0 0.2rem;
+        padding: 0 0.16rem;
       }
       .rightIcon{
         display: flex;

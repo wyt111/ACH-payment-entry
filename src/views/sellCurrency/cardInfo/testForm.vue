@@ -52,8 +52,9 @@ export default {
           if(item.paramsName === itemKey){
             if(itemKey === 'contactNumber'||itemKey === 'name'||itemKey === 'email'||itemKey === 'accountNumber'||itemKey === 'idNumber'){
               this.formJson[index].model = AES_Decrypt(sellForm[itemKey]);
+            }else{
+              this.formJson[index].model = sellForm[itemKey];
             }
-            this.formJson[index].model = sellForm[itemKey];
           }
         }
       })
@@ -136,8 +137,8 @@ export default {
     submit(){
       let queryForm = {
         countryCode: this.$store.state.sellRouterParams.positionData.alpha2, // 国家Code
-        id: this.$store.state.sellForm ? this.$store.state.sellForm.positionData.id : '', // 不传为新增卡信息，传为修改卡信息
-        fiatCode: this.$store.state.sellRouterParams.positionData.alpha2, // 法币Code
+        id: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
+        fiatCode: this.$store.state.sellRouterParams.positionData.fiatCode, // 法币Code
       };
       this.formJson.forEach(item=>{
         if(item.model !== ''){
@@ -248,7 +249,7 @@ export default {
       font-weight: 500;
       border: none;
       outline: none;
-      padding: 0 0.2rem;
+      padding: 0 0.16rem;
     }
     .rightIcon{
       display: flex;

@@ -11,7 +11,7 @@
             </div>
             <div class="card-info">{{ cardData.payWayName }}<span>Ending {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
           </div>
-          <div class="formContent-right"><img src="../../../../assets/images/rightIcon.png"></div>
+          <div class="formContent-right"><img src="../../../../assets/images/rightBlackIcon.png"></div>
         </div>
       </div>
       <!-- 选择支付方式页选择的是之间交易过的卡信息需要重新填写CVV -->
@@ -222,7 +222,7 @@ export default {
     color: #707070;
     border: none;
     outline: none;
-    padding: 0 0.2rem;
+    padding: 0 0.16rem;
     input{
       width: 100%;
       height: 0.56rem;
@@ -269,7 +269,7 @@ export default {
       align-items: center;
       margin-left: auto;
       img{
-        width: 0.12rem;
+        width: 0.24rem;
       }
     }
   }

@@ -23,9 +23,9 @@
           <div class="formContent">
             <van-field class="number_input" type="digit" v-model="params.cardNumber" @input="cardChange" @blur="cardBlur" maxlength="23"/>
           </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorCard">Please enter a valid card number.</div>
         </div>
-        <!-- error tips -->
-        <div class="errorTips" v-if="errorCard">Please enter a valid card number.</div>
         <div class="formLine">
           <div>
             <div class="formTitle">Expiration Date</div>
@@ -281,7 +281,6 @@ export default {
   .view-content{
     flex: 1;
     overflow: auto;
-    padding-bottom: 0.2rem;
     .errorTips{
       position: absolute;
       font-size: 0.13rem;
@@ -293,6 +292,7 @@ export default {
   }
   .formLine{
     margin-top: 0.28rem;
+    position: relative;
     .formTitle{
       font-size: 0.13rem;
       font-family: "GeoRegular", GeoRegular;
@@ -326,7 +326,7 @@ export default {
         color: #232323;
         border: none;
         outline: none;
-        padding: 0 0.2rem;
+        padding: 0 0.16rem;
       }
       .rightIcon{
         display: flex;
@@ -404,7 +404,7 @@ export default {
   font-weight: 500;
   border: none;
   outline: none;
-  padding: 0 0.2rem;
+  padding: 0 0.16rem;
   &::placeholder{
     color: #999999 !important;
   }

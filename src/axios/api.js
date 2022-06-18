@@ -37,4 +37,6 @@ export default {
   "get_PlayCurrencyStatus":'/trade/query/sellOrder',
   //获取卖币支持网络
   "get_networkList":'/crypto/sell/network',
+  //卖币添加或修改UserCard接口
+  "post_sellForm": '/user/card/sell/submit',
 }

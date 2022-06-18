@@ -192,6 +192,10 @@ html,body,#app,#viewBox{
     // justify-content: center;
     // align-items: center;
     padding-bottom: 15px;
+    align-items: center;
+    padding-left: 0.06rem;
+    padding-bottom: 0.24rem;
+
     img{
       width: 1.3rem;
     }

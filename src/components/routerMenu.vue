@@ -32,7 +32,7 @@
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div> -->
-    <div class="routerMenu_line" @click="goView('Language')">
+    <div class="routerMenu_line" style="margin-top:.32rem" @click="goView('Language')">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">Language</div>
       
@@ -203,10 +203,11 @@ export default {
 <style lang="scss" scoped>
 #routerMenu{
   position: relative;
+ 
   .routerMenu_line{
     display: flex;
     align-items: center;
-    margin-top: 0.3rem;
+    margin-top: 0.24rem;
     cursor: pointer;
     .lineIcon{
       display: flex;
@@ -215,11 +216,11 @@ export default {
       }
     }
     .lineName{
-      font-size: 0.16rem;
+      font-size: 0.17rem;
       font-family: "GeoRegular";
       font-weight: 500;
       color: #232323;
-      margin-left: 0.2rem;
+      margin-left: 0.08rem;
     }
     .lineRight{
       margin-left: auto;
@@ -227,15 +228,15 @@ export default {
       align-items: center;
       p{
         font-size: .15rem;
-        font-family: GeoRegular;
+        font-family: GeoLight;
         font-weight: normal;
         color: #707070;
-        margin-right: .18rem;
+        margin-right: .12rem;
       }
       .email{
-        margin-right: 0.3rem;
+        margin-right: 0.12rem;
         font-size: 0.14rem;
-        font-family: "GeoDemibold", GeoDemibold;
+        font-family: "GeoLight", GeoLight;
         font-weight: 400;
         color: #999999;;
       }

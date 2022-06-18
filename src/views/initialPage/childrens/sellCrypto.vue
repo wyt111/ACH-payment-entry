@@ -389,7 +389,7 @@ html,body,#buyCrypto{
   font-weight: 500;
   color: #232323;
   line-height: 0.6rem;
-  padding: 0 0.2rem;
+  padding: 0 0.16rem;
   cursor: pointer;
   position: relative;
 }

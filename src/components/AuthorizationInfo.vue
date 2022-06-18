@@ -2,7 +2,7 @@
   <div id="AuthorizationInfo">
     <div class="agreement-content">
       <div class="agreement-radio">
-        <el-checkbox v-model="childData.agreement" size="mini"></el-checkbox>
+        <el-checkbox v-model="childData.agreement"></el-checkbox>
       </div>
       <div class="agreement-text">
         I authorise <span>AlchemyPay</span> to debit my chosen payment method

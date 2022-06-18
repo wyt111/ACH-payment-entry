@@ -68,7 +68,7 @@
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Network</div>
         <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
           <p>{{ Network?Network.networkName: network1}}</p>
-          <img v-if="[0,1].includes(playMoneyState)" src="../../assets/images/rightIcon.png" alt="">
+          <img v-if="[0,1].includes(playMoneyState)" style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
         </div>
         <transition name="fade">
         <div class="network-content" v-show="Network_show1">
@@ -105,7 +105,7 @@
     </div>
     <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
     <IncludedDetailsSell :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,2].includes(playMoneyState)?true:false"/>
-    <van-popup v-model="show" round>
+    <van-popup class="popup_center" v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
         <p>Scan QR Code</p>
@@ -174,8 +174,8 @@ export default{
        this.$refs.qrCodeUrl.innerHTML = "";
       new QRCode(this.$refs.qrCodeUrl, {
         text: this.orderStateData.address,
-        width: 200,
-        height: 200,
+        width: 140,
+        height: 140,
         colorDark: '#000000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
@@ -252,7 +252,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-
+          this.playMoneyState = 3
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -377,21 +377,22 @@ export default{
   padding-bottom: .2rem;
 
   .timing{
-    font-size: .15rem;
-    font-family: Jost-Bold, Jost;
+    font-family: GeoLight;
     font-weight: 500;
     color: #232323;
     line-height: .23rem;
+    font-size: .13rem;
     span{
-      color: #FF0000 ;
+      color: #E55643FF ;
       font-weight: 600;
+      font-family: GeoLight;
     }
   }
   .order-state-title{
-    font-size: .16rem;
-    font-family: Jost-Bold, Jost;
-    font-weight: 600;
-    color: #232323;
+    font-size: .13rem;
+    font-family: GeoRegular;
+    // font-weight: 600;
+    color: #707070;
     line-height: .23rem;
     margin: .1rem 0 .1rem 0;
   }
@@ -400,7 +401,8 @@ export default{
     display: flex;
     justify-content: space-around;
     // align-items: center;
-    font-size: .18rem;
+    font-family: GeoDemibold;
+    font-size: .16rem;
     box-sizing: border-box;
     .state{
       div{
@@ -439,7 +441,7 @@ export default{
     margin-top: .1rem;
     div{
       width: 25%;
-      font-family: Jost-Bold, Jost;
+      font-family: GeoRegular;
       font-size: .12rem;
       color: #999999;
       // padding-left: .07rem;
@@ -459,10 +461,11 @@ export default{
     }
   }
   .order-content{
-    font-size: .14rem;
-    font-family: Jost-Bold, Jost;
+    font-size: .13rem;
+    font-family: GeoRegular;
     .order-title{
-      margin: .2rem 0 .1rem 0;
+      margin: .32rem 0 .08rem 0;
+      color: #707070;
     }
     .order-con{
       width: 100%;
@@ -470,17 +473,21 @@ export default{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: .19rem .2rem .18rem;
+      
+      padding: .19rem .2rem .19rem;
       background: #F3F4F5;
       border-radius: 10px;
       p{
         width: 80%;
+        font-size: .16rem;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis
+        font-family: GeoRegular;
+        text-overflow: ellipsis;
+        color:#232323;
       }
       img{
-        height: .16rem;
+        height: .14rem;
       }
     }
   }
@@ -492,7 +499,7 @@ export default{
   .stateLoading{
     text-align: center;
     padding-top: .03rem;
-     background: #959595FF !important;
+     background: #707070FF !important;
   }
   .stateError{
     text-align: center;
@@ -512,8 +519,8 @@ export default{
     width: 90%;
     padding: .1rem .2rem .1rem;
     box-sizing: border-box;
-    font-size: .14rem;
-    font-family:Jost-Bold, Jost ;
+    font-size: .13rem;
+    font-family:GeoRegular ;
     border-bottom: 1px solid #EAEAEA;
     margin: .1rem 5%;
     display: flex;
@@ -524,20 +531,26 @@ export default{
       }
   }
   .qrcode{
-    width: 3rem;
-    height: 3rem;
+    width: 3.4rem;
+    height: 2.5rem;
     background: #FFFFFF;
-    padding-top: .35rem;
+    padding-top: .44rem;
     box-sizing: border-box;
+    position: relative;
     .qrCodeUrl{
-      width: 2rem;
+      width: 1.4rem;
       margin: 0 auto 0;
+      // position: absolute;
+      // left: 50%;
+      // top: .44rem;
+      // transform: translate(-50%,0);
     }
     p{
+      width: 100%;
       font-size: .14rem;
-      font-family:Jost-Bold, Jost ;
+      font-family:GeoLight ;
       text-align: center;
-      margin-top: .1rem;
+      margin-top: .08rem;
       font-weight: 500;
       color: #232323;
     }
@@ -560,7 +573,7 @@ export default{
   }
   .Network-title{
     padding: .2rem 0 0 0;
-    font-family: Jost-Bold, Jost;
+    font-family: GeoDemibold;
     font-size: .16rem;
     text-align: center;
   }
@@ -615,6 +628,11 @@ export default{
     color: #232323;
     padding: .1rem 0 .1rem .2rem;
     border-radius: .1rem;
+  }
+  .popup_center{
+    top: 1.86rem;
+    left: 50%;
+    transform: translate(-50%,0);
   }
 }
 </style>

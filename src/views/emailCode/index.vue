@@ -110,11 +110,11 @@ export default {
         if(res.returnCode === '0000'){
           this.login_loading = false
           this.$store.state.userEmail = AES_Encrypt(this.email)
-          let n = this.$route.query.fromName
+          let n = this.$route.query.routerParams
           this.$router.push({
             path:'/verifyCode',
             query:{
-              fromName:n?n:''
+              routerParams:n
             }
           })
         }
