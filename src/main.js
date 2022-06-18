@@ -14,6 +14,8 @@ rem_size();
 //注册全局组件 - components
 import Button from './components/Button.vue'
 Vue.component('Button', Button)
+//国际化
+import i18n from './utils/i18n/index'
 
 //ui - element
 import { Popover,InfiniteScroll,Checkbox } from 'element-ui';
@@ -35,5 +37,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app')

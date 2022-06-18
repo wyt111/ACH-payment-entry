@@ -8,7 +8,7 @@
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
       <div class="verifyCode_title bottom"> 
-        <input type="checkbox" v-model="checked"> <div> I agree with Alchemy Pay's <span>&lt;Terms of Service&gt;</span> and <span>&lt;Privacy Policy.&gt;</span></div></div>
+        <input type="checkbox" v-model="checked"> <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy.&gt;</span></div></div>
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
@@ -17,6 +17,7 @@
 </template>
 <script>
 import axios from 'axios';
+import { debounce } from '../../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
   export default {
   name: "verifyCode",
@@ -33,7 +34,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   mounted(){
     setTimeout(()=>{
       this.changeBlur()
-    },1000)
+    },500)
     this.timeVal = setInterval(()=>{
       this.codeTime--
       if(this.codeTime <= 0){
@@ -43,9 +44,10 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     },1000)
   },
   activated(){
+    this.value = ''
     setTimeout(()=>{
       this.changeBlur()
-    },1000)
+    },500)
   },
   methods:{
     //input聚焦
@@ -53,7 +55,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
      this.$refs.input.focus()
     },
     //获取验证码
-    getEmailCode(){
+    getEmailCode:debounce(function (){
       // this.codeTime = 10
       let params = {
         email:this.$store.state.userEmail
@@ -70,7 +72,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           },1000)
          }
        })
-    },
+    },500,false),
     toLogin(){
      if(this.netActive){
        let _this = this;
@@ -94,7 +96,6 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           return Promise.reject(error);
         })
         axios(config).then(function (response) {
-          
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             _this.showLoading = false
@@ -141,6 +142,16 @@ import { AES_Encrypt } from '@/utils/encryp.js';
        this.$toast('Please tick the User Agreement')
      }
        
+    },
+    openView(name){
+      if(name==='Privacy'){
+        window.location = 'https://alchemypay.org/privacy-policy/'
+        return
+      }
+      if(name === 'Terms'){
+         window.location = 'https://alchemypay.org/terms-of-use/';
+        return;
+      }
     }
   },
   computed:{
@@ -168,6 +179,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-family: "GeoLight";
     span{
       color: #0059DAFF;
+      
     }
   }
   .verifyCode_content{
@@ -213,10 +225,10 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-family: "GeoRegular";
     .icon{
       width: .24rem;
-      height: .15rem;
+      height: .24rem;
       position: absolute;
       right: .16rem;
-      top: .21rem;
+      top: .18rem;
       span{
         position: absolute;
         left: 0;
@@ -236,5 +248,16 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       margin-top: .1rem;
     }
   }
+  .bottom ::v-deep .el-checkbox__inner:hover{
+  border-color: #DFDFDF !important;
+}
+  .bottom ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: #0059DA;
+    border: 1px solid #0059DA;
+    border-radius: 0.05rem;
+  }
+  .bottom ::v-deep .el-checkbox__inner{
+    border: 1px solid #DFDFDF;
+}
 }
 </style>

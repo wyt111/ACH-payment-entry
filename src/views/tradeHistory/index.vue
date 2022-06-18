@@ -3,7 +3,8 @@
     <div class="noData" v-if="historyList.length===0">
       <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
       <div class="noDataText">No transactions</div>
-      <div class="continue" @click="goHome">Buy Crypto</div>
+      <p>Buy some crypto to get started</p>
+      <div class="continue" @click="goHome">Buy crypto now <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
     </div>
     <div class="historyList" v-else>
       <van-list v-model="loading" :finished="finished" finished-text="No more" @load="onLoad" loading-text="Loading" error-text="Loading failed">
@@ -159,40 +160,54 @@ html,body,#tradeHistory,.historyList,.van-list{
   }
 
   .noData{
-    width: 2rem;
+    width: 3rem;
     height: 3rem;
+    text-align: center;
     margin: 0 auto;
     .noDataImg{
       display: flex;
       justify-content: center;
       margin-top: 1rem;
       img{
-        width: 2rem;
+        width: 1rem;
       }
+    
     }
+      p{
+        font-size: .15rem;
+        font-family: GeoLight;
+        font-weight: normal;
+        color: #707070;
+        margin: .08rem 0 .16rem 0;
+      }
     .noDataText{
       text-align: center;
-      margin-top: 0.4rem;
-      font-size: 0.14rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      color: #AFC5D8;
+      margin-top: 0.08rem;
+      font-size: .21rem;
+      font-family:GeoDemibold;
+      font-weight: normal;
+      color: #000000;
     }
     .continue{
-      width: 100%;
+      width: 90%;
       height: 0.6rem;
       background: #4479D9;
-      border-radius: 4px;
+      border-radius: .29rem;
       text-align: center;
       line-height: 0.6rem;
       font-size: 0.18rem;
-      font-family: 'Jost', sans-serif;
+      font-family: GeoRegular;
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;
-      position: fixed;
-      bottom: 0;
-      left: 0;
+      position: absolute;
+      left: 5%;
+      img{
+        width: .24rem;
+        position: absolute;
+        right: .16rem;
+        top: .18rem;
+      }
     }
   }
 }
