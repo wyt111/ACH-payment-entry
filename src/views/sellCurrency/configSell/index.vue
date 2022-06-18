@@ -5,8 +5,8 @@
         <div class="bankCardInfo-title">Bank Card</div>
         <div class="bankCardInfo-view" @click="goCardForm">
           <div class="bankCardInfo-view-left">
-            <div>{{ sellForm.bank }}</div>
-            <div>{{ sellForm.firstname }} {{ sellForm.lastname }} <span>{{ sellForm.cardNumber ? sellForm.cardNumber.substring(0,3) : '' }} **** **** {{ sellForm.cardNumber ? sellForm.cardNumber.substring(sellForm.cardNumber.length-4,sellForm.cardNumber.length) : '' }}</span></div>
+            <div>{{ sellForm.bankCode }}</div>
+            <div>{{ sellForm.name }} <span>{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</span></div>
           </div>
           <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightIcon.png" alt=""></div>
         </div>
@@ -60,12 +60,11 @@ export default {
         if(res && res.returnCode === "0000" && res.data !== null){
           this.$store.state.sellForm = Object.assign({},res.data);
           let oldSellForm = new Object();
-          oldSellForm.firstname = AES_Decrypt(res.data.firstname);
-          oldSellForm.lastname = AES_Decrypt(res.data.lastname);
-          oldSellForm.cardNumber = AES_Decrypt(res.data.cardNumber);
-          oldSellForm.phone = AES_Decrypt(res.data.phone);
-          oldSellForm.email = AES_Decrypt(res.data.email);
-          oldSellForm.idNumber = AES_Decrypt(res.data.idNumber);
+          res.data.name ? oldSellForm.name = AES_Decrypt(res.data.name) : res.data.name;
+          res.data.accountNumber ? oldSellForm.accountNumber = AES_Decrypt(res.data.accountNumber) : res.data.accountNumber;
+          res.data.phone ? oldSellForm.phone = AES_Decrypt(res.data.contactNumber) : res.data.contactNumber;
+          res.data.email ? oldSellForm.email = AES_Decrypt(res.data.email) : res.data.email;
+          res.data.idNumber ? oldSellForm.idNumber = AES_Decrypt(res.data.idNumber) : '';
           this.sellForm = Object.assign(res.data,oldSellForm);
         }
       })
@@ -83,11 +82,12 @@ export default {
           sellVolume: this.routerParams.amount,
           worldId: this.routerParams.positionData.worldId,
           symbol: this.routerParams.payCommission.symbol,
-          cardNumber: this.$store.state.sellForm.cardNumber,
+          cardNumber: this.$store.state.sellForm.accountNumber,
           swiftCode: this.$store.state.sellForm.swiftCode,
-          bank: this.$store.state.sellForm.bank,
+          bank: this.$store.state.sellForm.bankCode,
           cryptoCurrencyNetworkId: this.routerParams.currencyData.cryptoCurrencyNetworkId,
-          fiatName: this.routerParams.payCommission.fiatCode
+          fiatName: this.routerParams.payCommission.fiatCode,
+          userCardId: this.$store.state.sellForm.id,
         };
         this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{
           this.buttonData.triggerNum = 0;
@@ -117,7 +117,7 @@ export default {
     margin-top: 0.2rem;
     .bankCardInfo-view{
       margin-top: 0.1rem;
-      min-height: 1rem;
+      min-height: 0.76rem;
       background: #F3F4F5;
       border-radius: 0.1rem;
       display: flex;
@@ -127,6 +127,9 @@ export default {
         font-size: 0.16rem;
         font-weight: bold;
         color: #232323;
+        div:first-child{
+          min-height: 0.18rem;
+        }
         div:last-child{
           margin-top: 0.1rem;
           font-size: 0.16rem;

@@ -56,7 +56,7 @@ export default {
   .formContent{
     display: flex;
     align-items: center;
-    padding: 0 0.2rem;
+    padding: 0 0.16rem;
     margin-top: 0.08rem;
     font-size: 0.16rem;
     font-family: "GeoRegular", GeoRegular;

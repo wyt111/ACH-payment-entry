@@ -1,13 +1,14 @@
 <template>
   <!-- choise bank -->
-  <div>
+  <div id="VABox">
     <div class="payAmountInfo-title">BANK</div>
     <div class="payAmountInfo-box" v-if="bankState">
       <div class="payAmountInfo-box-line" v-for="(item,index) in bankCardList" :key="index" @click="choiseBankCard(item,index)">
         <div class="logo"><img :src='require(`@/assets/images/bankCard/${item.bankLogo}`)'></div>
         <div class="name">{{ item.bankCardName }} <span>- {{ item.bankCardFullName }}</span></div>
-        <div class="option">
-          <input type="checkbox" v-model="item.check" :value="item.check" @click="bankCardList[index].check=false">
+        <div class="option" @click="choiseCheck(item,index)">
+<!--          <input type="checkbox" v-model="item.check" :value="item.check" @click="bankCardList[index].check=false">-->
+          <el-checkbox v-model="item.check" :value="item.check"></el-checkbox>
         </div>
       </div>
     </div>
@@ -22,7 +23,7 @@
       <div class="helpView" v-for="(value,key) in payExplain.allHelpTips" :key="key">
         <div class="helpView-title" @click.stop="lookMore(value,key)">
           <p>How to pay at the {{ value.helpTitle }}</p>
-          <p><img src="@/assets/images/rightIcon.png" :class="{'iconCSS3': value.openState,'iconCSS3-back': !value.openState}"></p>
+          <p><img src="@/assets/images/rightBlackIcon.png" :class="{'iconCSS3': value.openState,'iconCSS3-back': !value.openState}"></p>
         </div>
         <div class="helpView-line" v-for="(item,index) in value.helpInfo" :key="index" v-show="value.openState">
           <div class="headline"><div class="serialNumber"></div><div>{{ item.text }}</div></div>
@@ -143,6 +144,10 @@ export default {
       })
     },
 
+    choiseCheck(item,index){
+      this.bankCardList[index].check = false;
+    },
+
     //Expand data
     lookMore(value,key){
       if(this.payExplain.allHelpTips[key].openState === false){
@@ -194,25 +199,25 @@ export default {
 
 <style lang="scss" scoped>
 .payAmountInfo-title{
-  font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #232323;
-  margin-top: 0.2rem;
+  font-size: 0.13rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #707070;
+  margin-top: 0.32rem;
 }
 .payAmountInfo-box{
-  margin-top: 0.1rem;
-  min-height: 0.6rem;
+  margin-top: 0.08rem;
+  min-height: 0.56rem;
   background: #F3F4F5;
-  border-radius: 10px;
+  border-radius: 0.12rem;
   font-size: 0.16rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
+  font-family: "GeoDemibold", GeoDemibold;
+  font-weight: normal;
   color: #232323;
   line-height: 0.6rem;
-  padding: 0 0.2rem;
+  padding: 0 0.16rem;
   .payAmountInfo-box-line{
-    height: 0.6rem;
+    height: 0.56rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -230,8 +235,8 @@ export default {
     }
     .name{
       font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
+      font-family: "GeoDemibold", GeoDemibold;
+      font-weight: normal;
       color: #232323;
       margin-left: 0.2rem;
       white-space: nowrap;
@@ -240,6 +245,7 @@ export default {
       word-break: break-all;
       padding-right: 0.37rem;
       span{
+        font-family: "GeoRegular",GeoRegular;
         color: #666666;
       }
     }
@@ -250,11 +256,10 @@ export default {
 }
 
 .paymentCode{
-  font-size: 0.265rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
+  font-size: 0.21rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
   color: #232323;
-  margin-bottom: 0.4rem;
   display: flex;
   cursor: pointer;
   p:nth-of-type(1){
@@ -274,47 +279,53 @@ export default {
 
 .helpView{
   cursor: pointer;
-  min-height: 0.6rem;
+  min-height: 0.56rem;
   background: #F3F4F5;
-  border-radius: 10px;
-  font-size: 0.14rem;
-  font-family: "GeoDemibold", GeoDemibold;
-  font-weight: 400;
-  color: #666666;
-  padding: 0 0.2rem;
-  margin-top: 0.2rem;
+  border-radius: 0.12rem;
+  font-size: 0.13rem;
+  font-family: "GeoLight", GeoLight;
+  font-weight: normal;
+  color: #707070;
+  padding: 0 0.16rem;
+  margin-top: 0.16rem;
   .helpView-title{
     display: flex;
     align-items: center;
-    height: 0.6rem;
+    height: 0.56rem;
     p:last-child{
       margin-left: auto;
       img{
-        width: 0.1rem;
+        width: 0.24rem;
       }
     }
   }
   .helpView-line{
-    margin-top: 0.1rem;
+    margin-top: 0.08rem;
     &:last-child{
       padding-bottom: 0.2rem;
     }
     .headline{
       display: flex;
-      align-items: center;
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
+      align-items: start;
+      font-size: 0.15rem;
+      font-family: "GeoLight", GeoLight;
       color: #666666;
-      .serialNumber{
+      position: relative;
+      .serialNumber::after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 0.06rem;
         height: 0.06rem;
         background: #666666;
         border-radius: 50%;
         margin-right: 0.1rem;
+        margin-top: 0.05rem;
       }
       div:last-child{
         max-width: 3rem;
+        padding-left: 0.15rem;
       }
     }
     .subtitle{
@@ -344,5 +355,20 @@ export default {
     -o-transform: rotate(0deg);
     transition-duration: 0.3s;
   }
+}
+
+//element-ui复选框
+#VABox ::v-deep .el-checkbox__inner:hover{
+  border-color: #232323 !important;
+  border-radius: 3px;
+}
+#VABox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #0059DA;
+  border: 1px solid #0059DA;
+  border-radius: 0.05rem;
+}
+#VABox ::v-deep .el-checkbox__inner{
+  border: 1px solid #232323;
+  border-radius: 3px;
 }
 </style>

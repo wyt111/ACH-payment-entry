@@ -23,8 +23,8 @@
       <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">Open OVO app to complete payment.</div>
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
-      <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
       <IncludedDetails class="IncludedDetails" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}"/>
+      <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
     </div>
 
     <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
@@ -126,8 +126,8 @@ export default {
       this.$nextTick(()=>{
         new QRCode(this.$refs.qrCodeUrl, {
           text: this.qrUrl,
-          width: 200,
-          height: 200,
+          width: 140,
+          height: 140,
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H
@@ -250,50 +250,50 @@ export default {
   }
   .payTips{
     padding: 0.1rem 0;
-    font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
     color: #232323;
     span{
-      color: #FF0000;
+      color: #E55643;
     }
   }
   .payAmountInfo-title{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
-    margin-top: 0.2rem;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
+    margin-top: 0.32rem;
   }
   .payAmountInfo-box {
-    margin-top: 0.1rem;
-    height: 0.6rem;
+    margin-top: 0.08rem;
+    height: 0.56rem;
     background: #F3F4F5;
-    border-radius: 10px;
+    border-radius: 0.12rem;
     font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
     color: #232323;
     line-height: 0.6rem;
-    padding: 0 0.2rem;
+    padding: 0 0.16rem;
   }
 }
 
 .QRISView{
   .QRISCode{
-    min-height: 2rem;
+    min-height: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.2rem;
+    margin-top: 0.16rem;
   }
   .QRISText{
-    font-size: 0.15rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
+    font-weight: normal;
     color: #232323;
     text-align: center;
-    margin-top: 0.2rem;
+    margin-top: 0.08rem;
   }
 }
 
@@ -306,7 +306,11 @@ export default {
   .region{
     min-width: 0.75rem;
     text-align: center;
-    border-right: 1px solid #979797;
+    border-right: 1px solid #E6E6E6;
+    font-size: 0.16rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #232323;
   }
   .input{
     width: 100%;
@@ -314,35 +318,44 @@ export default {
     position: relative;
     input{
       display: flex;
-      padding: 0 0.2rem;
+      padding: 0 0.16rem;
       border: none;
       width: 100%;
       background: #F3F4F5;
+      font-size: 0.16rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
       letter-spacing: 4px;
     }
   }
   .loading{
     position: absolute;
-    right: 0.2rem;
-    width: 0.3rem;
-    height: 0.3rem;
+    top: 0.07rem;
+    right: 0.16rem;
+    width: 0.24rem;
+    height: 0.24rem;
   }
 }
 .ovoTips{
-  font-size: 0.16rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #4479D9;
-  margin-top: 0.1rem;
-  margin-bottom: 0.2rem;
+  font-size: 0.15rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #0059DA;
+  margin-top: 0.08rem;
 }
 
 .CryptoCurrencyAddress{
   margin-top: 0.2rem;
 }
 
-.IncludedDetails_top{
-  margin-top: 0.4rem;
+.IncludedDetails{
+  margin-top: 0.32rem;
+}
+
+.AuthorizationInfo{
+  margin-top: 0.16rem;
+  //margin-bottom: 0.2rem;
 }
 
 .number_input{

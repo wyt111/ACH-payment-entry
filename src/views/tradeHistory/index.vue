@@ -114,7 +114,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 500;
       color: #232323;
       height: 0.64rem;
-      padding: 0 0.2rem;
+      padding: 0 0.16rem;
       border-bottom: 1px solid #F3F4F5;
       .state{
         margin-left: auto;
@@ -139,7 +139,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       display: flex;
       align-items: flex-start;
       margin-top: 0.2rem;
-      padding: 0 0.2rem;
+      padding: 0 0.16rem;
       &:nth-of-type(2){
         margin-top: 0.1rem;
       }

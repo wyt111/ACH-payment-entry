@@ -171,7 +171,7 @@ export default {
   border-top: 1px solid #F3F4F5;
   padding: 0.2rem 0 0 0;
   .calculationProcess{
-    padding: 0 0.2rem;
+    padding: 0 0.16rem;
     .calculationProcess_line{
       display: flex;
       align-items: center;

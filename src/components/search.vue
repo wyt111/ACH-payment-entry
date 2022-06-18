@@ -588,7 +588,6 @@ export default {
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
-      color: #999999;
       padding: 0 0.47rem;
       background: #F3F4F5;
       border-radius: 10px;
