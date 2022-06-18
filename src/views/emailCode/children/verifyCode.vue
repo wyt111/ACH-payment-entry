@@ -3,7 +3,7 @@
       <div class="verifyCode_title">We’ve sent a confirmation code to your email.</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
-        <input type="input" v-model="value" :maxlength="6" ref="input">
+        <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
       </div>
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
@@ -214,6 +214,12 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       border: none;
       position: absolute;
       z-index: -1;
+      pointer-events: none;
+        text-indent: -999em; /*文本向左缩进*/
+    margin-left: -100%; /*输入框光标起始点向左左移*／
+    width: 200%; /*输入框增大一倍*/
+    opacity: 0;
+
     }
   }
   .verifyCode_button{

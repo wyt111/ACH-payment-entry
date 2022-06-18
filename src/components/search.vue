@@ -483,7 +483,7 @@ export default {
   display: flex;
   flex-direction: column;
   .search_core{
-    flex: .8;
+    flex: 1;
     overflow: auto;
     .screen_title{
       font-size: 0.14rem;

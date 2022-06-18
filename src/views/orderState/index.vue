@@ -57,7 +57,7 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Pay Coins</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.69rem':''}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.69rem':'',}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -95,7 +95,7 @@
                <p style="margin-left:.2rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
             </div>
           </div>
-          <img src="../../assets/images/rightIcon.png" alt="">
+          <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
         </div>
         <div class="order-state_title" v-if="playMoneyState===6">Fail Reason</div>
         <div class="order-state_content" v-if="playMoneyState===6" >
@@ -103,7 +103,7 @@
         </div>
 
     </div>
-    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto</div>
+    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
     <IncludedDetailsSell :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,2].includes(playMoneyState)?true:false"/>
     <van-popup class="popup_center" v-model="show" round>
       <div class="qrcode" >
@@ -252,7 +252,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-          this.playMoneyState = 3
+          // this.playMoneyState = 0
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -440,20 +440,20 @@ export default{
     justify-content: space-between;
     margin-top: .1rem;
     div{
-      width: 25%;
+      width: 10%;
       font-family: GeoRegular;
-      font-size: .12rem;
+      font-size: .13rem;
       color: #999999;
-      // padding-left: .07rem;
-      // overflow:hidden;
-      // text-overflow:ellipsis;
-      white-space:nowrap
+      line-height: .18rem;
+    }
+     div:nth-of-type(1){
+      margin-left: .18rem;
     }
     div:nth-of-type(2){
-      margin-left: -.14rem;
+      margin-left: 0rem;
     }
     div:nth-of-type(3){
-      padding-left: -.2rem;
+      padding-left: .1rem;
     }
      div:nth-of-type(4){
        width: 18%;
@@ -557,19 +557,25 @@ export default{
   }
   .ContinueButton{
     width: 90%;
-    height: .55rem;
+    height: .58rem;
     background: #4479D9FF;
     font-size: .18rem;
     font-weight: 500;
     color: #FAFAFA;
-    font-family: Jost-Bold, Jost;
-    border-radius: .04rem;
+    font-family: GeoRegular;
+    border-radius: .29rem;
     text-align: center;
     line-height: .55rem;
     position: absolute;
     left: 5%;
     bottom: .5rem;
     cursor: pointer;
+    img{
+      width: .24rem;
+      position: absolute;
+      right: .16rem;
+      top: .17rem;
+    }
   }
   .Network-title{
     padding: .2rem 0 0 0;
@@ -595,10 +601,10 @@ export default{
       }
     }
   }
-  .payCions{
-    position: absolute;
-    left: .2rem;
-  }
+  // .payCions{
+  //   position: absolute;
+  //   left: .2rem;
+  // }
   .fade-enter-active {
     transition: all 0.3s ease-in;
 }
@@ -612,10 +618,11 @@ export default{
     max-height: 0;
 }
 .order-state_title{
-  font-size: .14rem;
-  font-family: Jost-Bold, Jost;
+  font-size: .13rem;
+  font-family: GeoRegular;
   font-weight: 500;
-  margin: .2rem 0 .05rem 0;
+  margin: .32rem 0 .05rem 0;
+  color: #707070;
 
 }
 .order-state_content{
