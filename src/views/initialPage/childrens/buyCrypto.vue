@@ -477,7 +477,7 @@ html,body,#buyCrypto{
   .countryIcon{
     display: flex;
     margin-right: 0.1rem;
-    height: 0.27rem;
+    height: 0.288rem;
     img{
       width: 0.3rem;
       border-radius: 50%;

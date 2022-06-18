@@ -31,7 +31,7 @@
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
           <div class="screen_title">All</div>
-          <li v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency',item)">
+          <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
@@ -56,7 +56,7 @@
 
       <!-- country payCurrency -->
       <ul v-else-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
-        <li v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
+        <li class="payCurrencyLi" v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting">
             <img :src="item.flag">
             <span class="allName">{{ item.enCommonName }} -</span>
@@ -79,7 +79,7 @@
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li> -->
           <div class="screen_title">All</div>
-          <li v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency-sell',item)">
+          <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency-sell',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
@@ -485,26 +485,32 @@ export default {
   .search_core{
     flex: .8;
     overflow: auto;
-    margin-top: 0.28rem;
     .screen_title{
       font-size: 0.14rem;
       font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
       color: #232323;
-      margin-top: 0.1rem;
+      margin-top: 0.24rem;
+      &:first-child{
+        margin-top: 0;
+      }
+    }
+    .allCurrencyLi{
+      margin-top: 0.16rem !important;
     }
     ul{
       height: 100%;
+      .payCurrencyLi:first-child{
+        margin-top: 0;
+      }
       li{
         display: flex;
         align-items: center;
-        //height: 0.55rem;
         margin-top: 0.24rem;
         cursor: pointer;
         .seach_li_img{
           display: flex;
           img{
-            width: 0.3rem;
+            width: 0.36rem;
           }
         }
         .seach_li_text{
@@ -550,14 +556,15 @@ export default {
             margin-left: 0.21rem;
           }
         }
-        &:first-child{
-          margin-top: 0;
-        }
+      }
+      li:nth-of-type(1){
+        margin-top: 0.16rem;
       }
     }
   }
 }
 .searchHeader{
+  padding-bottom: 0.24rem;
   .searchHeader_view1{
     font-size: 0.21rem;
     font-family: "GeoDemibold", GeoDemibold;
