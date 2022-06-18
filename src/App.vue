@@ -189,8 +189,8 @@ html,body,#app,#viewBox{
   }
   .logoView_phone{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    // justify-content: center;
+    // align-items: center;
     padding-bottom: 15px;
     img{
       width: 1.3rem;

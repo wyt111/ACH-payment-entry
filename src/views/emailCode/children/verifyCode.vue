@@ -56,6 +56,8 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     },
     //获取验证码
     getEmailCode:debounce(function (){
+      this.value = ''
+      this.changeBlur()
       // this.codeTime = 10
       let params = {
         email:this.$store.state.userEmail
@@ -106,9 +108,11 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
                 _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+                  // _this.$router.push('/')
+                  
                 let params = {
-                  country: _this.$store.state.routerParams.positionData.alpha2,
-                  fiatName: _this.$store.state.routerParams.positionData.fiatCode,
+                  country: _this.$store.state.sellRouterParams.positionData.alpha2,
+                  fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
                 };
                 _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
                   //data - null 没有填写过表单,跳转到表单页
@@ -140,6 +144,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
        return
      }else{
        this.$toast('Please tick the User Agreement')
+       return
      }
        
     },

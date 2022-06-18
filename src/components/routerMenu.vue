@@ -11,7 +11,7 @@
       <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
       <div class="lineName">
         <p>Transactions</p>
-        <p>No history yet</p>
+        <p><span v-if="finished">No history yet</span></p>
       </div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
@@ -83,12 +83,24 @@ export default {
       email: '',
       token:false,
       show:false,
-      loading:false
+      loading:false,
+      query: {
+        orderState: 4,
+        orderType: 1,
+        pageIndex: 1,
+        pageSize: 5,
+        historyList:[],
+      },
+      finished:false
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+    // this.transationsList()
+    if(this.token){
+      this.transationsList()
+    }
   },
   deactivated(){
      localStorage.getItem("token") ? this.token = true : false;
@@ -97,6 +109,7 @@ export default {
   mounted(){
     localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+    
   },
   methods: {
     //Select menu
@@ -164,6 +177,18 @@ export default {
         this.$router.push('/emailCode')
       }
     },
+    transationsList(){
+      let _this = this;
+      this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
+        if(res.data){
+          // console.log(res.data);
+          let newArray = res.data.result;
+          if (newArray.length <= 0 ) {
+            _this.finished = true;
+          }
+        }
+      })
+    }
   },
   computed:{
     emailSlice(){
@@ -291,6 +316,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 0 .31rem 0 .24rem;
+    cursor: pointer;
     .lineName{
       margin: 0 1rem 0 .16rem;
       p:first-child{
@@ -366,6 +392,7 @@ export default {
         color: #FFFFFF;
         font-family: GeoRegular;
         margin-top: .05rem;
+        cursor: pointer;
         img{
           width: .24rem;
           position: absolute;
@@ -382,6 +409,7 @@ export default {
         font-family: GeoDemibold;
         font-size: .17rem;
         margin-top: .24rem;
+        cursor: pointer;
       }
     }
   }

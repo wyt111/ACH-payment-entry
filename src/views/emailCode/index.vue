@@ -110,7 +110,13 @@ export default {
         if(res.returnCode === '0000'){
           this.login_loading = false
           this.$store.state.userEmail = AES_Encrypt(this.email)
-          this.$router.push('/verifyCode')
+          let n = this.$route.query.fromName
+          this.$router.push({
+            path:'/verifyCode',
+            query:{
+              fromName:n?n:''
+            }
+          })
         }
       })
       
@@ -142,6 +148,7 @@ export default {
         })
         axios(config).then(function (response) {
           _this.login_state = true;
+         
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             if(_this.$route.query.fromName === 'tradeList'){

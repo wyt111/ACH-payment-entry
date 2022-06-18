@@ -38,9 +38,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: .2rem;
+    cursor: pointer;
     .Language_line_left{
       display: flex;
       align-items: center;
+      
       p{
         font-size: 16px;
         font-family: GeoRegular;

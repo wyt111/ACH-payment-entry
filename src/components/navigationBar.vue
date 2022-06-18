@@ -50,7 +50,7 @@ export default {
         return;
       }
       //add sellOrder page back home
-      if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder'){
+      if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ||this.$route.path === '/sell-formUserInfo' || this.$route.path === '/receivingMode'){
         this.$router.push('/');
         return;
       }

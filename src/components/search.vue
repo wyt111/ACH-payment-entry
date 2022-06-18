@@ -483,7 +483,7 @@ export default {
   display: flex;
   flex-direction: column;
   .search_core{
-    flex: 1;
+    flex: .8;
     overflow: auto;
     margin-top: 0.28rem;
     .screen_title{
