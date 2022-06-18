@@ -21,7 +21,7 @@
     "vant": "^2.12.47",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
-    "vue-i18n": "^8.0.0",
+    "vue-i18n": "^8.27.1",
     "vue-router": "^3.5.4"
   },
   "devDependencies": {
