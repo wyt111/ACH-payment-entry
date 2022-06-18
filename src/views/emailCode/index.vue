@@ -105,15 +105,15 @@ export default {
         email: AES_Encrypt(this.email)
       }
       this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
-        
+        this.login_loading = true
         this.getCode_state = true;
         if(res.returnCode === '0000'){
-          this.login_loading = true
+          this.login_loading = false
           this.$store.state.userEmail = AES_Encrypt(this.email)
           this.$router.push('/verifyCode')
         }
-        this.login_loading = true
       })
+      
     },500,false),
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;

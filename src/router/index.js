@@ -65,7 +65,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
     meta: {
       requireAuth: true,
-      title: 'Trade History',
+      title: 'Transactions',
       keepAlive: true,
     }
   },

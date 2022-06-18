@@ -1,9 +1,9 @@
 <template>
   <div class="Language-container">
-    <div class="Language_line">
+    <div class="Language_line" v-for="item in languageList" :key="item.name" @click="choiseItem(item)">
       <div class="Language_line_left">
         <img src="@/assets/images/slices/English(US).png" alt="">
-        <p>English(US)</p>
+        <p>{{ item.name }}</p>
       </div>
       <img src="@/assets/images/slices/right_icon.png" alt="">
     </div>
@@ -11,8 +11,23 @@
   </div>
 </template>
 <script>
+import i18n from "@/utils/i18n";
 export default {
-  name:'Language'
+  name:'Language',
+  data(){
+    return {
+      languageList: [
+        {name: 'English(US)',value: 'EN-US',state: true},
+      ],
+    }
+  },
+  methods:{
+    choiseItem(item){
+      this.$store.state.languageValue = item.value
+     i18n.locale = item.value
+     this.$router.go(-1)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

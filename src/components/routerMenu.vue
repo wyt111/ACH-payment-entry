@@ -35,7 +35,9 @@
     <div class="routerMenu_line" @click="goView('Language')">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">Language</div>
+      
       <div class="lineRight">
+        <p>{{ $store.state.languageValue }}</p>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -62,10 +64,10 @@
       </div>
     </div>
     <div class="routerMenu_loginOut" v-show="show" @click="show=false">
-      <div class="content" >
+      <div class="content" @click.stop="show=true">
         <h2>Are you sure you want to logout?</h2>
         <div @click.stop="outLogin">Login <img src="../assets/images/slices/rightIcon.png" alt=""></div>
-        <p>Dismiss</p>
+        <p @click.stop="show=false">Dismiss</p>
       </div>
     </div>
   </div>
@@ -134,6 +136,8 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
+            sessionStorage.removeItem('accessMerchantInfo')
+            sessionStorage.removeItem('store')
             this.$router.push('/');
             window.location.reload()
           }
@@ -196,6 +200,13 @@ export default {
       margin-left: auto;
       display: flex;
       align-items: center;
+      p{
+        font-size: .15rem;
+        font-family: GeoRegular;
+        font-weight: normal;
+        color: #707070;
+        margin-right: .18rem;
+      }
       .email{
         margin-right: 0.3rem;
         font-size: 0.14rem;
@@ -363,6 +374,9 @@ export default {
         }
       }
       p{
+        width: 90%;
+        height: .56rem;
+        text-align: center;
         font-weight: normal;
         color: #232323;
         font-family: GeoDemibold;

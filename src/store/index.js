@@ -33,6 +33,8 @@ const store = new Vuex.Store({
         sellOrderId: '',
 
         cancelTokenArr: [],
+        //多语言
+        languageValue:'EN-US'
     },
     mutations: {
         pushToken (state, payload) {
