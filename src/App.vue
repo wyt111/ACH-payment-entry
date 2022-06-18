@@ -17,6 +17,8 @@
           </div>
           <!-- 菜单栏 -->
           <routerMenu v-if="!routerViewState" />
+          <!-- 语言切换 -->
+          <Language v-if="LanguageShow"/>
           <!-- 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
         </div>
@@ -35,25 +37,27 @@
 import tab from "./components/navigationBar";
 import routerMenu from "./components/routerMenu";
 import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
+import Language from './components/Language.vue'
 import common from "./utils/common";
 import rem_size from  './utils/rem_size';
 
 export default {
   name: 'App',
-  components: { tab, routerMenu, QueryOrderStatusTips },
+  components: { tab, routerMenu, QueryOrderStatusTips ,Language},
   data(){
     return{
       routerViewState: true,
       logoState: true,
       tipsState: false,
       version: '',
+      LanguageShow:true
     }
   },
   computed:{
     //赋值路由是否需要缓存状态
     keepAlive(){
       return this.$route.meta.keepAlive;
-    }
+    },
   },
 
   mounted(){
@@ -92,6 +96,15 @@ export default {
         this.logoState = true;
       })
     },
+  },
+  watch:{
+    '$store.state.LanguageIsShow':{
+      immediate:true,
+      handler(newVal){
+        this.LanguageShow = newVal
+      },
+      deep:true
+    }
   }
 }
 </script>

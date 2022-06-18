@@ -32,7 +32,7 @@
         <div><img src="../assets/images/rightIcon.png"></div>
       </div>
     </div> -->
-    <div class="routerMenu_line" style="margin-top:.32rem" @click="goView('Language')">
+    <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">Language</div>
       
@@ -177,6 +177,7 @@ export default {
         this.$router.push('/emailCode')
       }
     },
+    //是否有历史记录
     transationsList(){
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
@@ -188,6 +189,10 @@ export default {
           }
         }
       })
+    },
+    //语言切换的显示隐藏
+    LanguageIsShow(){
+      this.$store.state.LanguageIsShow = true
     }
   },
   computed:{

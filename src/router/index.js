@@ -49,16 +49,6 @@ export const constantRoutes = [
   },
   //切换语言的路由
   {
-    path: "/language",
-    name: 'Language',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/Language/Language"),
-    meta: {
-      title: 'Language',
-      keepAlive: true,
-    }
-  },
-  {
     path: "/tradeHistory",
     name: 'tradeHistory',
     component: () =>
