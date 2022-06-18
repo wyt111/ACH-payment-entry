@@ -605,4 +605,11 @@ html,body,#buyCrypto{
     color: #999999 !important;
   }
 }
+
+input:disabled, input[disabled]{
+  -webkit-opacity:1;
+  opacity: 1;
+  color: #232323;
+  -webkit-text-fill-color: #232323;
+}
 </style>

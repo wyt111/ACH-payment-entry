@@ -25,8 +25,8 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
-      <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
       <IncludedDetails class="includedDetails"/>
+      <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
     </div>
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
   </div>
@@ -276,6 +276,8 @@ export default {
 }
 .includedDetails{
   margin-top: 0.32rem;
+}
+.AuthorizationInfo{
   margin-bottom: 0.2rem;
 }
 </style>
