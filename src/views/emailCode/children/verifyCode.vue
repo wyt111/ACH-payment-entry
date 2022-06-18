@@ -214,6 +214,12 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       border: none;
       position: absolute;
       z-index: -1;
+      pointer-events: none;
+        text-indent: -999em; /*文本向左缩进*/
+    margin-left: -100%; /*输入框光标起始点向左左移*／
+    width: 200%; /*输入框增大一倍*/
+    opacity: 0;
+
     }
   }
   .verifyCode_button{
