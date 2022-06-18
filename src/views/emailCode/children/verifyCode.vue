@@ -213,10 +213,10 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-family: "GeoRegular";
     .icon{
       width: .24rem;
-      height: .15rem;
+      height: .24rem;
       position: absolute;
       right: .16rem;
-      top: .21rem;
+      top: .18rem;
       span{
         position: absolute;
         left: 0;

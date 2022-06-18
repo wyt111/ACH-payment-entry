@@ -37,9 +37,9 @@
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
       
-      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined)?'#0059DAFF':login_loading && email?'':''}" @click="getCode">Continue
-        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!login_loading">
-        <van-loading class="icon" type="spinner" color="#fff" v-else/>
+      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">Continue
+        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
+        <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
       </div>
   </div>
 </template>
@@ -69,11 +69,11 @@ export default {
 
       getCode_state: true,
       login_state: true,
-      login_loading:false
+      login_loading:true
     }
   },
   activated(){
-    this.login_loading= false
+    this.login_loading= true
     this.code = "";
     this.timeDown = 60;
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
@@ -86,11 +86,11 @@ export default {
   },
   methods: {
     getCode:debounce(function () {
-      // this.getCode_state = false;
-      
+      this.getCode_state = false;
+      // this.emailErrorState = false;
       var reg = new RegExp(".+@.+\\..+");
       if(!reg.test(this.email)){
-        this.emailErrorState = true;
+        this.emailErrorState = true
         // this.emailError = "Not a valid email address.";
         this.emailError = "Required.";
         // this.login_loading = false
@@ -99,6 +99,7 @@ export default {
       }
       this.$refs.emailInput.style = 'border:none'
       this.emailErrorState = false;
+      this.login_loading = false
       //Get code
       let params = {
         email: AES_Encrypt(this.email)
@@ -107,11 +108,11 @@ export default {
         
         this.getCode_state = true;
         if(res.returnCode === '0000'){
-          this.login_loading = false
+          this.login_loading = true
           this.$store.state.userEmail = AES_Encrypt(this.email)
           this.$router.push('/verifyCode')
         }
-        this.login_loading = false
+        this.login_loading = true
       })
     },500,false),
     expandCollapse(){
