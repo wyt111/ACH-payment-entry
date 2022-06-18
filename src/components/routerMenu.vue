@@ -319,7 +319,8 @@ export default {
     padding: 0 .31rem 0 .24rem;
     cursor: pointer;
     .lineName{
-      margin: 0 1rem 0 .16rem;
+      margin-left: .16rem;
+      flex: 1;
       p:first-child{
         font-family: GeoRegular;
         font-size: .17rem;
