@@ -550,7 +550,7 @@ html,body,#buyCrypto{
   font-family: "GeoRegular", GeoRegular;
   font-weight: normal;
   color: #FFFFFF;
-  margin-top: 0.26rem;
+  margin-top: 0.16rem;
   cursor: no-drop;
   border: none;
   position: relative;

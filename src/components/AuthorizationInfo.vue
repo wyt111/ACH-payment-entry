@@ -47,21 +47,16 @@ export default {
   }
 }
 
-.agreement-radio ::v-deep .el-checkbox__inner:hover{
+//element-ui复选框
+#AuthorizationInfo ::v-deep .el-checkbox__inner:hover{
   border-color: #DFDFDF !important;
 }
-.agreement-radio ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+#AuthorizationInfo ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
   background-color: #0059DA;
   border: 1px solid #0059DA;
   border-radius: 0.05rem;
 }
-.agreement-radio ::v-deep .el-checkbox__inner{
-  //width: 0.15rem;
-  //height: 0.15rem;
+#AuthorizationInfo ::v-deep .el-checkbox__inner{
   border: 1px solid #DFDFDF;
 }
-.agreement-radio ::v-deep .el-checkbox__inner::after{
-  //width: 0.04rem;
-}
-
 </style>
