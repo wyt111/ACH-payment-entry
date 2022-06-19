@@ -89,9 +89,9 @@
         <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">Card</div>
         <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
           <div style="width:80%">
-            <p style="width:100%">{{ orderStateData.bank }}</p>
+            <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
             <div style="display:flex;margin-top:.1rem">
-              <p style="width:36%">{{ AES(orderStateData.firstname) }} {{ AES(orderStateData.lastname) }}</p>
+              <!-- <p style="width:36%">{{ AES(orderStateData.firstname) }} {{ AES(orderStateData.lastname) }}</p> -->
                <p style="margin-left:.2rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
             </div>
           </div>
@@ -252,7 +252,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-          // this.playMoneyState = 0
+          this.playMoneyState = 6
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))

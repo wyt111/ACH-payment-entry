@@ -33,8 +33,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 .Language-container{
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: calc(100% - .8rem);
+  // height: 100%;
+  background: #fff;
+  // position: right: ;;
+  // top: .8rem;
+  position: absolute;
+  top: .8rem;
+  z-index: 20;
+  padding-right: .1rem;
   .Language_title{
     width: 100%;
     display: flex;
