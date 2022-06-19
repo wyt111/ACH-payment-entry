@@ -2,71 +2,80 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">You Pay</div>
+      <div class="form_title pay_title">Y<span style="margin-left: 0.00001rem">ou Pay</span></div>
       <div class="methods_select cursor">
         <!-- @blur="youPayBlur" -->
         <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
         <div class="get_company" @click="openSearch('currency-sell')">
           <div class="getImg"><img :src="currencyData.icon"></div>
           <div class="getText">{{ currencyData.name }}</div>
-          <div class="rightIcon"><img src="@/assets/images/rightIcon.png"></div>
+          <div class="rightIcon"><img src="@/assets/images/blackDownIcon.png"></div>
         </div>
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">You Get</div>
+      <div class="form_title get_title">Y<span style="margin-left: 0.00001rem">ou</span> Get</div>
       <div class="methods_select cursor">
-        <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.getAmount)))" placeholder="0.00" disabled="true">
+        <div class="get_input">
+          <span v-if="getAmount!==''">{{ getAmount }}</span>
+          <span class="no_getAmount" v-else>0.00</span>
+        </div>
         <div class="pay_company" @click="openSearch('payCurrency-sell')">
           <div class="countryIcon"><img :src="positionData.positionImg"></div>
           <div>{{ payCommission.fiatCode }}</div>
-          <img class="rightIcon" src="@/assets/images/rightIcon.png">
+          <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
 
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
-        <div class="calculationProcess_line">
-          <div class="line_name">Remaining time</div>
-          <div class="line_number">
-            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
-            <div class="line_number_red">{{ timeDownNumber }}S</div>
-          </div>
-        </div>
-        <div class="calculationProcess_line">
-          <div class="line_name">{{ currencyData.name }} price</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
-        </div>
-        <div class="calculationProcess_line" v-show="feeState">
-          <div class="line_name">
-            Ramp fee
-            <el-popover
-                placement="top"
-                :trigger="triggerType"
-                :offset="-18"
-                content="Based on payment method">
-              <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
-            </el-popover>
-          </div>
-          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>
-        </div>
-        <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
-        <div class="calculationProcess_line">
-          <div class="line_name">Total</div>
-          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ getAmount }}</div>
-        </div>
+        <IncludedDetailsSell :isHome="true"/>
+<!--        <div class="calculationProcess_line">-->
+<!--          <div class="line_name">Remaining time</div>-->
+<!--          <div class="line_number">-->
+<!--            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>-->
+<!--            <div class="line_number_red">{{ timeDownNumber }}S</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="calculationProcess_line">-->
+<!--          <div class="line_name">{{ currencyData.name }} price</div>-->
+<!--          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>-->
+<!--        </div>-->
+<!--        <div class="calculationProcess_line" v-show="feeState">-->
+<!--          <div class="line_name">-->
+<!--            Ramp fee-->
+<!--            <el-popover-->
+<!--                placement="top"-->
+<!--                :trigger="triggerType"-->
+<!--                :offset="-18"-->
+<!--                content="Based on payment method">-->
+<!--              <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>-->
+<!--            </el-popover>-->
+<!--          </div>-->
+<!--          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>-->
+<!--        </div>-->
+<!--        <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>-->
+<!--        <div class="calculationProcess_line">-->
+<!--          <div class="line_name">Total</div>-->
+<!--          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ getAmount }}</div>-->
+<!--        </div>-->
       </div>
     </div>
 
-    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">Continue</button>
+    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
+      Continue
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+    </button>
   </div>
 </template>
 
 <script>
 import common from "../../../utils/common";
+import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
 
 export default {
   name: "buyCrypto",
+  components: { IncludedDetailsSell },
   props: ['allBasicData'],
   data(){
     return{
@@ -199,7 +208,7 @@ export default {
         }
         this.warningTextState = true;
         this.getAmount = "";
-          this.detailedInfo_state = false;
+        this.detailedInfo_state = false;
         clearInterval(this.timeDown);
       }
     },
@@ -208,11 +217,12 @@ export default {
     payinfo(){
       clearInterval(this.timeDown);
       if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
+        this.$store.state.sellRouterParams.amount = this.payAmount;
         this.detailedInfo_state = true;
         setTimeout(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
         })
-        this.queryFee();
+        // this.queryFee();
       }else{
         clearInterval(this.timeDown);
         this.detailedInfo_state = false;
@@ -220,28 +230,28 @@ export default {
     },
 
     //Purchase information details
-    queryFee(){
-      this.timeDownNumber = 15;
-      this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
-        if(res && res.returnCode === "0000"){
-          this.feeInfo = res.data;
-          this.calculationAmount();
-        }
-      })
-      this.timeDown = setInterval(()=> {
-        if (this.timeDownNumber === 1) {
-          this.timeDownNumber = 15;
-          this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
-            if(res && res.returnCode === "0000"){
-              this.feeInfo = res.data;
-              this.calculationAmount();
-            }
-          })
-        }else{
-          this.timeDownNumber -= 1;
-        }
-      },1000);
-    },
+    // queryFee(){
+    //   this.timeDownNumber = 15;
+    //   this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+    //     if(res && res.returnCode === "0000"){
+    //       this.feeInfo = res.data;
+    //       this.calculationAmount();
+    //     }
+    //   })
+    //   this.timeDown = setInterval(()=> {
+    //     if (this.timeDownNumber === 1) {
+    //       this.timeDownNumber = 15;
+    //       this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+    //         if(res && res.returnCode === "0000"){
+    //           this.feeInfo = res.data;
+    //           this.calculationAmount();
+    //         }
+    //       })
+    //     }else{
+    //       this.timeDownNumber -= 1;
+    //     }
+    //   },1000);
+    // },
 
     //Real time calculation getAmount
     calculationAmount(){
@@ -251,6 +261,7 @@ export default {
         this.feeInfo.rampFee = ((this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee) + this.feeInfo.fixedFee) * this.feeInfo.rate;
         let newGetAmount = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
         newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(this.feeInfo.accuracy) : this.getAmount = 0;
+        this.$store.state.sellRouterParams.getAmount = this.getAmount;
       }
     },
 
@@ -296,10 +307,12 @@ export default {
       this.$store.state.feeParams.fiatCode = data.fiatCode;
       this.$store.state.feeParams.worldId = data.worldId;
       this.positionData.worldId = data.worldId;
+      this.payCommission = data;
+      this.$store.state.sellRouterParams.payCommission = data;
+      this.$store.state.sellRouterParams.positionData = this.positionData;
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.payCommission = data;
         this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{
           if(item.name === "BTC"){
             this.currencyData = {
@@ -310,10 +323,10 @@ export default {
               cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId
             }
             this.$store.state.feeParams.symbol = item.name; //name -- popularList币种
+            this.$store.state.sellRouterParams.cryptoCurrency = item.name;
+            this.$store.state.sellRouterParams.currencyData = this.currencyData;
           }
         })
-      }else{
-        this.payCommission = data;
       }
       this.amountControl();
     },
@@ -371,24 +384,24 @@ html,body,#buyCrypto{
 
 .form_title{
   font-size: 0.14rem;
-  font-family: 'Jost', sans-serif;
+  font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
-  color: #232323;
-  padding-bottom: 0.1rem;
+  color: #707070;
+  padding-bottom: 0.08rem;
 }
 
 .methods_title{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
   background: #F3F4F5;
-  border-radius: 10px;
+  border-radius: 0.12rem;
   font-size: 0.16rem;
   font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
   color: #232323;
-  line-height: 0.6rem;
+  line-height: 0.56rem;
   padding: 0 0.16rem;
   cursor: pointer;
   position: relative;
@@ -401,10 +414,10 @@ html,body,#buyCrypto{
   outline: none;
   background: #F3F4F5;
   font-size: 0.16rem;
-  font-family: "GeoDemibold", GeoDemibold;
+  font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
   color: #232323;
-  padding: 0 0.6rem 0 0;
+  padding: 0 0.56rem 0 0;
   &::placeholder{
     color: #999999 !important;
   }
@@ -413,84 +426,119 @@ html,body,#buyCrypto{
   height: 100%;
   position: absolute;
   top: 0;
-  right: 0.2rem;
+  right: 0;
+  min-width: 1.44rem;
+  border-radius: 0 0.12rem 0.12rem 0;
   cursor: pointer;
   display: flex;
   align-items: center;
-  img{
-    width: 0.12rem;
-    margin-left: 0.2rem;
-  }
+  justify-content: center;
+  font-size: 0.16rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #232323;
+  background: #EDEDEF;
   .countryIcon{
     display: flex;
     margin-right: 0.1rem;
+    height: 0.288rem;
     img{
       width: 0.3rem;
+      border-radius: 50%;
     }
+  }
+  .rightIcon{
+    width: 0.24rem;
+    margin-left: 0.18rem;
   }
 }
 .warning_text{
-  font-size: 0.14rem;
-  font-family: "GeoDemibold", GeoDemibold;
+  position: absolute;
+  font-size: 0.13rem;
+  font-family: "GeoLight", GeoLight;
   font-weight: 400;
-  color: #FF0000;
-  margin: 0.1rem 0.2rem 0 0.2rem;
+  color: #E55643;
+  margin: 0.08rem 0.2rem 0 0.16rem;
 }
 
 .get_title{
-  margin-top: 0.2rem;
+  margin-top: 0.32rem;
 }
 .get_input{
+  width: 100%;
+  height: 0.56rem;
   padding: 0 1.5rem 0 0;
+  background: #F3F4F5;
+  font-size: 0.16rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: 500;
+  color: #232323;
+  .no_getAmount{
+    color: #999999;
+  }
 }
 .get_company{
   position: absolute;
   top: 0;
-  right: 0.2rem;
+  right: 0;
+  min-width: 1.44rem;
+  height: 100%;
+  border-radius: 0 0.12rem 0.12rem 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-family: "GeoRegular", GeoRegular;
+  background: #EDEDEF;
   cursor: pointer;
   .getImg{
     display: flex;
     margin-right: 0.1rem;
     img{
       width: 0.3rem;
+      border-radius: 50%;
     }
   }
   .getText{
     display: flex;
     font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
+    font-family: 'GeoRegular', GeoRegular;
     color: #232323;
-    margin-right: 0.2rem;
+    margin-right: 0.18rem;
   }
   .rightIcon{
+    display: flex;
+    align-items: center;
     img{
-      width: 0.12rem;
+      width: 0.24rem;
     }
   }
 }
 
 .continue{
   width: 100%;
-  height: 0.6rem;
-  background: rgba(68, 121, 217, 0.5);
-  border-radius: 4px;
-  text-align: center;
-  line-height: 0.6rem;
-  font-size: 0.18rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #FAFAFA;
-  margin-top: 0.4rem;
+  height: 0.58rem;
+  background: rgba(0, 89, 218, 0.5);
+  border-radius: 0.29rem;
+  font-size: 0.17rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #FFFFFF;
+  margin-top: 0.16rem;
   cursor: no-drop;
   border: none;
+  position: relative;
+  .rightIcon{
+    position: absolute;
+    top: 0.17rem;
+    right: 0.32rem;
+    width: 0.24rem;
+  }
 }
 .continue_true{
-  background: #4479D9;
+  background: #0059DA;
   cursor: pointer;
 }
+
 .cursor{
   cursor: auto;
 }
@@ -506,7 +554,8 @@ html,body,#buyCrypto{
 }
 
 .calculationProcess{
-  padding: 0.4rem 0.2rem 0 0.2rem;
+  margin-top: 0.32rem;
+  margin-bottom: 0.1rem;
   .calculationProcess_line{
     display: flex;
     align-items: center;
@@ -574,18 +623,18 @@ html,body,#buyCrypto{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
   border: none;
   outline: none;
   background: #F3F4F5;
   font-size: 0.16rem !important;
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeoRegular', GeoRegular;
   font-weight: 500;
   color: #232323 !important;
-  padding: 0 0.6rem 0 0;
+  padding: 0 0.56rem 0 0;
   &::placeholder{
     color: #999999 !important;
   }

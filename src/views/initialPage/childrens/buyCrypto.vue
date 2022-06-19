@@ -16,7 +16,10 @@
 
       <div class="form_title get_title">Y<span style="margin-left: 0.00001rem">ou</span> Get</div>
       <div class="methods_select cursor">
-        <input class="pay_input get_input" type="number" v-model="getAmount" onKeypress="return(/[\d\.]/.test(String.fromCharCode(event.getAmount)))" placeholder="0.00" disabled="true">
+        <div class="get_input">
+          <span v-if="getAmount!==''">{{ getAmount }}</span>
+          <span class="no_getAmount" v-else>0.00</span>
+        </div>
         <div class="get_company" @click="openSearch('currency')">
           <div class="getImg"><img :src="currencyData.icon"></div>
           <div class="getText">{{ currencyData.name }}</div>
@@ -431,14 +434,14 @@ html,body,#buyCrypto{
   margin-top: 0.2rem;
 }
 .methods_select{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
   background: #F3F4F5;
   border-radius: 0.12rem;
   font-size: 0.16rem;
   font-family: "GeoDemibold", GeoDemibold;
   font-weight: 500;
   color: #232323;
-  line-height: 0.6rem;
+  line-height: 0.56rem;
   padding: 0 0.16rem;
   cursor: pointer;
   position: relative;
@@ -454,7 +457,7 @@ html,body,#buyCrypto{
   font-family: "GeoRegular", GeoRegular;
   font-weight: 500;
   color: #232323;
-  padding: 0 0.6rem 0 0;
+  padding: 0 0.56rem 0 0;
   &::placeholder{
     color: #999999 !important;
   }
@@ -471,7 +474,7 @@ html,body,#buyCrypto{
   align-items: center;
   justify-content: center;
   font-family: "GeoRegular", GeoRegular;
-  font-size: 0.17rem;
+  font-size: 0.16rem;
   color: #232323;
   background: #EDEDEF;
   .countryIcon{
@@ -502,7 +505,17 @@ html,body,#buyCrypto{
   margin-top: 0.32rem;
 }
 .get_input{
+  width: 100%;
+  height: 0.56rem;
   padding: 0 1.5rem 0 0;
+  background: #F3F4F5;
+  font-size: 0.16rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: 500;
+  color: #232323;
+  .no_getAmount{
+    color: #999999;
+  }
 }
 .get_company{
   position: absolute;
@@ -589,10 +602,10 @@ html,body,#buyCrypto{
 }
 
 .pay_input ::v-deep .van-cell__value--alone{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
 }
 .pay_input ::v-deep .van-field__control{
-  min-height: 0.6rem;
+  min-height: 0.56rem;
   border: none;
   outline: none;
   background: #F3F4F5;
@@ -600,16 +613,8 @@ html,body,#buyCrypto{
   font-family: 'GeoRegular', GeoRegular;
   font-weight: 500;
   color: #232323 !important;
-  padding: 0 0.6rem 0 0;
+  padding: 0 0.56rem 0 0;
   &::placeholder{
     color: #999999 !important;
   }
-}
-
-input:disabled, input[disabled]{
-  -webkit-opacity:1;
-  opacity: 1;
-  color: #232323;
-  -webkit-text-fill-color: #232323;
-}
-</style>
+}</style>

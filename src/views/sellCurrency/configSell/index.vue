@@ -6,9 +6,12 @@
         <div class="bankCardInfo-view" @click="goCardForm">
           <div class="bankCardInfo-view-left">
             <div>{{ sellForm.bankCode }}</div>
-            <div>{{ sellForm.name }} <span>{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</span></div>
+            <div>
+              <div class="name">{{ sellForm.name }}</div>
+              <div class="cardNumber">{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</div>
+            </div>
           </div>
-          <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightIcon.png" alt=""></div>
+          <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
         </div>
       </div>
       <IncludedDetails-sell class="includedDetails-view"/>
@@ -111,32 +114,41 @@ export default {
     overflow: auto;
   }
   .bankCardInfo{
-    font-size: 0.14rem;
-    font-weight: 500;
-    color: #232323;
-    margin-top: 0.2rem;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
+    margin-top: 0.28rem;
     .bankCardInfo-view{
-      margin-top: 0.1rem;
-      min-height: 0.76rem;
+      margin-top: 0.08rem;
+      height: 0.76rem;
       background: #F3F4F5;
       border-radius: 0.1rem;
       display: flex;
-      padding: 0.21rem 0.2rem;
+      align-items: center;
+      padding: 0 0.16rem;
       cursor: pointer;
       .bankCardInfo-view-left{
-        font-size: 0.16rem;
-        font-weight: bold;
-        color: #232323;
         div:first-child{
           min-height: 0.18rem;
+          font-size: 0.16rem;
+          font-family: "GeoRegular", GeoRegular;
+          font-weight: normal;
+          color: #232323;
         }
         div:last-child{
-          margin-top: 0.1rem;
-          font-size: 0.16rem;
-          font-weight: 400;
+          display: flex;
+          align-items: center;
+          margin-top: 0.08rem;
+          font-size: 0.13rem;
+          font-family: "GeoRegular", GeoRegular;
+          font-weight: normal;
           color: #999999;
-          span{
-            margin-left: 0.4rem;
+          .name{
+            min-width: 0.56rem;
+          }
+          .cardNumber{
+            margin-left: 0.16rem;
           }
         }
       }
@@ -145,7 +157,7 @@ export default {
         display: flex;
         align-items: center;
         img{
-          width: 0.12rem;
+          width: 0.24rem;
         }
       }
     }

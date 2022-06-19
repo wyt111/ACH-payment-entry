@@ -1,68 +1,81 @@
 <template>
   <!-- Payment information -->
   <div class="paymentInformation" v-if="orderState===null">
-    <div class="calculationProcess">
-      <div class="calculationProcess_line" v-if="timeDownState_child">
-        <div class="line_name">Remaining time</div>
-        <div class="line_number">
-          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
-          <div class="line_number_red">{{ timeDownNumber }}S</div>
+    <div class="feeTitle">
+      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-value">
+        <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
+        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
+      </div>
+    </div>
+    <div class="fee-content">
+      <div class="fee-content-title" @click="expandFee">
+        <div class="left">
+          You sell <span>{{ routerParams.amount }} {{ routerParams.cryptoCurrency }}</span> to <span>{{ currencyData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
+        <div class="right"><van-icon name="arrow-down" /></div>
       </div>
-      <div class="calculationProcess_line">
-        <div class="line_name">{{ currencyData.name }} price</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
-      </div>
-      <div class="calculationProcess_line" v-show="feeState">
-        <div class="line_name">
-          Ramp fee
-          <el-popover
-              placement="top"
-              :trigger="triggerType"
-              :offset="-18"
-              content="Based on payment method">
-            <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
-          </el-popover>
+      <div class="fee-content-details" v-if="feeState">
+        <div class="fee-content-details-line">
+          <div class="title">price</div>
+          <div class="value">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
         </div>
-        <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>
-      </div>
-      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
-      <div class="calculationProcess_line">
-        <div class="line_name">Total</div>
-        <div class="line_number">{{ feeInfo.fiatSymbol }} {{ routerParams.getAmount }}</div>
+        <div class="fee-content-details-line">
+          <div class="title">
+            Ramp fee
+            <el-popover
+                placement="top"
+                :trigger="triggerType"
+                :offset="-18"
+                content="Based on payment method">
+              <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
+            </el-popover>
+          </div>
+          <div class="value">
+            <span class="minText">as low as</span>
+            {{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <!-- 下单成功不刷新费用 -->
   <div class="paymentInformation" v-else>
-    <div class="calculationProcess">
-      <div class="calculationProcess_line" v-if="timeDownState_child">
-        <div class="line_name">Remaining time</div>
-        <div class="line_number">
-          <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>
-          <div class="line_number_red">{{ timeDownNumber }}S</div>
+    <div class="feeTitle">
+      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-value">
+        <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
+        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
+      </div>
+    </div>
+    <div class="fee-content">
+      <div class="fee-content-title" @click="expandFee">
+        <div class="left">
+          You sell <span> <!-- {{ routerParams.amount }} {{ routerParams.cryptoCurrency }} --> </span> to <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
         </div>
+        <div class="right"><van-icon name="arrow-down" /></div>
       </div>
-      <div class="calculationProcess_line">
-        <div class="line_name">{{ orderState.cryptoCurrency }} price</div>
-        <div class="line_number">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate * orderState.fiatRate)*100) /100 }}</div>
-      </div>
-      <div class="calculationProcess_line" v-show="feeState">
-        <div class="line_name">
-          Ramp fee
-          <el-popover
-              placement="top"
-              :trigger="triggerType"
-              :offset="-18"
-              content="Based on payment method">
-            <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>
-          </el-popover>
+      <div class="fee-content-details" v-if="feeState">
+        <div class="fee-content-details-line">
+          <div class="title">price</div>
+          <div class="value">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate * orderState.fiatRate)*100) /100 }}</div>
         </div>
-        <div class="line_number"><span class="minText">as low as</span>{{ orderState.feeUnit }}{{ orderState.fee }}</div>
-      </div>
-      <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>
-      <div class="calculationProcess_line">
-        <div class="line_name">Total</div>
-        <div class="line_number">{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</div>
+        <div class="fee-content-details-line">
+          <div class="title">
+            Ramp fee
+            <el-popover
+                placement="top"
+                :trigger="triggerType"
+                :offset="-18"
+                content="Based on payment method">
+              <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
+            </el-popover>
+          </div>
+          <div class="value">
+            <span class="minText">as low as</span>
+            {{ orderState.feeUnit }}{{ orderState.fee }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -71,6 +84,7 @@
 <script>
 /**
  * timeDownState 定时刷新状态
+ * isHome 是否是首页使用
  */
 import common from "../utils/common";
 
@@ -84,6 +98,10 @@ export default {
     orderState:{
       type:Object,
       default:null
+    },
+    isHome: {
+      type: Boolean,
+      default: null
     }
   },
   data(){
@@ -95,7 +113,6 @@ export default {
       timeDown: 60,
       timeOut: null,
       feeState: false,
-      feeText: 'View fees',
       feeParams: {},
       feeInfo: {},
       routerParams: {},
@@ -113,7 +130,28 @@ export default {
           clearInterval(this.timeOut);
         }
       }
-    }
+    },
+    //选择国家后刷新数据
+    '$store.state.sellRouterParams.positionData': {
+      deep: true,
+      handler(){
+        clearInterval(this.timeOut)
+        //接收路由信息
+        this.currencyData = this.$store.state.sellRouterParams.currencyData;
+        this.routerParams = this.$store.state.sellRouterParams;
+        this.feeParams = this.$store.state.feeParams;
+        this.timingSetting();
+      }
+    },
+  },
+  mounted(){
+    //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
+    this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
+    //接收路由信息
+    this.currencyData = this.$store.state.sellRouterParams.currencyData;
+    this.routerParams = this.$store.state.sellRouterParams;
+    this.feeParams = this.$store.state.feeParams;
+    this.timingSetting();
   },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
@@ -124,15 +162,16 @@ export default {
     this.feeParams = this.$store.state.feeParams;
     this.timingSetting();
   },
+  destroyed(){
+    clearInterval(this.timeOut)
+  },
   deactivated(){
     clearInterval(this.timeOut)
   },
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
-      // if(this.orderState){
-      //   return false
-      // }
+      clearInterval(this.timeOut)
       this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
@@ -148,13 +187,17 @@ export default {
         if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
+          //修改首页费用数据
+          if(this.isHome && this.isHome === true){
+            this.$parent.feeInfo = this.feeInfo;
+            this.$parent.calculationAmount();
+          }
         }
       })
     },
 
     expandFee(){
       this.feeState = this.feeState === true ? false : true;
-      this.feeText = this.feeState === true ? 'Hide fees' : 'View fees';
       if(this.$route.path === '/receivingMode' && this.feeState === true){
         this.$nextTick(()=>{
           this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
@@ -168,83 +211,189 @@ export default {
 
 <style lang="scss" scoped>
 .paymentInformation{
-  border-top: 1px solid #F3F4F5;
-  padding: 0.2rem 0 0 0;
-  .calculationProcess{
-    padding: 0 0.16rem;
-    .calculationProcess_line{
+  .feeTitle{
+    font-size: 13px;
+    font-weight: normal;
+    color: #707070;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    .feeTitle-name{
+      font-family: "GeoRegular", GeoRegular;
+    }
+    .feeTitle-value{
+      font-family: "GeoLight", GeoLight;
       display: flex;
       align-items: center;
-      margin-top: 0.13rem;
-      .line_name{
-        font-size: 0.14rem;
-        font-family: "GeoDemibold", GeoDemibold;
-        font-weight: 400;
-        color: #232323;
-        display: flex;
-        align-items: center;
-        .tipsIcon{
-          width: 0.14rem;
-          height: 0.14rem;
-          margin-left: 0.1rem;
-          display: flex;
-          img{
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-      .line_number{
-        margin-left: auto;
-        font-size: 0.14rem;
-        font-family: 'Jost', sans-serif;
-        font-weight: bold;
-        color: #232323;
-        display: flex;
-        align-items: center;
-        .minText{
-          font-size: 0.14rem;
-          font-weight: 400;
-          color: #666666;
-          margin-right: 0.2rem;
-        }
-        .line_number_icon{
-          margin-right: 0.05rem;
-          img{
-            width: 0.12rem;
-          }
-        }
-        .line_number_red{
-          font-size: 0.14rem;
-          font-family: 'Jost', sans-serif;
-          font-weight: 500;
-          color: #FF0000;
+      margin-left: auto;
+      .loading-svg{
+        margin-right: 0.04rem;
+        img{
+          height: 0.12rem;
         }
       }
     }
   }
-  .feeViewBtn{
-    text-align: right;
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #4479D9;
-    margin-top: 0.1rem;
-    cursor: pointer;
+
+  .fee-content{
+    background: #F3F4F5;
+    border-radius: 0.12rem;
+    margin-top: 0.08rem;
+    padding: 0 0.16rem;
+    .fee-content-title{
+      padding: 0.19rem 0;
+      display: flex;
+      align-items: center;
+      font-size: 0.16rem;
+      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-weight: normal;
+      color: #232323;
+      cursor: pointer;
+      span{
+        font-weight: bold;
+      }
+      .left{
+        word-break: break-all;
+        font-size: 0.16rem;
+        font-family: "GeoLight", GeoLight;
+        font-weight: normal;
+        color: #232323;
+        span{
+          font-family: "GeoDemibold",GeoDemibold;
+        }
+      }
+      .right{
+        width: 0.32rem;
+        height: 0.24rem;
+        text-align: center;
+        line-height: 0.24rem;
+        margin-left: auto;
+      }
+    }
+
+    .fee-content-details{
+      border-top: 1px solid #E6E6E6;
+      padding: 0.04rem 0 0.16rem 0;
+      .fee-content-details-line{
+        display: flex;
+        align-items: center;
+        margin-top: 0.12rem;
+        .title{
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoLight", GeoLight;
+          font-weight: normal;
+          color: #232323;
+          .tipsIcon{
+            width: 0.16rem;
+            height: 0.16rem;
+            margin-left: 0.08rem;
+            display: flex;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+        .value{
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          font-size: 0.15rem;
+          font-family: "GeoDemibold",GeoDemibold;
+          color: #232323;
+          font-weight: normal;
+          .minText{
+            font-family: "GeoLight", GeoLight;
+            font-weight: normal;
+            color: #848484;
+            margin-right: 0.04rem;
+            margin-top: -0.02rem;
+          }
+        }
+      }
+    }
   }
+
+
+  //border-top: 1px solid #F3F4F5;
+  //padding: 0.2rem 0 0 0;
+  //.calculationProcess{
+  //  padding: 0 0.16rem;
+  //  .calculationProcess_line{
+  //    display: flex;
+  //    align-items: center;
+  //    margin-top: 0.13rem;
+  //    .line_name{
+  //      font-size: 0.14rem;
+  //      font-family: "GeoDemibold", GeoDemibold;
+  //      font-weight: 400;
+  //      color: #232323;
+  //      display: flex;
+  //      align-items: center;
+  //      .tipsIcon{
+  //        width: 0.14rem;
+  //        height: 0.14rem;
+  //        margin-left: 0.1rem;
+  //        display: flex;
+  //        img{
+  //          width: 100%;
+  //          height: 100%;
+  //        }
+  //      }
+  //    }
+  //    .line_number{
+  //      margin-left: auto;
+  //      font-size: 0.14rem;
+  //      font-family: 'Jost', sans-serif;
+  //      font-weight: bold;
+  //      color: #232323;
+  //      display: flex;
+  //      align-items: center;
+  //      .minText{
+  //        font-size: 0.14rem;
+  //        font-weight: 400;
+  //        color: #666666;
+  //        margin-right: 0.2rem;
+  //      }
+  //      .line_number_icon{
+  //        margin-right: 0.05rem;
+  //        img{
+  //          width: 0.12rem;
+  //        }
+  //      }
+  //      .line_number_red{
+  //        font-size: 0.14rem;
+  //        font-family: 'Jost', sans-serif;
+  //        font-weight: 500;
+  //        color: #FF0000;
+  //      }
+  //    }
+  //  }
+  //}
+  //.feeViewBtn{
+  //  text-align: right;
+  //  font-size: 0.14rem;
+  //  font-family: 'Jost', sans-serif;
+  //  font-weight: 500;
+  //  color: #4479D9;
+  //  margin-top: 0.1rem;
+  //  cursor: pointer;
+  //}
 }
 
-@keyframes loadingIcon {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .loadingIcon {
-    animation: loadingIcon infinite 2s linear;
-  }
-}
+//@keyframes loadingIcon {
+//  from {
+//    transform: rotate(0deg);
+//  }
+//  to {
+//    transform: rotate(360deg);
+//  }
+//}
+//@media (prefers-reduced-motion: no-preference) {
+//  .loadingIcon {
+//    animation: loadingIcon infinite 2s linear;
+//  }
+//}
 </style>

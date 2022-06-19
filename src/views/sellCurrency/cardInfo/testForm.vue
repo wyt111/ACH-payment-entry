@@ -1,20 +1,30 @@
 <template>
-  <div>
-    <div class="formLine" v-for="(item,index) in formJson" :key="index">
-      <!-- 提示信息 - JPY NPR BRL -->
-      <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">tips：{{ item.multinomialTips }}</div>
-
-      <div class="formTitle"><span v-if="item.required">*</span>{{ item.name }}</div>
-      <div class="radioFormContent" v-if="item.type === 'radio'">
-        <div class="radio" v-for="(radioItem,index2) in item.radioList" :key="index2" :class="{'radioClass': item.model === radioItem}" @click="chiseRadio(radioItem,index)">{{ radioItem }}</div>
+  <div id="sell-form">
+    <div class="sellForm-content">
+      <div class="formLine" v-for="(item,index) in formJson" :key="index">
+        <!-- 提示信息 - JPY NPR BRL -->
+        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">tips：{{ item.multinomialTips }}</div>
+        <div class="formTitle"><span v-if="item.required">*</span>{{ item.name }}</div>
+        <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
+          <div class="radioInput">
+            <div class="value">{{ item.model }}</div>
+            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+          </div>
+        </div>
+        <div class="formContent" v-else>
+          <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)">
+        </div>
+        <p class="errorMessage" v-if="item.tipsState">{{ item.tips }}</p>
+        <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
       </div>
-      <div class="formContent" v-else>
-        <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)">
-      </div>
-      <p class="errorMessage" v-if="item.tipsState">{{ item.tips }}</p>
-      <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
     </div>
     <button class="continue" :disabled="disabled" @click="submit">button</button>
+    <!-- 单选框 -->
+    <div class="selectView" v-if="selectState" @click="selectState=false">
+      <ul class="selectDate">
+        <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ item }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -28,6 +38,11 @@ export default {
     return{
       formJson: [],
       currency: "",
+      selectState: false,
+      selected: {
+        item: {},
+        index: 0,
+      },
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -129,9 +144,17 @@ export default {
     },
 
     //表单 - 单选框
-    chiseRadio(radioItem,index){
-      this.formJson[index].model = radioItem;
-      this.formJson[index].tipsState = false;
+    openSelect(item,index){
+      this.selectState = true;
+      this.selected = {
+        item: item.radioList,
+        index: index,
+      };
+    },
+    chiseCheck(item){
+      this.selectState = false;
+      this.formJson[this.selected.index].model = item;
+      this.formJson[this.selected.index].tipsState = false;
     },
 
     submit(){
@@ -185,18 +208,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#sell-form{
+  display: flex;
+  flex-direction: column;
+  .sellForm-content{
+    flex: 1;
+    overflow: auto;
+  }
+}
 .formLine{
-  margin-top: 0.2rem;
+  margin-top: 0.28rem;
   clear: both;
+  position: relative;
   .formTitle{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
+    font-size: 0.13rem;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
     display: flex;
     align-items: flex-end;
     span{
-      color: #FF0000;
+      color: #E55643;
       margin-right: 0.03rem;
     }
     .formTitle_logo{
@@ -207,66 +239,62 @@ export default {
       }
     }
   }
-  .radioFormContent{
-    min-height: 0.5rem;
-    margin-left: -0.2rem;
-    .radio{
-      padding: 0 0.1rem;
-      min-width: 0.8rem;
-      background: #F3F4F5;
-      font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      color: #232323;
-      height: 0.6rem;
-      line-height: 0.6rem;
-      text-align: center;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-left: 0.2rem;
-      margin-top: 0.12rem;
-      float: left;
-      &:last-child{
-        margin-bottom: 0.2rem;
-      }
-    }
-    .radioClass{
-      background: #4479D9;
-      color: #FAFAFA;
-    }
-  }
   .formContent{
     display: flex;
-    margin-top: 0.12rem;
+    margin-top: 0.08rem;
     position: relative;
     input{
       width: 100%;
-      height: 0.6rem;
+      height: 0.56rem;
       background: #F3F4F5;
-      border-radius: 10px;
+      border-radius: 0.12rem;
       font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
       border: none;
       outline: none;
       padding: 0 0.16rem;
     }
-    .rightIcon{
+    //.rightIcon{
+    //  display: flex;
+    //  position: absolute;
+    //  top: 0.23rem;
+    //  right: 0.2rem;
+    //  img{
+    //    width: 0.12rem;
+    //  }
+    //}
+    .radioInput{
+      width: 100%;
       display: flex;
-      position: absolute;
-      top: 0.23rem;
-      right: 0.2rem;
-      img{
-        width: 0.12rem;
+      align-items: center;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      padding: 0 0.16rem;
+      background: #F3F4F5;
+      border-radius: 0.12rem;
+      font-size: 0.16rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
+      .rightIcon{
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        img{
+          width: 0.24rem;
+        }
       }
     }
   }
   .errorMessage{
-    font-size: 0.14rem;
-    font-family: "Jost", sans-serif;
+    position: absolute;
+    font-size: 0.13rem;
+    font-family: "GeoLight", GeoLight;
     font-weight: 400;
-    color: #FF0000;
-    margin: 0.1rem 0 0 0.2rem;
+    color: #E55643;
+    margin: 0.08rem 0.2rem 0 0.16rem;
     clear: both;
   }
   .tipsMessage{
@@ -281,21 +309,56 @@ export default {
 
 .continue{
   width: 100%;
-  height: 0.6rem;
-  border-radius: 4px;
-  text-align: center;
-  background: #4479D9;
-  line-height: 0.6rem;
-  font-size: 0.18rem;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  color: #FAFAFA;
-  border: none;
+  height: 0.58rem;
+  background: #0059DA;
+  border-radius: 0.29rem;
+  font-size: 0.17rem;
+  font-family: "GeoRegular", GeoRegular;
+  font-weight: normal;
+  color: #FFFFFF;
+  margin-top: 0.16rem;
   cursor: pointer;
+  border: none;
+  position: relative;
+  .rightIcon{
+    width: 0.24rem;
+    position: absolute;
+    top: 0.17rem;
+    right: 0.32rem;
+  }
 }
-.continue[disabled]{
-  background: rgba(68, 121, 217, 0.5);
+.continue:disabled{
+  background: rgba(0, 89, 218, 0.5);
   cursor: no-drop;
 }
 
+.selectView{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 2rem;
+  left: 0.16rem;
+  .selectDate{
+    position: absolute;
+    background: #FFFFFF;
+    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0.16rem;
+    max-height: 4rem;
+    min-width: 1.8rem;
+    overflow: auto;
+    li{
+      font-size: 0.16rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
+      text-indent: 0.16rem;
+      border: 1px solid #F3F4F5;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      &:last-child{
+        border: none;
+      }
+    }
+  }
+}
 </style>
