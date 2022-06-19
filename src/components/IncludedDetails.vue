@@ -98,6 +98,15 @@ export default {
         this.detailsState = val;
       }
     },
+    //选择数字货币后刷新数据
+    '$store.state.buyRouterParams.cryptoCurrency': {
+      deep: true,
+      handler() {
+        clearInterval(this.timeOut)
+        this.queryFee();
+        this.timingSetting();
+      }
+    }
   },
   mounted(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发

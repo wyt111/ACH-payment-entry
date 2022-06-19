@@ -59,6 +59,13 @@ export default {
     this.currency = this.$store.state.sellRouterParams.positionData.fiatCode;
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
 
+    //PHP - 金额大于500000地址必输
+    if(this.currency === 'PHP' && this.$store.state.getAmount > 500000){
+      this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
+    }else if(this.currency === 'PHP' && this.$store.state.getAmount <= 500000){
+      this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false;
+    }
+
     //解密历史表单信息
     if(this.$store.state.sellForm) {
       let sellForm = this.$store.state.sellForm;
@@ -102,10 +109,11 @@ export default {
       }
 
       //PHP - 金额大于500000地址必输
-      if(this.formJson.length !== 0 && this.currency === 'PHP' && noRequiredArray.length > 0 && noRequiredArray[0].tipsState === true){
-        return true
-      }
+      // if(this.formJson.length !== 0 && this.currency === 'PHP' && noRequiredArray.length > 0 && noRequiredArray[0].tipsState === true){
+      //   return true
+      // }
 
+      requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 ? false : true;
     }
   },
@@ -120,19 +128,19 @@ export default {
       }
 
       //PHP - 金额大于500000地址必输
-      if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model > 500000 && this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
-        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
-        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = true;
-      }else if(this.currency === 'PHP' && val.paramsName === 'address' && val.model !== '' && this.formJson.filter(item=>{ return item.paramsName === "accountNumber" })[0].model > 500000){
-        this.formJson[index].required = true;
-        this.formJson[index].multinomialTipsState = false;
-      }else if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model <= 500000){
-        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false
-        this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = false;
-        if(this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
-          this.formJson.filter(item=>{ return item.paramsName === "address" })[0].tipsState = false;
-        }
-      }
+      // if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model > 500000 && this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
+      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
+      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = true;
+      // }else if(this.currency === 'PHP' && val.paramsName === 'address' && val.model !== '' && this.formJson.filter(item=>{ return item.paramsName === "accountNumber" })[0].model > 500000){
+      //   this.formJson[index].required = true;
+      //   this.formJson[index].multinomialTipsState = false;
+      // }else if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model <= 500000){
+      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false
+      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = false;
+      //   if(this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
+      //     this.formJson.filter(item=>{ return item.paramsName === "address" })[0].tipsState = false;
+      //   }
+      // }
 
       //所有表单正则验证
       if(!new RegExp(val.regular).test(this.formJson[index].model)){
@@ -335,11 +343,11 @@ export default {
 .selectView{
   width: 100%;
   height: 100%;
-  position: fixed;
-  top: 2rem;
-  left: 0.16rem;
+  position: absolute;
   .selectDate{
     position: absolute;
+    top: 2rem;
+    left: 0.16rem;
     background: #FFFFFF;
     box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.16rem;

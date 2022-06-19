@@ -11,7 +11,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span>{{ routerParams.amount }} {{ routerParams.cryptoCurrency }}</span> to <span>{{ currencyData.fiatCode }}{{ routerParams.getAmount }}</span>
+          You sell <span>{{ routerParams.amount }} {{ routerParams.cryptoCurrency }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -121,6 +121,7 @@ export default {
       feeInfo: {},
       routerParams: {},
       currencyData: {},
+      positionData: {},
       timeDownNumber: 15,
     }
   },
@@ -142,6 +143,7 @@ export default {
         clearInterval(this.timeOut)
         //接收路由信息
         this.currencyData = this.$store.state.sellRouterParams.currencyData;
+        this.positionData = this.$store.state.sellRouterParams.positionData;
         this.routerParams = this.$store.state.sellRouterParams;
         this.feeParams = this.$store.state.feeParams;
         this.timingSetting();
@@ -153,6 +155,7 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.currencyData = this.$store.state.sellRouterParams.currencyData;
+    this.positionData = this.$store.state.sellRouterParams.positionData;
     this.routerParams = this.$store.state.sellRouterParams;
     this.feeParams = this.$store.state.feeParams;
     this.timingSetting();
@@ -162,6 +165,7 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.currencyData = this.$store.state.sellRouterParams.currencyData;
+    this.positionData = this.$store.state.sellRouterParams.positionData;
     this.routerParams = this.$store.state.sellRouterParams;
     this.feeParams = this.$store.state.feeParams;
     this.timingSetting();
