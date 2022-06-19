@@ -13,7 +13,9 @@
         <div class="left">
           You get <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> for <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
-        <div class="right"><van-icon name="arrow-down" /></div>
+        <div class="right">
+          <img src="@/assets/images/blackDownIcon.png">
+        </div>
       </div>
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
@@ -220,12 +222,11 @@ export default {
           font-family: "GeoDemibold",GeoDemibold;
         }
       }
-      .right{
-        width: 0.32rem;
-        height: 0.24rem;
-        text-align: center;
-        line-height: 0.24rem;
+      .right {
         margin-left: auto;
+        img{
+          width: 0.24rem;
+        }
       }
     }
 

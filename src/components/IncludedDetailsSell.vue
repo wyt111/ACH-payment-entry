@@ -13,7 +13,9 @@
         <div class="left">
           You sell <span>{{ routerParams.amount }} {{ routerParams.cryptoCurrency }}</span> to <span>{{ currencyData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
-        <div class="right"><van-icon name="arrow-down" /></div>
+        <div class="right">
+          <img src="@/assets/images/blackDownIcon.png">
+        </div>
       </div>
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
@@ -53,7 +55,9 @@
         <div class="left">
           You sell <span> <!-- {{ routerParams.amount }} {{ routerParams.cryptoCurrency }} --> </span> to <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
         </div>
-        <div class="right"><van-icon name="arrow-down" /></div>
+        <div class="right">
+          <img src="@/assets/images/blackDownIcon.png">
+        </div>
       </div>
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
@@ -210,37 +214,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.paymentInformation{
-  .feeTitle{
+.paymentInformation {
+  .feeTitle {
     font-size: 13px;
     font-weight: normal;
     color: #707070;
     line-height: 15px;
     display: flex;
     align-items: center;
-    .feeTitle-name{
+
+    .feeTitle-name {
       font-family: "GeoRegular", GeoRegular;
     }
-    .feeTitle-value{
+
+    .feeTitle-value {
       font-family: "GeoLight", GeoLight;
       display: flex;
       align-items: center;
       margin-left: auto;
-      .loading-svg{
+
+      .loading-svg {
         margin-right: 0.04rem;
-        img{
+
+        img {
           height: 0.12rem;
         }
       }
     }
   }
 
-  .fee-content{
+  .fee-content {
     background: #F3F4F5;
     border-radius: 0.12rem;
     margin-top: 0.08rem;
     padding: 0 0.16rem;
-    .fee-content-title{
+
+    .fee-content-title {
       padding: 0.19rem 0;
       display: flex;
       align-items: center;
@@ -249,62 +258,71 @@ export default {
       font-weight: normal;
       color: #232323;
       cursor: pointer;
-      span{
+
+      span {
         font-weight: bold;
       }
-      .left{
+
+      .left {
         word-break: break-all;
         font-size: 0.16rem;
         font-family: "GeoLight", GeoLight;
         font-weight: normal;
         color: #232323;
-        span{
-          font-family: "GeoDemibold",GeoDemibold;
+
+        span {
+          font-family: "GeoDemibold", GeoDemibold;
         }
       }
-      .right{
-        width: 0.32rem;
-        height: 0.24rem;
-        text-align: center;
-        line-height: 0.24rem;
+
+      .right {
         margin-left: auto;
+        img{
+          width: 0.24rem;
+        }
       }
     }
 
-    .fee-content-details{
+    .fee-content-details {
       border-top: 1px solid #E6E6E6;
       padding: 0.04rem 0 0.16rem 0;
-      .fee-content-details-line{
+
+      .fee-content-details-line {
         display: flex;
         align-items: center;
         margin-top: 0.12rem;
-        .title{
+
+        .title {
           display: flex;
           align-items: center;
           font-size: 0.15rem;
           font-family: "GeoLight", GeoLight;
           font-weight: normal;
           color: #232323;
-          .tipsIcon{
+
+          .tipsIcon {
             width: 0.16rem;
             height: 0.16rem;
             margin-left: 0.08rem;
             display: flex;
-            img{
+
+            img {
               width: 100%;
               height: 100%;
             }
           }
         }
-        .value{
+
+        .value {
           margin-left: auto;
           display: flex;
           align-items: center;
           font-size: 0.15rem;
-          font-family: "GeoDemibold",GeoDemibold;
+          font-family: "GeoDemibold", GeoDemibold;
           color: #232323;
           font-weight: normal;
-          .minText{
+
+          .minText {
             font-family: "GeoLight", GeoLight;
             font-weight: normal;
             color: #848484;
@@ -315,85 +333,5 @@ export default {
       }
     }
   }
-
-
-  //border-top: 1px solid #F3F4F5;
-  //padding: 0.2rem 0 0 0;
-  //.calculationProcess{
-  //  padding: 0 0.16rem;
-  //  .calculationProcess_line{
-  //    display: flex;
-  //    align-items: center;
-  //    margin-top: 0.13rem;
-  //    .line_name{
-  //      font-size: 0.14rem;
-  //      font-family: "GeoDemibold", GeoDemibold;
-  //      font-weight: 400;
-  //      color: #232323;
-  //      display: flex;
-  //      align-items: center;
-  //      .tipsIcon{
-  //        width: 0.14rem;
-  //        height: 0.14rem;
-  //        margin-left: 0.1rem;
-  //        display: flex;
-  //        img{
-  //          width: 100%;
-  //          height: 100%;
-  //        }
-  //      }
-  //    }
-  //    .line_number{
-  //      margin-left: auto;
-  //      font-size: 0.14rem;
-  //      font-family: 'Jost', sans-serif;
-  //      font-weight: bold;
-  //      color: #232323;
-  //      display: flex;
-  //      align-items: center;
-  //      .minText{
-  //        font-size: 0.14rem;
-  //        font-weight: 400;
-  //        color: #666666;
-  //        margin-right: 0.2rem;
-  //      }
-  //      .line_number_icon{
-  //        margin-right: 0.05rem;
-  //        img{
-  //          width: 0.12rem;
-  //        }
-  //      }
-  //      .line_number_red{
-  //        font-size: 0.14rem;
-  //        font-family: 'Jost', sans-serif;
-  //        font-weight: 500;
-  //        color: #FF0000;
-  //      }
-  //    }
-  //  }
-  //}
-  //.feeViewBtn{
-  //  text-align: right;
-  //  font-size: 0.14rem;
-  //  font-family: 'Jost', sans-serif;
-  //  font-weight: 500;
-  //  color: #4479D9;
-  //  margin-top: 0.1rem;
-  //  cursor: pointer;
-  //}
 }
-
-//@keyframes loadingIcon {
-//  from {
-//    transform: rotate(0deg);
-//  }
-//  to {
-//    transform: rotate(360deg);
-//  }
-//}
-//@media (prefers-reduced-motion: no-preference) {
-//  .loadingIcon {
-//    animation: loadingIcon infinite 2s linear;
-//  }
-//}
 </style>

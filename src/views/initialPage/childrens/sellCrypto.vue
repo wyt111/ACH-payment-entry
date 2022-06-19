@@ -30,35 +30,6 @@
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
         <IncludedDetailsSell :isHome="true"/>
-<!--        <div class="calculationProcess_line">-->
-<!--          <div class="line_name">Remaining time</div>-->
-<!--          <div class="line_number">-->
-<!--            <div class="line_number_icon"><img class="loadingIcon" src="@/assets/images/countDownIcon.png"></div>-->
-<!--            <div class="line_number_red">{{ timeDownNumber }}S</div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="calculationProcess_line">-->
-<!--          <div class="line_name">{{ currencyData.name }} price</div>-->
-<!--          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>-->
-<!--        </div>-->
-<!--        <div class="calculationProcess_line" v-show="feeState">-->
-<!--          <div class="line_name">-->
-<!--            Ramp fee-->
-<!--            <el-popover-->
-<!--                placement="top"-->
-<!--                :trigger="triggerType"-->
-<!--                :offset="-18"-->
-<!--                content="Based on payment method">-->
-<!--              <div slot="reference"><img class="tipsIcon" src="@/assets/images/exclamatoryMarkIcon.png"></div>-->
-<!--            </el-popover>-->
-<!--          </div>-->
-<!--          <div class="line_number"><span class="minText">as low as</span>{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}</div>-->
-<!--        </div>-->
-<!--        <div class="feeViewBtn" @click="expandFee">{{ feeText }}</div>-->
-<!--        <div class="calculationProcess_line">-->
-<!--          <div class="line_name">Total</div>-->
-<!--          <div class="line_number">{{ feeInfo.fiatSymbol }} {{ getAmount }}</div>-->
-<!--        </div>-->
       </div>
     </div>
 
@@ -99,12 +70,7 @@ export default {
 
       //Expense information
       feeInfo: {},
-      timeDown: null,
-      timeDownNumber: 15,
       detailedInfo_state: false,
-
-      feeState: false,
-      feeText: 'View fees',
 
       //you get Currency information
       currencyData: {
@@ -158,9 +124,6 @@ export default {
       }
     },
   },
-  deactivated(){
-    clearInterval(this.timeDown);
-  },
   methods: {
     openSearch(view){
       //The address bar contains merchant information. It is forbidden to select
@@ -168,11 +131,6 @@ export default {
         return;
       }
       this.$parent.openSearch(view,this.allPayCommission);
-    },
-
-    expandFee(){
-      this.feeState = this.feeState === true ? false : true;
-      this.feeText = this.feeState === true ? 'Hide fees' : 'View fees';
     },
 
     //限制输入六位小数
@@ -209,49 +167,21 @@ export default {
         this.warningTextState = true;
         this.getAmount = "";
         this.detailedInfo_state = false;
-        clearInterval(this.timeDown);
       }
     },
 
     //Purchase information details - Scheduled refresh
     payinfo(){
-      clearInterval(this.timeDown);
       if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         this.$store.state.sellRouterParams.amount = this.payAmount;
         this.detailedInfo_state = true;
         setTimeout(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
         })
-        // this.queryFee();
       }else{
-        clearInterval(this.timeDown);
         this.detailedInfo_state = false;
       }
     },
-
-    //Purchase information details
-    // queryFee(){
-    //   this.timeDownNumber = 15;
-    //   this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
-    //     if(res && res.returnCode === "0000"){
-    //       this.feeInfo = res.data;
-    //       this.calculationAmount();
-    //     }
-    //   })
-    //   this.timeDown = setInterval(()=> {
-    //     if (this.timeDownNumber === 1) {
-    //       this.timeDownNumber = 15;
-    //       this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
-    //         if(res && res.returnCode === "0000"){
-    //           this.feeInfo = res.data;
-    //           this.calculationAmount();
-    //         }
-    //       })
-    //     }else{
-    //       this.timeDownNumber -= 1;
-    //     }
-    //   },1000);
-    // },
 
     //Real time calculation getAmount
     calculationAmount(){
