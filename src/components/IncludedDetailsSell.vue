@@ -42,10 +42,11 @@
     </div>
   </div>
   <!-- 下单成功不刷新费用 -->
+  
   <div class="paymentInformation" v-else>
     <div class="feeTitle">
       <div class="feeTitle-name">Remaining time</div>
-      <div class="feeTitle-value">
+      <div class="feeTitle-value" v-show="timeDownState!==false">
         <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
         <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
       </div>

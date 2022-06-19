@@ -253,7 +253,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkNam
-          // this.playMoneyState=7
+          // this.playMoneyState=2
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
