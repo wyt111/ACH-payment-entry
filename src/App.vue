@@ -185,6 +185,7 @@ html,body,#app,#viewBox{
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
+  overflow: hidden;
   .logoView{
     position: absolute;
     bottom: -0.7rem;

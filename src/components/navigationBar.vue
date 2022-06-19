@@ -39,6 +39,7 @@ export default {
           this.tabState = true;
           this.routerName = val.meta.title;
         }
+        // console.log(oldVal);
         oldVal ? this.routerPath = oldVal.path : "";
       },
     }
@@ -50,17 +51,21 @@ export default {
         return;
       }
       //add sellOrder page back home
-      if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ||this.$route.path === '/sell-formUserInfo' || this.$route.path === '/receivingMode'){
+      if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ){
         this.$router.push('/');
         return;
       }
 
-      if(this.routerPath === '/emailCode' && this.$route.path === '/receivingMode'){
-        this.$router.go(-2);
+      if(this.routerPath === '/verifyCode' && this.$route.path === '/receivingMode'){
+        this.$router.push('/');
         return;
       }
-      if(this.routerPath === '/emailCode'){
-        this.$router.back(-2);
+      if(this.routerPath === '/verifyCode' && this.$route.path === '/configSell'){
+        this.$router.push('/');
+        return;
+      }
+      if(this.routerPath === '/emailCode' || this.routerPath === '/verifyCode'){
+        this.$router.go(-1)
         return;
       }
       if(this.$route.path === '/creditCardForm-cardInfo' && this.routerPath === '/basisIdAuth'){

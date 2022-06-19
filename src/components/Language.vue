@@ -32,21 +32,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .Language-container{
   width: 95%;
   height: calc(100% - .8rem);
   // height: 100%;
   background: #fff;
-  // position: right: ;;
-  // top: .8rem;
   position: absolute;
-  top: .8rem;
-  z-index: 20;
+  top: .65rem;
   padding-right: .1rem;
   .Language_title{
     width: 100%;
     display: flex;
     align-items: center;
+    cursor: pointer;
     img{
       height: .17rem;
       margin-right: .1rem;
@@ -83,6 +82,20 @@ export default {
     >img{
       height: .25rem;
     }
+  }
+}
+@media only screen and (min-width: 768px) {
+.Language-container{
+  width: 95%;
+  height: 100%;
+  // height: 100%;
+  padding-top: .25rem;
+  background: #fff;
+  // position: right: ;;
+  // top: .8rem;
+  position: absolute;
+  top: 0;
+  padding-right: .1rem;
   }
 }
 </style>

@@ -79,7 +79,7 @@
         </div>
         </transition>
         <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Address</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="orderStateData.address">
+        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="[0,1].includes(playMoneyState)?orderStateData.address:''">
           <p>{{ orderStateData.address }}</p>
           <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
             <img style="margin-right:.2rem" @click.stop="qrCode" src="../../assets/images/Qrcode.png" alt="">
@@ -88,13 +88,13 @@
         </div>
         <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">Card</div>
         <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
-          <div style="width:80%">
+          <!-- <div style="width:80%"> -->
             <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
-            <div style="display:flex;margin-top:.1rem">
-              <!-- <p style="width:36%">{{ AES(orderStateData.firstname) }} {{ AES(orderStateData.lastname) }}</p> -->
-               <p style="margin-left:.2rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
-            </div>
-          </div>
+            <!-- <div style="display:flex;"> -->
+              <p style="width:36%">{{ AES(cardUserName)?AES(cardUserName):'John Tan' }}</p>
+               <p style="margin-left:.16rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
+            <!-- </div>
+          </div> -->
           <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
         </div>
         <div class="order-state_title" v-if="playMoneyState===6">Fail Reason</div>
@@ -141,6 +141,7 @@ export default{
       Network_show1:false,
       timer:null,
       timeText:'',
+      cardUserName:''
 
     }
   },
@@ -251,8 +252,8 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          this.network1 = res.data.networkName
-          this.playMoneyState = 6
+          this.network1 = res.data.networkNam
+          // this.playMoneyState=7
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -336,6 +337,23 @@ export default{
         return value
       }
 
+    }
+  },
+  watch:{
+
+    //监听支付状态的变化请求卡信息
+    playMoneyState(newVal){
+      if(newVal!==1||newVal!==2||newVal!==3){
+        let params = {
+          id:this.orderStateData.userCardId,
+        }
+        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+          if(res.returnCode && res.data){
+            this.cardUserName = res.data.name
+          }
+        })
+        
+      }
     }
   },
 
@@ -476,7 +494,7 @@ export default{
       
       padding: .19rem .2rem .19rem;
       background: #F3F4F5;
-      border-radius: 10px;
+      border-radius: .12rem;
       p{
         width: 80%;
         font-size: .16rem;
@@ -519,7 +537,7 @@ export default{
     width: 90%;
     padding: .1rem .2rem .1rem;
     box-sizing: border-box;
-    font-size: .13rem;
+    font-size: .14rem;
     font-family:GeoRegular ;
     border-bottom: 1px solid #EAEAEA;
     margin: .1rem 5%;
