@@ -12,8 +12,8 @@
       <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
       <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
       <CryptoCurrencyAddress/>
-      <AuthorizationInfo :childData="childData" v-if="AuthorizationInfo_state"/>
       <IncludedDetails class="includedDetails"/>
+      <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
     </div>
     <Button :buttonData="buttonData" :disabled="payState" @click.native="submit"></Button>
   </div>
@@ -184,6 +184,8 @@ html,body,#indonesianPayment{
 
   .includedDetails{
     margin-top: 0.32rem;
+  }
+  .authorizationInfo{
     margin-bottom: 0.2rem;
   }
 }

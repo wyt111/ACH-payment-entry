@@ -22,7 +22,11 @@
             <div class="methods_myAddress">
               <div class="methods_title">Network</div>
               <div class="methods_input network_input" @click="openSelect">
-                <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>
+                <div class="selectNetwork">
+                  <span v-if="buyParams.network!==''">{{ buyParams.network }}</span>
+                  <span class="networkPlaceholder" v-else>Select Network</span>
+                </div>
+<!--                <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>-->
                 <span class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png"></span>
               </div>
             </div>
@@ -304,6 +308,7 @@ export default {
       }
     }
     .methods_myAddress{
+      position: relative;
       div{
         display: flex;
         align-items: center;
@@ -317,13 +322,13 @@ export default {
         input{
           width: 100%;
           height: 100%;
-          border-radius: 10px;
+          border-radius: 0.12rem;
           font-size: 0.16rem;
           font-family: "GeoRegular", GeoRegular;
           background: #F3F4F5;
           border: none;
           outline: none;
-          padding: 0 0.21rem;
+          padding: 0 0.16rem;
           border: none;
         }
         .rightIcon{
@@ -333,6 +338,18 @@ export default {
           img{
             width: 0.24rem;
           }
+        }
+      }
+      .selectNetwork{
+        width: 100%;
+        height: 0.56rem;
+        border-radius: 0.12rem;
+        font-size: 0.16rem;
+        font-family: "GeoRegular", GeoRegular;
+        background: #F3F4F5;
+        padding: 0 0.16rem;
+        .networkPlaceholder{
+          color: #999999;
         }
       }
       .network_input input{

@@ -29,11 +29,11 @@ Three channels for successful payment --- 'depositType'
           </div>
           <div class="fee-content-details" v-if="detailsState">
             <div class="fee-content-details-line">
-              <div class="title">{{ detailsParameters.cryptoCurrency }} Price</div>
+              <div class="title">Price</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
             <div class="fee-content-details-line">
-              <div class="title">{{ detailsParameters.cryptoCurrency }} Amount</div>
+              <div class="title">Amount</div>
               <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
             </div>
             <div class="fee-content-details-line" v-if="depositType===2||depositType===3">
@@ -51,10 +51,6 @@ Three channels for successful payment --- 'depositType'
             <div class="fee-content-details-line" v-if="depositType===1">
               <div class="title">Password</div>
               <div class="value">{{ detailsParameters.password }}</div>
-            </div>
-            <div class="fee-content-details-line">
-              <div class="title">Total</div>
-              <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>
             </div>
           </div>
         </div>
@@ -239,12 +235,12 @@ export default {
       display: flex;
       align-items: center;
       font-size: 0.16rem;
-      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-family: "GeoLight", GeoLight;
       font-weight: normal;
       color: #232323;
       cursor: pointer;
       span{
-        font-weight: bold;
+        font-family: "GeoDemibold",GeoDemibold;
       }
       .left{
         word-break: break-all;

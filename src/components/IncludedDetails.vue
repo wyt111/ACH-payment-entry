@@ -17,7 +17,7 @@
       </div>
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
-          <div class="title">{{ routerParams.cryptoCurrency }} price</div>
+          <div class="title">price</div>
           <div class="value">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
         </div>
         <div class="fee-content-details-line">
@@ -226,10 +226,10 @@ export default {
     display: flex;
     align-items: center;
     .feeTitle-name{
-      font-family: Fieldwork-GeoRegular, Fieldwork;
+      font-family: "GeoRegular", GeoRegular;
     }
     .feeTitle-value{
-      font-family: Fieldwork-GeoLight, Fieldwork;
+      font-family: "GeoLight", GeoLight;
       display: flex;
       align-items: center;
       margin-left: auto;
@@ -261,6 +261,13 @@ export default {
       }
       .left{
         word-break: break-all;
+        font-size: 0.16rem;
+        font-family: "GeoLight", GeoLight;
+        font-weight: normal;
+        color: #232323;
+        span{
+          font-family: "GeoDemibold",GeoDemibold;
+        }
       }
       .right{
         width: 0.32rem;
