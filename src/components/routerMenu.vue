@@ -91,16 +91,14 @@ export default {
         pageSize: 5,
         historyList:[],
       },
-      finished:false
+      finished:false,
+      newVal:''
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
     // this.transationsList()
-    if(this.token){
-      this.transationsList()
-    }
   },
   deactivated(){
      localStorage.getItem("token") ? this.token = true : false;
@@ -109,7 +107,6 @@ export default {
   mounted(){
     localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
-    
   },
   methods: {
     //Select menu
@@ -200,6 +197,16 @@ export default {
       let email = this.email
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
       return email1
+    }
+  },
+  watch:{
+    token:{
+      immediate:true,
+      handler(newVal){
+        if(newVal){
+          this.transationsList()
+        }
+      }
     }
   }
 }
