@@ -53,7 +53,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span> <!-- {{ routerParams.amount }} {{ routerParams.cryptoCurrency }} --> </span> to <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
+          You sell <span> {{ orderState.sellVolume }} {{ orderState.cryptoCurrency }} </span> to <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
