@@ -11,7 +11,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span>{{ routerParams.amount }} {{ routerParams.currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
+          You sell <span>{{ routerParams.amount }} {{ currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">

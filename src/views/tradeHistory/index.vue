@@ -202,7 +202,7 @@ html,body,#tradeHistory,.historyList,.van-list{
   }
 
   .noData{
-    height: 3rem;
+    //height: 3rem;
     text-align: center;
     margin: 0 auto;
     .noDataImg{
