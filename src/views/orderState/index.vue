@@ -559,7 +559,8 @@ export default{
     box-sizing: border-box;
     position: relative;
     .qrCodeUrl{
-      width: 1.4rem;
+      width: 140px;
+      height: 140px;
       margin: 0 auto 0;
       // position: absolute;
       // left: 50%;
@@ -661,6 +662,13 @@ export default{
     top: 1.86rem;
     left: 50%;
     transform: translate(-50%,0);
+  }
+::v-deep .van-overlay{
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+    background: rgb(0 0 0 / 66%) !important;
+    z-index: 9999;
   }
 }
 </style>

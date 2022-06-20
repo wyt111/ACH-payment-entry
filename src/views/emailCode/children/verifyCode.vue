@@ -291,9 +291,5 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     border: 1px solid #DFDFDF;
     margin-top: .03rem;
   }
-  .bottom ::v-deep .el-checkbox__inner::after{
-    top: .015rem;
-    left: .05rem;
-  }
 }
 </style>
