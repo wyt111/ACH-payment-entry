@@ -4,7 +4,10 @@
       <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
       <div class="noDataText">No transactions</div>
       <p>Buy some crypto to get started</p>
-      <div class="continue" @click="goHome">Buy crypto now <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
+      <button class="continue" @click="goHome">
+        Buy crypto now
+        <img class="rightIcon" src="../../assets/images/slices/rightIcon.png" alt="">
+      </button>
     </div>
     <div class="historyList" v-else>
       <van-list v-model="loading" :finished="finished" finished-text="No more" @load="onLoad" loading-text="Loading" error-text="Loading failed">
@@ -199,7 +202,6 @@ html,body,#tradeHistory,.historyList,.van-list{
   }
 
   .noData{
-    width: 3rem;
     height: 3rem;
     text-align: center;
     margin: 0 auto;
@@ -213,31 +215,42 @@ html,body,#tradeHistory,.historyList,.van-list{
     }
     p{
       font-size: 0.15rem;
-      font-family: GeoLight;
+      font-family: "GeoLight",GeoLight;
       font-weight: normal;
       color: #707070;
-      margin: 0.08rem 0 .16rem 0;
+      margin: 0.08rem 0 0 0;
     }
     .noDataText{
       text-align: center;
       margin-top: 0.08rem;
-      font-size: .21rem;
-      font-family:GeoDemibold;
+      font-size: 0.21rem;
+      font-family: "GeoDemibold",GeoDemibold;
       font-weight: normal;
       color: #000000;
     }
     .continue{
-      width: 90%;
-      height: 0.6rem;
-      background: #4479D9;
-      border-radius: .29rem;
-      text-align: center;
-      line-height: 0.6rem;
-      font-size: 0.18rem;
-      font-family: GeoRegular;
-      font-weight: 500;
-      color: #FAFAFA;
+      width: 100%;
+      height: 0.58rem;
+      background: #0059DA;
+      border-radius: 0.29rem;
+      font-size: 0.17rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #FFFFFF;
+      margin-top: 0.16rem;
       cursor: pointer;
+      border: none;
+      position: relative;
+      .rightIcon{
+        width: 0.24rem;
+        position: absolute;
+        top: 0.17rem;
+        right: 0.32rem;
+      }
+    }
+    .continue:disabled{
+      background: rgba(0, 89, 218, 0.5);
+      cursor: no-drop;
     }
   }
 }

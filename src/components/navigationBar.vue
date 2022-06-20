@@ -33,6 +33,7 @@ export default {
     $route:{
       immediate: true,
       handler: function(val,oldVal){
+        console.log(val,oldVal)
         if(val.meta.title === 'Home') {
           this.tabState = false;
         } else {
