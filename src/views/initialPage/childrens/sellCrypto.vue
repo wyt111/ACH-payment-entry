@@ -262,6 +262,7 @@ export default {
     },
 
     nextStep(){
+      this.$store.state.routerQueryPath = false
       this.payCommission.symbol = this.$store.state.feeParams.symbol;
       let routerParams = {
         amount: this.payAmount,

@@ -378,6 +378,7 @@ export default {
        * choice Indonesian payment /creditCardForm-cardInfo
        * Other payment jump /receivingMode
        * */
+      this.$store.state.routerQueryPath = false
       let routerParams = {
         cryptoCurrency: this.currencyData.name,
         amount: this.payAmount,
