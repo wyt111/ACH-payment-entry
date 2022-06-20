@@ -33,7 +33,6 @@ export default {
     $route:{
       immediate: true,
       handler: function(val,oldVal){
-        console.log(val,oldVal)
         if(val.meta.title === 'Home') {
           this.tabState = false;
         } else {
@@ -83,7 +82,8 @@ export default {
       // }
 
       //卖币
-      if((this.$route.path === '/configSell' && this.routerPath === '/sell-formUserInfo') || (this.$route.path === '/sell-formUserInfo' && this.routerPath === '/configSell')){
+      if(this.$route.path === '/configSell' && this.routerPath === '/sell-formUserInfo'){
+        console.log("111")
         this.$router.go(-2);
         return;
       }
