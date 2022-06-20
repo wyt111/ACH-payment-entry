@@ -199,8 +199,8 @@ html,body,#tradeHistory,.historyList,.van-list{
   }
 
   .noData{
-    width: 3rem;
-    height: 3rem;
+    // width: 3rem;
+    // height: 3rem;
     text-align: center;
     margin: 0 auto;
     .noDataImg{
@@ -227,7 +227,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       color: #000000;
     }
     .continue{
-      width: 90%;
+      width: 100%;
       height: 0.6rem;
       background: #4479D9;
       border-radius: .29rem;
@@ -238,6 +238,13 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;
+      position: relative;
+      img{
+        width: .24rem;
+        position: absolute;
+        right: .16rem;
+        top: .18rem;
+      }
     }
   }
 }
