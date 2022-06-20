@@ -61,9 +61,9 @@
             <img :src="item.flag">
             <span class="allName">{{ item.enCommonName }} -</span>
             <span class="abbreviationName" v-if="viewName === 'payCurrency'"> {{ item.code }}</span>
+            <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
           </p>
           <p class="seach_li_rightIcon">
-            <span v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
             <img src="../assets/images/rightIcon.png">
           </p>
         </li>

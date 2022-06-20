@@ -921,8 +921,8 @@
         "name": "Address",
         "paramsName": "address",
         "model": "",
-        "regular": "^.{1,255}$",
-        "maxLength": "255",
+        "regular": "^.{1,256}$",
+        "maxLength": "256",
         "required": true,
         "tips": "Invalid Address!",
         "tipsState": false
@@ -931,8 +931,8 @@
         "name": "City",
         "paramsName": "city",
         "model": "",
-        "regular": "^.{1,255}$",
-        "maxLength": "255",
+        "regular": "^.{1,256}$",
+        "maxLength": "256",
         "required": true,
         "tips": "Invalid City!",
         "tipsState": false
@@ -987,7 +987,7 @@
         "paramsName": "email",
         "model": "",
         "regular": "^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$",
-        "maxLength": "100",
+        "maxLength": "101",
         "required": true,
         "tips": "Invalid Email!",
         "tipsState": false
