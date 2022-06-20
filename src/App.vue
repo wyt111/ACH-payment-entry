@@ -165,6 +165,7 @@ html,body,#app,#viewBox{
   width: 100%;
   height: 100%;
   font-size: 0.16rem;
+  overflow: hidden;
 }
 
 #viewBox{

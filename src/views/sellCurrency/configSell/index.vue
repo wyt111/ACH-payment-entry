@@ -119,7 +119,7 @@ export default {
     margin-top: 0.28rem;
     .bankCardInfo-view{
       margin-top: 0.08rem;
-      height: 0.89rem;
+      height: 0.98rem;
       background: #F3F4F5;
       border-radius: 0.1rem;
       display: flex;
@@ -148,6 +148,9 @@ export default {
           font-family: "GeoRegular", GeoRegular;
           font-weight: normal;
           color: #999999;
+        }
+        .cardNumber{
+          margin-top: 0.08rem;
         }
       }
       .bankCardInfo-view-right{

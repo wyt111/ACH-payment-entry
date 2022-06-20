@@ -16,8 +16,8 @@
           <div class="formTitle">
             <div>Card Number</div>
             <div class="formTitle_logo">
-              <img v-if="visaState" src="../../../../assets/images/visaText.png">
-              <img v-if="masterState" src="../../../../assets/images/masterIcon.png">
+              <img v-if="visaState" src="../../../../assets/images/visaText.svg">
+              <img v-if="masterState" src="../../../../assets/images/masterIcon.svg">
             </div>
           </div>
           <div class="formContent">
@@ -303,8 +303,10 @@ export default {
       .formTitle_logo{
         margin-left: auto;
         color: darkgray;
+        display: flex;
+        align-items: center;
         img{
-          width: 0.4rem;
+          width: 0.41rem;
           &:last-child{
             margin-left: 0.08rem;
           }
