@@ -3,7 +3,7 @@
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}">
         <div id="App">
           <!-- logo view for phone -->
-          <div class="logoView_phone" @click="$router.push('/')"><img src="./assets/images/phoneLogo.svg"></div>
+          <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
@@ -59,7 +59,15 @@ export default {
       return this.$route.meta.keepAlive;
     },
   },
-
+  watch:{
+    '$store.state.LanguageIsShow':{
+      immediate:true,
+      handler(newVal){
+        this.LanguageShow = newVal
+      },
+      deep:true
+    }
+  },
   mounted(){
     this.obtainWidth();
     //Vuex store data
@@ -96,16 +104,19 @@ export default {
         this.logoState = true;
       })
     },
-  },
-  watch:{
-    '$store.state.LanguageIsShow':{
-      immediate:true,
-      handler(newVal){
-        this.LanguageShow = newVal
-      },
-      deep:true
+    goHome(){
+      if(this.$route.path === '/' && this.LanguageShow === true){
+        this.$children[1].menuState = false;
+        this.$store.state.LanguageIsShow = false;
+        return;
+      }
+      if(this.$route.path === '/'){
+        this.$children[1].menuState = false;
+        return;
+      }
+      this.$router.push('/');
     }
-  }
+  },
 }
 </script>
 

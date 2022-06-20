@@ -1,6 +1,6 @@
 <template>
   <div class="cardConfigPayment">
-    <div class="cardConfigPayment-content">
+<!--    <div class="cardConfigPayment-content">-->
       <div class="formLine">
         <div class="formTitle">Paying with</div>
         <div class="formContent" @click="goPayForm">
@@ -27,7 +27,7 @@
       <!-- 支付后隐藏协议模块 -->
       <IncludedDetails class="includedDetails"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-    </div>
+<!--    </div>-->
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
   </div>
 </template>
@@ -182,14 +182,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cardConfigPayment{
-  display: flex;
-  flex-direction: column;
-  .cardConfigPayment-content{
-    flex: 1;
-    overflow: auto;
-  }
-}
+//.cardConfigPayment{
+  //display: flex;
+  //flex-direction: column;
+  //.cardConfigPayment-content{
+  //  flex: 1;
+  //  overflow: auto;
+  //}
+//}
 
 .formLine{
   margin-top: 0.32rem;
