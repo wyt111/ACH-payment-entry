@@ -1,6 +1,6 @@
 <template>
   <div id="viewBox">
-    <div class="buyCrypto_iframe_view">
+    <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}">
         <div id="App">
           <!-- logo view for phone -->
           <div class="logoView_phone" v-if="!logoState"><img src="./assets/images/phoneLogo.svg"></div>
@@ -104,9 +104,6 @@ export default {
         this.LanguageShow = newVal
       },
       deep:true
-    },
-    routerViewState(newVal){
-      console.log(newVal);
     }
   }
 }
@@ -177,11 +174,14 @@ html,body,#app,#viewBox{
   justify-content: center;
   align-items: center;
 }
+.buyCrypto_iframe_view_pc{
+  padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;
+}
 .buyCrypto_iframe_view{
-  width: 400px;
-  height: 600px;
+  width: 375px;
+  height: 580px;
   background: #FFFFFF;
-  border-radius: 25px;
+  border-radius: 0.25rem;
   position: relative;
   padding: 0.26rem 0.22rem;
   display: flex;
