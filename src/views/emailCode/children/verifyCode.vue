@@ -101,7 +101,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             _this.showLoading = false
-              if(_this.$store.state.routerQueryPath === true){
+              if(!_this.$store.state.routerQueryPath){
                 _this.$router.push('/');
                 return
               }else
