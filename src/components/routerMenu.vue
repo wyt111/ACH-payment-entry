@@ -171,6 +171,7 @@ export default {
         this.$toast('You re already logged in');
       }else{
         this.loading = false
+        this.$store.state.routerQueryPath = this.$parent.$parent.routerViewState
         this.$router.push('/emailCode')
       }
     },
