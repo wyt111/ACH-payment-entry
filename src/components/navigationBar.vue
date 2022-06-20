@@ -83,7 +83,12 @@ export default {
       // }
 
       //卖币
-      if((this.$route.path === '/configSell' || this.$route.path === '/sellOrder') && this.routerPath === '/sell-formUserInfo'){
+      if((this.$route.path === '/configSell' && this.routerPath === '/sell-formUserInfo') || (this.$route.path === '/sell-formUserInfo' && this.routerPath === '/configSell')){
+        this.$router.go(-2);
+        return;
+      }
+
+      if(this.$route.path === '/sellOrder' && this.routerPath === '/sell-formUserInfo'){
         this.$router.go(-4);
         return;
       }

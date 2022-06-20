@@ -85,6 +85,10 @@ export default {
   computed: {
     //动态表单判空、正则校验
     disabled(){
+      //表单非必填项数量
+      let noRequiredNum = this.formJson.filter((value) => {
+        return value.required === false
+      }).length;
       //必填项数据
       let requiredArray = this.formJson.filter((value) => {
         return value.required === true && (value.model === '' || !new RegExp(value.regular).test(value.model) || value.tipsState === true || value.multinomialTipsState === true)
@@ -108,10 +112,10 @@ export default {
         return false;
       }
 
-      //PHP - 金额大于500000地址必输
-      // if(this.formJson.length !== 0 && this.currency === 'PHP' && noRequiredArray.length > 0 && noRequiredArray[0].tipsState === true){
-      //   return true
-      // }
+      //针对PHP
+      if(requiredArray.length === 0 && noRequiredArray.length > 0 && noRequiredArray[0].model !== '' && noRequiredArray.length === 1 && noRequiredNum === 1){
+        return true
+      }
 
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 ? false : true;
@@ -126,22 +130,6 @@ export default {
       }else if(this.currency === 'BDT' && val.paramsName === 'swiftCode' && val.model.substr(0,8) !== 'DBBLBDDH'){
         this.formJson.filter(item=>{ return item.paramsName === "branchName" })[0].required = false
       }
-
-      //PHP - 金额大于500000地址必输
-      // if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model > 500000 && this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
-      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
-      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = true;
-      // }else if(this.currency === 'PHP' && val.paramsName === 'address' && val.model !== '' && this.formJson.filter(item=>{ return item.paramsName === "accountNumber" })[0].model > 500000){
-      //   this.formJson[index].required = true;
-      //   this.formJson[index].multinomialTipsState = false;
-      // }else if(this.currency === 'PHP' && val.paramsName === 'accountNumber' && val.model <= 500000){
-      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false
-      //   this.formJson.filter(item=>{ return item.paramsName === "address" })[0].multinomialTipsState = false;
-      //   if(this.formJson.filter(item=>{ return item.paramsName === "address" })[0].model === ''){
-      //     this.formJson.filter(item=>{ return item.paramsName === "address" })[0].tipsState = false;
-      //   }
-      // }
-
       //所有表单正则验证
       if(!new RegExp(val.regular).test(this.formJson[index].model)){
         this.formJson[index].tipsState = true;
@@ -183,6 +171,8 @@ export default {
       params.email = this.encrypt(params.email);
       params.accountNumber = this.encrypt(params.accountNumber);
       params.idNumber = this.encrypt(params.idNumber);
+      this.currency === "BRL" ? params.idType = "CPF" : '';
+      this.currency === "CLP" ?  params.idType = "RUT" : '';
       this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
         if(res && res.returnCode === '0000'){
           //存储数据 加密字段

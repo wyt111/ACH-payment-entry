@@ -173,7 +173,6 @@ html,body,#app,#viewBox{
   display: flex;
   justify-content: center;
   align-items: center;
-  //font-family: 'Jost', sans-serif;
 }
 .buyCrypto_iframe_view{
   width: 400px;
@@ -181,7 +180,7 @@ html,body,#app,#viewBox{
   background: #FFFFFF;
   border-radius: 25px;
   position: relative;
-  padding: 0.26rem 0.16rem;
+  padding: 0.26rem 0.22rem;
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;

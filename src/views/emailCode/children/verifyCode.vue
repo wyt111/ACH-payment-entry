@@ -7,7 +7,7 @@
       </div>
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
-      <div class="verifyCode_title bottom"> 
+      <div class="verifyCode_title bottom">
         <input type="checkbox" v-model="checked"> <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
@@ -109,7 +109,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
                 _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
-                  
+
                 let params = {
                   country: _this.$store.state.sellRouterParams.positionData.alpha2,
                   fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
@@ -146,7 +146,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
        this.$toast('Please tick the User Agreement')
        return
      }
-       
+
     },
     openView(name){
       if(name==='Privacy'){
@@ -184,7 +184,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-family: "GeoLight";
     span{
       color: #0059DAFF;
-      
+      cursor: pointer;
     }
   }
   .verifyCode_content{

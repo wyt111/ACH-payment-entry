@@ -6,10 +6,8 @@
         <div class="bankCardInfo-view" @click="goCardForm">
           <div class="bankCardInfo-view-left">
             <div>{{ sellForm.bankCode }}</div>
-            <div>
-              <div class="name">{{ sellForm.name }}</div>
-              <div class="cardNumber">{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</div>
-            </div>
+            <div class="name">{{ sellForm.name }}</div>
+            <div class="cardNumber">{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</div>
           </div>
           <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
         </div>
@@ -121,7 +119,7 @@ export default {
     margin-top: 0.28rem;
     .bankCardInfo-view{
       margin-top: 0.08rem;
-      height: 0.76rem;
+      height: 0.89rem;
       background: #F3F4F5;
       border-radius: 0.1rem;
       display: flex;
@@ -129,27 +127,27 @@ export default {
       padding: 0 0.16rem;
       cursor: pointer;
       .bankCardInfo-view-left{
+        div{
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
         div:first-child{
+          width: 2.6rem;
           min-height: 0.18rem;
           font-size: 0.16rem;
           font-family: "GeoRegular", GeoRegular;
           font-weight: normal;
           color: #232323;
         }
-        div:last-child{
-          display: flex;
-          align-items: center;
+        .name{
+          width: 2.6rem;
+          min-width: 0.56rem;
           margin-top: 0.08rem;
           font-size: 0.13rem;
           font-family: "GeoRegular", GeoRegular;
           font-weight: normal;
           color: #999999;
-          .name{
-            min-width: 0.56rem;
-          }
-          .cardNumber{
-            margin-left: 0.16rem;
-          }
         }
       }
       .bankCardInfo-view-right{
