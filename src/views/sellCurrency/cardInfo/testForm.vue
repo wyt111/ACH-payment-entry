@@ -303,6 +303,9 @@ export default {
     margin: 0.3rem 0 0.1rem 0;
     clear: both;
   }
+  &:last-child{
+    margin-bottom: 0.3rem;
+  }
 }
 
 .continue{

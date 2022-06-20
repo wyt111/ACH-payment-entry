@@ -118,7 +118,7 @@ export default {
     margin-top: 0.28rem;
     .bankCardInfo-view{
       margin-top: 0.08rem;
-      height: 0.98rem;
+      height: 0.76rem;
       background: #F3F4F5;
       border-radius: 0.1rem;
       display: flex;
