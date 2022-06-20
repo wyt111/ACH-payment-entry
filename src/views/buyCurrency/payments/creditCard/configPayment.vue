@@ -6,8 +6,8 @@
         <div class="formContent" @click="goPayForm">
           <div class="formContent-left">
             <div class="card-icon">
-              <img src="../../../../assets/images/visaIcon.png" v-if="cardName==='visa'">
-              <img src="../../../../assets/images/masterIcon.png" v-else>
+              <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
+              <img src="../../../../assets/images/masterIcon.svg" v-else>
             </div>
             <div class="card-info">{{ cardData.payWayName }}<span>Ending {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
           </div>
@@ -260,7 +260,7 @@ export default {
         display: flex;
         align-items: center;
         img{
-          width: 0.35rem;
+          width: 0.52rem;
         }
       }
     }
