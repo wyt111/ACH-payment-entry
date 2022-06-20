@@ -45,14 +45,14 @@
 </template>
 
 <script>
-import includedDetails from "../../components/IncludedDetails";
+// import includedDetails from "../../components/IncludedDetails";
 import axios from 'axios';
 import { debounce } from '../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
 
 export default {
   name: "emailCode",
-  components: { includedDetails },
+  // components: { includedDetails },
   data(){
     return{
       timeDown: 60,
@@ -379,6 +379,7 @@ export default {
     bottom: 0rem;
     color: #FAFAFA;
     font-family: "GeoRegular";
+    cursor: pointer;
     .icon{
       width: .24rem;
       height: .24rem;

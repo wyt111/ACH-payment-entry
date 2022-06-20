@@ -301,12 +301,13 @@ export default {
       border-radius: .3rem;
       height: .58rem;
       font-size: .17rem;
-      margin-top: .16rem;
+      margin-top: .17rem;
       text-align: center;
       line-height: .58rem;
       color: #fff;
       font-family: "GeoRegular";
       position: relative;
+      cursor: pointer;
       .icon{
         width: .24rem;
         height: .24rem;
