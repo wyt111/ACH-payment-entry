@@ -27,7 +27,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       number:6,
       value:'',
       checked:false,
-      codeTime:10,
+      codeTime:0,
       timeVal:null,
       showLoading:false
     }
@@ -36,29 +36,29 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    clearInterval(this.timeVal)
-    this.timeVal = setInterval(()=>{
-      this.codeTime--
-      if(this.codeTime <= 0){
-        // this.codeTime = 10
-        clearInterval(this.timeVal)
-      }
-    },1000)
+    // clearInterval(this.timeVal)
+    // this.timeVal = setInterval(()=>{
+    //   this.codeTime--
+    //   if(this.codeTime <= 0){
+    //     // this.codeTime = 10
+    //     clearInterval(this.timeVal)
+    //   }
+    // },1000)
   },
   activated(){
     this.value = ''
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    clearInterval(this.timeVal)
-    this.codeTime = 10
-      this.timeVal = setInterval(()=>{
-      this.codeTime--
-      if(this.codeTime <= 0){
-        // this.codeTime = 10
-        clearInterval(this.timeVal)
-      }
-    },1000)
+    // clearInterval(this.timeVal)
+    // this.codeTime = 10
+    //   this.timeVal = setInterval(()=>{
+    //   this.codeTime--
+    //   if(this.codeTime <= 0){
+    //     // this.codeTime = 10
+    //     clearInterval(this.timeVal)
+    //   }
+    // },1000)
   },
   methods:{
     //input聚焦

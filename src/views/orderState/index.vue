@@ -5,13 +5,13 @@
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>Please modify your card details</span></div>
     <div class="timing" v-if="playMoneyState===7">If you still want to sell crypto,Return to home page</div>
-    <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
+    <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
     <div class="order-state-title" v-if="playMoneyState===2">Order Confirming…</div>
     <div class="order-state-title" v-if="playMoneyState===3">Order Confirmed</div>
     <div class="order-state-title" v-if="playMoneyState===4">Payment Processing…</div>
     <div class="order-state-title" v-if="playMoneyState===5">Payment Success</div>
     <div class="order-state-title" v-if="playMoneyState===6">Payment Fail</div>
-    <div class="order-state-title" v-if="playMoneyState===7">Order expired！</div>
+    <div class="order-state-title" v-if="playMoneyState===7">Order expired！</div> -->
 
     <div class="order-state">
       <div class="state">
@@ -54,10 +54,10 @@
       </div>
     </div>
     <div class="order-state-content">
-      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Sell crypto</div>
-      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
-      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'left'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
+      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Send Crypto</div>
+      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Received Crypto' }}</div>
+      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Initiate Transfer' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'right'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'In Transfer' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -252,8 +252,9 @@ export default{
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
-          this.network1 = res.data.networkNam
-          // this.playMoneyState=5
+          this.network1 = res.data.networkName
+          console.log(this.network1);
+          // this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -417,6 +418,7 @@ export default{
   }
   .order-state{
     // padding: 0 .1rem 0;
+    margin-top: .25rem;
     display: flex;
     justify-content: space-around;
     // align-items: center;
@@ -469,14 +471,14 @@ export default{
       // margin-left: .1rem;
     }
     div:nth-of-type(2){
-      margin-left: 0rem;
+      margin-left: .03rem;
     }
     div:nth-of-type(3){
       padding-left: .1rem;
     }
      div:nth-of-type(4){
-       width: 18%;
-      // text-align: center;
+       width: 17%;
+      text-align: right;
     }
   }
   .order-content{
