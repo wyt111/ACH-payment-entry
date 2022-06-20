@@ -57,7 +57,7 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Sell crypto</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Confirm Order' }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Make Payment' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.69rem':'',}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Result' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'left'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'Payment Result' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">Order ID</div>
@@ -253,7 +253,7 @@ export default{
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkNam
-          // this.playMoneyState=6
+          // this.playMoneyState=7
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -416,7 +416,7 @@ export default{
     margin: .1rem 0 .1rem 0;
   }
   .order-state{
-    padding: 0 .1rem 0;
+    // padding: 0 .1rem 0;
     display: flex;
     justify-content: space-around;
     // align-items: center;
@@ -445,12 +445,12 @@ export default{
         width: .06rem;
         height: .06rem;
         background: #EAEAEA;
-        margin-left: .05rem;
+        margin-left: .07rem;
         margin-top: .18rem;
         border-radius: 50%;
       }
       div:nth-of-type(4){
-        margin-right: .07rem;
+        margin-right: .09rem;
       }
     }
   }
@@ -466,7 +466,7 @@ export default{
       line-height: .18rem;
     }
      div:nth-of-type(1){
-      margin-left: .18rem;
+      // margin-left: .1rem;
     }
     div:nth-of-type(2){
       margin-left: 0rem;
@@ -476,7 +476,7 @@ export default{
     }
      div:nth-of-type(4){
        width: 18%;
-      text-align: center;
+      // text-align: center;
     }
   }
   .order-content{
