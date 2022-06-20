@@ -379,6 +379,7 @@ export default {
     bottom: 0rem;
     color: #FAFAFA;
     font-family: "GeoRegular";
+    cursor: pointer;
     .icon{
       width: .24rem;
       height: .24rem;
