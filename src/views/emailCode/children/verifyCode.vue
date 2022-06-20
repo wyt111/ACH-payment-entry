@@ -149,9 +149,11 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
-            _this.codeErrorState = true;
-            _this.codeError = response.returnMsg;
+            _this.codeErrorState = false;
+            _this.showLoading = false
+            _this.$toast(response.returnMsg)
           }
+          
         }).catch(function (error) {
           _this.showLoading = false
           console.log(error);
