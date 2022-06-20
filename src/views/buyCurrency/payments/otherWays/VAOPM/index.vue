@@ -1,6 +1,6 @@
 <template>
   <div id="indonesianPayment">
-    <div class="view-content">
+<!--    <div class="view-content">-->
       <!-- 支付倒计时提示 -->
       <div class="payTips" v-if="startPayment">Plese completa payment with <span>{{ paymentCountDownMinute }}</span></div>
       <!-- 费用明细 -->
@@ -14,7 +14,7 @@
       <CryptoCurrencyAddress/>
       <IncludedDetails class="includedDetails"/>
       <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-    </div>
+<!--    </div>-->
     <Button :buttonData="buttonData" :disabled="payState" @click.native="submit"></Button>
   </div>
 </template>
@@ -139,17 +139,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html,body,#indonesianPayment{
-  width: 100%;
-  height: 100%;
-}
+//html,body,#indonesianPayment{
+//  width: 100%;
+//  height: 100%;
+//}
 #indonesianPayment{
-  display: flex;
-  flex-direction: column;
-  .view-content{
-    flex: 1;
-    overflow: auto;
-  }
+  //display: flex;
+  //flex-direction: column;
+  //.view-content{
+  //  flex: 1;
+  //  overflow: auto;
+  //}
   .payTips{
     margin: 0.08rem 0 0.1rem 0;
     font-size: 0.13rem;

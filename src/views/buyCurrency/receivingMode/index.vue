@@ -89,10 +89,8 @@ export default {
       // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
       console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
       if(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!==''){
-        console.log(false)
         return false
       }else{
-        console.log(true)
         return true
       }
     }

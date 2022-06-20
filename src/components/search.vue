@@ -447,7 +447,6 @@ export default {
           this.$parent.$refs.sellCrypto_ref.currencyData.cryptoCurrencyNetworkId = item.cryptoCurrencyNetworkId;
           this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.symbol;
           this.$store.state.feeParams.symbol = item.name;
-          console.log("search 触发")
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
           return;

@@ -2,7 +2,7 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">Y<span style="margin-left: 0.00001rem">ou Pay</span></div>
+      <div class="form_title pay_title">Y<span style="margin-left: 0.00001rem">ou Sell</span></div>
       <div class="methods_select cursor">
         <!-- @blur="youPayBlur" -->
         <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
@@ -265,7 +265,7 @@ export default {
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
 
-      
+
       this.payCommission.symbol = this.$store.state.feeParams.symbol;
       let routerParams = {
         amount: this.payAmount,

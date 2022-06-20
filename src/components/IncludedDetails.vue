@@ -4,7 +4,10 @@
     <div class="feeTitle">
       <div class="feeTitle-name">Remaining time</div>
       <div class="feeTitle-value">
-        <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
+        <div class="loading-svg">
+          <van-icon name="clock-o" />
+<!--          <img src="../assets/images/countDownIcon.png" alt="">-->
+        </div>
         <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
       </div>
     </div>
@@ -197,6 +200,8 @@ export default {
       margin-left: auto;
       .loading-svg{
         margin-right: 0.04rem;
+        font-size: 0.15rem;
+        margin-top: 0.02rem;
         img{
           height: 0.12rem;
         }

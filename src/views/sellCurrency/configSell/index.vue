@@ -5,9 +5,8 @@
         <div class="bankCardInfo-title">Bank Card</div>
         <div class="bankCardInfo-view" @click="goCardForm">
           <div class="bankCardInfo-view-left">
-            <div>{{ sellForm.bankCode }}</div>
-            <div class="name">{{ sellForm.name }}</div>
-            <div class="cardNumber">{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</div>
+            <div>{{ sellForm.name }}</div>
+            <div class="name">{{ sellForm.accountNumber ? sellForm.accountNumber.substring(0,3) : '' }} **** **** {{ sellForm.accountNumber ? sellForm.accountNumber.substring(sellForm.accountNumber.length-4,sellForm.accountNumber.length) : '' }}</div>
           </div>
           <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
         </div>
@@ -148,9 +147,6 @@ export default {
           font-family: "GeoRegular", GeoRegular;
           font-weight: normal;
           color: #999999;
-        }
-        .cardNumber{
-          margin-top: 0.08rem;
         }
       }
       .bankCardInfo-view-right{
