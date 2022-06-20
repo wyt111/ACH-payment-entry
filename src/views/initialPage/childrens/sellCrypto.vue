@@ -262,7 +262,10 @@ export default {
     },
 
     nextStep(){
+      //是否是从菜单进入
       this.$store.state.routerQueryPath = false
+
+      
       this.payCommission.symbol = this.$store.state.feeParams.symbol;
       let routerParams = {
         amount: this.payAmount,

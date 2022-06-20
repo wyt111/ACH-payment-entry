@@ -171,6 +171,7 @@ export default {
         this.$toast('You re already logged in');
       }else{
         this.loading = false
+        //是否是从菜单进入
         this.$store.state.routerQueryPath = true
         this.$router.push('/emailCode')
       }
