@@ -11,16 +11,22 @@
         <div class="van-clearfix">
           <div class="float-item" v-for="(item,index) in historyList" :key="index">
             <div class="historyLi_header">
-              <div class="time">{{ item.createdTime }}</div>
+              <div class="historyLi_header_left">
+                <div class="cryptoCurrencyIcon"><img :src="item.cryptoCurrencyIcon"></div>
+                <div>
+                  <div class="cryptoCurrencyName">{{ item.cryptoCurrency }}</div>
+                  <div class="time">{{ item.createdTime }}</div>
+                </div>
+              </div>
               <div class="state">
                 <span v-if="Number(item.orderState) === 4" class="state_success">Processing</span>
                 <span v-if="Number(item.orderState) === 5" class="state_success">Complete</span>
 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
-<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
+<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring...</span>-->
               </div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">Amount:</div>
+              <div class="details_line_title">{{ item.cryptoCurrency }} Amount:</div>
               <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">
@@ -104,19 +110,48 @@ html,body,#tradeHistory,.historyList,.van-list{
 #tradeHistory{
   .float-item{
     background: #FFFFFF;
-    border-radius: 10px;
-    border: 1px solid #232323;
-    margin-top: 0.2rem;
+    border-radius: 0.1rem;
+    border: 1px solid #E2E1E5;
+    margin-top: 0.24rem;
     .historyLi_header{
       display: flex;
       align-items: center;
-      font-size: 0.16rem;
-      font-family: 'Jost', sans-serif;
-      font-weight: 500;
+      font-size: 0.17rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
       color: #232323;
-      height: 0.64rem;
+      min-height: 0.68rem;
       padding: 0 0.16rem;
-      border-bottom: 1px solid #F3F4F5;
+      border-bottom: 1px solid #E2E1E5;
+      .historyLi_header_left{
+        display: flex;
+        align-items: center;
+        .cryptoCurrencyIcon{
+          display: flex;
+          align-content: center;
+          img{
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+          }
+        }
+        .cryptoCurrencyName{
+          min-height: 0.17rem;
+          font-size: 0.17rem;
+          font-family: "GeoDemibold", GeoDemibold;
+          font-weight: normal;
+          color: #232323;
+          margin-left: 0.08rem;
+          margin-top: 0.05rem;
+        }
+        .time{
+          font-size: 0.11rem;
+          font-family: "GeoLight", GeoLight;
+          font-weight: normal;
+          color: #707070;
+          margin-left: 0.08rem;
+        }
+      }
       .state{
         margin-left: auto;
         color: #02AF38;
@@ -124,28 +159,28 @@ html,body,#tradeHistory,.historyList,.van-list{
           color: #02AF38;
         }
         .state_loading{
-          color: #FFA400;
+          color: #02AF38;
         }
         .state_error{
-          color: red;
+          color: #E55643;
         }
       }
     }
 
     .details_line{
-      font-size: 0.16rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
+      font-size: 0.15rem;
+      font-family: "GeoLight", GeoLight;
+      font-weight: normal;
       color: #232323;
       display: flex;
       align-items: flex-start;
-      margin-top: 0.2rem;
+      margin-top: 0.12rem;
       padding: 0 0.16rem;
       &:nth-of-type(2){
-        margin-top: 0.1rem;
+        margin-top: 0.16rem;
       }
       &:last-child{
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.16rem;
       }
       .details_line_value{
         max-width: 60%;
@@ -155,6 +190,10 @@ html,body,#tradeHistory,.historyList,.van-list{
       }
       .address_value{
         margin-right: -0.06rem;
+        font-size: 0.15rem;
+        font-family: "GeoDemibold", GeoDemibold;
+        font-weight: normal;
+        color: #232323;
       }
     }
   }
@@ -171,15 +210,14 @@ html,body,#tradeHistory,.historyList,.van-list{
       img{
         width: 1rem;
       }
-    
     }
-      p{
-        font-size: .15rem;
-        font-family: GeoLight;
-        font-weight: normal;
-        color: #707070;
-        margin: .08rem 0 .16rem 0;
-      }
+    p{
+      font-size: 0.15rem;
+      font-family: GeoLight;
+      font-weight: normal;
+      color: #707070;
+      margin: 0.08rem 0 .16rem 0;
+    }
     .noDataText{
       text-align: center;
       margin-top: 0.08rem;
@@ -200,14 +238,6 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;
-      position: absolute;
-      left: 5%;
-      img{
-        width: .24rem;
-        position: absolute;
-        right: .16rem;
-        top: .18rem;
-      }
     }
   }
 }

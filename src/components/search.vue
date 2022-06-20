@@ -422,6 +422,7 @@ export default {
           this.$parent.$refs.buyCrypto_ref.currencyData.networkFee = item.networkFee;
           this.$parent.$refs.buyCrypto_ref.currencyData.price = item.price;
           this.$parent.$refs.buyCrypto_ref.currencyData.serviceFee = item.serviceFee;
+          this.$store.state.buyRouterParams.cryptoCurrency = item.name;
           this.$parent.$refs.buyCrypto_ref.payinfo();
           this.$parent.searchState = true;
           return;
