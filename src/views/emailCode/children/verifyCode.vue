@@ -8,7 +8,8 @@
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
       <div class="verifyCode_title bottom">
-        <input type="checkbox" v-model="checked"> <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
+        <el-checkbox v-model="checked"></el-checkbox>
+        <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
@@ -272,20 +273,25 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       line-height: .2rem;
       margin-left: .11rem;
     }
-    input{
-      margin-top: .04rem;
-    }
   }
   .bottom ::v-deep .el-checkbox__inner:hover{
   border-color: #DFDFDF !important;
 }
   .bottom ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    
     background-color: #0059DA;
     border: 1px solid #0059DA;
     border-radius: 0.05rem;
   }
   .bottom ::v-deep .el-checkbox__inner{
+    width: .16rem !important;
+      height: .16rem !important;
     border: 1px solid #DFDFDF;
-}
+    margin-top: .03rem;
+  }
+  .bottom ::v-deep .el-checkbox__inner::after{
+    top: .015rem;
+    left: .05rem;
+  }
 }
 </style>
