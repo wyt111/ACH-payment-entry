@@ -211,13 +211,13 @@ html,body,#tradeHistory,.historyList,.van-list{
         width: 1rem;
       }
     }
-      p{
-        font-size: .15rem;
-        font-family: GeoLight;
-        font-weight: normal;
-        color: #707070;
-        margin: .08rem 0 .16rem 0;
-      }
+    p{
+      font-size: 0.15rem;
+      font-family: GeoLight;
+      font-weight: normal;
+      color: #707070;
+      margin: 0.08rem 0 .16rem 0;
+    }
     .noDataText{
       text-align: center;
       margin-top: 0.08rem;
@@ -238,14 +238,6 @@ html,body,#tradeHistory,.historyList,.van-list{
       font-weight: 500;
       color: #FAFAFA;
       cursor: pointer;
-      position: absolute;
-      left: 5%;
-      img{
-        width: .24rem;
-        position: absolute;
-        right: .16rem;
-        top: .18rem;
-      }
     }
   }
 }
