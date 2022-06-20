@@ -169,8 +169,8 @@ html,body,#app,#viewBox{
 }
 
 #viewBox{
-  background: url(./assets/images/buyCrypto_background.png) no-repeat !important;
-  background-size: 100% 100%;
+  //background: url(./assets/images/buyCrypto_background.png) no-repeat !important;
+  //background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,6 +188,7 @@ html,body,#app,#viewBox{
   display: flex;
   justify-content: center;
   margin-top: -0.6rem;
+  box-shadow: 0 0 0.4rem 0 rgba(68, 121, 217, 0.3);
   overflow: hidden;
   .logoView{
     position: absolute;
