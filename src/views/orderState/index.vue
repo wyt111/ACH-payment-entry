@@ -445,7 +445,7 @@ export default{
         width: .06rem;
         height: .06rem;
         background: #EAEAEA;
-        margin-left: .07rem;
+        margin-left: .06rem;
         margin-top: .18rem;
         border-radius: 50%;
       }
