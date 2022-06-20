@@ -89,13 +89,13 @@ export default {
   width: 95%;
   height: 100%;
   // height: 100%;
-  padding-top: .25rem;
+  padding: .4rem .35rem 0 0;
   background: #fff;
   // position: right: ;;
   // top: .8rem;
   position: absolute;
   top: 0;
-  padding-right: .1rem;
+  // padding-right: .1rem;
   }
 }
 </style>

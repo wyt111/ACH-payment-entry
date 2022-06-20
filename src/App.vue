@@ -3,7 +3,7 @@
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}">
         <div id="App">
           <!-- logo view for phone -->
-          <div class="logoView_phone" v-if="!logoState"><img src="./assets/images/phoneLogo.svg"></div>
+          <div class="logoView_phone" @click="$router.push('/')"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
@@ -211,8 +211,9 @@ html,body,#app,#viewBox{
     // align-items: center;
     padding-bottom: 15px;
     align-items: center;
-    padding-left: 0.06rem;
+    // padding-left: 0.06rem;
     padding-bottom: 0.24rem;
+    cursor: pointer;
 
     img{
       width: 1.3rem;
