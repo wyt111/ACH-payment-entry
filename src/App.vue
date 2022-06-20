@@ -104,6 +104,9 @@ export default {
         this.LanguageShow = newVal
       },
       deep:true
+    },
+    routerViewState(newVal){
+      console.log(newVal);
     }
   }
 }

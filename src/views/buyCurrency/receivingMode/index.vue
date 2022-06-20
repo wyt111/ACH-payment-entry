@@ -12,7 +12,7 @@
         <div class="collectionMethod" @click="checkMethods('address')">
           <div class="methods">
             <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
-            <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>
+<!--            <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>-->
           </div>
           <div v-if="checkModel[0]==='address'">
             <div class="methods_myAddress">

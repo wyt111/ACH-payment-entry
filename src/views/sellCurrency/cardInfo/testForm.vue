@@ -18,7 +18,7 @@
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
       </div>
     </div>
-    <button class="continue" :disabled="disabled" @click="submit">button</button>
+    <button class="continue" :disabled="disabled" @click="submit">Continue</button>
     <!-- 单选框 -->
     <div class="selectView" v-if="selectState" @click="selectState=false">
       <ul class="selectDate">

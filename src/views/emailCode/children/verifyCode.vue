@@ -101,12 +101,12 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             _this.showLoading = false
-              if(!_this.$store.state.routerQueryPath){
-                _this.$router.push('/');
-                return
-              }else
-              // console.log(_this.$store.state.routerQueryPath);
-              // return
+            // debugger
+            console.log(_this.$store.state.routerQueryPath);
+        if(_this.$store.state.routerQueryPath === true){
+          _this.$router.push('/');
+          return
+        }
             if(_this.$route.query.fromName === 'tradeList'){
               _this.$router.replace('/tradeHistory');
             }else{

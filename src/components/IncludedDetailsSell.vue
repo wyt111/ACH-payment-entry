@@ -11,7 +11,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span>{{ routerParams.amount }} {{ routerParams.cryptoCurrency }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
+          You sell <span>{{ routerParams.amount }} {{ currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -42,7 +42,7 @@
     </div>
   </div>
   <!-- 下单成功不刷新费用 -->
-  
+
   <div class="paymentInformation" v-else>
     <div class="feeTitle">
       <div class="feeTitle-name">Remaining time</div>
@@ -150,6 +150,19 @@ export default {
         this.timingSetting();
       }
     },
+    //选择数字货币后刷新数据
+    '$store.state.sellRouterParams.currencyData.name': {
+      deep: true,
+      handler(){
+        clearInterval(this.timeOut)
+        //接收路由信息
+        this.currencyData = this.$store.state.sellRouterParams.currencyData;
+        this.positionData = this.$store.state.sellRouterParams.positionData;
+        this.routerParams = this.$store.state.sellRouterParams;
+        this.feeParams = this.$store.state.feeParams;
+        this.timingSetting();
+      }
+    }
   },
   mounted(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发

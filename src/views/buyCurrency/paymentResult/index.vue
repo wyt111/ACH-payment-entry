@@ -304,7 +304,6 @@ export default {
   }
   //.paymentInformation-line{
   //  display: flex;
-  //  align-items: flex-start;
   //  margin-top: 0.13rem;
   //  .line_name{
   //    font-size: 0.14rem;
