@@ -35,6 +35,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
+    clearInterval(this.timeVal)
     this.timeVal = setInterval(()=>{
       this.codeTime--
       if(this.codeTime <= 0){
@@ -48,6 +49,15 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
+    clearInterval(this.timeVal)
+    this.codeTime = 10
+      this.timeVal = setInterval(()=>{
+      this.codeTime--
+      if(this.codeTime <= 0){
+        // this.codeTime = 10
+        clearInterval(this.timeVal)
+      }
+    },1000)
   },
   methods:{
     //input聚焦
@@ -102,7 +112,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             _this.codeErrorState = false;
             _this.showLoading = false
             // debugger
-            console.log(_this.$store.state.routerQueryPath);
+            // console.log(_this.$store.state.routerQueryPath);
         if(_this.$store.state.routerQueryPath === true){
           _this.$router.push('/');
           return
