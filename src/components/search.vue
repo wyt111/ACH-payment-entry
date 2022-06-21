@@ -511,6 +511,7 @@ export default {
           display: flex;
           img{
             width: 0.36rem;
+            border-radius: 50%;
             background: #E0E0E0;
           }
         }
