@@ -39,8 +39,9 @@ export default {
           this.tabState = true;
           this.routerName = val.meta.title;
         }
-        // console.log(oldVal);
+        // console.log(val);
         oldVal ? this.routerPath = oldVal.path : "";
+        // console.log(this.routerPath);
       },
     }
   },
@@ -55,7 +56,10 @@ export default {
         this.$router.push('/');
         return;
       }
-
+      if(this.routerPath === '/verifyCode' &&  this.$route.path === '/sell-formUserInfo'){
+        this.$router.push('/');
+        return;
+      }
       if(this.routerPath === '/verifyCode' && this.$route.path === '/receivingMode'){
         this.$router.push('/');
         return;
@@ -64,6 +68,7 @@ export default {
         this.$router.push('/');
         return;
       }
+    
       if(this.routerPath === '/emailCode' || this.routerPath === '/verifyCode'){
         this.$router.go(-1)
         return;
@@ -96,6 +101,8 @@ export default {
         this.$router.push('/');
         return;
       }
+      
+        
       this.$router.go(-1);
     },
     openMenu(){
