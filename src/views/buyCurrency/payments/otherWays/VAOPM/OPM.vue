@@ -116,7 +116,10 @@ export default {
     copy(){
       let clipboard = new Clipboard('.paymentCode');
       clipboard.on('success', () => {
-        this.$toast('copy success');
+        this.$toast({
+          duration: 3000,
+          message: 'copy success'
+        });
         clipboard.destroy()
       })
       clipboard.on('error', () => {

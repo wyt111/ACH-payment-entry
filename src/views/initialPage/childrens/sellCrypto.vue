@@ -33,10 +33,13 @@
       </div>
     </div>
 
-    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
-      Continue
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
-    </button>
+    <footer>
+      <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
+        Continue
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+      </button>
+      Continuing you agree to our cookie policy.
+    </footer>
   </div>
 </template>
 
@@ -448,6 +451,12 @@ html,body,#buyCrypto{
   }
 }
 
+
+footer{
+  text-align: center;
+  font-size: 0.13rem;
+  font-family: "GeoRegular", GeoRegular;
+}
 .continue{
   width: 100%;
   height: 0.58rem;
@@ -461,6 +470,7 @@ html,body,#buyCrypto{
   cursor: no-drop;
   border: none;
   position: relative;
+  margin-bottom: 0.16rem;
   .rightIcon{
     position: absolute;
     top: 0.17rem;

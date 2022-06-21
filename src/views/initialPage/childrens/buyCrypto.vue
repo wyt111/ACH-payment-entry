@@ -33,10 +33,13 @@
       </div>
     </div>
 
-    <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
-      Continue
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
-    </button>
+    <footer>
+      <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
+        Continue
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+      </button>
+      Continuing you agree to our cookie policy.
+    </footer>
   </div>
 </template>
 
@@ -380,7 +383,7 @@ export default {
        * */
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
-      
+
       let routerParams = {
         cryptoCurrency: this.currencyData.name,
         amount: this.payAmount,
@@ -480,6 +483,7 @@ html,body,#buyCrypto{
     img{
       width: 0.3rem;
       border-radius: 50%;
+      background: #E0E0E0;
     }
   }
   .rightIcon{
@@ -550,6 +554,11 @@ html,body,#buyCrypto{
   }
 }
 
+footer{
+  text-align: center;
+  font-size: 0.13rem;
+  font-family: "GeoRegular", GeoRegular;
+}
 .continue{
   width: 100%;
   height: 0.58rem;
@@ -563,6 +572,7 @@ html,body,#buyCrypto{
   cursor: no-drop;
   border: none;
   position: relative;
+  margin-bottom: 0.16rem;
   .rightIcon{
     position: absolute;
     top: 0.17rem;

@@ -155,18 +155,27 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
             _this.codeErrorState = false;
             _this.showLoading = false
-            _this.$toast(response.returnMsg)
+            this.$toast({
+              duration: 3000,
+              message: response.returnMsg
+            });
           }
-          
+
         }).catch(function (error) {
           _this.showLoading = false
           console.log(error);
         });
      }else if(this.value.length < 6){
-       this.$toast('Please fill in the verification')
+       this.$toast({
+         duration: 3000,
+         message: 'Please fill in the verification'
+       });
        return
      }else{
-       this.$toast('Please tick the User Agreement')
+       this.$toast({
+         duration: 3000,
+         message: 'Please tick the User Agreement'
+       });
        return
      }
 
@@ -289,7 +298,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   border-color: #DFDFDF !important;
 }
   .bottom ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    
+
     background-color: #0059DA;
     border: 1px solid #0059DA;
     border-radius: 0.05rem;

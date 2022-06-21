@@ -106,7 +106,10 @@ export default {
     next(){
       //email verification
       if(!new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$").test(this.sellForm.email)){
-        this.$toast("not a valid email.");
+        this.$toast({
+          duration: 3000,
+          message: 'not a valid email.'
+        });
         return;
       }
 

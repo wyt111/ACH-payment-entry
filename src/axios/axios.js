@@ -33,28 +33,49 @@ function requestPrompt(response){
     // The request is executed and the server responds with a status code
     switch (response.returnCode) {
       case "70006":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       case "70003":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       case "10003":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       //pay card form
       case "10005":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       case "80007":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       //买币表单 - 中国卡提示
       case "10004":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
       //登陆获取验证码超过5次提示
       case "1025":
-        Toast(response.returnMsg);
+        Toast({
+          duration: 3000,
+          message: response.returnMsg
+        });
         break;
     }
   }
