@@ -38,7 +38,7 @@
         Continue
         <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
       </button>
-      Continuing you agree to our cookie policy.
+      By continuing you agree to our cookie policy.
     </footer>
   </div>
 </template>

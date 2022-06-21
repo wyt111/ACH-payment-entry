@@ -155,7 +155,7 @@ export default {
       }
     },
     //选择国家后刷新数据
-    '$store.state.sellRouterParams.positionData': {
+    '$parent.payCommission.fiatCode': {
       deep: true,
       handler(){
         clearInterval(this.timeOut)
