@@ -21,7 +21,8 @@
 
   <!-- </div> -->
   <div class="emailCode-container" ref="emailCode">
-    <div class="emailCode_tab">
+    <div>
+      <div class="emailCode_tab">
       <img  @click="$router.replace('/')" src="@/assets/images/closeIcon.png" alt="">
     </div>
       <div class="emailCode-container_top">
@@ -36,6 +37,7 @@
         <input type="text"  v-model="email" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
+    </div>
       
       <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
@@ -201,11 +203,11 @@ export default {
     }
   },
   mounted(){
-      let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
-      window.addEventListener('resize',()=>{
-        this.$refs.emailCode.style.height = (innerHight / 100) - .6 + 'rem'
-        console.log(this.$refs.emailCode.clientHeight);
-      })
+      // let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
+      // window.addEventListener('resize',()=>{
+      //   this.$refs.emailCode.style.height = (innerHight - 200) + 'px'
+      //   console.log(this.$refs.emailCode.clientHeight);
+      // })
    
   }
 }
@@ -318,7 +320,10 @@ export default {
   width: 100%;
   // height: 100%;
   overflow: hidden;
-  position: relative;
+  // position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .emailCode-container_top{
     height: 2rem;
     display: flex;
@@ -383,8 +388,9 @@ export default {
     font-size: .17rem;
     text-align: center;
     line-height: .58rem;
-    position: absolute;
-    bottom: 0rem;
+    position: relative;
+    // position: absolute;
+    // bottom: 0rem;
     color: #FAFAFA;
     font-family: "GeoRegular";
     cursor: pointer;
@@ -393,7 +399,7 @@ export default {
       height: .24rem;
       position: absolute;
       right: .16rem;
-      top: .2rem;
+      top: .18rem;
       span{
         position: absolute;
         left: 0;
