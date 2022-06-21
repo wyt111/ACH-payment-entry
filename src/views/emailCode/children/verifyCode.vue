@@ -11,7 +11,7 @@
       </div>
       <div style="position:relative;height: 1.1rem;">
         <div class="verifyCode_title bottom">
-        <el-checkbox v-model="checked"></el-checkbox>
+        <el-checkbox size="small" v-model="checked"></el-checkbox>
         <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
@@ -153,14 +153,15 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               }
             }
           }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
+            // console.log(111);
             _this.codeErrorState = false;
             _this.showLoading = false
-            this.$toast({
+            _this.$toast({
               duration: 3000,
               message: response.returnMsg
             });
           }
-
+        
         }).catch(function (error) {
           _this.showLoading = false
           console.log(error);
@@ -304,8 +305,8 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     border-radius: 0.05rem;
   }
   .bottom ::v-deep .el-checkbox__inner{
-    width: .16rem !important;
-      height: .16rem !important;
+    // width: .16rem !important;
+    //   height: .16rem !important;
     border: 1px solid #DFDFDF;
     margin-top: .03rem;
   }
