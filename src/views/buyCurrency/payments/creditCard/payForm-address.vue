@@ -115,7 +115,10 @@ export default {
     nextStep(){
       //email verification
       if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.params.email)){
-        this.$toast("not a valid email.");
+        this.$toast({
+          duration: 3000,
+          message: "not a valid email."
+        });
         return;
       }
       let newParams = {...newParams,...this.params};

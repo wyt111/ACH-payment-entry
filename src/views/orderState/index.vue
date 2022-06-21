@@ -164,7 +164,10 @@ export default{
     copy(){
         let clipboard = new Clipboard('.order-con');
       clipboard.on('success', () => {
-        this.$toast('copy success');
+        this.$toast({
+          duration: 3000,
+          message: 'copy success'
+        });
         clipboard.destroy()
       })
       clipboard.on('error', () => {
@@ -215,7 +218,10 @@ export default{
           this.Network = text
           return
         }
-        this.$toast('error')
+        this.$toast({
+          duration: 3000,
+          message: 'error'
+        });
       })
       clearInterval( this.timer)
       setTimeout(()=>{
@@ -311,7 +317,10 @@ export default{
         })
 
       }else{
-        this.$toast('Cant modify')
+        this.$toast({
+          duration: 3000,
+          message: 'Cant modify'
+        });
       }
     },
     //Calculate minutes and seconds
@@ -354,7 +363,7 @@ export default{
             this.cardUserName = res.data.name
           }
         })
-        
+
       }
     }
   },
@@ -494,7 +503,7 @@ export default{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
+
       padding: .19rem .2rem .19rem;
       background: #F3F4F5;
       border-radius: .12rem;

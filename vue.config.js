@@ -7,7 +7,7 @@ module.exports = {
       config
         .plugin('html')
         .tap(args => {
-          args[0].title= 'Alchemy Pay'
+          args[0].title= 'Alchemy Pay Ramp'
           return args
         })
     },

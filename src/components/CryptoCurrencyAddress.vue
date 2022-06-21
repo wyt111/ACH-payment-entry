@@ -31,7 +31,10 @@ export default {
       //copy bank code
       let clipboard = new Clipboard('.formContent');
       clipboard.on('success', () => {
-        this.$toast('copy success');
+        this.$toast({
+          duration: 3000,
+          message: 'copy success'
+        });
         clipboard.destroy()
       })
       clipboard.on('error', () => {

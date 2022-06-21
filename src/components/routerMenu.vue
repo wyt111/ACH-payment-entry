@@ -15,7 +15,7 @@
       </div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
-        
+
       </div>
     </div>
     <!-- <div class="routerMenu_line" @click="goView('/','buyCrypto')">
@@ -35,7 +35,7 @@
     <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">Language</div>
-      
+
       <div class="lineRight">
         <p>{{ $store.state.languageValue }}</p>
         <div><img src="../assets/images/slices/right_icon.png"></div>
@@ -168,7 +168,10 @@ export default {
       this.loading = true
       if(this.$route.path === '/emailCode' || this.$route.path === '/verifyCode'){
         this.loading = false
-        this.$toast('You re already logged in');
+        this.$toast({
+          duration: 3000,
+          message: 'You re already logged in'
+        });
       }else{
         this.loading = false
         //是否是从菜单进入
@@ -217,7 +220,7 @@ export default {
 <style lang="scss" scoped>
 #routerMenu{
   position: relative;
- 
+
   .routerMenu_line{
     display: flex;
     align-items: center;
@@ -363,7 +366,7 @@ export default {
         height: .23rem;
       }
     }
-    
+
   }
   .routerMenu_loginOut{
     width: 100%;
