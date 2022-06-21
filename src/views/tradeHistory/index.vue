@@ -90,7 +90,7 @@ export default {
           let newArray = res.data.result;
           _this.historyList = _this.historyList.concat(newArray);
           _this.loading = false;
-          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total) {
+          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.historyList.length === res.data.total){
             _this.finished = true;
           }
         }
@@ -111,11 +111,15 @@ html,body,#tradeHistory,.historyList,.van-list{
   height: 100%;
 }
 #tradeHistory{
+  padding-top: 0.24rem;
   .float-item{
     background: #FFFFFF;
     border-radius: 0.1rem;
     border: 1px solid #E2E1E5;
     margin-top: 0.24rem;
+    &:first-child{
+      margin-top: 0;
+    }
     .historyLi_header{
       display: flex;
       align-items: center;

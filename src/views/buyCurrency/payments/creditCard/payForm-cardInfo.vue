@@ -249,7 +249,7 @@ export default {
       queryParams.cardNumber = AES_Encrypt(cardNumber).replace(/ /g,'');
       queryParams.cardCvv = AES_Encrypt(queryParams.cardCvv);
 
-      queryParams.firstname = AES_Encrypt(queryParams.firstname);
+      queryParams.firstname = AES_Encrypt(queryParams.firstname.trim());
       queryParams.lastname = AES_Encrypt(queryParams.lastname);
       queryParams.email === '' ? queryParams.email = localStorage.getItem("email") : '';
       queryParams.source = 0;
