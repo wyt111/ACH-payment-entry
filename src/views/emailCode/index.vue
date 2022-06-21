@@ -20,7 +20,7 @@
     <div class="continue" :class="{'buttonTrue': email!==''&&code.length===6&&agreement===true}" @click="toLogin">Continue</div> -->
 
   <!-- </div> -->
-  <div class="emailCode-container">
+  <div class="emailCode-container" ref="emailCode">
     <div class="emailCode_tab">
       <img  @click="$router.replace('/')" src="@/assets/images/closeIcon.png" alt="">
     </div>
@@ -199,6 +199,14 @@ export default {
         return;
       }
     }
+  },
+  mounted(){
+      let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
+      window.addEventListener('resize',()=>{
+        this.$refs.emailCode.style.height = (innerHight / 100) - .6 + 'rem'
+        console.log(this.$refs.emailCode.clientHeight);
+      })
+   
   }
 }
 </script>
@@ -308,7 +316,7 @@ export default {
 }
 .emailCode-container{
   width: 100%;
-  height: 100%;
+  // height: 100%;
   overflow: hidden;
   position: relative;
   .emailCode-container_top{
