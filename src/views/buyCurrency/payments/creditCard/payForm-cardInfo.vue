@@ -188,6 +188,7 @@ export default {
 
     //卡号验证
     cardBlur(){
+      this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
       let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
@@ -202,6 +203,11 @@ export default {
       //Add a space between every four digits of the credit card number
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
+      }
+       if(this.$store.state.isPcAndPhone === 'phone'){
+        this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
+      }else{
+        this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
       //判断卡号是Visa or Master
       setTimeout(()=>{

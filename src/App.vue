@@ -1,7 +1,7 @@
 <template>
   <div id="viewBox">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}">
-        <div id="App">
+        <div id="App" ref="viewApp">
           <!-- logo view for phone -->
           <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
@@ -69,6 +69,11 @@ export default {
     }
   },
   mounted(){
+    let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
+      window.addEventListener('resize',()=>{
+        this.$refs.viewApp.style.height = (innerHight - 78) + 'px'
+        // console.log(this.$refs.viewApp.clientHeight);
+      })
     this.obtainWidth();
     //Vuex store data
     if (sessionStorage.getItem("store")) {
@@ -96,12 +101,14 @@ export default {
           common.equipmentEnd = 'phone';
           rem_size();
           this.logoState = false;
+          this.$store.state.isPcAndPhone = 'phone'
           return;
         }
         common.uiSize = width + 100;
         common.equipmentEnd = 'pc';
         rem_size();
         this.logoState = true;
+        this.$store.state.isPcAndPhone = 'pc'
       })
     },
     goHome(){

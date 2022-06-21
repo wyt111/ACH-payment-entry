@@ -1,6 +1,6 @@
 <template>
-  <div id="sell-form">
-    <div class="sellForm-content">
+  <div id="sell-form" >
+    <div class="sellForm-content" ref="sellFormView">
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">tips：{{ item.multinomialTips }}</div>
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="formContent" v-else>
-          <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)">
+          <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)" @focus="inputFocus" @blur="inputBlur" >
         </div>
         <p class="errorMessage" v-if="item.tipsState">{{ item.tips }}</p>
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
@@ -195,13 +195,23 @@ export default {
         }
       })
     },
+    inputFocus(){
+      if(this.$store.state.isPcAndPhone === 'phone'){
+        this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
+      }else{
+        this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+      }
+    },
+    inputBlur(){
+      this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+    },
 
     encrypt(val){
       if(val){
         return AES_Encrypt(val);
       }
     }
-  }
+  },
 }
 </script>
 
