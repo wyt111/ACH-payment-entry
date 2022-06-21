@@ -205,10 +205,9 @@ export default {
   mounted(){
       // let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
       // window.addEventListener('resize',()=>{
-      //   this.$refs.emailCode.style.height = (innerHight - 200) + 'px'
-      //   console.log(this.$refs.emailCode.clientHeight);
+      //   this.$refs.emailCode.style.height = (innerHight - 150) + 'px'
+        // console.log(this.$refs.emailCode.clientHeight);
       // })
-   
   }
 }
 </script>
@@ -364,6 +363,7 @@ export default {
       left: .42rem;
       background: transparent;
       font-family: "GeoLight";
+      outline: none;
     }
     p{
       font-size: .13rem;

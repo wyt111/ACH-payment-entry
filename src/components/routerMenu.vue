@@ -351,7 +351,7 @@ export default {
         font-weight: normal;
         color: #C0C0C2;
         line-height: 17px;
-        font-size: 15px;
+        font-size: .15rem;
         margin-top: .04rem;
       }
     }

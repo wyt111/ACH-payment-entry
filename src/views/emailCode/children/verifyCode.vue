@@ -1,18 +1,22 @@
 <template>
   <div class="verifyCode-container">
-      <div class="verifyCode_title">We’ve sent a confirmation code to your email.</div>
+      <div style="position:relative;flex:1">
+        <div class="verifyCode_title">We’ve sent a confirmation code to your email.</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
         <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
       </div>
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
-      <div class="verifyCode_title bottom">
+      </div>
+      <div style="position:relative;height: 1.1rem;">
+        <div class="verifyCode_title bottom">
         <el-checkbox v-model="checked"></el-checkbox>
         <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
+      </div>
       </div>
   </div>
 </template>
@@ -206,6 +210,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   height: 100%;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .verifyCode_title{
     font-size: .13rem;
     color: #232323;
@@ -258,8 +265,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-size: .17rem;
     text-align: center;
     line-height: .58rem;
-    position: absolute;
-    bottom: 0rem;
+    // position: absolute;
+    // bottom: 0rem;
+    position: relative;
     color: #FAFAFA;
     font-family: "GeoRegular";
     cursor: pointer;
@@ -278,8 +286,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   }
   .bottom{
     display: flex;
-    position: absolute;
-    bottom: .64rem;
+    margin-bottom: .08rem;
+    // position: relative;
+    // bottom: .14rem;
     div{
       line-height: .2rem;
       margin-left: .11rem;

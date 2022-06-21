@@ -68,7 +68,7 @@ export default {
       align-items: center;
       
       p{
-        font-size: 16px;
+        font-size: .16rem;
         font-family: GeoRegular;
         font-weight: normal;
         color: #232323;
