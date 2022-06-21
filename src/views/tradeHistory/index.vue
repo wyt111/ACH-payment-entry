@@ -90,7 +90,7 @@ export default {
           let newArray = res.data.result;
           _this.historyList = _this.historyList.concat(newArray);
           _this.loading = false;
-          if (_this.historyList.length === res.data.total) {
+          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total) {
             _this.finished = true;
           }
         }
