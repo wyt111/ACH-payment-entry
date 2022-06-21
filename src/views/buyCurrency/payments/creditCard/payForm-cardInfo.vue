@@ -47,7 +47,7 @@
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
         </div>
       </div>
-      <button class="continue" :class="{'buttonTrue': buttonState}" :disabled="!buttonState" @click="submitPay">
+      <button class="continue" :disabled="!buttonState" @click="submitPay">
         Continue
         <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" alt="">
       </button>

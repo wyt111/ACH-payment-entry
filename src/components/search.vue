@@ -455,7 +455,7 @@ export default {
         if(type === 'payCurrency'){
           if(this.viewName === 'payCurrency'){ //买币
             this.$parent.$refs.buyCrypto_ref.handlePayWayList(item,2);
-            this.$parent.$refs.buyCrypto_ref.amountControl();
+            // this.$parent.$refs.buyCrypto_ref.amountControl();
           }else if(this.viewName === 'payCurrency-sell'){ //卖币
             this.$parent.$refs.sellCrypto_ref.handlePayWayList(item,2);
           }

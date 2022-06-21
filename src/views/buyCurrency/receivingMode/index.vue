@@ -87,7 +87,7 @@ export default {
   computed: {
     disabled(){
       // if(this.checkModel[0]==='ach'||(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!=='')){
-      console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
+      // console.log(this.checkModel,this.buyParams.network,this.buyParams.address)
       if(this.checkModel[0]==='address'&&this.buyParams.network!==''&&this.buyParams.address!==''){
         return false
       }else{

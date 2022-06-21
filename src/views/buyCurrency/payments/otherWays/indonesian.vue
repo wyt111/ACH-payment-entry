@@ -15,7 +15,7 @@
         <div class="payAmountInfo-box ovoPhone">
           <div class="region">+ 62</div>
           <div class="input">
-            <van-field class="number_input" type="digit" v-model="phone" :disabled="ovoLoading" maxlength="10"/>
+            <van-field class="number_input" type="digit" v-model="phone" :disabled="ovoLoading" maxlength="12"/>
             <sapn class="loading" v-if="ovoLoading"><van-loading color="#1989fa" /></sapn>
           </div>
         </div>

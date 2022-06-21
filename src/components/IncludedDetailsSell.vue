@@ -8,7 +8,7 @@
 <!--          <img src="../assets/images/countDownIcon.png" alt="">-->
           <van-icon name="clock-o" />
         </div>
-        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
+        <div class="feeTitle-value-text">Quote updates in<span>{{ timeDownNumber }}</span>s</div>
       </div>
     </div>
     <div class="fee-content">
@@ -140,6 +140,20 @@ export default {
         }
       }
     },
+
+    //输入金额改变后刷新数据
+    '$store.state.sellRouterParams.amount': {
+      deep: true,
+      handler(){
+        clearInterval(this.timeOut)
+        //接收路由信息
+        this.currencyData = this.$store.state.sellRouterParams.currencyData;
+        this.positionData = this.$store.state.sellRouterParams.positionData;
+        this.routerParams = this.$store.state.sellRouterParams;
+        this.feeParams = this.$store.state.feeParams;
+        this.timingSetting();
+      }
+    },
     //选择国家后刷新数据
     '$store.state.sellRouterParams.positionData': {
       deep: true,
@@ -260,6 +274,13 @@ export default {
         margin-top: 0.02rem;
         img {
           height: 0.12rem;
+        }
+      }
+      .feeTitle-value-text{
+        span{
+          display: inline-block;
+          width: 0.15rem;
+          text-align: center;
         }
       }
     }

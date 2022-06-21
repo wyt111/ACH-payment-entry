@@ -8,7 +8,7 @@
           <van-icon name="clock-o" />
 <!--          <img src="../assets/images/countDownIcon.png" alt="">-->
         </div>
-        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
+        <div class="feeTitle-value-text">Quote updates in<span>{{ timeDownNumber }}</span>s</div>
       </div>
     </div>
     <div class="fee-content">
@@ -99,6 +99,16 @@ export default {
       deep: true,
       handler(val){
         this.detailsState = val;
+      }
+    },
+
+    //输入金额改变后刷新数据
+    '$store.state.buyRouterParams.amount': {
+      deep: true,
+      handler() {
+        clearInterval(this.timeOut)
+        this.queryFee();
+        this.timingSetting();
       }
     },
     //选择数字货币后刷新数据
@@ -204,6 +214,13 @@ export default {
         margin-top: 0.02rem;
         img{
           height: 0.12rem;
+        }
+      }
+      .feeTitle-value-text{
+        span{
+          display: inline-block;
+          width: 0.15rem;
+          text-align: center;
         }
       }
     }
