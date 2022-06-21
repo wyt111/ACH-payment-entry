@@ -203,11 +203,7 @@ export default {
     }
   },
   mounted(){
-      // let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
-      // window.addEventListener('resize',()=>{
-      //   this.$refs.emailCode.style.height = (innerHight - 150) + 'px'
-      //   console.log(this.$refs.emailCode.clientHeight);
-      // })
+      
   }
 }
 </script>
