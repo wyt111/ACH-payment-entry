@@ -336,7 +336,6 @@ export default {
         border: none;
         outline: none;
         padding: 0 0.16rem;
-         caret-color: transparent;
       }
       .rightIcon{
         display: flex;
