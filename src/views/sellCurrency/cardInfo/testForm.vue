@@ -197,7 +197,7 @@ export default {
     },
     inputFocus(){
       if(this.$store.state.isPcAndPhone === 'phone'){
-        this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
+        this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
       }else{
         this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
@@ -263,6 +263,7 @@ export default {
       border: none;
       outline: none;
       padding: 0 0.16rem;
+       caret-color: transparent;
     }
     //.rightIcon{
     //  display: flex;

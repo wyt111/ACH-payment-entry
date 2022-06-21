@@ -71,7 +71,7 @@ export default {
   mounted(){
     let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
       window.addEventListener('resize',()=>{
-        this.$refs.viewApp.style.height = (innerHight - 78) + 'px'
+        this.$refs.viewApp.style.height = (innerHight - 85) + 'px'
         // console.log(this.$refs.viewApp.clientHeight);
       })
     this.obtainWidth();
