@@ -382,6 +382,7 @@ html,body,#buyCrypto{
     img{
       width: 0.3rem;
       border-radius: 50%;
+      background: #E0E0E0;
     }
   }
   .rightIcon{

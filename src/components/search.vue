@@ -511,6 +511,7 @@ export default {
           display: flex;
           img{
             width: 0.36rem;
+            background: #E0E0E0;
           }
         }
         .seach_li_text{
@@ -539,6 +540,7 @@ export default {
             height: 0.36rem;
             border-radius: 50%;
             margin-right: 0.08rem;
+            background: #E0E0E0;
           }
         }
         .currencyCopywriting{
