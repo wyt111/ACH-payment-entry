@@ -45,12 +45,13 @@
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
-        </div>
-      </div>
-      <button class="continue" :disabled="!buttonState" @click="submitPay">
+          <button class="continue" :disabled="!buttonState" @click="submitPay">
         Continue
         <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" alt="">
       </button>
+        </div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -188,7 +189,7 @@ export default {
 
     //卡号验证
     cardBlur(){
-      this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+      // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
       let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
@@ -204,11 +205,11 @@ export default {
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
       }
-       if(this.$store.state.isPcAndPhone === 'phone'){
-        this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
-      }else{
-        this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
-      }
+      //  if(this.$store.state.isPcAndPhone === 'phone'){
+      //   this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
+      // }else{
+      //   this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+      // }
       //判断卡号是Visa or Master
       setTimeout(()=>{
         if(Number(value) === 4){
