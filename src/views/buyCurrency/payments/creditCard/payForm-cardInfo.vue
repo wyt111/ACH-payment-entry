@@ -46,8 +46,7 @@
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
 
-          <button class="continue" :disabled="!buttonState" @click="submitPay" v-show="buttonIsShow">
-     
+          <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
             Continue
             <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
             <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
