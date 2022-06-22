@@ -91,8 +91,8 @@
           <!-- <div style="width:80%"> -->
             <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
             <!-- <div style="display:flex;"> -->
-              <p style="width:36%">{{ AES(cardUserName)?AES(cardUserName):'John Tan' }}</p>
-               <p style="margin-left:.16rem;overflow: none;width:100%">{{ AES(orderStateData.cardNumber).slice(0,4) }} **** **** {{AES(orderStateData.cardNumber).slice(AES(orderStateData.cardNumber).length-4,AES(orderStateData.cardNumber).length) }}</p><!--1234 **** **** 1234 -->
+              <p style="width:36%">{{ AES(cardUserName.name)?AES(cardUserName.name):'John Tan' }}</p>
+               <p style="margin-left:.16rem;overflow: none;width:100%">{{ accountNumberCode.slice(0,4) }} **** **** {{accountNumberCode.slice(accountNumberCode.length-4,accountNumberCode.length) }}</p>
             <!-- </div>
           </div> -->
           <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
@@ -141,7 +141,8 @@ export default{
       Network_show1:false,
       timer:null,
       timeText:'',
-      cardUserName:''
+      cardUserName:'',
+      accountNumberCode:''
 
     }
   },
@@ -351,6 +352,7 @@ export default{
 
     }
   },
+
   watch:{
 
     //监听支付状态的变化请求卡信息
@@ -361,8 +363,9 @@ export default{
         }
         this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
           if(res.returnCode && res.data){
-            // console.log(res.data);
-            this.cardUserName = res.data.name
+            console.log(res.data);
+            this.cardUserName = res.data
+            this.accountNumberCode = this.AES(res.data.accountNumber)
           }
         })
 
@@ -377,6 +380,18 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
+    if(this.playMoneyState == 6){
+      let params = {
+          id:this.orderStateData.userCardId,
+        }
+        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+          if(res.returnCode && res.data){
+            console.log(res.data);
+            this.cardUserName = res.data
+            this.accountNumberCode = this.AES(res.data.accountNumber)
+          }
+        })
+    }
 
       setTimeout(()=>{
       if(this.playMoneyState == 7)
