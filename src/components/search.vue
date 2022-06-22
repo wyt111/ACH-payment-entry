@@ -114,6 +114,9 @@
 </template>
 
 <script>
+/**
+ * 搜索、选择列表组件
+ */
 
 export default {
   name: "search",
