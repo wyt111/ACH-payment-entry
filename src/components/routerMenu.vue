@@ -74,6 +74,9 @@
 </template>
 
 <script>
+/**
+ * 菜单组件
+ */
 import {AES_Decrypt} from "../utils/encryp";
 
 export default {
@@ -206,7 +209,7 @@ export default {
     }
   },
   watch:{
-    
+
     '$store.state.menuState':{
       immediate:true,
       deep:true,

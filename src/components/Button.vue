@@ -9,7 +9,7 @@
 
 <script>
 /**
- * 确认按钮组件
+ * 确认订单按钮组件 可查询订单状态
  * buttonData.agreement === 1 支付
  * buttonData.agreement >1 查询支付状态
  * buttonData.customName 自定义按钮名称状态

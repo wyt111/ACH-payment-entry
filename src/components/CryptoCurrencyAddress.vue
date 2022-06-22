@@ -24,7 +24,7 @@ export default {
     }
   },
   mounted(){
-    this.routerParams = JSON.parse(this.$route.query.routerParams);
+    this.routerParams = this.$store.state.buyRouterParams;
   },
   methods:{
     copy(){

@@ -14,6 +14,9 @@
 </template>
 
 <script>
+/**
+ * 勾选协议组件
+ */
 export default {
   name: "AuthorizationInfo",
   props: {
