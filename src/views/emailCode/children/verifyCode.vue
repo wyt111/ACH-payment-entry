@@ -129,7 +129,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             }else{
               //登陆跳转路径根据router.from的路由跳转不同页面
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
+                _this.$router.push(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                   // _this.$router.push('/')
 
@@ -163,7 +163,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
               message: response.returnMsg
             });
           }
-        
+
         }).catch(function (error) {
           _this.showLoading = false
           console.log(error);
