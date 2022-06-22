@@ -45,10 +45,11 @@
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
-          <button class="continue" :disabled="!buttonState" @click="submitPay">
-        Continue
-        <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" alt="">
-      </button>
+          <button class="continue" :disabled="buttonState" @click="submitPay">
+            Continue
+            <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
+            <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
+          </button>
         </div>
       </div>
 
@@ -83,14 +84,16 @@ export default {
       errorCard: false,
       errorCvv: false,
       errorTime: false,
+
+      request_loading: false,
     }
   },
   computed: {
     buttonState(){
-      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false){
-        return true;
-      }else{
+      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false&&this.request_loading === false){
         return false;
+      }else{
+        return true;
       }
     },
   },
@@ -189,7 +192,6 @@ export default {
 
     //卡号验证
     cardBlur(){
-      this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
       let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
@@ -204,11 +206,6 @@ export default {
       //Add a space between every four digits of the credit card number
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
-      }
-       if(this.$store.state.isPcAndPhone === 'phone'){
-        this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
-      }else{
-        this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
       //判断卡号是Visa or Master
       setTimeout(()=>{
@@ -261,19 +258,25 @@ export default {
       queryParams.email === '' ? queryParams.email = localStorage.getItem("email") : '';
       queryParams.source = 0;
 
-      this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
-        if(res && res.returnCode === '0000'){
-          queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
-          queryParams.userCardId = res.data.userCardId;
-          //是否验证过baseId
-          if(JSON.parse(this.$route.query.routerParams).kyc === true){
-            this.$router.replace(`/basisIdAuth?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
-            return;
+      if(this.request_loading === false){
+        this.request_loading = true;
+        this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
+          this.request_loading = false;
+          if(res && res.returnCode === '0000'){
+            queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
+            queryParams.userCardId = res.data.userCardId;
+            //是否验证过baseId
+            if(JSON.parse(this.$route.query.routerParams).kyc === true){
+              this.$router.replace(`/basisIdAuth?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
+              return;
+            }
+            //跳转确认订单页
+            this.$router.replace(`/creditCardConfig?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
           }
-          //跳转确认订单页
-          this.$router.replace(`/creditCardConfig?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
-        }
-      })
+        }).catch(()=>{
+          this.request_loading = false;
+        })
+      }
     }
   }
 }

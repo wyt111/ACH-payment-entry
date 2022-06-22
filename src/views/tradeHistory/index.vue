@@ -77,6 +77,7 @@ export default {
     }
   },
   activated(){
+    this.historyList = [];
     this.queryTransactionHistory();
   },
   methods:{

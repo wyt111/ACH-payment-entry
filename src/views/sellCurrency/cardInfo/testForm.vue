@@ -18,7 +18,11 @@
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
       </div>
     </div>
-    <button class="continue" :disabled="disabled" @click="submit">Continue</button>
+    <button class="continue" :disabled="disabled" @click="submit">
+      Continue
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
+      <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
+    </button>
     <!-- 单选框 -->
     <div class="selectView" v-if="selectState" @click="selectState=false">
       <ul class="selectDate">
@@ -43,6 +47,7 @@ export default {
         item: {},
         index: 0,
       },
+      request_loading: false,
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -55,7 +60,6 @@ export default {
   },
   activated(){
     //根据货币类型来过滤不同表单
-
     this.currency = this.$store.state.sellRouterParams.positionData.fiatCode;
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
 
@@ -104,12 +108,12 @@ export default {
       if(this.formJson.length !== 0 && (this.currency === 'JPY' || this.currency === 'NPR' || this.currency === 'BRL')){
         if(requiredArray.length === 0 && noRequiredArray.length === 1 && noRequiredArray[0].model === ""){
           this.formJson.filter(item=>{ return item.paramsName === noRequiredArray[0].paramsName })[0].tipsState = false;
-          return false;
+          return this.request_loading === false ?  false : true;
         }
         if(requiredArray.length !== 0 || noRequiredArray.length === 2  || (noRequiredArray.length === 1 && noRequiredArray[0].tipsState === true)){
           return true;
         }
-        return false;
+        return this.request_loading === false ?  false : true;
       }
 
       //针对PHP
@@ -118,7 +122,7 @@ export default {
       }
 
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
-      return requiredArray.length === 0 ? false : true;
+      return requiredArray.length === 0 && this.request_loading === false ? false : true;
     }
   },
   methods: {
@@ -173,30 +177,36 @@ export default {
       params.idNumber = this.encrypt(params.idNumber);
       this.currency === "BRL" ? params.idType = "CPF" : '';
       this.currency === "CLP" ?  params.idType = "RUT" : '';
-      this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
-        if(res && res.returnCode === '0000'){
-          //存储数据 加密字段
-          let sellForm = {};
-          this.formJson.forEach(item => {
-            sellForm[item.paramsName] = item.model;
-          })
-          sellForm.contactNumber = this.encrypt(sellForm.contactNumber);
-          sellForm.name = this.encrypt(sellForm.name);
-          sellForm.email = this.encrypt(sellForm.email);
-          sellForm.accountNumbe = this.encrypt(sellForm.accountNumber);
-          sellForm.idNumber = this.encrypt(sellForm.idNumber);
-          this.$store.state.sellForm = sellForm;
-          //跳转状态
-          if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'sellOrder'){
-            this.$router.replace(`/${this.$store.state.cardInfoFromPath}`);
-            return;
+      if(this.request_loading === false){
+        this.request_loading = true;
+        this.$axios.post(this.$api.post_sellForm,params,'').then(res=>{
+          this.request_loading = false;
+          if(res && res.returnCode === '0000'){
+            //存储数据 加密字段
+            let sellForm = {};
+            this.formJson.forEach(item => {
+              sellForm[item.paramsName] = item.model;
+            })
+            sellForm.contactNumber = this.encrypt(sellForm.contactNumber);
+            sellForm.name = this.encrypt(sellForm.name);
+            sellForm.email = this.encrypt(sellForm.email);
+            sellForm.accountNumbe = this.encrypt(sellForm.accountNumber);
+            sellForm.idNumber = this.encrypt(sellForm.idNumber);
+            this.$store.state.sellForm = sellForm;
+            //跳转状态
+            if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'sellOrder'){
+              this.$router.replace(`/${this.$store.state.cardInfoFromPath}`);
+              return;
+            }
+            this.$router.push(`/${this.$store.state.cardInfoFromPath}`);
           }
-          this.$router.push(`/${this.$store.state.cardInfoFromPath}`);
-        }
-      })
+        }).catch(()=>{
+          this.request_loading = false;
+        })
+      }
     },
     inputFocus(){
-      
+
       if(this.$store.state.isPcAndPhone === 'phone'){
         this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
       }else{

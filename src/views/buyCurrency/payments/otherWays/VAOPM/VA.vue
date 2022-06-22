@@ -309,7 +309,7 @@ export default {
     }
     .headline{
       display: flex;
-      align-items: start;
+      align-items: flex-start;
       font-size: 0.15rem;
       font-family: "GeoLight", GeoLight;
       color: #666666;

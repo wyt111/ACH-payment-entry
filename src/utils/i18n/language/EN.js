@@ -2,9 +2,66 @@ module.exports = {
   language:'english',
   nav:{
     /**
+     * 按钮文案
+     */
+    Continue: 'Continue',
+    Confirm: 'Confirm',
+    ConfirmPayment: 'Confirm Payment',
+    queryOderState: 'I have completed the payment',
+    orderRsult: 'Continue to buy crypto',
+
+    /**
+     * 组件
+     */
+    //网络地址组件
+    networkAddress_components_title: 'Address',
+    //协议组件
+    agreement_components_text1: 'I authorise ',
+    agreement_components_text2: 'AlchemyPay ',
+    agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
+    //查询订单状态提示
+    orderTips_title: 'Payment not funt',
+    orderTips_text: 'Sorry, we did not detect your payment information. If you confirm the payment, please stay on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of USDT to you. ',
+    orderTips_buttonText: 'I Understand',
+
+    /**
+     * 路由
+     */
+    routerName_buy: 'Buy Crypto',
+    routerName_sell: 'Sell Crypto',
+    routerName_email: 'Enter Email Address',
+    routerName_emailCode: 'Verification code',
+    routerName_Transactions: 'Transactions',
+    routerName_receivingMode: 'Receive coins',
+    routerName_paymentMethod: 'Choose payment method',
+    routerName_basisIdAuth: 'basis-Id-Auth',
+    routerName_buyForm: 'Enter card details',
+    routerName_creditCardConfig: 'Confirm Payment',
+    routerName_buyPayment: 'Payment',
+    routerName_buyOtherWayPay: 'Confirm Payment',
+    routerName_paymentResult: 'Payment Result',
+    routerName_sellForm: 'Enter Information',
+    routerName_configSell: 'Confirm',
+    routerName_sellOrder: 'Order',
+
+    /**
      * 菜单
      */
-    login:'Login',
+    login: 'Login',
+    loginOut: 'Login out',
+    loginOut_title: 'Are you sure you want to logout?',
+    loginOut_Dismiss: 'Dismiss',
+    enterEmail: 'Enter email',
+    loginTitle1: 'Checkout with Alchemy Pay',
+    loginTitle2: 'The fastest and safest way to checkout on hundreds of crypto apps.',
+    codeTitle1: 'We’ve sent a confirmation code to your email.',
+    codeTitle2: 'If your code doesn\'t arrive shortly. ',
+    codeTitle3: 'New verification code sent ',
+    codeSecond: 's',
+    code_: ' I agree with Alchemy Pay\'s ',
+    code_name: 'Terms of Service',
+    code_and: 'and',
+    code_name2: 'Privacy Policy',
     menu: 'Menu',
     menu_transactions: 'Transactions',
     menu_language: 'Language',
@@ -64,18 +121,22 @@ module.exports = {
     //买币 - 确认订单 - 国际卡
     buy_configPay_title1: 'Paying with',
     buy_configPay_title2: 'CVV',
+    //买币 - 填写表单 - 国际卡
+    buy_form_firstName: 'First Name',
+    buy_form_lastName: 'Last Name',
+    buy_form_cardNumber: 'Card Number',
+    buy_form_expirationDate: 'Expiration Date',
+    buy_form_CVV: 'CVV',
+    buy_form_dataTips: 'Invaid expiry date',
+    buy_form_cardNumTips: 'Please enter a valid card number.',
+    buy_form_cvvTips: 'Please enter a valid CVV',
+
     //买币 - 确认订单 - 印尼支付
     buy_configPayIDR_va_title: 'BANK',
     buy_configPayIDR_va_codeTitle: 'Payment Code',
     buy_configPayIDR_timeDownTips: 'Plese completa payment with ',
     buy_configPayIDR_codeTips: 'Scan QR Code to complete payment',
     buy_configPayIDR_ovo_phoneTips: 'Open OVO app to complete payment.',
-    //网络地址组件
-    networkAddress_components_title: 'Address',
-    //协议组件
-    agreement_components_text1: 'I authorise ',
-    agreement_components_text2: 'AlchemyPay ',
-    agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
     //订单结果页
     payResult_errorMessage: 'Invoice Expired!',
     payResult_timeErrorMessage: 'Payment Fail! Please check your card information.',
@@ -84,7 +145,6 @@ module.exports = {
     payResult_feeHash: 'Hash',
     payResult_feeWallet: 'ACH Wallet',
     payResult_feePassword: 'ACH Wallet',
-
 
 
 
@@ -116,5 +176,73 @@ module.exports = {
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     //确认订单页
     sell_configOrder_title: 'Bank Card',
+    //表单页
+    sell_form_Name: 'Name',
+    sell_form_NameTips: 'Invalid Name!',
+    sell_form_Address: 'Address',
+    sell_form_AddressTips: 'Invalid Address!',
+    sell_form_AddressMultinomialTips: 'Address can not be null',
+    sell_form_City: 'City',
+    sell_form_CityTips: 'Invalid City!',
+    sell_form_State: 'State',
+    sell_form_StateTips: 'Invalid State!',
+    sell_form_Postcode: 'Postcode',
+    sell_form_PostcodeTips: 'Invalid Postcode!',
+    sell_form_accountNumber: 'Account Number',
+    sell_form_accountNumberTips: 'Invalid Account Number!',
+    sell_form_achCode: 'ACH Code',
+    sell_form_achCodeTips: 'Invalid ACH Code!',
+    sell_form_contactNumber: 'Contact Number',
+    sell_form_contactNumberTips: 'Invalid Contact Number!',
+    sell_form_swiftCode: 'Swift Code',
+    sell_form_swiftCodeTips: 'Invalid Swift Code!',
+    sell_form_branchName: 'Branch Name',
+    sell_form_branchNameTips: 'Invalid Branch Name!',
+    sell_form_branchNameMultinomialTips: 'Branch name can not be null',
+    sell_form_bankAccountType: 'Bank Account Type',
+    sell_form_bankAccountTypeTips: 'Invalid Bank Account Type!',
+    sell_form_bankAccountTypeLi_Saving: 'Saving',
+    sell_form_bankAccountTypeLi_Checking: 'Checking',
+    sell_form_bankAccountTypeLi_TimeDeposit: 'Time Deposit',
+    sell_form_bankAccountTypeLi_Others: 'Others',
+    sell_form_bankCode: 'Bank Code',
+    sell_form_bankCodeTips: 'Invalid Bank Code!',
+    sell_form_branchCode: 'Branch Code',
+    sell_form_branchCodeTips: 'Invalid Branch Code!',
+    sell_form_locationId: 'Location Id',
+    sell_form_locationIdTips: 'Invalid Location Id!',
+    sell_form_CPFNumber: 'CPF Number',
+    sell_form_CPFNumberTips: 'Invalid CPF Number!',
+    sell_form_IDType: 'ID Type',
+    sell_form_IDTypeTips: 'Invalid ID Type!',
+    sell_form_bankAccountTypeLi_CUIT: 'CUIT',
+    sell_form_bankAccountTypeLi_CUIL: 'CUIL',
+    sell_form_IDNumber: 'ID Number',
+    sell_form_IDNumberTips: 'Invalid ID Number!',
+    sell_form_accountTypeLi_Maestra: 'Maestra',
+    sell_form_IDTypeLi_DNI: 'DNI',
+    sell_form_IDTypeLi_RUC: 'RUC',
+    sell_form_IDTypeLi_CE: 'CE',
+    sell_form_IDTypeLi_PASS: 'PASS',
+    sell_form_RUTNumber: 'RUT Number',
+    sell_form_RUTNumberTips: 'Invalid RUT Number!',
+    sell_form_BSBCode: 'BSB Code',
+    sell_form_BSBCodeTips: 'Invalid BSB Code!',
+    sell_form_Email: 'Email',
+    sell_form_EmailTips: 'Invalid Email!',
+    sell_form_SortCode: 'Sort Code',
+    sell_form_SortCodeTips: 'Invalid Sort Code!',
+    sell_form_IFSC: 'IFSC',
+    sell_form_IFSCTips: 'Invalid IFSC!',
+    sell_form_IDTypeLi_NIT: 'NIT',
+    sell_form_IDTypeLi_CC: 'CC',
+    sell_form_IDTypeLi_TI: 'TI',
+    sell_form_IDTypeLi_RUT: 'RUT',
+    sell_form_IDTypeLi_CI: 'CI',
+    sell_form_TransitNumber: 'Transit Number',
+    sell_form_TransitNumberTips: 'Invalid Transit Number!',
+    sell_form_bankSwiftTips: 'cannot be empty at the same time',
+    sell_form_bankSwiftCodeTips: 'Bank code and swift code cannot be empty at the same time',
+    sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
   }
 }
