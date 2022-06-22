@@ -166,17 +166,11 @@ export default {
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){
-            // this.$store.state.buyRouterParams
-            let oldRouterQuery = this.$store.state.buyRouterParams;
-            let newRouterQuery = {
-              orderNo: res.data.orderNo,
-              kyc: res.data.kyc,
-              userCardId: res.data.userCardId,
-              submitForm: res.data,
-              payWayCode: this.payMethod.payWayCode,
-              payWayName: this.payMethod.payWayName,
-            };
-            this.$store.state.buyRouterParams = {...newRouterQuery,...oldRouterQuery};
+            this.$store.state.buyRouterParams.orderNo = res.data.orderNo;
+            this.$store.state.buyRouterParams.kyc = res.data.kyc;
+            this.$store.state.buyRouterParams.submitForm = res.data;
+            this.$store.state.buyRouterParams.payWayCode = this.payMethod.payWayCode;
+            this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;
             this.JumpRouter();
           }
         })
@@ -188,6 +182,7 @@ export default {
       //选择历史支付
       if(this.cardCheck !== '' && this.payMethod.payWayCode === '10001'){
         this.payMethod.cardNumber = AES_Encrypt(this.payMethod.cardNumber);
+        this.$store.state.buyRouterParams.userCardId = this.payMethod.userCardId;
         this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`);
         return;
       }

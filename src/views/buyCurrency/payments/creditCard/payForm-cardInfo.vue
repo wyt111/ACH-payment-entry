@@ -269,7 +269,7 @@ export default {
 
       queryParams.firstname = AES_Encrypt(queryParams.firstname.trim());
       queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
-      queryParams.email === '' ? queryParams.email = localStorage.getItem("email") : '';
+      queryParams.email = localStorage.getItem("email");
       queryParams.source = 0;
 
       if(this.request_loading === false){
@@ -279,6 +279,7 @@ export default {
           if(res && res.returnCode === '0000'){
             queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
             queryParams.userCardId = res.data.userCardId;
+            this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
             //是否验证过baseId
             if(this.$store.state.buyRouterParams.kyc === true){
               this.$router.replace(`/basisIdAuth?submitForm=${JSON.stringify(queryParams)}`);

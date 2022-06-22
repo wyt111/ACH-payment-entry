@@ -88,8 +88,6 @@ export default {
       immediate: true,
       deep: true,
       handler(){
-        clearInterval(this.timeOut)
-        this.queryFee();
         this.timingSetting();
       }
     },
@@ -106,8 +104,6 @@ export default {
     '$store.state.buyRouterParams.amount': {
       deep: true,
       handler() {
-        clearInterval(this.timeOut)
-        this.queryFee();
         this.timingSetting();
       }
     },
@@ -115,8 +111,6 @@ export default {
     '$store.state.buyRouterParams.cryptoCurrency': {
       deep: true,
       handler() {
-        clearInterval(this.timeOut)
-        this.queryFee();
         this.timingSetting();
       }
     }
@@ -134,6 +128,7 @@ export default {
     //接收路由信息
     this.routerParams = this.$store.state.buyRouterParams;
     this.payCommission = this.routerParams.payCommission;
+    this.timingSetting();
   },
   destroyed(){
     clearInterval(this.timeOut)
@@ -144,6 +139,8 @@ export default {
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
+      clearInterval(this.timeOut)
+      this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
           this.timeDownNumber = 15;
