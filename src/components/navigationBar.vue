@@ -60,6 +60,10 @@ export default {
         this.$router.push('/');
         return;
       }
+       if(this.routerPath === '/verifyCode' &&  this.$route.path === '/receivingMode'){
+        this.$router.push('/');
+        return;
+      }
       if(this.routerPath === '/verifyCode' && this.$route.path === '/receivingMode'){
         this.$router.push('/');
         return;
