@@ -214,7 +214,8 @@ export default {
       immediate:true,
       deep:true,
        handler(newVal){
-         if((newVal || newVal === 'login') && this.$store.state.isLogin === true){
+        //  console.log(newVal);
+         if(newVal === true && this.token === true&& this.$store.state.isLogin === true){
            this.transationsList()
           //  console.log(this.finished);
          }

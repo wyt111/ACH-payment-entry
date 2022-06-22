@@ -68,7 +68,7 @@ export default {
     },
     openMenu(){
       this.menuState = this.menuState === true ? false : true;
-      this.$store.state.menuState = this.menuState
+      this.$store.state.menuState = this.menuState?true:false
     },
     switchTab(tab){
       this.$store.state.homeTabstate = tab;
@@ -82,7 +82,8 @@ export default {
         }
       })
     },
-  }
+  },
+  
 };
 </script>
 

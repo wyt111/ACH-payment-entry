@@ -37,6 +37,7 @@ const store = new Vuex.Store({
         //多语言
         languageValue:'EN-US',
         LanguageIsShow:false,
+        menuState:false,
         isLogin:false
     },
     mutations: {
