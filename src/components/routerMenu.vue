@@ -215,8 +215,9 @@ export default {
       deep:true,
        handler(newVal){
         //  console.log(newVal);
-         if(newVal === true && this.token === true&& this.$store.state.isLogin === true){
-           this.transationsList()
+         if(newVal === true ){
+           localStorage.getItem("token") ? this.token = true : false;
+           this.token===true?this.transationsList():''
           //  console.log(this.finished);
          }
       }
