@@ -66,7 +66,7 @@ export default {
   },
   methods:{
     receiveinfo(){
-      this.routerParams = JSON.parse(this.$route.query.routerParams)
+      this.routerParams = this.$store.state.buyRouterParams
       //Selected Receive local data
       if(sessionStorage.getItem("indonesiaPayment")){
         this.payExplain = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -117,7 +117,7 @@ export default {
       this.paymentCountDown = setInterval(()=>{
         //order overtime
         if(this.paymentCountDownNum === 0){
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
         this.$parent.paymentCountDownMinute = timeDown(this.paymentCountDownNum);
         this.paymentCountDownNum -= 1;
@@ -135,11 +135,11 @@ export default {
     //order status
     requestStatus(){
       let params = {
-        "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
+        "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res=>{
         if(res && res.returnCode === '0000' && res.data.orderStatus > 2 && res.data.orderStatus <= 6){
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
       })
     },
@@ -163,7 +163,7 @@ export default {
       //place an order
       this.bankState = false;
       var params = {
-        orderNo: JSON.parse(this.$route.query.routerParams).orderNo,
+        orderNo: this.$store.state.buyRouterParams.orderNo,
         payBankCode: this.payExplain.bankCode,
         lastname: "11111"
       }

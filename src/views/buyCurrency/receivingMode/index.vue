@@ -127,12 +127,11 @@ export default {
     //Get address bar information
     routingInformation(){
       localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : this.email = '';
-      this.routerParams = JSON.parse(this.$route.query.routerParams);
-      let query = JSON.parse(this.$route.query.routerParams);
+      this.routerParams = this.$store.state.buyRouterParams;
       //essential information
-      this.buyParams.fiatCurrency = query.payCommission.code;
-      this.buyParams.cryptoCurrency = query.cryptoCurrency;
-      this.buyParams.amount = query.amount;
+      this.buyParams.fiatCurrency = this.$store.state.buyRouterParams.payCommission.code;
+      this.buyParams.cryptoCurrency = this.$store.state.buyRouterParams.cryptoCurrency;
+      this.buyParams.amount = this.$store.state.buyRouterParams.amount;
       this.verifyMerchantInfo();
     },
 
@@ -248,17 +247,12 @@ export default {
       }
 
       //跳转选择支付方式 支付方式页调取下单接口
-      let ordParams = JSON.parse(this.$route.query.routerParams);
-      let newParams = {
-        depositType: buyParams.depositType,
-        receiveMethods: this.checkModel[0],
-        networkDefault: buyParams.network,
-        addressDefault: buyParams.address
-      }
-      this.checkModel[0] === 'ach' ? (delete newParams.network,delete newParams.address) : '';
-      Object.assign(newParams, ordParams);
+      this.$store.state.buyRouterParams.depositType = buyParams.depositType;
+      this.$store.state.buyRouterParams.receiveMethods = this.checkModel[0];
+      this.$store.state.buyRouterParams.networkDefault = buyParams.network;
+      this.$store.state.buyRouterParams.addressDefault = buyParams.address;
       this.$store.state.placeOrderQuery = buyParams;
-      this.$router.push(`/paymentMethod?routerParams=${JSON.stringify(newParams)}`);
+      this.$router.push('/paymentMethod');
     },
   }
 }

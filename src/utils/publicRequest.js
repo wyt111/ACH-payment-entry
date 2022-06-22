@@ -1,7 +1,6 @@
-import router from "../router";
+import store from "../store";
 import axios from "axios";
 import { AES_Encrypt } from '@/utils/encryp.js';
-import {AES_Decrypt} from "./encryp";
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
@@ -9,7 +8,7 @@ const baseUrl = process.env.VUE_APP_BASE_API;
 export function querySubmitToken(){
     //Payment or submission interface failed to obtain again 'submit-token'
     let params = {
-        "coin": JSON.parse(router.currentRoute.query.routerParams).cryptoCurrency,
+        "coin": store.state.buyRouterParams.cryptoCurrency,
         "email": localStorage.getItem("email")
     }
     //timestamp and sign

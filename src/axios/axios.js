@@ -117,7 +117,7 @@ axios.interceptors.response.use(function (response) {
     localStorage.removeItem("userId");
     localStorage.removeItem("kycStatus");
     if(fromRouter === '/receivingMode' && toRouter === '/'){
-      router.replace(`/emailCode?routerParams=${router.currentRoute.query.routerParams}`);
+      router.replace(`/emailCode`);
       return;
     }
     if(fromRouter === '/tradeHistory'){

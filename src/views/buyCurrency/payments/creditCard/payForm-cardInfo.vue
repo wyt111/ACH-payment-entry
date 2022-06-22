@@ -280,12 +280,12 @@ export default {
             queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
             queryParams.userCardId = res.data.userCardId;
             //是否验证过baseId
-            if(JSON.parse(this.$route.query.routerParams).kyc === true){
-              this.$router.replace(`/basisIdAuth?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
+            if(this.$store.state.buyRouterParams.kyc === true){
+              this.$router.replace(`/basisIdAuth?submitForm=${JSON.stringify(queryParams)}`);
               return;
             }
             //跳转确认订单页
-            this.$router.replace(`/creditCardConfig?routerParams=${this.$route.query.routerParams}&submitForm=${JSON.stringify(queryParams)}`);
+            this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}`);
           }
         }).catch(()=>{
           this.request_loading = false;

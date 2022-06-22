@@ -103,7 +103,7 @@ export default {
     //go to next page
     payNext(){
       if(this.CallbackState === true){
-        this.$router.replace(`/creditCardConfig?routerParams=${this.$route.query.routerParams}&submitForm=${this.$route.query.submitForm}`);
+        this.$router.replace(`/creditCardConfig?submitForm=${this.$route.query.submitForm}`);
       }else{
         this.$router.replace('/');
       }

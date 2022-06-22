@@ -105,7 +105,7 @@ export default {
 
     //跳转修改卡信息页面
     goPayForm(){
-      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?routerParams=${this.$route.query.routerParams}&submitForm=${this.$route.query.submitForm}&configPaymentFrom=userPayment`) : '';
+      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.$route.query.submitForm}&configPaymentFrom=userPayment`) : '';
     },
 
     /**
@@ -137,8 +137,8 @@ export default {
       if(this.submitState === true && submitToken === true){
         this.submitState = false;
         let newParams = {};
-        newParams.orderNo = JSON.parse(this.$route.query.routerParams).orderNo;
-        newParams.userCardId = JSON.parse(this.$route.query.submitForm).userCardId;
+        newParams.orderNo = this.$store.state.buyRouterParams.orderNo;
+        newParams.userCardId = this.$store.state.buyRouterParams.userCardId;
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
@@ -161,7 +161,7 @@ export default {
     //查询订单状态
     queryOrderStatus(){
       let params = {
-        "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
+        "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res2=>{
         if(res2.data.orderStatus && res2.data.orderStatus > 2 && res2.data.orderStatus <= 6){
@@ -169,7 +169,7 @@ export default {
           localStorage.removeItem("submit-token");
           this.submitState = true;
           this.$parent.$parent.tipsState = false;
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
       })
     },

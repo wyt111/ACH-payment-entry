@@ -38,7 +38,7 @@
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
     </div>
-      
+
       <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">Continue
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
         <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
@@ -112,16 +112,12 @@ export default {
         if(res.returnCode === '0000'){
           this.login_loading = false
           this.$store.state.userEmail = AES_Encrypt(this.email)
-          let n = this.$route.query.routerParams
           this.$router.push({
             path:'/verifyCode',
-            query:{
-              routerParams:n
-            }
           })
         }
       })
-      
+
     },500,false),
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
@@ -150,7 +146,7 @@ export default {
         })
         axios(config).then(function (response) {
           _this.login_state = true;
-         
+
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             if(_this.$route.query.fromName === 'tradeList'){
@@ -158,7 +154,7 @@ export default {
             }else{
               //登陆跳转路径根据router.from的路由跳转不同页面
               if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                _this.$router.push(`/receivingMode?routerParams=${_this.$route.query.routerParams}`);
+                _this.$router.push(`/receivingMode`);
               }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
                 let params = {
                   country: _this.$store.state.sellRouterParams.positionData.alpha2,
@@ -203,7 +199,7 @@ export default {
     }
   },
   mounted(){
-      
+
   }
 }
 </script>

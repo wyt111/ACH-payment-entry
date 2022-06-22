@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     receiveInfo(){
-      this.parameter = JSON.parse(this.$route.query.routerParams);
+      this.parameter = this.$store.state.buyRouterParams;
       //Restore the data before refreshing the page
       if(sessionStorage.getItem("indonesiaPayment")) {
         let data = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -151,7 +151,7 @@ export default {
       if(submitToken === true){
         //DANA、QRIS
         var params = {
-          orderNo: JSON.parse(this.$route.query.routerParams).orderNo,
+          orderNo: this.$store.state.buyRouterParams.orderNo,
           lastname: "11111"
         }
         //OVO
@@ -205,7 +205,7 @@ export default {
       this.paymentCountDown = setInterval(()=>{
         //order overtime
         if(this.paymentCountDownNum === 0){
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
         this.paymentCountDownMinute = timeDown(this.paymentCountDownNum);
         this.paymentCountDownNum -= 1;
@@ -219,12 +219,12 @@ export default {
     },
     requestStatus(){
       let params = {
-        "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
+        "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res=>{
         if(res && res.returnCode === '0000' && res.data.orderStatus > 2 && res.data.orderStatus <= 6){
           this.$parent.$parent.tipsState = false;
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
       })
     },
