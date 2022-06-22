@@ -259,7 +259,7 @@ export default {
       padding: 0.04rem 0 0.16rem 0;
       .fee-content-details-line{
         display: flex;
-        align-items: start;
+        align-items: flex-start;
         margin-top: 0.12rem;
         .title{
           display: flex;

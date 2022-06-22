@@ -82,9 +82,15 @@ export default {
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
     }
+    //pagehide防止移动端beforeunload不能触发
+    window.addEventListener('pagehide', () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    })
     window.addEventListener("beforeunload",()=>{
       sessionStorage.setItem("store", JSON.stringify(this.$store.state))
     })
+
+
   },
   methods: {
     //动态获取屏幕大小计算rem

@@ -327,7 +327,9 @@ export default {
           border: none;
           outline: none;
           padding: 0 0.16rem;
-          border: none;
+          &::placeholder{
+            color: #999999;
+          }
         }
         .rightIcon{
           position: absolute;
