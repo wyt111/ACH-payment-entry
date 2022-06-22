@@ -2,8 +2,20 @@ module.exports = {
   language:'english',
   nav:{
     /**
+     * 菜单
+     */
+    login:'Login',
+    menu: 'Menu',
+    menu_transactions: 'Transactions',
+    menu_language: 'Language',
+    menu_terms: 'Terms of Service',
+    menu_privacy: 'Privacy Policy',
+    menu_logOut: 'Log Out',
+
+    /**
      * 首页
      */
+    copyTips: 'copy success',
     // 买币标题
     home_buyTitle: "Buy Crypto",
     //卖币标题
@@ -14,7 +26,10 @@ module.exports = {
     home_feeTimeDownTitle: 'Remaining time',
     home_feeTimeDown: 'Quote updates in',
     home_feeRampFeeTips: 'as low as',
-    //买币
+
+    /**
+     * 买币
+     */
     home_youPay: 'You Pay',
     home_youBuyGet: 'You Get',
     home_buyFee_timeDownTitle: 'Remaining time',
@@ -46,20 +61,36 @@ module.exports = {
     buy_payment_addTitle: 'Add a new payment methods',
     buy_payment_instant: 'Instant',
     buy_payment_ending: 'Ending',
-    //买币 - 确认订单
+    //买币 - 确认订单 - 国际卡
     buy_configPay_title1: 'Paying with',
     buy_configPay_title2: 'CVV',
+    //买币 - 确认订单 - 印尼支付
+    buy_configPayIDR_va_title: 'BANK',
+    buy_configPayIDR_va_codeTitle: 'Payment Code',
+    buy_configPayIDR_timeDownTips: 'Plese completa payment with ',
+    buy_configPayIDR_codeTips: 'Scan QR Code to complete payment',
+    buy_configPayIDR_ovo_phoneTips: 'Open OVO app to complete payment.',
     //网络地址组件
     networkAddress_components_title: 'Address',
-    networkAddress_components_copyTips: 'copy success',
     //协议组件
     agreement_components_text1: 'I authorise ',
     agreement_components_text2: 'AlchemyPay ',
     agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
+    //订单结果页
+    payResult_errorMessage: 'Invoice Expired!',
+    payResult_timeErrorMessage: 'Payment Fail! Please check your card information.',
+    payResult_feeAmount: 'Amount',
+    payResult_feeAddress: 'Address',
+    payResult_feeHash: 'Hash',
+    payResult_feeWallet: 'ACH Wallet',
+    payResult_feePassword: 'ACH Wallet',
 
 
 
-    login:'Login',
+
+    /**
+     * 卖币
+     */
     //卖币状态
     Sellorder_transfer:'Please transfer ',
     Sellorder_within:'to the address within ',
@@ -82,6 +113,8 @@ module.exports = {
     Sellorder_Continue:'Continue to sell crypto',
     Sellorder_QRCode:'Scan QR Code',
     //菜单栏语言
-    RouterMenu_Welcome:'Welcome to Alchemy Pay!'
+    RouterMenu_Welcome:'Welcome to Alchemy Pay!',
+    //确认订单页
+    sell_configOrder_title: 'Bank Card',
   }
 }

@@ -51,7 +51,7 @@
       </button>
         </div>
       </div>
-      
+
     </div>
   </div>
 </template>
@@ -257,7 +257,7 @@ export default {
       queryParams.cardCvv = AES_Encrypt(queryParams.cardCvv);
 
       queryParams.firstname = AES_Encrypt(queryParams.firstname.trim());
-      queryParams.lastname = AES_Encrypt(queryParams.lastname);
+      queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
       queryParams.email === '' ? queryParams.email = localStorage.getItem("email") : '';
       queryParams.source = 0;
 
