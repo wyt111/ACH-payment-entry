@@ -262,7 +262,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          this.playMoneyState=1
+          // this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -666,7 +666,7 @@ export default{
     font-family: Jost-Bold, Jost;
     font-weight: 500;
     color: #232323;
-    padding: .1rem 0 .1rem .2rem;
+    padding: .1rem .1rem .1rem .2rem;
     border-radius: .1rem;
   }
   .popup_center{

@@ -198,7 +198,7 @@ export default {
     //卡号验证
     cardBlur(){
 
-      this.buttonIsShow = true
+      // this.buttonIsShow = true
 
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
@@ -215,12 +215,12 @@ export default {
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
       }
-       if(this.$store.state.isPcAndPhone === 'phone'){
-         this.buttonIsShow = false
+      //  if(this.$store.state.isPcAndPhone === 'phone'){
+      //    this.buttonIsShow = false
         // this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
-      }else{
-        this.buttonIsShow = true
-      }
+      // }else{
+      //   this.buttonIsShow = true
+      // }
 
       //判断卡号是Visa or Master
       setTimeout(()=>{
