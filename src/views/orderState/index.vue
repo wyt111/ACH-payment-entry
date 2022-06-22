@@ -248,18 +248,20 @@ export default{
     },
     //获取买币状态
     getCurrencyStatus(){
-      let sellOrderId = sessionStorage.getItem('sellOrderId')
+      // let sellOrderId = sessionStorage.getItem('sellOrderId')
+      // console.log(this.$store.state.sellOrderId);
       let parmas = {
         // id:'426'
-        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        id:this.$route.query.id
       }
+      console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-          console.log(this.network1);
+          // console.log(this.network1);
           // this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
@@ -369,7 +371,7 @@ export default{
   },
 
   activated (){
-    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
+    // this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
     this.$store.state.emailFromPath = 'sellOrder'
     this.getCurrencyStatus()
     this.timer = setInterval(()=>{

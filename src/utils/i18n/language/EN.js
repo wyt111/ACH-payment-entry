@@ -114,7 +114,15 @@ module.exports = {
     Sellorder_QRCode:'Scan QR Code',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
-    //确认订单页
+    RouterMenu_experience:'Login to unlock the full experience',
+    RouterMenu_Transactions:'Transactions',
+    RouterMenu_history:'No history yet',
+    RouterMenu_Language:'Language',
+    RouterMenu_Service:'Terms of Service',
+    RouterMenu_Policy:'Privacy Policy',
+    RouterMenu_logout:'Are you sure you want to logout?',
+    RouterMenu_Dismiss:'Dismiss',
+
     sell_configOrder_title: 'Bank Card',
   }
 }

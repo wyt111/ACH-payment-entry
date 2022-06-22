@@ -140,6 +140,7 @@ export default {
           if(res && res.returnCode === "0000"){
             this.$parent.routerViewState = true;
             this.$parent.menuState = false;
+            this.$store.state.isLogin = false
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
             localStorage.removeItem("email");
@@ -205,13 +206,15 @@ export default {
     }
   },
   watch:{
-    token:{
+    
+    '$store.state.menuState':{
       immediate:true,
-      handler(newVal){
-        if(newVal && this.$store.state.menuState ){
-          console.log(this.$store.state.menuState );
-          this.transationsList()
-        }
+      deep:true,
+       handler(newVal){
+         if((newVal || newVal === 'login') && this.$store.state.isLogin === true){
+           this.transationsList()
+          //  console.log(this.finished);
+         }
       }
     }
   }

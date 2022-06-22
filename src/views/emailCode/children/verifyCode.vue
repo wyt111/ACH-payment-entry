@@ -116,6 +116,8 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           if(response.returnCode === '0000'){
             _this.codeErrorState = false;
             _this.showLoading = false
+            _this.$store.state.isLogin = true
+            _this.$store.state.menuState = 'login'
             // debugger
             // console.log(_this.$store.state.routerQueryPath);
         if(_this.$store.state.routerQueryPath === true){
