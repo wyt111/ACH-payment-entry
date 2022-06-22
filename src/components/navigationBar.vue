@@ -47,10 +47,10 @@ export default {
   },
   methods: {
     goBack(){
-      if(this.$route.path === '/emailCode'){
-        this.$router.push('/')
-        return;
-      }
+      // if(this.$route.path === '/emailCode'){
+      //   this.$router.push('/')
+      //   return;
+      // }
       //add sellOrder page back home
       if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ){
         this.$router.push('/');

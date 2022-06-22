@@ -59,6 +59,7 @@ export default {
       return this.$store.state.homeTabstate;
     }
   },
+  
   methods: {
     openSearch(view,choiseItem) {
       this.searchState = false;
@@ -67,6 +68,7 @@ export default {
     },
     openMenu(){
       this.menuState = this.menuState === true ? false : true;
+      this.$store.state.menuState = this.menuState
     },
     switchTab(tab){
       this.$store.state.homeTabstate = tab;

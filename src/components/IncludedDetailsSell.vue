@@ -93,6 +93,7 @@
 /**
  * timeDownState 定时刷新状态
  * isHome 是否是首页使用
+ * orderState 是否显示记时
  */
 import common from "../utils/common";
 

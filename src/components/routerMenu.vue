@@ -208,7 +208,8 @@ export default {
     token:{
       immediate:true,
       handler(newVal){
-        if(newVal){
+        if(newVal && this.$store.state.menuState ){
+          console.log(this.$store.state.menuState );
           this.transationsList()
         }
       }
