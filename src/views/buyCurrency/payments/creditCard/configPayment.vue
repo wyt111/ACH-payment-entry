@@ -18,7 +18,7 @@
       <div class="formLine" v-if="newCvvState">
         <div class="formTitle">CVV</div>
         <div class="formContent">
-          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4">
+          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4" >
           <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">
         </div>
       </div>
@@ -53,6 +53,7 @@ export default {
       newCvvState: false,
       newCvv: '',
       cvvDisabled: false,
+
 
       //勾选协议
       childData: {

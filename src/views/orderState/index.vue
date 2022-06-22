@@ -254,7 +254,7 @@ export default{
         // id:'426'
         id:this.$route.query.id
       }
-      console.log(parmas);
+      // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
           this.orderStateData = res.data
@@ -262,7 +262,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=1
+          this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))

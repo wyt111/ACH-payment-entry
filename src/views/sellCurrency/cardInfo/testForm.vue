@@ -18,7 +18,7 @@
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
       </div>
     </div>
-    <button class="continue" :disabled="disabled" @click="submit">Continue</button>
+    <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow">Continue</button>
     <!-- 单选框 -->
     <div class="selectView" v-if="selectState" @click="selectState=false">
       <ul class="selectDate">
@@ -38,6 +38,7 @@ export default {
     return{
       formJson: [],
       currency: "",
+      buttonIsShow:true,
       selectState: false,
       selected: {
         item: {},
@@ -198,13 +199,19 @@ export default {
     inputFocus(){
       
       if(this.$store.state.isPcAndPhone === 'phone'){
-        this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
+        this.buttonIsShow = false
+        return
+        // this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
       }else{
-        this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+        this.buttonIsShow = true
+        return
+        // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
     },
     inputBlur(){
-      this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+       
+        this.buttonIsShow = true
+      // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
     },
 
     encrypt(val){
