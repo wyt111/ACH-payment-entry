@@ -63,7 +63,6 @@ export default {
   components: { IncludedDetails },
   data(){
     return{
-      routerParams: {},
       buyParams: {},
 
       cardCheck: '',
@@ -103,7 +102,6 @@ export default {
   },
   methods: {
     async InitializationData(){
-      this.routerParams = JSON.parse(this.$route.query.routerParams);
       this.cardCheck = '';
       this.savedCard = [];
       this.paymethodCheck = '';
@@ -113,7 +111,7 @@ export default {
     },
     async queryPayMethods(){
       let _this = this;
-      await this.$axios.get(this.$api.get_payMethods + this.routerParams.payCommission.code,'').then(res=>{
+      await this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
@@ -168,7 +166,8 @@ export default {
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           if(res && res.returnMsg === 'SUCCESS'){
-            let oldRouterQuery = JSON.parse(this.$route.query.routerParams);
+            // this.$store.state.buyRouterParams
+            let oldRouterQuery = this.$store.state.buyRouterParams;
             let newRouterQuery = {
               orderNo: res.data.orderNo,
               kyc: res.data.kyc,
@@ -177,8 +176,7 @@ export default {
               payWayCode: this.payMethod.payWayCode,
               payWayName: this.payMethod.payWayName,
             };
-            newRouterQuery = {...newRouterQuery,...oldRouterQuery};
-            this.routerParams = JSON.parse(JSON.stringify(newRouterQuery));
+            this.$store.state.buyRouterParams = {...newRouterQuery,...oldRouterQuery};
             this.JumpRouter();
           }
         })
@@ -190,32 +188,31 @@ export default {
       //选择历史支付
       if(this.cardCheck !== '' && this.payMethod.payWayCode === '10001'){
         this.payMethod.cardNumber = AES_Encrypt(this.payMethod.cardNumber);
-        this.$router.push(`/creditCardConfig?routerParams=${JSON.stringify(this.routerParams)}&submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`);
+        this.$router.push(`/creditCardConfig?submitForm=${JSON.stringify(this.payMethod)}&configPaymentFrom=userPayment`);
         return;
       }
       if(this.cardCheck !== '' && (this.payMethod.payWayCode === '10003' || '10008')){
-        this.$router.push(`/otherWays-VA?routerParams=${JSON.stringify(this.routerParams)}&payMethod=${JSON.stringify(this.payMethod)}`);
+        this.$router.push(`/otherWays-VA?payMethod=${JSON.stringify(this.payMethod)}`);
         return;
       }
       if(this.cardCheck !== '' && (this.payMethod.payWayCode === '10004' || '10005' || '10006')){
-        this.$router.push(`/otherWayPay?routerParams=${JSON.stringify(this.routerParams)}&payMethod=${JSON.stringify(this.payMethod)}`);
+        this.$router.push(`/otherWayPay?payMethod=${JSON.stringify(this.payMethod)}`);
         return;
       }
 
       //选择新填写支付方式
       if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001'){ //USD
-        // this.$router.push(`/creditCardForm-address?routerParams=${JSON.stringify(this.routerParams)}`);
-        this.$router.push(`/creditCardForm-cardInfo?routerParams=${JSON.stringify(this.routerParams)}`);
+        this.$router.push(`/creditCardForm-cardInfo`);
         return;
       }
       if(this.paymethodCheck !== ''  && this.payMethod.payWayCode !== '10001'){ //IDR | 10008
         if(this.payMethod.payWayCode === '10003' || this.payMethod.payWayCode === '10008'){
           // sessionStorage.removeItem("indonesiaPayment")
-          this.$router.push(`/otherWays-VA?routerParams=${JSON.stringify(this.routerParams)}`);
+          this.$router.push(`/otherWays-VA`);
           return;
         }
         if(this.payMethod.payWayCode === '10004' || this.payMethod.payWayCode === '10005' || this.payMethod.payWayCode === '10006'){ //QRIS DANA OVO
-          this.$router.push(`/otherWayPay?routerParams=${JSON.stringify(this.routerParams)}`);
+          this.$router.push(`/otherWayPay`);
         }
       }
     }

@@ -21,24 +21,26 @@ const store = new Vuex.Store({
   // modules,
   // getters
     state: {
-        emailFromPath: '',
-        cardInfoFromPath: '',
+        emailFromPath: '', //登陆后前往页面地址
+        cardInfoFromPath: '', //填写卡信息后返回页面地址
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
 
-        buyRouterParams: {},
-        sellRouterParams: {},
+        buyRouterParams: {}, //买币页面参数
+        sellRouterParams: {}, //卖币页面参数
 
-        feeParams: {},
+        feeParams: {}, //卖币费用请求参数
         sellOrderId: '',
 
-        cancelTokenArr: [],
+        cancelTokenArr: [], //ajax请求队列
+
         //多语言
         languageValue:'EN-US',
         LanguageIsShow:false,
         isLogin:false
     },
     mutations: {
+        //结束所有请求进程
         pushToken (state, payload) {
             state.cancelTokenArr.push(payload.cancelToken)
         },

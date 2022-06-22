@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     receiveInfo(){
-      this.routerParams = JSON.parse(this.$route.query.routerParams);
+      this.routerParams = this.$store.state.buyRouterParams;
       //还原刷新前数据状态
       if(sessionStorage.getItem("indonesiaPayment")) { // && this.routerParams.payWayCode === '10003'
         this.payExplain = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -121,12 +121,12 @@ export default {
     //order status
     requestStatus(){
       let params = {
-        "orderNo": JSON.parse(this.$route.query.routerParams).orderNo
+        "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res=>{
         if(res && res.returnCode === '0000' && res.data.orderStatus > 2 && res.data.orderStatus <= 6){
           this.$parent.$parent.tipsState = false;
-          this.$router.replace(`/paymentResult?customParam=${JSON.parse(this.$route.query.routerParams).orderNo}`);
+          this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
       })
     },

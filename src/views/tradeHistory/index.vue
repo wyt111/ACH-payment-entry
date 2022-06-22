@@ -77,6 +77,12 @@ export default {
     }
   },
   activated(){
+    this.query = {
+      orderState: 4,
+      orderType: 1,
+      pageIndex: 1,
+      pageSize: 5
+    };
     this.historyList = [];
     this.queryTransactionHistory();
   },
