@@ -35,7 +35,8 @@ const store = new Vuex.Store({
         cancelTokenArr: [],
         //多语言
         languageValue:'EN-US',
-        LanguageIsShow:false
+        LanguageIsShow:false,
+        isLogin:false
     },
     mutations: {
         pushToken (state, payload) {

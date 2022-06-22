@@ -1,7 +1,7 @@
 <template>
-  <div id="viewBox">
-    <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}">
-        <div id="App" ref="viewApp">
+  <div id="viewBox" ref="viewApp">
+    <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
+        <div id="App" >
           <!-- logo view for phone -->
           <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
@@ -69,12 +69,15 @@ export default {
     }
   },
   mounted(){
-    let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
-    window.addEventListener('resize',()=>{
-      this.$refs.viewApp.style.height = (innerHight - 80) + 'px'
-      // console.log(this.$refs.viewApp.clientHeight);
-    })
     this.obtainWidth();
+    let innerHight = document.documentElement.clientHeight || document.body.clientHeight;
+    let innerWidth = document.documentElement.clientWidth || document.body.clientWidth
+      window.addEventListener('resize',()=>{
+        if(innerWidth < 791)
+        this.$refs.viewApp.style.height = (innerHight ) + 'px'
+        else
+        return false
+      })
     //Vuex store data
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
