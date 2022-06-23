@@ -129,6 +129,8 @@ axios.interceptors.response.use(function (response) {
   //Request callback prompt
   requestPrompt(response.data);
   return response.data
+},function (error){
+  return Promise.reject(error)
 });
 
 axios.defaults.timeout = 30000; // Set the request timeout (MS) to no more than half a minute

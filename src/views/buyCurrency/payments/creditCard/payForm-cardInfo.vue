@@ -49,7 +49,7 @@
           <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
             Continue
             <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
-            <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
+            <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
           </button>
         </div>
       </div>
@@ -240,6 +240,7 @@ export default {
 
     //验证、提交卡信息
     submitPay(){
+      this.request_loading = true;
       //卡号验证
       let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       let firstCardNumber = cardNumber.substring(0,1);
@@ -271,27 +272,23 @@ export default {
       queryParams.lastname = AES_Encrypt(queryParams.lastname.trim());
       queryParams.email = localStorage.getItem("email");
       queryParams.source = 0;
-
-      if(this.request_loading === false){
-        this.request_loading = true;
-        this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
-          this.request_loading = false;
-          if(res && res.returnCode === '0000'){
-            queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
-            queryParams.userCardId = res.data.userCardId;
-            this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
-            //是否验证过baseId
-            if(this.$store.state.buyRouterParams.kyc === true){
-              this.$router.replace(`/basisIdAuth?submitForm=${JSON.stringify(queryParams)}`);
-              return;
-            }
-            //跳转确认订单页
-            this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}`);
+      this.$axios.post(this.$api.post_saveCardInfo,queryParams,'').then(res=>{
+        this.request_loading = false;
+        if(res && res.returnCode === '0000'){
+          queryParams.cardNumber = queryParams.cardNumber.replace(/ /g,'');
+          queryParams.userCardId = res.data.userCardId;
+          this.$store.state.buyRouterParams.userCardId = res.data.userCardId;
+          //是否验证过baseId
+          if(this.$store.state.buyRouterParams.kyc === true){
+            this.$router.replace(`/basisIdAuth?submitForm=${JSON.stringify(queryParams)}`);
+            return;
           }
-        }).catch(()=>{
-          this.request_loading = false;
-        })
-      }
+          //跳转确认订单页
+          this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}`);
+        }
+      }).catch(()=>{
+        this.request_loading = false;
+      })
     }
   }
 }
@@ -363,6 +360,9 @@ export default {
         img{
           width: 0.12rem;
         }
+      }
+      .loadingIcon{
+        top: 0.15rem;
       }
     }
   }

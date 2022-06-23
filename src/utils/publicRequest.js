@@ -37,5 +37,7 @@ export function querySubmitToken(){
         }else{
             return false
         }
+    }).catch(()=>{
+        return false
     })
 }

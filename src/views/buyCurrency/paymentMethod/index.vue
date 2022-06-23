@@ -48,7 +48,8 @@
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       Continue
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="" v-if="!request_loading">
+      <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
     </button>
   </div>
 </template>
@@ -75,14 +76,16 @@ export default {
       userPayment: {},
 
       payMethod: {},
+
+      request_loading: false,
     }
   },
   computed: {
     disabled(){
-      if(JSON.stringify(this.payMethod) === '{}' && this.paymethodCheck === ''){
-        return true;
-      }else{
+      if((JSON.stringify(this.payMethod) !== '{}'&&this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
         return false;
+      }else{
+        return true;
       }
     }
   },
@@ -159,12 +162,14 @@ export default {
 
     //确认支付方式
     async confirm(){
+      this.request_loading = true;
       let submitToken = await querySubmitToken();
       if(submitToken === true){
         //确认下单 获取订单id
         this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
+          this.request_loading = false;
           if(res && res.returnMsg === 'SUCCESS'){
             this.$store.state.buyRouterParams.orderNo = res.data.orderNo;
             this.$store.state.buyRouterParams.kyc = res.data.kyc;
@@ -173,7 +178,11 @@ export default {
             this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;
             this.JumpRouter();
           }
+        }).catch(()=>{
+          this.request_loading = false;
         })
+      }else{
+        this.request_loading = false;
       }
     },
 
@@ -307,6 +316,10 @@ export default {
       position: absolute;
       top: 0.17rem;
       right: 0.32rem;
+      font-size: 0.12rem;
+    }
+    .loadingIcon{
+      top: 0.15rem;
     }
   }
   .continue:disabled{
