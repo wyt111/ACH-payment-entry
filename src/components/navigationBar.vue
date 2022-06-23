@@ -91,11 +91,11 @@ export default {
       // }
 
       //卖币
-      // if(this.$route.path === '/configSell' && this.routerPath === '/sell-formUserInfo'){
-      //   console.log("111")
-      //   this.$router.go(-2);
-      //   return;
-      // }
+      if(this.$route.path === '/configSell' && this.routerPath === '/sell-formUserInfo'){
+        // console.log("111")
+        this.$router.push('/');
+        return;
+      }
 
       if(this.$route.path === '/sellOrder' && this.routerPath === '/sell-formUserInfo'){
         this.$router.go(-4);

@@ -363,7 +363,7 @@ export default{
         }
         this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
           if(res.returnCode && res.data){
-            console.log(res.data);
+            // console.log(res.data);
             this.cardUserName = res.data
             this.accountNumberCode = this.AES(res.data.accountNumber)
           }
