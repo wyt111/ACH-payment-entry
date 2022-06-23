@@ -131,7 +131,7 @@ export default {
           this.orderStatus = res.data.orderStatus;
           this.depositType = res.data.depositType;
 
-          (res.data.orderStatus === 5||this.orderStatus === 6) ?  clearInterval(this.countDown) : '';
+          (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
           // depositType - Receiving mode
           this.judgeChannel();
         }
