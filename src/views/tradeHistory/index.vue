@@ -29,11 +29,15 @@
               </div>
             </div>
             <div class="details_line">
+              <div class="details_line_title">Order No:</div>
+              <div class="details_line_value">{{ item.orderNo }}</div>
+            </div>
+            <div class="details_line">
               <div class="details_line_title">{{ item.cryptoCurrency }} Amount:</div>
               <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">{{ item.cryptoCurrency }} price:</div>
+              <div class="details_line_title">{{ item.cryptoCurrency }} Price:</div>
               <div class="details_line_value">{{ item.cryptoCurrencyPrice }}{{ item.fiatCurrency }}</div>
             </div>
             <div class="details_line">

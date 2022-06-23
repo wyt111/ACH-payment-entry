@@ -133,6 +133,7 @@ export default {
     },
   },
   methods: {
+    //选择币种
     openSearch(view){
       //The address bar contains merchant information. It is forbidden to select
       if(view === 'currency' && this.cryptoSate === false){
@@ -140,16 +141,14 @@ export default {
       }
       this.$parent.openSearch(view,this.allPayCommission);
     },
-
-    //If less than two digits, 0 will be added automatically
+    //币种为USD如果少于两位数，将自动添加0
     youPayBlur(){
       if(this.payAmount > 0 && this.payCommission.code === 'USD'){
         this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(this.payCommission.decimalDigits);
       }
     },
-
+    //币种为USD限制输入两位小数
     inputChange(val){
-      //币种为USD限制输入两位小数
       if(val.indexOf('.') > 0 && this.payCommission.code === 'USD'){
         this.payAmount = val.substr(0,val.indexOf('.')+3);
       }
@@ -201,8 +200,8 @@ export default {
     //Purchase information details - Scheduled refresh
     payinfo(){
       if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
-        this.$store.state.buyRouterParams.amount = this.payAmount;
         this.detailedInfo_state = true;
+        this.$store.state.buyRouterParams.amount = this.payAmount;
         this.$nextTick(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});
         })
