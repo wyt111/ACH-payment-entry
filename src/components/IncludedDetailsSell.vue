@@ -91,7 +91,7 @@
 
 <script>
 /**
- * timeDownState 定时刷新状态
+ * timeDownState 是否需要定时刷新
  * isHome 是否是首页使用
  * orderState 是否显示记时
  */
@@ -141,30 +141,18 @@ export default {
         }
       }
     },
-
     //输入金额改变后刷新数据
     '$store.state.sellRouterParams.amount': {
       deep: true,
       handler(){
-        clearInterval(this.timeOut)
-        //接收路由信息
-        this.currencyData = this.$store.state.sellRouterParams.currencyData;
-        this.positionData = this.$store.state.sellRouterParams.positionData;
-        this.routerParams = this.$store.state.sellRouterParams;
-        this.feeParams = this.$store.state.feeParams;
         this.timingSetting();
       }
     },
     //选择国家后刷新数据
-    '$parent.payCommission.fiatCode': {
+    '$store.state.sellRouterParams.payCommission.fiatCode': {
       deep: true,
-      handler(){
-        clearInterval(this.timeOut)
-        //接收路由信息
-        this.currencyData = this.$store.state.sellRouterParams.currencyData;
-        this.positionData = this.$store.state.sellRouterParams.positionData;
-        this.routerParams = this.$store.state.sellRouterParams;
-        this.feeParams = this.$store.state.feeParams;
+      handler(val){
+        console.log(val,"---val")
         this.timingSetting();
       }
     },
@@ -172,12 +160,6 @@ export default {
     '$store.state.sellRouterParams.currencyData.name': {
       deep: true,
       handler(){
-        clearInterval(this.timeOut)
-        //接收路由信息
-        this.currencyData = this.$store.state.sellRouterParams.currencyData;
-        this.positionData = this.$store.state.sellRouterParams.positionData;
-        this.routerParams = this.$store.state.sellRouterParams;
-        this.feeParams = this.$store.state.feeParams;
         this.timingSetting();
       }
     }
@@ -185,22 +167,14 @@ export default {
   mounted(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
-    //接收路由信息
-    this.currencyData = this.$store.state.sellRouterParams.currencyData;
-    this.positionData = this.$store.state.sellRouterParams.positionData;
-    this.routerParams = this.$store.state.sellRouterParams;
-    this.feeParams = this.$store.state.feeParams;
     this.timingSetting();
   },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
-    //接收路由信息
-    this.currencyData = this.$store.state.sellRouterParams.currencyData;
-    this.positionData = this.$store.state.sellRouterParams.positionData;
-    this.routerParams = this.$store.state.sellRouterParams;
-    this.feeParams = this.$store.state.feeParams;
-    this.timingSetting();
+    if(this.isHome && this.isHome === true){
+      this.timingSetting();
+    }
   },
   destroyed(){
     clearInterval(this.timeOut)
@@ -211,6 +185,9 @@ export default {
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
+      this.currencyData = this.$store.state.sellRouterParams.currencyData;
+      this.positionData = this.$store.state.sellRouterParams.positionData;
+      this.routerParams = this.$store.state.sellRouterParams;
       clearInterval(this.timeOut)
       this.queryFee();
       this.timeOut = setInterval(()=> {
@@ -223,7 +200,7 @@ export default {
       },1000)
     },
     queryFee(){
-      this.$axios.get(this.$api.get_inquiryFeeSell,this.feeParams).then(res=>{
+      this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;

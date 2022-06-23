@@ -157,6 +157,7 @@ export default {
       //Purchase amount prompt
       if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
         this.warningTextState = false;
+        this.$store.state.sellRouterParams.amount = this.payAmount;
         //How many digital currencies can I exchange
         this.payinfo();
       }else{
@@ -176,7 +177,6 @@ export default {
     //Purchase information details - Scheduled refresh
     payinfo(){
       if (Number(this.payAmount) >= this.currencyData.minSell && Number(this.payAmount) <= this.currencyData.maxSell){
-        this.$store.state.sellRouterParams.amount = this.payAmount;
         this.detailedInfo_state = true;
         setTimeout(()=>{
           document.getElementById("buyCrypto").scrollIntoView({behavior: "smooth", block: "end"});

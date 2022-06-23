@@ -6,7 +6,6 @@
       <div class="feeTitle-value">
         <div class="loading-svg">
           <van-icon name="clock-o" />
-<!--          <img src="../assets/images/countDownIcon.png" alt="">-->
         </div>
         <div class="feeTitle-value-text">Quote updates in<span>{{ timeDownNumber }}</span>s</div>
       </div>
@@ -51,15 +50,14 @@
 /**
  * 费用展示组件
  * titleStatus 标题展示状态
- * showState 详情展示状态
- * network 部分情况接口所需添加网络信息
- * isHome 是否是首页使用
+ * network 选择接收方式需带入网络信息
+ * isHome 是否是首页使用(监听vuex.state加载数据)、初首页以外activated加载数据
  */
 import common from "../utils/common";
 
 export default {
   name: "includedDetails",
-  props: ['isHome','network','showState','titleStatus'],
+  props: ['isHome','network','titleStatus'],
   data(){
     return{
       triggerType: "hover",
@@ -91,23 +89,14 @@ export default {
         this.timingSetting();
       }
     },
-    //接收父组件是否需要展开费用
-    'showState':{
-      immediate: true,
-      deep: true,
-      handler(val){
-        this.detailsState = val;
-      }
-    },
-
-    //输入金额改变后刷新数据
+    //首页输入金额改变后刷新数据
     '$store.state.buyRouterParams.amount': {
       deep: true,
       handler() {
         this.timingSetting();
       }
     },
-    //选择数字货币后刷新数据
+    //首页选择数字货币后刷新数据
     '$store.state.buyRouterParams.cryptoCurrency': {
       deep: true,
       handler() {
@@ -128,7 +117,9 @@ export default {
     //接收路由信息
     this.routerParams = this.$store.state.buyRouterParams;
     this.payCommission = this.routerParams.payCommission;
-    this.timingSetting();
+    if(this.isHome && this.isHome === true){
+      this.timingSetting();
+    }
   },
   destroyed(){
     clearInterval(this.timeOut)

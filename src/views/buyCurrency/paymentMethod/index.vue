@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <IncludedDetails class="IncludedDetails" :showState="false" :titleStatus="true"/>
+      <IncludedDetails class="IncludedDetails" :titleStatus="true"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       Continue

@@ -26,8 +26,21 @@ const store = new Vuex.Store({
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
 
-        buyRouterParams: {}, //买币页面参数
-        sellRouterParams: {}, //卖币页面参数
+        //买币页面参数
+        buyRouterParams: {
+            amount: 0,
+            cryptoCurrency: '',
+        },
+        //卖币页面参数
+        sellRouterParams: {
+            amount: '',
+            payCommission: {
+                fiatCode: '',
+            },
+            currencyData: {
+                name: '',
+            }
+        },
 
         feeParams: {}, //卖币费用请求参数
         sellOrderId: '',
