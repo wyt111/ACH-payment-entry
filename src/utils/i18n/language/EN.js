@@ -55,6 +55,7 @@ module.exports = {
      * 登陆
      */
     login: 'Login',
+    login_required: 'Required.',
     loginOut: 'Login out',
     loginOut_title: 'Are you sure you want to logout?',
     loginOut_Dismiss: 'Dismiss',
@@ -185,6 +186,7 @@ module.exports = {
 
     sell_configOrder_title: 'Bank Card',
     //表单页
+    sell_form_tips: 'tips',
     sell_form_Name: 'Name',
     sell_form_NameTips: 'Invalid Name!',
     sell_form_Address: 'Address',
@@ -207,6 +209,8 @@ module.exports = {
     sell_form_branchName: 'Branch Name',
     sell_form_branchNameTips: 'Invalid Branch Name!',
     sell_form_branchNameMultinomialTips: 'Branch name can not be null',
+    sell_form_accountType: 'Account Type',
+    sell_form_accountTypeTips: 'Invalid Account Type!',
     sell_form_bankAccountType: 'Bank Account Type',
     sell_form_bankAccountTypeTips: 'Invalid Bank Account Type!',
     sell_form_bankAccountTypeLi_Saving: 'Saving',
@@ -231,7 +235,7 @@ module.exports = {
     sell_form_IDTypeLi_DNI: 'DNI',
     sell_form_IDTypeLi_RUC: 'RUC',
     sell_form_IDTypeLi_CE: 'CE',
-    sell_form_IDTynamepeLi_PASS: 'PASS',
+    sell_form_IDTypeLi_PASS: 'PASS',
     sell_form_RUTNumber: 'RUT Number',
     sell_form_RUTNumberTips: 'Invalid RUT Number!',
     sell_form_BSBCode: 'BSB Code',
@@ -256,6 +260,7 @@ module.exports = {
     // 后增
     history_noListButton: 'Buy crypto now',
     history_noListText: 'No transactions',
+    history_noMore: 'No more',
     history_noListText2: 'Buy some crypto to get started',
     history_state_Complete: 'Complete',
     history_state_Processing: 'Processing',

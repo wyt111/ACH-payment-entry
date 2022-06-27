@@ -48,8 +48,9 @@ module.exports = {
          * 菜单
          */
         login: '登錄',
+        login_required: '錯誤的.',
         loginOut: '退出',
-        loginOut_title: '確定退出？?',
+        loginOut_title: '確定退出?',
         loginOut_Dismiss: '取消',
         enterEmail: '輸入email地址',
         loginTitle1: '通過Alchemy Pay結算',
@@ -179,6 +180,7 @@ module.exports = {
         //确认订单页
         sell_configOrder_title: '銀行卡',
         //表单页
+        sell_form_tips: '提示',
         sell_form_Name: '名字',
         sell_form_NameTips: '無效名字!',
         sell_form_Address: '地址',
@@ -201,6 +203,8 @@ module.exports = {
         sell_form_branchName: '支行名稱',
         sell_form_branchNameTips: '無效支行名稱！',
         sell_form_branchNameMultinomialTips: '支行名稱不可爲空',
+        sell_form_accountType: '賬戶類型',
+        sell_form_accountTypeTips: '無效賬戶類型!',
         sell_form_bankAccountType: '銀行賬戶類型',
         sell_form_bankAccountTypeTips: '無效銀行賬戶類型!',
         sell_form_bankAccountTypeLi_Saving: '儲蓄賬戶',
@@ -250,6 +254,7 @@ module.exports = {
         //新增
         history_noListButton: '立即買幣',
         history_noListText: '不可交易',
+        history_noMore: '沒有了',
         history_noListText2: '少量購幣，莫失良機',
         history_state_Complete: '完成',
         history_state_Processing: '正在處理',
@@ -268,5 +273,6 @@ module.exports = {
         result_returnText_merchant: ' 返回',
         buy_configPayIDR_ovo_title: 'OVO電話',
         login_getCode: '重新發送',
+
     }
 }

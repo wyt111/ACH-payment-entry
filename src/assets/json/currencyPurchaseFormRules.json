@@ -764,7 +764,7 @@
         "tipsState": false
       },
       {
-        "name": "Account Type",
+        "name": "nav.sell_form_accountType",
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
@@ -772,7 +772,7 @@
         "regular": "",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid Account Type!",
+        "tips": "nav.sell_form_accountTypeTips",
         "tipsState": false
       },
       {
@@ -1177,7 +1177,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_IDTypeLi_NIT", "nav.sell_form_IDTypeLi_CC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTynamepeLi_PASS", "nav.sell_form_IDTypeLi_TI"],
+        "radioList": ["nav.sell_form_IDTypeLi_NIT", "nav.sell_form_IDTypeLi_CC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTypeLi_PASS", "nav.sell_form_IDTypeLi_TI"],
         "regular": "",
         "maxLength": "",
         "required": true,

@@ -168,6 +168,7 @@ export default {
         //确认下单 获取订单id
         this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
+        this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           this.request_loading = false;
           if(res && res.returnMsg === 'SUCCESS'){

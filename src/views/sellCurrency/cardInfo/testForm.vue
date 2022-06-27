@@ -3,11 +3,12 @@
     <div class="sellForm-content" ref="sellFormView">
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
-        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">tips：{{ item.multinomialTips }}</div>
+        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
+          {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
           <div class="radioInput">
-            <div class="value">{{ item.model }}</div>
+            <div class="value">{{ $t(item.model) }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
           </div>
         </div>

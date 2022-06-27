@@ -10,7 +10,7 @@
       </button>
     </div>
     <div class="historyList" v-else>
-      <van-list v-model="loading" :finished="finished" finished-text="No more" @load="onLoad" loading-text="Loading" error-text="Loading failed">
+      <van-list v-model="loading" :finished="finished" :finished-text="$t('nav.history_noMore')" @load="onLoad" loading-text="Loading" error-text="Loading failed">
         <div class="van-clearfix">
           <div class="float-item" v-for="(item,index) in historyList" :key="index">
             <div class="historyLi_header">

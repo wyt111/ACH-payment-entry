@@ -94,7 +94,7 @@ export default {
       if(!reg.test(this.email)){
         this.emailErrorState = true
         // this.emailError = "Not a valid email address.";
-        this.emailError = "Required.";
+        this.emailError = this.$t('nav.login_required');
         // this.login_loading = false
         this.$refs.emailInput.style = 'border:1px solid #D92D20'
         return;

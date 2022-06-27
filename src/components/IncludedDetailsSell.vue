@@ -14,7 +14,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          {{ $t('nav.home_youSell') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
+          {{ $t('nav.home_youSell') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -32,7 +32,7 @@
                 placement="top"
                 :trigger="triggerType"
                 :offset="-18"
-                content="Based on payment method">
+                :content="$t('nav.fee_tips')">
               <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
@@ -75,7 +75,7 @@
                 placement="top"
                 :trigger="triggerType"
                 :offset="-18"
-                content="Based on payment method">
+                :content="$t('nav.fee_tips')">
               <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>

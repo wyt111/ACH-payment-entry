@@ -31,7 +31,7 @@
                 placement="top"
                 :trigger="triggerType"
                 :offset="-18"
-                :content="$t('nav.fee_tips')">
+                :content="this.$t('nav.fee_tips')">
               <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
