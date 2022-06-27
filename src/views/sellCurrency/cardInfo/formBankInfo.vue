@@ -4,7 +4,7 @@
     <div id="formBankInfo" v-else>
       <div class="content">
         <div class="formLine">
-          <div class="formTitle">Bank</div>
+          <div class="formTitle">{{ $t('nav.buy_configPayIDR_va_title') }}</div>
           <div class="formContent" @click="openSearch">
             <input type="tel" v-model="sellForm.bank" disabled="true">
           </div>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <button class="continue" :disabled="buttonState" @click="next">Continue</button>
+      <button class="continue" :disabled="buttonState" @click="next">{{ $t('nav.Continue') }}</button>
     </div>
   </div>
 </template>

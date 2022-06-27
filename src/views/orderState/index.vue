@@ -1,10 +1,10 @@
 <template>
   <div class="order-container" >
-    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">Please transfer {{orderStateData.cryptoCurrency}} to the address within <span>{{ timeText }}</span></div>
+    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">will </span>get {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} for {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
-    <div class="timing" v-if="playMoneyState===6"> <span>Please modify your card details</span></div>
-    <div class="timing" v-if="playMoneyState===7">If you still want to sell crypto,Return to home page</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">{{ $t('nav.Sellorder_will') }} </span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
+    <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
     <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
     <div class="order-state-title" v-if="playMoneyState===2">Order Confirming…</div>
     <div class="order-state-title" v-if="playMoneyState===3">Order Confirmed</div>
@@ -21,7 +21,7 @@
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
 
       </div>
-      <div :class="[2,3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
+      <div :class="[2,3,4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
         <div></div>
         <div></div>
         <div></div>
@@ -31,7 +31,7 @@
         <div v-if="[0,1,7].includes(playMoneyState)">2</div>
         <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'"><img src="../../assets/images/icon1.png" alt=""></div>
       </div>
-      <div :class="[3,4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
+      <div :class="[3,4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
         <div></div>
         <div></div>
         <div></div>
@@ -41,7 +41,7 @@
         <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
         <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
       </div>
-      <div :class="[4,5,6].includes(playMoneyState)?'state-content success':'state-content'">
+      <div :class="[4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
         <div></div>
         <div></div>
         <div></div>
@@ -54,18 +54,18 @@
       </div>
     </div>
     <div class="order-state-content">
-      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">Send Crypto</div>
-      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Received Crypto' }}</div>
-      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':'Initiate Transfer' }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'right'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?'success':playMoneyState==6?'fail':'In Transfer' }}</div>
+      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
+      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
+      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'right'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
     </div>
     <div class="order-content">
-        <div class="order-title">Order ID</div>
+        <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
         <div class="order-con order-conId" style="cursor: pointer;" @click="copy" :data-clipboard-text="orderStateData.orderId">
           <p>{{ orderStateData.orderId }}</p>
           <img src="../../assets/images/copy.png" alt="">
         </div>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Network</div>
+        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Network') }}</div>
         <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
           <p>{{ Network?Network.networkName: network1}}</p>
           <img v-if="[0,1].includes(playMoneyState)" style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
@@ -78,7 +78,7 @@
           </div>
         </div>
         </transition>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">Address</div>
+        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.payResult_feeAddress') }}</div>
         <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="[0,1].includes(playMoneyState)?orderStateData.address:''">
           <p>{{ orderStateData.address }}</p>
           <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
@@ -86,7 +86,7 @@
             <img src="../../assets/images/copy.png"  alt="">
           </div>
         </div>
-        <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">Card</div>
+        <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">{{ $t('nav.Sellorder_Card') }}</div>
         <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
           <!-- <div style="width:80%"> -->
             <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
@@ -97,22 +97,22 @@
           </div> -->
           <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
         </div>
-        <div class="order-state_title" v-if="playMoneyState===6">Fail Reason</div>
+        <div class="order-state_title" v-if="playMoneyState===6">{{ $t('nav.Sellorder_Fail') }}</div>
         <div class="order-state_content" v-if="playMoneyState===6" >
           {{ orderStateData.errorMsg }}
         </div>
 
     </div>
-    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">Continue to sell crypto <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
+    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">{{ $t('nav.orderRsult') }} <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
     <IncludedDetailsSell :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,2].includes(playMoneyState)?true:false"/>
     <van-popup class="popup_center" v-model="show" round>
       <div class="qrcode" >
         <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
-        <p>Scan QR Code</p>
+        <p>{{ $t('nav.Sellorder_QRCode') }}</p>
       </div>
     </van-popup>
     <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }">
-        <div class="Network-title">Network</div>
+        <div class="Network-title">{{ $t('nav.Sellorder_Network') }}</div>
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
   </div>
@@ -167,7 +167,7 @@ export default{
       clipboard.on('success', () => {
         this.$toast({
           duration: 3000,
-          message: 'copy success'
+          message: this.$t('nav.copyTips')
         });
         clipboard.destroy()
       })

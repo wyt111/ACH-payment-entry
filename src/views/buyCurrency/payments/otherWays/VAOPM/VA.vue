@@ -1,7 +1,7 @@
 <template>
   <!-- choise bank -->
   <div id="VABox">
-    <div class="payAmountInfo-title">BANK</div>
+    <div class="payAmountInfo-title">{{ $t('nav.buy_configPayIDR_va_title') }}</div>
     <div class="payAmountInfo-box" v-if="bankState">
       <div class="payAmountInfo-box-line" v-for="(item,index) in bankCardList" :key="index" @click="choiseBankCard(item,index)">
         <div class="logo"><img :src='require(`@/assets/images/bankCard/${item.bankLogo}`)'></div>
@@ -15,7 +15,7 @@
     <!-- Display data after selecting bank card -->
     <div v-else>
       <div class="payAmountInfo-box">{{ payExplain.bankCardName }}</div>
-      <div class="payAmountInfo-title" v-if="codeState">Payment Code</div>
+      <div class="payAmountInfo-title" v-if="codeState">{{ $t('nav.buy_configPayIDR_va_codeTitle') }}</div>
       <div class="payAmountInfo-box paymentCode" v-if="codeState" @click="copy" :data-clipboard-text="payCode">
         <p>{{ payCode }}</p>
         <p class="copyIcon"><img src="../../../../../assets/images/copyIcon.png"></p>
@@ -183,7 +183,7 @@ export default {
       clipboard.on('success', () => {
         this.$toast({
           duration: 3000,
-          message: 'copy success'
+          message: this.$t('nav.copyTips')
         });
         clipboard.destroy()
       })

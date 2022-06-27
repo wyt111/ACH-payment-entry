@@ -5,9 +5,8 @@
         <el-checkbox v-model="childData.agreement"></el-checkbox>
       </div>
       <div class="agreement-text">
-        I authorise <span>AlchemyPay</span> to debit my chosen payment method
-        for the amount above on today’s date and understand that this
-        can not be cancelled, recalled or refunded.
+        {{ $t('nav.agreement_components_text1') }} <span>{{ $t('nav.agreement_components_text2') }}</span>
+        {{ $t('nav.agreement_components_text3') }}
       </div>
     </div>
   </div>

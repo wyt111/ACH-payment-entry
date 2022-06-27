@@ -4,17 +4,17 @@
       <div class="view-content">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
-            <div class="formTitle">First Name</div>
+            <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
             <div class="formContent"><input type="text" v-model="params.firstname" maxlength="50"></div>
           </div>
           <div class="formLine_flex_child">
-            <div class="formTitle">Last Name</div>
+            <div class="formTitle">{{ $t('nav.buy_form_lastName') }}</div>
             <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
           </div>
         </div>
         <div class="formLine">
           <div class="formTitle">
-            <div>Card Number</div>
+            <div>{{ $t('nav.buy_form_cardNumber') }}</div>
             <div class="formTitle_logo">
               <img v-if="visaState" src="../../../../assets/images/visaText.svg">
               <img v-if="masterState" src="../../../../assets/images/masterIcon.svg">
@@ -24,30 +24,30 @@
             <van-field class="number_input" type="digit" v-model="params.cardNumber" @input="cardChange" @blur="cardBlur" maxlength="23"/>
           </div>
           <!-- error tips -->
-          <div class="errorTips" v-if="errorCard">Please enter a valid card number.</div>
+          <div class="errorTips" v-if="errorCard">{{ $t('nav.buy_form_cardNumTips') }}</div>
         </div>
         <div class="formLine">
           <div>
-            <div class="formTitle">Expiration Date</div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
             <div class="formContent">
               <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
             </div>
           </div>
           <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">Invaid expiry date</div>
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
         </div>
         <div class="formLine">
           <div>
-            <div class="formTitle">CVV</div>
+            <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
             <div class="formContent">
               <van-field class="number_input" type="digit" v-model="params.cardCvv" maxlength="4"/>
             </div>
           </div>
           <!-- error tips -->
-          <div class="errorTips" v-if="errorCvv">Please enter a valid CVV.</div>
+          <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
 
           <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
-            Continue
+            {{ $t('nav.Continue') }}
             <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
             <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
           </button>

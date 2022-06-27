@@ -7,11 +7,11 @@
 <!--      </div>-->
       <div class="formLine formLine_flex">
         <div class="formLine_flex_child">
-          <div class="formTitle">First Name</div>
+          <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
           <div class="formContent"><input type="text" v-model="sellForm.firstname" maxlength="50" @input="sellForm.firstname = sellForm.firstname.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine_flex_child">
-          <div class="formTitle">Last Name</div>
+          <div class="formTitle">{{ $t('nav.buy_form_lastName') }}</div>
           <div class="formContent"><input type="text" v-model="sellForm.lastname" maxlength="50" @input="sellForm.lastname = sellForm.lastname.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="formContent"><input type="email" v-model="sellForm.idNumber" @input="sellForm.idNumber = sellForm.idNumber.replace(/[^\x00-\xff]/g, '')"></div>
       </div>
     </div>
-    <button class="continue" :disabled="buttonState" @click="next">Continue</button>
+    <button class="continue" :disabled="buttonState" @click="next">{{ $t('nav.Continue') }}</button>
   </div>
 </template>
 
@@ -108,7 +108,7 @@ export default {
       if(!new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$").test(this.sellForm.email)){
         this.$toast({
           duration: 3000,
-          message: 'not a valid email.'
+          message: this.$t('nav.sell_form_EmailTips')
         });
         return;
       }

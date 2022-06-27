@@ -2,19 +2,19 @@
   <!-- Payment information -->
   <div class="paymentInformation" v-if="orderState===null">
     <div class="feeTitle">
-      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-name">{{ $t('nav.home_feeTimeDownTitle') }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
 <!--          <img src="../assets/images/countDownIcon.png" alt="">-->
           <van-icon name="clock-o" />
         </div>
-        <div class="feeTitle-value-text">Quote updates in<span>{{ timeDownNumber }}</span>s</div>
+        <div class="feeTitle-value-text">{{ $t('nav.home_feeTimeDown') }}<span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span>{{ routerParams.amount }} {{ currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
+          {{ $t('nav.home_youSell') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> to <span>{{ positionData.fiatCode }}{{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -22,12 +22,12 @@
       </div>
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
-          <div class="title">price</div>
+          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
           <div class="value">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
-            Ramp fee
+            {{ $t('nav.home_sellFee_rampFee') }}
             <el-popover
                 placement="top"
                 :trigger="triggerType"
@@ -37,7 +37,7 @@
             </el-popover>
           </div>
           <div class="value">
-            <span class="minText">as low as</span>
+            <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
             {{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}
           </div>
         </div>
@@ -48,16 +48,16 @@
 
   <div class="paymentInformation" v-else>
     <div class="feeTitle">
-      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-name">{{ $t('nav.home_feeTimeDownTitle') }}</div>
       <div class="feeTitle-value" v-show="timeDownState!==false">
         <div class="loading-svg"><img src="../assets/images/countDownIcon.png" alt=""></div>
-        <div class="feeTitle-value-text">Quote updates in {{ timeDownNumber }}s</div>
+        <div class="feeTitle-value-text">{{ $t('nav.home_feeTimeDown') }} {{ timeDownNumber }}{{ $t('nav.codeSecond') }}</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          You sell <span> {{ orderState.sellVolume }} {{ orderState.cryptoCurrency }} </span> to <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
+          {{ $t('nav.home_youSell') }} <span> {{ orderState.sellVolume }} {{ orderState.cryptoCurrency }} </span> {{ $t('nav.home_sellFee_title2') }} <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -65,12 +65,12 @@
       </div>
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
-          <div class="title">price</div>
+          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
           <div class="value">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate * orderState.fiatRate)*100) /100 }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
-            Ramp fee
+            {{ $t('nav.home_sellFee_rampFee') }}
             <el-popover
                 placement="top"
                 :trigger="triggerType"
@@ -80,7 +80,7 @@
             </el-popover>
           </div>
           <div class="value">
-            <span class="minText">as low as</span>
+            <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
             {{ orderState.feeUnit }}{{ orderState.fee }}
           </div>
         </div>

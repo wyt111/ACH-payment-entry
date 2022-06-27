@@ -27,19 +27,19 @@
     </div>
       <div class="emailCode-container_top">
         <img src="@/assets/images/slices/pay.png" alt="">
-        <h2>Checkout with Alchemy Pay</h2>
-        <p>The fastest and safest way to checkout on
-          hundreds of crypto apps.</p>
+        <h2>{{ $t('nav.loginTitle1') }}</h2>
+        <p>{{ $t('nav.loginTitle2') }}</p>
       </div>
       <div class="emailCode_content" ref="emailInput">
-        <p>Enter email</p>
+        <p>{{ $t('nav.enterEmail') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
         <input type="text"  v-model="email" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
     </div>
 
-      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">Continue
+      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
+        {{ $t('nav.Continue') }}
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
         <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
       </div>

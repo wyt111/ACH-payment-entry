@@ -1,7 +1,7 @@
 <template>
   <div class="addressForm"> <!--  v-if="routerParams.receiveMethods === 'address'"  -->
     <div class="formLine">
-      <div class="formTitle" >{{ routerParams.networkDefault }} Address</div>
+      <div class="formTitle" >{{ routerParams.networkDefault }} {{ $t('nav.networkAddress_components_title') }}</div>
       <div class="formContent" :data-clipboard-text="routerParams.addressDefault" @click="copy">
         <p>{{ routerParams.addressDefault ? routerParams.addressDefault.substring(0,10) + "……"  + routerParams.addressDefault.substring(routerParams.addressDefault.length-10,routerParams.addressDefault.length) : '' }}</p>
         <p><img src="../assets/images/copyIcon.png"></p>
@@ -33,7 +33,7 @@ export default {
       clipboard.on('success', () => {
         this.$toast({
           duration: 3000,
-          message: 'copy success'
+          message: this.$t('nav.copyTips')
         });
         clipboard.destroy()
       })

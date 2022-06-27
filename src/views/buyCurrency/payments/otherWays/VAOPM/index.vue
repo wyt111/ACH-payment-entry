@@ -2,10 +2,10 @@
   <div id="indonesianPayment">
 <!--    <div class="view-content">-->
       <!-- 支付倒计时提示 -->
-      <div class="payTips" v-if="startPayment">Plese completa payment with <span>{{ paymentCountDownMinute }}</span></div>
+      <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
       <!-- 费用明细 -->
       <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
-      <div class="payAmountInfo-title">Paying with</div>
+      <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
       <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
       <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
       <!-- 支付方式 VA-Virtual Account | OPM-->

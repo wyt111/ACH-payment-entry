@@ -2,7 +2,7 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="form_title pay_title">Y<span style="margin-left: 0.00001rem">ou Sell</span></div>
+      <div class="form_title pay_title">{{ $t('nav.home_youSell') }}</div>
       <div class="methods_select cursor">
         <!-- @blur="youPayBlur" -->
         <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
@@ -14,7 +14,7 @@
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">Y<span style="margin-left: 0.00001rem">ou</span> Get</div>
+      <div class="form_title get_title">{{ $t('nav.home_youBuyGet') }}</div>
       <div class="methods_select cursor">
         <div class="get_input">
           <span v-if="getAmount!==''">{{ getAmount }}</span>
@@ -35,10 +35,10 @@
 
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
-        Continue
+        {{ $t('nav.Continue') }}
         <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
       </button>
-      By continuing you agree to our cookie policy.
+      {{ $t('nav.home_Tips') }}
     </footer>
   </div>
 </template>
@@ -161,8 +161,8 @@ export default {
         //How many digital currencies can I exchange
         this.payinfo();
       }else{
-        var minError = `The minimum transaction amount is ${this.currencyData.minSell}.`;
-        var maxError = `The maximum transaction amount is ${this.currencyData.maxSell}.`;
+        var minError = `${this.$t('nav.home_minAmountTips')} ${this.currencyData.minSell}.`;
+        var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.currencyData.maxSell}.`;
         if(Number(this.payAmount) < this.currencyData.minSell){
           this.payAmount_tips = minError;
         }else if(Number(this.payAmount) > this.currencyData.maxSell){
@@ -396,11 +396,11 @@ html,body,#buyCrypto{
   font-family: "GeoLight", GeoLight;
   font-weight: 400;
   color: #E55643;
-  margin: 0.08rem 0.2rem 0 0.16rem;
+  margin: 0.06rem 0.2rem 0 0.16rem;
 }
 
 .get_title{
-  margin-top: 0.32rem;
+  margin-top: 0.4rem;
 }
 .get_input{
   width: 100%;

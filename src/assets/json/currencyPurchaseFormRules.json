@@ -3,74 +3,74 @@
     "currency": "USD",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Address!",
+        "tips": "nav.sell_form_AddressTips",
         "tipsState": false
       },
       {
-        "name": "City",
+        "name": "nav.sell_form_City",
         "paramsName": "city",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid City!",
+        "tips": "nav.sell_form_CityTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "State",
+        "name": "nav.sell_form_State",
         "paramsName": "state",
         "model": "",
         "regular": "",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid State!",
+        "tips": "nav.sell_form_StateTips",
         "tipsState": false
       },
       {
-        "name": "Postcode",
+        "name": "nav.sell_form_Postcode",
         "paramsName": "postcode",
         "model": "",
         "regular": "",
         "maxLength": "15",
         "required": true,
-        "tips": "Invalid Postcode!",
+        "tips": "nav.sell_form_PostcodeTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9A-Z]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "ACH Code",
+        "name": "nav.sell_form_achCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{9}$",
         "maxLength": "9",
         "required": true,
-        "tips": "Invalid ACH Code!",
+        "tips": "nav.sell_form_achCodeTips",
         "tipsState": false
       }
     ]
@@ -79,63 +79,63 @@
     "currency": "BDT",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,150}$",
         "maxLength": "150",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "",
         "maxLength": "200",
         "required": true,
-        "tips": "Invalid Address!",
+        "tips": "nav.sell_form_AddressTips",
         "tipsState": false
       },
       {
-        "name": "Contact Number",
+        "name": "nav.sell_form_contactNumber",
         "paramsName": "contactNumber",
         "model": "",
         "regular": "^[0-9]+$",
         "maxLength": "17",
         "required": true,
-        "tips": "Invalid Contact Number!",
+        "tips": "nav.sell_form_contactNumberTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^(?=.*\\d)[A-Za-z0-9]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       },
       {
-        "name": "Branch Name",
+        "name": "nav.sell_form_branchName",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "",
         "maxLength": "250",
         "required": false,
-        "tips": "Branch name can not be null",
+        "tips": "nav.sell_form_branchNameMultinomialTips",
         "tipsState": false
       }
     ]
@@ -144,69 +144,69 @@
     "currency": "JPY",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,150}$",
         "maxLength": "150",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Bank Account Type",
+        "name": "nav.sell_form_bankAccountType",
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Saving","Checking","Time Deposit","Others"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Saving","nav.sell_form_bankAccountTypeLi_Checking","nav.sell_form_bankAccountTypeLi_TimeDeposit","nav.sell_form_bankAccountTypeLi_Others"],
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,150}$",
         "maxLength": "150",
         "required": true,
-        "tips": "Invalid Bank Account Type!",
+        "tips": "nav.sell_form_bankAccountTypeTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9]{1,7}$",
         "maxLength": "7",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "^[0-9]{4}$",
         "maxLength": "4",
         "required": false,
-        "tips": "Invalid Bank Code!",
-        "multinomialTips": "Bank code and swift code cannot be empty at the same time",
+        "tips": "nav.sell_form_bankCodeTips",
+        "multinomialTips": "nav.sell_form_bankSwiftCodeTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": false,
-        "tips": "Invalid Swift Code!",
-        "multinomialTips": "Bank code and swift code cannot be empty at the same time",
+        "tips": "nav.sell_form_swiftCodeTips",
+        "multinomialTips": "nav.sell_form_bankSwiftCodeTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "Branch Code",
+        "name": "nav.sell_form_branchCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
         "required": true,
-        "tips": "Invalid Branch Code!",
+        "tips": "nav.sell_form_branchCodeTips",
         "tipsState": false
       }
     ]
@@ -215,33 +215,33 @@
     "currency": "MYR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Z0-9a-z]{1,20}$",
         "maxLength": "20",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -250,33 +250,33 @@
     "currency": "LKR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 -,.]{1,100}$",
         "maxLength": "100",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^\\d{1,12}$",
         "maxLength": "12",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -285,33 +285,33 @@
     "currency": "THB",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^\\d{1,12}$",
         "maxLength": "12",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -320,33 +320,33 @@
     "currency": "VND",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[a-zA-Z0-9\\s]*$",
         "maxLength": "100",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "",
         "maxLength": "30",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -355,33 +355,33 @@
     "currency": "IDR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[a-zA-Z0-9\\s.,()_'/-]{1,55}$",
         "maxLength": "55",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9\\\\-]{1,20}$",
         "maxLength": "20",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -390,33 +390,33 @@
     "currency": "EUR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,70}$",
         "maxLength": "70",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Z]{2}[0-9]{2}([0-9]|[A-Z])+([0-9A-Z]+){10,31}$",
         "maxLength": "31",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -425,46 +425,46 @@
     "currency": "NPR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 -.]{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9A-Za-z]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": false,
-        "tips": "Invalid Swift Code!",
-        "multinomialTips": "Swift code and location id cannot be empty at the same time",
+        "tips": "nav.sell_form_swiftCodeTips",
+        "multinomialTips": "nav.sell_form_bankSwiftTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "Location Id",
+        "name": "nav.sell_form_locationId",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^\\d{0,8}$|^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": false,
-        "tips": "Invalid Location Id!",
-        "multinomialTips": "Swift code and location id cannot be empty at the same time",
+        "tips": "nav.sell_form_locationIdTips",
+        "multinomialTips": "nav.sell_form_bankSwiftTips",
         "tipsState": false,
         "multinomialTipsState": false
       }
@@ -474,33 +474,33 @@
     "currency": "PKR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9\\s\\\\-\\\\_\\\\.]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Za-z0-9]{1,24}$",
         "maxLength": "24",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid Bank Code!",
+        "tips": "nav.sell_form_bankCodeTips",
         "tipsState": false
       }
     ]
@@ -509,33 +509,33 @@
     "currency": "HKD",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[a-zA-Z\\\\s]{1,35}$",
         "maxLength": "35",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "[0-9a-zA-Z]{1,34}",
         "maxLength": "34",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "",
         "maxLength": "3",
         "required": true,
-        "tips": "Invalid Bank Code!",
+        "tips": "nav.sell_form_bankCodeTips",
         "tipsState": false
       }
     ]
@@ -544,45 +544,45 @@
     "currency": "PHP",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{0,150}$",
         "maxLength": "150",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "^[A-Za-z0-9 -./]{1,69}$",
         "maxLength": "69",
         "required": false,
-        "tips": "Invalid Address!",
-        "multinomialTips": "Address can not be null",
+        "tips": "nav.sell_form_AddressTips",
+        "multinomialTips": "nav.sell_form_AddressMultinomialTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -591,23 +591,23 @@
     "currency": "TRY",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^(TR|tr)[0-9]{24}$",
         "maxLength": "24",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       }
     ]
@@ -616,23 +616,23 @@
     "currency": "MXN",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{18,18}$",
         "maxLength": "18",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       }
     ]
@@ -641,33 +641,33 @@
     "currency": "BRL",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Contact Number",
+        "name": "nav.sell_form_contactNumber",
         "paramsName": "contactNumber",
         "model": "",
         "regular": "^.{1,17}$",
         "maxLength": "17",
         "required": true,
-        "tips": "Invalid Contact Number!",
+        "tips": "nav.sell_form_contactNumberTips",
         "tipsState": false
       },
       {
-        "name": "CPF Number",
+        "name": "nav.sell_form_CPFNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^[0-9.-]{11,20}$",
         "maxLength": "20",
         "required": true,
-        "tips": "Invalid CPF Number!",
+        "tips": "nav.sell_form_CPFNumberTips",
         "tipsState": false
       },
       {
@@ -675,7 +675,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -683,46 +683,46 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{1,12}$",
         "maxLength": "12",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Branch Code",
+        "name": "nav.sell_form_branchCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{1,6}$",
         "maxLength": "6",
         "required": true,
-        "tips": "Invalid Branch Code!",
+        "tips": "nav.sell_form_branchCodeTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
         "required": false,
-        "tips": "Invalid Bank Code!",
-        "multinomialTips": "Bank code and swift code cannot be empty at the same time",
+        "tips": "nav.sell_form_bankCodeTips",
+        "multinomialTips": "nav.sell_form_bankSwiftCodeTips",
         "tipsState": false,
         "multinomialTipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": false,
-        "tips": "Invalid Swift Code!",
-        "multinomialTips": "Bank code and swift code cannot be empty at the same time",
+        "tips": "nav.sell_form_swiftCodeTips",
+        "multinomialTips": "nav.sell_form_bankSwiftCodeTips",
         "tipsState": false,
         "multinomialTipsState": false
       }
@@ -732,35 +732,35 @@
     "currency": "ARS",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,35}$",
         "maxLength": "35",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "ID Type",
+        "name": "nav.sell_form_IDType",
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["CUIT", "CUIL"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_CUIT", "nav.sell_form_bankAccountTypeLi_CUIL"],
         "regular": "",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid ID Type!",
+        "tips": "nav.sell_form_IDTypeTips",
         "tipsState": false
       },
       {
-        "name": "ID Number",
+        "name": "nav.sell_form_IDNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^[0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid ID Number!",
+        "tips": "nav.sell_form_IDNumberTips",
         "tipsState": false
       },
       {
@@ -768,7 +768,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving", "Maestra"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving", "nav.sell_form_accountTypeLi_Maestra"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -776,13 +776,13 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{22,22}$",
         "maxLength": "22",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       }
     ]
@@ -791,13 +791,13 @@
     "currency": "PEN",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,100}$",
         "maxLength": "100",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
@@ -805,7 +805,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["DNI", "RUC", "CE", "PASS"],
+        "radioList": ["nav.sell_form_IDTypeLi_DNI", "nav.sell_form_IDTypeLi_RUC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTynamepeLi_PASS"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -813,14 +813,14 @@
         "tipsState": false
       },
       {
-        "name": "ID Number",
+        "name": "nav.sell_form_IDNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^.{8,12}$",
         "minLength": "8",
         "maxLength": "12",
         "required": true,
-        "tips": "Invalid ID Number!",
+        "tips": "nav.sell_form_IDNumberTips",
         "tipsState": false
       },
       {
@@ -828,7 +828,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving", "Maestra"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving", "nav.sell_form_accountTypeLi_Maestra"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -836,13 +836,13 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{18,20}$",
         "maxLength": "20",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       }
     ]
@@ -851,23 +851,23 @@
     "currency": "CLP",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "RUT Number",
+        "name": "nav.sell_form_RUTNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^[0-9a-zA-Z\\.-]{8,}$",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid RUT Number!",
+        "tips": "nav.sell_form_RUTNumberTips",
         "tipsState": false
       },
       {
@@ -875,7 +875,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -883,23 +883,23 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{1,45}$",
         "maxLength": "45",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -908,63 +908,63 @@
     "currency": "AUD",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .'-]{2,70}$",
         "maxLength": "70",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "256",
         "required": true,
-        "tips": "Invalid Address!",
+        "tips": "nav.sell_form_AddressTips",
         "tipsState": false
       },
       {
-        "name": "City",
+        "name": "nav.sell_form_City",
         "paramsName": "city",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid City!",
+        "tips": "nav.sell_form_CityTips",
         "tipsState": false
       },
       {
-        "name": "Postcode",
+        "name": "nav.sell_form_Postcode",
         "paramsName": "postcode",
         "model": "",
         "regular": "^.{1,15}$",
         "maxLength": "15",
         "required": true,
-        "tips": "Invalid Postcode!",
+        "tips": "nav.sell_form_PostcodeTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Za-z0-9]{0,9}$",
         "maxLength": "9",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "BSB Code",
+        "name": "nav.sell_form_BSBCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{6}$",
         "maxLength": "6",
         "required": true,
-        "tips": "Invalid BSB Code!",
+        "tips": "nav.sell_form_BSBCodeTips",
         "tipsState": false
       }
     ]
@@ -973,53 +973,53 @@
     "currency": "KRW",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[0-9a-zA-Z.,_\\-\\s]{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Email",
+        "name": "nav.sell_form_Email",
         "paramsName": "email",
         "model": "",
         "regular": "^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$",
         "maxLength": "100",
         "required": true,
-        "tips": "Invalid Email!",
+        "tips": "nav.sell_form_EmailTips",
         "tipsState": false
       },
       {
-        "name": "Contact Number",
+        "name": "nav.sell_form_contactNumber",
         "paramsName": "contactNumber",
         "model": "",
         "regular": "^[0-9+/-\\s]*$",
         "maxLength": "17",
         "required": true,
-        "tips": "Invalid Contact Number!",
+        "tips": "nav.sell_form_contactNumberTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9a-zA-Z.,_-\\s]*$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
         "required": true,
-        "tips": "Invalid Bank Code!",
+        "tips": "nav.sell_form_bankCodeTips",
         "tipsState": false
       }
     ]
@@ -1028,33 +1028,33 @@
     "currency": "GBP",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,70}$",
         "maxLength": "70",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[0-9A-Z]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Sort Code",
+        "name": "nav.sell_form_SortCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{6}$",
         "maxLength": "6",
         "required": true,
-        "tips": "Invalid Sort Code!",
+        "tips": "nav.sell_form_SortCodeTips",
         "tipsState": false
       }
     ]
@@ -1063,33 +1063,33 @@
     "currency": "INR",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[a-zA-Z0-9\\s.,()_'/-]{1,55}$",
         "maxLength": "55",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-z0-9]{6,20}$",
         "maxLength": "20",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "IFSC",
+        "name": "nav.sell_form_IFSC",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[A-Za-z]{4}[A-Z0-9a-z]{7}$",
-        "maxLength": "7",
+        "maxLength": "11",
         "required": true,
-        "tips": "Invalid IFSC!",
+        "tips": "nav.sell_form_IFSCTips",
         "tipsState": false
       }
     ]
@@ -1098,53 +1098,53 @@
     "currency": "SGD",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_\\'/-]*$",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "^.{1,200}$",
         "maxLength": "200",
         "required": true,
-        "tips": "Invalid Address!",
+        "tips": "nav.sell_form_AddressTips",
         "tipsState": false
       },
       {
-        "name": "City",
+        "name": "nav.sell_form_City",
         "paramsName": "city",
         "model": "",
         "regular": "^.{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid City!",
+        "tips": "nav.sell_form_CityTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Za-z0-9]+$",
         "maxLength": "",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -1153,23 +1153,23 @@
     "currency": "COP",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Email",
+        "name": "nav.sell_form_Email",
         "paramsName": "email",
         "model": "",
         "regular": "^[a-z0-9]+([._\\\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,100}[a-z0-9]+$",
         "maxLength": "100",
         "required": true,
-        "tips": "Invalid Email!",
+        "tips": "nav.sell_form_EmailTips",
         "tipsState": false
       },
       {
@@ -1177,7 +1177,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["NIT", "CC", "CE", "PASS", "TI"],
+        "radioList": ["nav.sell_form_IDTypeLi_NIT", "nav.sell_form_IDTypeLi_CC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTynamepeLi_PASS", "nav.sell_form_IDTypeLi_TI"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1185,13 +1185,13 @@
         "tipsState": false
       },
       {
-        "name": "ID Number",
+        "name": "nav.sell_form_IDNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^[0-9]{1,15}$",
         "maxLength": "15",
         "required": true,
-        "tips": "Invalid ID Number!",
+        "tips": "nav.sell_form_IDNumberTips",
         "tipsState": false
       },
       {
@@ -1199,7 +1199,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1207,23 +1207,23 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{1,45}$",
         "maxLength": "45",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       }
     ]
@@ -1232,13 +1232,13 @@
     "currency": "UYU",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 ]{1,60}$",
         "maxLength": "60",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
@@ -1246,7 +1246,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["RUT", "CI"],
+        "radioList": ["nav.sell_form_IDTypeLi_RUT", "nav.sell_form_IDTypeLi_CI"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1254,13 +1254,13 @@
         "tipsState": false
       },
       {
-        "name": "ID Number",
+        "name": "nav.sell_form_IDNumber",
         "paramsName": "idNumber",
         "model": "",
         "regular": "^.{7,12}$",
         "maxLength": "12",
         "required": true,
-        "tips": "Invalid ID Number!",
+        "tips": "nav.sell_form_IDNumberTips",
         "tipsState": false
       },
       {
@@ -1268,7 +1268,7 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["Checking", "Saving"],
+        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1276,33 +1276,33 @@
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^.{1,45}$",
         "maxLength": "45",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Swift Code",
+        "name": "nav.sell_form_swiftCode",
         "paramsName": "routingCodeValue1",
         "model": "",
         "regular": "^[A-Za-z0-9]{8}$|^[A-Za-z0-9]{11}$",
         "maxLength": "11",
         "required": true,
-        "tips": "Invalid Swift Code!",
+        "tips": "nav.sell_form_swiftCodeTips",
         "tipsState": false
       },
       {
-        "name": "Branch Code",
+        "name": "nav.sell_form_branchCode",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
         "required": true,
-        "tips": "Invalid Branch Code!",
+        "tips": "nav.sell_form_branchCodeTips",
         "tipsState": false
       }
     ]
@@ -1311,83 +1311,83 @@
     "currency": "CAD",
     "form": [
       {
-        "name": "Name",
+        "name": "nav.sell_form_Name",
         "paramsName": "name",
         "model": "",
         "regular": "^[A-Za-z0-9 .,()_'/-]{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Name!",
+        "tips": "nav.sell_form_NameTips",
         "tipsState": false
       },
       {
-        "name": "Address",
+        "name": "nav.sell_form_Address",
         "paramsName": "address",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid Address!",
+        "tips": "nav.sell_form_AddressTips",
         "tipsState": false
       },
       {
-        "name": "City",
+        "name": "nav.sell_form_City",
         "paramsName": "city",
         "model": "",
         "regular": "^.{1,255}$",
         "maxLength": "255",
         "required": true,
-        "tips": "Invalid City!",
+        "tips": "nav.sell_form_CityTips",
         "tipsState": false
       },
       {
-        "name": "State",
+        "name": "nav.sell_form_State",
         "paramsName": "state",
         "model": "",
         "regular": "^.{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid State!",
+        "tips": "nav.sell_form_StateTips",
         "tipsState": false
       },
       {
-        "name": "Postcode",
+        "name": "nav.sell_form_Postcode",
         "paramsName": "postcode",
         "model": "",
         "regular": "^.{1,15}$",
         "maxLength": "15",
         "required": true,
-        "tips": "Invalid Postcode!",
+        "tips": "nav.sell_form_PostcodeTips",
         "tipsState": false
       },
       {
-        "name": "Account Number",
+        "name": "nav.sell_form_accountNumber",
         "paramsName": "accountNumber",
         "model": "",
         "regular": "^[A-Za-z0-9]{1,50}$",
         "maxLength": "50",
         "required": true,
-        "tips": "Invalid Account Number!",
+        "tips": "nav.sell_form_accountNumberTips",
         "tipsState": false
       },
       {
-        "name": "Bank Code",
+        "name": "nav.sell_form_bankCode",
         "paramsName": "bankCode",
         "model": "",
         "regular": "^[0-9]{3}$",
         "maxLength": "3",
         "required": true,
-        "tips": "Invalid Bank Code!",
+        "tips": "nav.sell_form_bankCodeTips",
         "tipsState": false
       },
       {
-        "name": "Transit Number",
+        "name": "nav.sell_form_TransitNumber",
         "paramsName": "routingCodeValue2",
         "model": "",
         "regular": "^[0-9]{5}$",
         "maxLength": "5",
         "required": true,
-        "tips": "Invalid Transit Number!",
+        "tips": "nav.sell_form_TransitNumberTips",
         "tipsState": false
       }
     ]

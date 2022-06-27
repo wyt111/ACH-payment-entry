@@ -2,7 +2,7 @@
   <div id="configSell">
     <div class="configSell-content">
       <div class="bankCardInfo">
-        <div class="bankCardInfo-title">Bank Card</div>
+        <div class="bankCardInfo-title">{{ $t('nav.sell_configOrder_title') }}</div>
         <div class="bankCardInfo-view" @click="goCardForm">
           <div class="bankCardInfo-view-left">
             <div>{{ sellForm.name }}</div>
@@ -13,7 +13,7 @@
       </div>
       <IncludedDetails-sell class="includedDetails-view"/>
     </div>
-    <Button :buttonData="buttonData" :disabled="false" @click.native="submit">Confirm</Button>
+    <Button :buttonData="buttonData" :disabled="false" @click.native="submit">{{ $t('nav.Confirm') }}</Button>
   </div>
 </template>
 

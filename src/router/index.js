@@ -32,7 +32,7 @@ export const constantRoutes = [
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/emailCode/index.vue"),
     meta: {
-      title: 'Enter Email Address',
+      title: 'nav.routerName_email',
       keepAlive: true,
     }
   },
@@ -43,7 +43,7 @@ export const constantRoutes = [
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/emailCode/children/verifyCode"),
     meta: {
-      title: 'Verification code',
+      title: 'nav.routerName_emailCode',
       keepAlive: true,
     }
   },
@@ -55,7 +55,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
     meta: {
       requireAuth: true,
-      title: 'Transactions',
+      title: 'nav.routerName_Transactions',
       keepAlive: true,
     }
   },
@@ -65,7 +65,7 @@ export const constantRoutes = [
     name: 'receivingMode',
     component: () => import(/* webpackChunkName: "about" */ "../views/buyCurrency/receivingMode/index.vue"),
     meta: {
-      title: 'Receive coins',
+      title: 'nav.routerName_receivingMode',
       keepAlive: true,
     }
   },
@@ -75,7 +75,7 @@ export const constantRoutes = [
     component: () =>
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentMethod/index.vue"),
     meta: {
-      title: 'Choose payment method',
+      title: 'nav.routerName_paymentMethod',
       keepAlive: true,
     }
   },
@@ -86,7 +86,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/basisIdAuth.vue"),
     meta: {
       requireAuth: true,
-      title: 'basis-Id-Auth',
+      title: 'nav.routerName_basisIdAuth',
       keepAlive: true,
     },
 
@@ -99,7 +99,7 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',
-      title: 'Enter personal address',
+      title: 'nav.routerName_buyForm',
       keepAlive: true,
     }
   },
@@ -111,7 +111,7 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',
-      title: 'Enter card details',
+      title: 'nav.routerName_buyForm',
       keepAlive: true,
     }
   },
@@ -122,7 +122,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/configPayment.vue"),
     meta: {
       requireAuth: true,
-      title: 'Confirm Payment',
+      title: 'nav.routerName_creditCardConfig',
       keepAlive: true,
     }
   },
@@ -133,7 +133,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/VAOPM"),
     meta: {
       requireAuth: true,
-      title: 'Payment',
+      title: 'nav.routerName_buyPayment',
       keepAlive: false,
     }
   },
@@ -144,7 +144,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/indonesian.vue"),
     meta: {
       requireAuth: true,
-      title: 'Confirm Payment',
+      title: 'nav.routerName_buyOtherWayPay',
       keepAlive: false,
     }
   },
@@ -155,7 +155,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentResult/index.vue"),
     meta: {
       requireAuth: true,
-      title: 'Payment Result',
+      title: 'nav.routerName_paymentResult',
       keepAlive: true,
     }
   },
@@ -166,7 +166,7 @@ export const constantRoutes = [
     component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/testForm.vue"),
     meta: {
       requireAuth: true,
-      title: 'Enter Information',
+      title: 'nav.routerName_sellForm',
       keepAlive: true,
     },
   },
@@ -210,7 +210,7 @@ export const constantRoutes = [
         import(/* webpackChunkName: "about" */ "../views/sellCurrency/configSell/index.vue"),
     meta: {
       requireAuth: true,
-      title: 'Confirm',
+      title: 'nav.routerName_configSell',
       keepAlive: true,
     }
   },
@@ -223,7 +223,7 @@ export const constantRoutes = [
     component: () => import(/* webpackChunkName: "about" */ "../views/orderState/index.vue"),
     meta: {
       requireAuth: true,
-      title: 'Order',
+      title: 'nav.routerName_sellOrder',
       keepAlive: true,
     }
   },

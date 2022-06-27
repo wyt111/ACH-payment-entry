@@ -2,21 +2,21 @@
   <div class="cardConfigPayment">
 <!--    <div class="cardConfigPayment-content">-->
       <div class="formLine">
-        <div class="formTitle">Paying with</div>
+        <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
         <div class="formContent" @click="goPayForm">
           <div class="formContent-left">
             <div class="card-icon">
               <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
               <img src="../../../../assets/images/masterIcon.svg" v-else>
             </div>
-            <div class="card-info">{{ cardData.payWayName }}<span>Ending {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
+            <div class="card-info">{{ cardData.payWayName }}<span>{{ $t('nav.buy_payment_ending') }} {{ cardData.cardNumber ? cardData.cardNumber.substring(cardData.cardNumber.length-4) : '' }}</span></div>
           </div>
           <div class="formContent-right"><img src="../../../../assets/images/rightBlackIcon.png"></div>
         </div>
       </div>
       <!-- 选择支付方式页选择的是之间交易过的卡信息需要重新填写CVV -->
       <div class="formLine" v-if="newCvvState">
-        <div class="formTitle">CVV</div>
+        <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
         <div class="formContent">
           <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4" >
           <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">

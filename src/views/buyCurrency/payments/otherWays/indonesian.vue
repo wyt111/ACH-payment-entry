@@ -1,17 +1,17 @@
 <template>
   <div id="confirmPayment">
 <!--    <div class="confirmPayment-content">-->
-      <div class="payTips" v-if="startPayment">Plese completa payment with <span>{{ paymentCountDownMinute }}</span></div>
-      <div class="payAmountInfo-title">Paying with</div>
+      <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
+      <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
       <div class="payAmountInfo-box">{{ parameter.payWayName }}</div>
       <!-- QRIS -->
       <div class="QRISView" v-show="parameter.payWayCode === '10004' && qrCodeState">
         <div class="QRISCode" ref="qrCodeUrl"></div>
-        <div class="QRISText">Scan QR Code to complete payment</div>
+        <div class="QRISText">{{ $t('nav.buy_configPayIDR_codeTips') }}</div>
       </div>
       <!-- OVO -->
       <div class="OVOView"  v-if="parameter.payWayCode === '10006'">
-        <div class="payAmountInfo-title">Paying with</div>
+        <div class="payAmountInfo-title">{{ $t('nav.buy_configPayIDR_ovo_title') }}</div>
         <div class="payAmountInfo-box ovoPhone">
           <div class="region">+ 62</div>
           <div class="input">
@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">Open OVO app to complete payment.</div>
+      <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">{{ $t('nav.buy_configPayIDR_ovo_phoneTips') }}</div>
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
       <IncludedDetails class="IncludedDetails" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}"/>

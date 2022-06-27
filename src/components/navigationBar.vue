@@ -7,7 +7,7 @@
       <div class="linkName">{{ routerName }}</div>
     </div>
     <!-- close menu view -->
-    <div class="navigationBar_view_left" v-else>Menu</div>
+    <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <!-- {{}} -->
     <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
       <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
@@ -37,7 +37,7 @@ export default {
           this.tabState = false;
         } else {
           this.tabState = true;
-          this.routerName = val.meta.title;
+          this.routerName = this.$t(val.meta.title);
         }
         // console.log(val);
         oldVal ? this.routerPath = oldVal.path : "";
@@ -72,7 +72,7 @@ export default {
         this.$router.push('/');
         return;
       }
-    
+
       if(this.routerPath === '/emailCode' || this.routerPath === '/verifyCode'){
         this.$router.go(-1)
         return;
@@ -105,8 +105,8 @@ export default {
         this.$router.push('/');
         return;
       }
-      
-        
+
+
       this.$router.go(-1);
     },
     openMenu(){

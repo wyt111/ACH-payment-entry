@@ -1,14 +1,14 @@
 <template>
   <div class="Language-container">
-    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/backIcon.png" alt="">Language</div>
+    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/backIcon.png" alt="">{{ $t('nav.menu_language') }}</div>
     <div class="Language_line" v-for="item in languageList" :key="item.name" @click="choiseItem(item)">
       <div class="Language_line_left">
-        <img src="@/assets/images/slices/English(US).png" alt="">
+        <img :src="item.icon" alt="">
         <p>{{ item.name }}</p>
       </div>
       <img src="@/assets/images/slices/right_icon.png" alt="">
     </div>
-    
+
   </div>
 </template>
 <script>
@@ -18,15 +18,17 @@ export default {
   data(){
     return {
       languageList: [
-        {name: 'English(US)',value: 'EN-US',state: true},
+        {name: 'English(US)',value: 'EN-US',icon: require('@/assets/images/slices/English(US).png'),state: true},
+        {name: '繁體中文',value: 'ZH-TW',icon: require('@/assets/images/slices/CHN.png'),state: false},
       ],
     }
   },
   methods:{
     choiseItem(item){
       this.$store.state.languageValue = item.value
-     i18n.locale = item.value
-     this.$store.state.LanguageIsShow = false
+      sessionStorage.setItem("language",item.value)
+      i18n.locale = item.value
+      this.$store.state.LanguageIsShow = false
     }
   }
 }
@@ -66,7 +68,7 @@ export default {
     .Language_line_left{
       display: flex;
       align-items: center;
-      
+
       p{
         font-size: .16rem;
         font-family: GeoRegular;

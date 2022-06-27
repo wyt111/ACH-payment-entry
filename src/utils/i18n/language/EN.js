@@ -23,6 +23,13 @@ module.exports = {
     orderTips_title: 'Payment not funt',
     orderTips_text: 'Sorry, we did not detect your payment information. If you confirm the payment, please stay on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of USDT to you. ',
     orderTips_buttonText: 'I Understand',
+    //菜单
+    menu: 'Menu',
+    menu_transactions: 'Transactions',
+    menu_language: 'Language',
+    menu_terms: 'Terms of Service',
+    menu_privacy: 'Privacy Policy',
+    menu_logOut: 'Log Out',
 
     /**
      * 路由
@@ -45,7 +52,7 @@ module.exports = {
     routerName_sellOrder: 'Order',
 
     /**
-     * 菜单
+     * 登陆
      */
     login: 'Login',
     loginOut: 'Login out',
@@ -58,16 +65,10 @@ module.exports = {
     codeTitle2: 'If your code doesn\'t arrive shortly. ',
     codeTitle3: 'New verification code sent ',
     codeSecond: 's',
-    code_: ' I agree with Alchemy Pay\'s ',
+    code_text: ' I agree with Alchemy Pay\'s ',
     code_name: 'Terms of Service',
     code_and: 'and',
     code_name2: 'Privacy Policy',
-    menu: 'Menu',
-    menu_transactions: 'Transactions',
-    menu_language: 'Language',
-    menu_terms: 'Terms of Service',
-    menu_privacy: 'Privacy Policy',
-    menu_logOut: 'Log Out',
 
     /**
      * 首页
@@ -107,11 +108,11 @@ module.exports = {
     search_components_networkTitle: 'Select Network',
     //买币 - 选择接收方式
     buy_receivingMode_tips: 'Enter your wallet address.',
-    buy_receivingMode_addressTitle: 'Your ACH address',
+    buy_receivingMode_addressTitle: 'Your ',
     buy_receivingMode_addressPlaceholder: 'Wallet Address…',
     buy_receivingMode_networkTitle: 'Your ACH address',
     buy_receivingMode_networkPlaceholder: 'Select Network',
-    buy_receivingMode_addressTips1: 'Not a valid ACH',
+    buy_receivingMode_addressTips1: 'Not a valid',
     buy_receivingMode_addressTips2: 'address.',
     //买币 - 选择支付方式
     buy_payment_savedTitle: 'Saved payment methods',
@@ -134,7 +135,7 @@ module.exports = {
     //买币 - 确认订单 - 印尼支付
     buy_configPayIDR_va_title: 'BANK',
     buy_configPayIDR_va_codeTitle: 'Payment Code',
-    buy_configPayIDR_timeDownTips: 'Plese completa payment with ',
+    buy_configPayIDR_timeDownTips: 'Plese completa payment with',
     buy_configPayIDR_codeTips: 'Scan QR Code to complete payment',
     buy_configPayIDR_ovo_phoneTips: 'Open OVO app to complete payment.',
     //订单结果页
@@ -143,9 +144,8 @@ module.exports = {
     payResult_feeAmount: 'Amount',
     payResult_feeAddress: 'Address',
     payResult_feeHash: 'Hash',
-    payResult_feeWallet: 'ACH Wallet',
+    payResult_feeWallet: 'Wallet',
     payResult_feePassword: 'ACH Wallet',
-
 
 
     /**
@@ -231,7 +231,7 @@ module.exports = {
     sell_form_IDTypeLi_DNI: 'DNI',
     sell_form_IDTypeLi_RUC: 'RUC',
     sell_form_IDTypeLi_CE: 'CE',
-    sell_form_IDTypeLi_PASS: 'PASS',
+    sell_form_IDTynamepeLi_PASS: 'PASS',
     sell_form_RUTNumber: 'RUT Number',
     sell_form_RUTNumberTips: 'Invalid RUT Number!',
     sell_form_BSBCode: 'BSB Code',
@@ -249,8 +249,31 @@ module.exports = {
     sell_form_IDTypeLi_CI: 'CI',
     sell_form_TransitNumber: 'Transit Number',
     sell_form_TransitNumberTips: 'Invalid Transit Number!',
-    sell_form_bankSwiftTips: 'cannot be empty at the same time',
+    sell_form_bankSwiftTips: 'Swift code and location id cannot be empty at the same time',
     sell_form_bankSwiftCodeTips: 'Bank code and swift code cannot be empty at the same time',
-    sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
+    // sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
+
+    // 后增
+    history_noListButton: 'Buy crypto now',
+    history_noListText: 'No transactions',
+    history_noListText2: 'Buy some crypto to get started',
+    history_state_Complete: 'Complete',
+    history_state_Processing: 'Processing',
+    history_listTitle1: 'Order No',
+    history_listTitle2: 'Crypto',
+    history_listTitle3: 'Hash ID',
+    fee_listTitle_price: 'price',
+    sell_order_title: 'state-content',
+    fee_tips: 'Based on payment method',
+    search_components_Popular: 'Popular',
+    search_components_All: 'All',
+    search_components_placeHolder: 'Search here… ',
+    result_stateTo4_your: 'Your',
+    result_stateTo4: 'order is being processed and will be sent to your designated address shortly. ',
+    result_stateTo5: 'has transfered to your wallt address.',
+    result_returnText_merchant: 'Return back',
+    buy_configPayIDR_ovo_title: 'OVO Phone',
+    login_getCode: 'Resend',
+
   }
 }

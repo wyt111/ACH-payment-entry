@@ -33,7 +33,7 @@ export default {
   },
   data(){
     return{
-      buttonName: 'Confirm Payment', // Confirm Payment ｜ I have completed the payment
+      buttonName: this.$t('nav.ConfirmPayment'), // Confirm Payment ｜ I have completed the payment
     }
   },
   watch:{
@@ -42,7 +42,7 @@ export default {
       immediate: true,
       handler(val){
         if(val.loading === true && val.customName && val.customName === false){
-          this.buttonName = 'I have completed the payment';
+          this.buttonName = this.$t('nav.queryOderState');
         }
       }
     }
@@ -53,7 +53,7 @@ export default {
       if(this.buttonData.triggerNum === 1){
         this.buttonData.loading = true;
         if(this.buttonData.customName === false){
-          this.buttonName = 'I have completed the payment';
+          this.buttonName = this.$t('nav.queryOderState');
         }
         return;
       }

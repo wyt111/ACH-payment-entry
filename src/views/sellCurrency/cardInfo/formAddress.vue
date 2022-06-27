@@ -12,7 +12,7 @@
           <div class="formContent" @click="openSearch"><input type="text" v-model="countryName" disabled="true"></div>
         </div>
         <div class="formLine">
-          <div class="formTitle">Address</div>
+          <div class="formTitle">{{ $t('nav.payResult_feeAddress') }}</div>
           <div class="formContent"><input type="text" v-model="sellForm.address" @input="sellForm.address = sellForm.address.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
         <div class="formLine">
@@ -24,7 +24,7 @@
           <div class="formContent"><input type="text" v-model="sellForm.state" @input="sellForm.state = sellForm.state.replace(/[^\x00-\xff]/g, '')"></div>
         </div>
       </div>
-      <button class="continue" :disabled="buttonState" @click="next">Continue</button>
+      <button class="continue" :disabled="buttonState" @click="next">{{ $t('nav.Continue') }}</button>
     </div>
   </div>
 </template>

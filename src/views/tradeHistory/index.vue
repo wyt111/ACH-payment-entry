@@ -2,10 +2,10 @@
   <div id="tradeHistory">
     <div class="noData" v-if="historyList.length===0">
       <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
-      <div class="noDataText">No transactions</div>
-      <p>Buy some crypto to get started</p>
+      <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
+      <p>{{ $t('nav.history_noListText2') }}</p>
       <button class="continue" @click="goHome">
-        Buy crypto now
+        {{ $t('nav.history_noListButton') }}
         <img class="rightIcon" src="../../assets/images/slices/rightIcon.png" alt="">
       </button>
     </div>
@@ -22,37 +22,37 @@
                 </div>
               </div>
               <div class="state">
-                <span v-if="Number(item.orderState) === 4" class="state_success">Processing</span>
-                <span v-if="Number(item.orderState) === 5" class="state_success">Complete</span>
+                <span v-if="Number(item.orderState) === 4" class="state_success">{{ $t('nav.history_state_Processing') }}</span>
+                <span v-if="Number(item.orderState) === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
 <!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring...</span>-->
               </div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">Order No:</div>
+              <div class="details_line_title">{{ $t('nav.history_listTitle1') }}:</div>
               <div class="details_line_value">{{ item.orderNo }}</div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">{{ item.cryptoCurrency }} Amount:</div>
+              <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.payResult_feeAmount') }}:</div>
               <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">{{ item.cryptoCurrency }} Price:</div>
+              <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.fee_listTitle_price') }}:</div>
               <div class="details_line_value">{{ item.cryptoCurrencyPrice }}{{ item.fiatCurrency }}</div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">Crypto:</div>
+              <div class="details_line_title">{{ $t('nav.history_listTitle2') }}:</div>
               <div class="details_line_value">{{ item.cryptoCurrencyVolume }}{{ item.cryptoCurrency }}</div>
             </div>
             <div class="details_line" >
               <div class="details_line_title">
-                <span v-if="item.depositType===1">ACH Wallet:</span>
-                <span v-if="item.depositType===2">Address:</span>
+                <span v-if="item.depositType===1">ACH {{ $t('nav.payResult_feeWallet') }}:</span>
+                <span v-if="item.depositType===2">{{ $t('nav.payResult_feeAddress') }}:</span>
               </div>
               <div class="details_line_value address_value">{{ item.address }}</div>
             </div>
             <div class="details_line" v-if="item.hashId">
-              <div class="details_line_title">Hash ID:</div>
+              <div class="details_line_title">{{ $t('nav.history_listTitle3') }}:</div>
               <div class="details_line_value">{{ item.hashId }}</div>
             </div>
           </div>

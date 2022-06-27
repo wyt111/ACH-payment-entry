@@ -2,20 +2,19 @@
   <div id="routerMenu">
     <div class="routerMenu_isLogo" v-if="token===false">
         <img src="../assets/images/slices/pay.png" alt="">
-        <h2>Welcome to Alchemy Pay!</h2>
-        <p>Login to unlock the full experience</p>
-        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">Login <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
+        <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
+        <p>{{ $t('nav.RouterMenu_experience') }}</p>
+        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
     <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
       <div class="lineIcon"><img src="../assets/images/slices/histry.png"></div>
       <div class="lineName">
-        <p>Transactions</p>
-        <p><span v-if="finished">No history yet</span></p>
+        <p>{{ $t('nav.menu_transactions') }}</p>
+        <p><span v-if="finished">{{ $t('nav.RouterMenu_history') }}</span></p>
       </div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
-
       </div>
     </div>
     <!-- <div class="routerMenu_line" @click="goView('/','buyCrypto')">
@@ -34,7 +33,7 @@
     </div> -->
     <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
-      <div class="lineName">Language</div>
+      <div class="lineName">{{ $t('nav.menu_language') }}</div>
 
       <div class="lineRight">
         <p>{{ $store.state.languageValue }}</p>
@@ -43,21 +42,21 @@
     </div>
     <div class="routerMenu_line" @click="goProtocol('termsUse')">
       <div class="lineIcon"><img src="../assets/images/slices/terms.png"></div>
-      <div class="lineName">Terms of Service</div>
+      <div class="lineName">{{ $t('nav.code_name') }}</div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
     <div class="routerMenu_line" @click="goProtocol('privacyPolicy')">
       <div class="lineIcon"><img src="../assets/images/slices/privacy.png"></div>
-      <div class="lineName">Privacy Policy</div>
+      <div class="lineName">{{ $t('nav.menu_privacy') }}</div>
       <div class="lineRight">
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
     <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">
       <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
-      <div class="lineName">Log Out</div>
+      <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
       <div class="lineRight">
         <div class="email">{{ emailSlice }}</div>
         <div><img src="../assets/images/slices/right_icon.png"></div>
@@ -65,9 +64,9 @@
     </div>
     <div class="routerMenu_loginOut" v-show="show" @click="show=false">
       <div class="content" @click.stop="show=true">
-        <h2>Are you sure you want to logout?</h2>
-        <div @click.stop="outLogin">Login <img src="../assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="show=false">Dismiss</p>
+        <h2>{{ $t('nav.loginOut_title') }}</h2>
+        <div @click.stop="outLogin">{{ $t('nav.loginOut') }} <img src="../assets/images/slices/rightIcon.png" alt=""></div>
+        <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
       </div>
     </div>
   </div>

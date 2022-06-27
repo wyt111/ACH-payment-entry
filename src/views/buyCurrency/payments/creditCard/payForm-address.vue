@@ -8,7 +8,7 @@
           <div class="formContent" @click="openSearch"><input type="text" v-model="countryAbbreviation" disabled="true"></div>
         </div>
         <div class="formLine">
-          <div class="formTitle">Address</div>
+          <div class="formTitle">{{ $t('nav.payResult_feeAddress') }}</div>
           <div class="formContent"><input type="text" v-model="params.address"></div>
         </div>
         <div class="formLine">
@@ -25,11 +25,11 @@
         </div>
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
-            <div class="formTitle">First Name</div>
+            <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
             <div class="formContent"><input type="text" v-model="params.firstname"></div>
           </div>
           <div class="formLine_flex_child">
-            <div class="formTitle">Last Name</div>
+            <div class="formTitle">{{ $t('nav.buy_form_lastName') }}</div>
             <div class="formContent"><input type="text" v-model="params.lastname"></div>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div class="formContent"><input type="email" v-model="params.email"></div>
         </div>
       </div>
-      <div class="continue" :class="{'buttonTrue': buttonState}" @click="nextStep">Continue</div>
+      <div class="continue" :class="{'buttonTrue': buttonState}" @click="nextStep">{{ $t('nav.Continue') }}</div>
     </div>
   </div>
 </template>
@@ -117,7 +117,7 @@ export default {
       if(!new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(this.params.email)){
         this.$toast({
           duration: 3000,
-          message: "not a valid email."
+          message: this.$t('nav.sell_form_EmailTips')
         });
         return;
       }

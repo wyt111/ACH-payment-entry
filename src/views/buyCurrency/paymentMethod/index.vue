@@ -3,7 +3,7 @@
     <div class="paymentMethod-content">
       <!-- 历史支付的方式 -->
       <div class="payMethodsUl" v-if="savedCard.length !== 0">
-        <div class="title">Saved payment methods</div>
+        <div class="title">{{ $t('nav.buy_payment_savedTitle') }}</div>
         <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">
           <div class="payMethodsLi-left">
             <div class="cardIcon">
@@ -14,8 +14,8 @@
               <img v-if="item.payWayCode === 10008" src="../../../assets/images/10008-icon.png">
             </div>
             <div class="cardInfo">
-              <p>{{ item.payWayName }} <span>Ending {{ item.cardNumber.substring(item.cardNumber.length-4) }}</span></p>
-              <p>Instant</p>
+              <p>{{ item.payWayName }} <span>{{ $t('nav.buy_payment_ending') }} {{ item.cardNumber.substring(item.cardNumber.length-4) }}</span></p>
+              <p>{{ $t('nav.buy_payment_instant') }}</p>
             </div>
           </div>
           <div class="payMethodsLi-right" v-if="cardCheck === index"><img src="../../../assets/images/cardCheckIcon.png"></div>
@@ -23,7 +23,7 @@
       </div>
       <!-- 选择新的支付方式 -->
       <div class="payMethodsUl">
-        <div class="title">Add a new payment method</div>
+        <div class="title">{{ $t('nav.buy_payment_addTitle') }}</div>
         <div class="payMethodsLi" :class="{'cardCheck': paymethodCheck === index}" v-for="(item,index) in paymethodList" :key="index" @click="choisePayMethods(item,index)">
           <div class="payMethodsLi-left">
             <div class="cardIcon">
@@ -35,7 +35,7 @@
             </div>
             <div class="cardInfo">
               <p>{{ item.payWayName }}</p>
-              <p>Instant</p>
+              <p>{{ $t('nav.buy_payment_instant') }}</p>
             </div>
           </div>
           <div class="payMethodsLi-right">
@@ -47,7 +47,7 @@
       <IncludedDetails class="IncludedDetails" :titleStatus="true"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
-      Continue
+      {{ $t('nav.Continue') }}
       <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="" v-if="!request_loading">
       <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
     </button>

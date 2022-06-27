@@ -7,26 +7,24 @@
       <div class="receiveCoins-content">
         <div class="promptInformation">
           <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
-          <span v-else>Enter your wallet address.</span>
+          <span v-else>{{ $t('nav.buy_receivingMode_tips') }}</span>
         </div>
         <div class="collectionMethod" @click="checkMethods('address')">
           <div class="methods">
-            <div class="methods_name">Your {{ routerParams.cryptoCurrency }} address</div>
-<!--            <div class="methods_check" v-if="supportCurrency"><input type="checkbox" v-model="checkModel" value="address"></div>-->
+            <div class="methods_name">{{ $t('nav.buy_receivingMode_addressTitle') }} {{ routerParams.cryptoCurrency }} {{ $t('nav.buy_receivingMode_addressTips2') }}</div>
           </div>
           <div v-if="checkModel[0]==='address'">
             <div class="methods_myAddress">
-              <div class="methods_input"><input type="text" v-model="buyParams.address" placeholder="Wallet Address…" @blur="networkAddressBlur" :disabled="addressDefault"></div>
-              <div class="methods_errorText" v-if="walletAddress_state">Not a valid {{ buyParams.cryptoCurrency }} address.</div>
+              <div class="methods_input"><input type="text" v-model="buyParams.address" :placeholder="this.$t('nav.buy_receivingMode_addressPlaceholder')" @input="networkAddressChange" :disabled="addressDefault"></div>
+              <div class="methods_errorText" v-if="walletAddress_state">{{ $t('nav.buy_receivingMode_addressTips1') }} {{ buyParams.cryptoCurrency }} {{ $t('nav.buy_receivingMode_addressTips2') }}</div>
             </div>
             <div class="methods_myAddress">
-              <div class="methods_title">Network</div>
+              <div class="methods_title">{{ $t('nav.Sellorder_Network') }}</div>
               <div class="methods_input network_input" @click="openSelect">
                 <div class="selectNetwork">
                   <span v-if="buyParams.network!==''">{{ buyParams.network }}</span>
-                  <span class="networkPlaceholder" v-else>Select Network</span>
+                  <span class="networkPlaceholder" v-else>{{ $t('nav.search_components_networkTitle') }}</span>
                 </div>
-<!--                <input type="text" placeholder="Select Network" v-model="buyParams.network" disabled>-->
                 <span class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png"></span>
               </div>
             </div>
@@ -37,7 +35,7 @@
       </div>
       <div class="continueBox" v-show="!searchViewState">
         <button class="continue" @click="transaction" :disabled="disabled">
-          Continue
+          {{ $t('nav.Continue') }}
           <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
         </button>
       </div>
@@ -117,7 +115,7 @@ export default {
     this.routingInformation();
   },
   methods: {
-    networkAddressBlur(){
+    networkAddressChange(){
       if(this.checkModel[0] === 'address' && !new RegExp(this.networkRegular).test(this.buyParams.address)){
         this.walletAddress_state = true;
       }else{
@@ -288,15 +286,6 @@ export default {
         font-family: "GeoRegular", GeoRegular;
         font-weight: normal;
         color: #707070;
-      }
-      .methods_check{
-        display: flex;
-        margin-left: auto;
-        input{
-          width: 0.13rem;
-          height: 0.13rem;
-          cursor: pointer;
-        }
       }
     }
     .methods_myAddress{

@@ -2,18 +2,18 @@
   <!-- Payment information -->
   <div class="paymentInformation">
     <div class="feeTitle">
-      <div class="feeTitle-name">Remaining time</div>
+      <div class="feeTitle-name">{{ $t('nav.home_feeTimeDownTitle') }}</div>
       <div class="feeTitle-value">
         <div class="loading-svg">
           <van-icon name="clock-o" />
         </div>
-        <div class="feeTitle-value-text">Quote updates in<span>{{ timeDownNumber }}</span>s</div>
+        <div class="feeTitle-value-text">{{ $t('nav.home_feeTimeDown') }}<span>{{ timeDownNumber }}</span>{{ $t('nav.codeSecond') }}</div>
       </div>
     </div>
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          You get <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> for <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -21,24 +21,24 @@
       </div>
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
-          <div class="title">price</div>
-          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
+          <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
+          <div class="value">{{ payCommission.symbol }} {{ feeInfo.price }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
-            Ramp fee
+            {{ $t('nav.home_buyFee_rampFee') }}
             <el-popover
                 placement="top"
                 :trigger="triggerType"
                 :offset="-18"
-                content="Based on payment method">
+                :content="$t('nav.fee_tips')">
               <div slot="reference"><img class="tipsIcon" src="../assets/images/exclamatoryMarkIcon.png"></div>
             </el-popover>
           </div>
-          <div class="value"><span class="minText">as low as</span> {{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
+          <div class="value"><span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span> {{ payCommission.symbol }} {{ payCommission.rampFee }}</div>
         </div>
         <div class="fee-content-details-line">
-          <div class="title">Network fee</div>
+          <div class="title">{{ $t('nav.home_buyFee_networkFee') }}</div>
           <div class="value">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
         </div>
       </div>
@@ -149,10 +149,11 @@ export default {
       }
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
-          this.feeInfo = res.data;
+          this.feeInfo = JSON.parse(JSON.stringify(res.data));
+          this.feeInfo.price = (res.data.price * this.routerParams.exchangeRate).toFixed(Number(this.payCommission.decimalDigits));
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
-            this.$parent.feeInfo = this.feeInfo;
+            this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo));
             this.$parent.calculationAmount();
           }
         }

@@ -15,8 +15,8 @@ Three channels for successful payment --- 'depositType'
           <img src="../../../assets/images/paymentFailure.png" v-else-if="orderStatus === 0">
         </div>
         <div class="results_text" v-if="orderStatus >= 3 && orderStatus <= 5" v-html="resultText"></div>
-        <div class="errorMessage" v-else-if="orderStatus === 6">Invoice Expired!</div>
-        <div class="errorMessage" v-else-if="orderStatus === 0">Payment Fail! Please check your card information.</div>
+        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_errorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_timeErrorMessage') }}</div>
       </div>
 
       <div class="paymentInformation">
@@ -29,23 +29,23 @@ Three channels for successful payment --- 'depositType'
           </div>
           <div class="fee-content-details" v-if="detailsState">
             <div class="fee-content-details-line">
-              <div class="title">Price</div>
+              <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
             <div class="fee-content-details-line">
-              <div class="title">Amount</div>
+              <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
               <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
             </div>
             <div class="fee-content-details-line" v-if="depositType===2||depositType===3">
-              <div class="title">Address</div>
+              <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
               <div class="value">{{ detailsParameters.address }}</div>
             </div>
             <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null">
-              <div class="title">Hash</div>
+              <div class="title">{{ $t('nav.payResult_feeHash') }}</div>
               <div class="value">{{ detailsParameters.hashId }}</div>
             </div>
             <div class="fee-content-details-line" v-if="depositType===1">
-              <div class="title">ACH Wallet</div>
+              <div class="title">ACH {{ $t('nav.payResult_feeWallet') }}</div>
               <div class="value">{{ detailsParameters.address }}</div>
             </div>
             <div class="fee-content-details-line" v-if="depositType===1">
@@ -102,14 +102,14 @@ export default {
       detailsParameters: {},
       countDown: null,
       detailsState: false,
-      backText: "Continue to buy crypto", //Return back
+      backText: this.$t('nav.orderRsult'), //Return back
     }
   },
   activated(){
     this.queryDetails()
     let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
     if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
-      this.backText = "Return back";
+      this.backText = this.$t('nav.result_returnText_merchant');
     }
   },
   methods: {
@@ -156,11 +156,11 @@ export default {
         return;
       }
       if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
-        this.resultText = `Your ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } order is being processed and will be sent to your designated address shortly.`;
+        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
         return;
       }
       if(this.depositType === 2 && this.orderStatus === 5){
-        this.resultText = `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } has transfered to your wallt address.`
+        this.resultText = `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     },
 

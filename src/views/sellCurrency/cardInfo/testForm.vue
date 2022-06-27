@@ -4,7 +4,7 @@
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">tips：{{ item.multinomialTips }}</div>
-        <div class="formTitle"><span v-if="item.required">*</span>{{ item.name }}</div>
+        <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
           <div class="radioInput">
             <div class="value">{{ item.model }}</div>
@@ -14,13 +14,13 @@
         <div class="formContent" v-else>
           <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)"  @focus="inputFocus" @blur="inputBlur">
         </div>
-        <p class="errorMessage" v-if="item.tipsState">{{ item.tips }}</p>
-        <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ item.multinomialTips }}</p>
+        <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
+        <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
       </div>
     </div>
 
     <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow">
-      Continue
+      {{ $t('nav.Continue') }}
       <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
       <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
     </button>
@@ -28,7 +28,7 @@
     <!-- 单选框 -->
     <div class="selectView" v-if="selectState" @click="selectState=false">
       <ul class="selectDate">
-        <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ item }}</li>
+        <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ $t(item) }}</li>
       </ul>
     </div>
   </div>
@@ -221,7 +221,7 @@ export default {
       }
     },
     inputBlur(){
-       
+
         this.buttonIsShow = true
       // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
     },

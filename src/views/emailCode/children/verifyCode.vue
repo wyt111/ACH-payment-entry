@@ -1,19 +1,20 @@
 <template>
   <div class="verifyCode-container">
       <div style="position:relative;flex:1">
-        <div class="verifyCode_title">We’ve sent a confirmation code to your email.</div>
+        <div class="verifyCode_title">{{ $t('nav.codeTitle1') }}</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
         <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
       </div>
-      <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">New verification code sent {{ codeTime }}s</div>
-      <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >If your code doesn't arrive shortly.  <span @click="getEmailCode">Resend </span></div>
+      <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">{{ $t('nav.codeTitle3') }} {{ codeTime }}{{ $t('nav.codeSecond') }}</div>
+      <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >{{ $t('nav.codeTitle2') }}  <span @click="getEmailCode">{{ $t('nav.login_getCode') }} </span></div>
       </div>
       <div style="position:relative;height: 1.1rem;">
         <div class="verifyCode_title bottom">
         <el-checkbox size="small" v-model="checked"></el-checkbox>
-        <div> I agree with Alchemy Pay's <span @click="openView('Terms')" style="cursor: pointer;">&lt;Terms of Service&gt;</span> and <span style="cursor: pointer" @click="openView('Privacy')">&lt;Privacy Policy&gt;.</span></div></div>
-      <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">Continue
+        <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">&lt;{{ $t('nav.code_name') }}&gt;</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">&lt;{{ $t('nav.code_name2') }}&gt;.</span></div></div>
+      <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
+        {{ $t('nav.Continue') }}
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
       </div>

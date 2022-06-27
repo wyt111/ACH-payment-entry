@@ -7,7 +7,7 @@
         <div class="icon"><img src="../assets/images/closeIcon.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'"> <!--  && viewName !== 'payCurrency' -->
-        <input type="text" placeholder="Search here…" v-model="searchText" @input="searchBankData">
+        <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText" @input="searchBankData">
         <div class="searchIcon"><img src="../assets/images/searchIcon.svg"></div>
       </div>
     </div>
@@ -24,13 +24,13 @@
       <!-- currency content -->
       <ul v-else-if="viewName === 'currency'">
         <div v-if="searchText===''">
-          <div class="screen_title">Popular</div>
+          <div class="screen_title">{{ $t('nav.search_components_Popular') }}</div>
           <li v-for="(item,index) in popularList" :key="index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
-          <div class="screen_title">All</div>
+          <div class="screen_title">{{ $t('nav.search_components_All') }}</div>
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
@@ -276,15 +276,15 @@ export default {
     //Judge title name
     customComponentTitle(){
       if(this.viewName === 'country' || this.viewName === 'country-sellForm' || this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell'){
-        this.viewTitle = 'Select Country';
+        this.viewTitle = this.$t('nav.search_components_countryTitle');
         return;
       }
       if(this.viewName === 'currency' || this.viewName === 'currency-sell'){
-        this.viewTitle = 'Select Crypto';
+        this.viewTitle = this.$t('nav.search_components_cryptoTitle');
         return;
       }
       if(this.viewName === 'network'){
-        this.viewTitle = 'Select Network';
+        this.viewTitle = this.$t('nav.search_components_networkTitle');
         return;
       }
       if(this.viewName === 'bank'){

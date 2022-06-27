@@ -4,8 +4,8 @@
       <div class="homePage_view" v-show="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')">Buy Crypto</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')">Sell Crypto</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')">{{ $t('nav.routerName_buy') }}</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -19,7 +19,7 @@
       <!--  menu view  -->
       <div v-show="menuState">
         <div class="navigationBar_view">
-          <div class="navigationBar_view_left">Menu</div>
+          <div class="navigationBar_view_left">{{ $t('nav.menu') }}</div>
           <div class="navigationBar_view_right">
             <img src="@/assets/images/closeIcon.png" @click="openMenu">
           </div>
@@ -59,7 +59,7 @@ export default {
       return this.$store.state.homeTabstate;
     }
   },
-  
+
   methods: {
     openSearch(view,choiseItem) {
       this.searchState = false;
@@ -83,7 +83,7 @@ export default {
       })
     },
   },
-  
+
 };
 </script>
 

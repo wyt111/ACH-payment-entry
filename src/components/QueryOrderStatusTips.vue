@@ -2,15 +2,10 @@
   <div id="QueryOrderStatusTips">
     <div class="QueryOrderStatusTips-content">
       <div class="QueryOrderStatusTips-top">
-        <p class="title">Payment not funt</p>
-        <p class="tipsText">
-          Sorry, we did not detect your payment information. If you
-          confirm the payment, please stay on this page for a few
-          minutes, once we receive your payment, we will transfer
-          the corresponding amount of USDT to you.
-        </p>
+        <p class="title">{{ $t('nav.orderTips_title') }}</p>
+        <p class="tipsText">{{ $t('nav.orderTips_text') }}</p>
         <footer @click="closeView">
-          I Understand
+          {{ $t('nav.orderTips_buttonText') }}
           <img class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
         </footer>
       </div>

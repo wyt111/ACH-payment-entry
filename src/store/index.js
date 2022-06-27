@@ -26,6 +26,9 @@ const store = new Vuex.Store({
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
 
+        //语言
+        language: '',
+
         //买币页面参数
         buyRouterParams: {
             amount: 0,
@@ -48,7 +51,7 @@ const store = new Vuex.Store({
         cancelTokenArr: [], //ajax请求队列
 
         //多语言
-        languageValue:'EN-US',
+        languageValue:'EN-US', // EN-US ZH-TW
         LanguageIsShow:false,
         menuState:false,
         isLogin:false
