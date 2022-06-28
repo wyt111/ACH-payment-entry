@@ -24,7 +24,7 @@
       <!-- currency content -->
       <ul v-else-if="viewName === 'currency'">
         <div v-if="searchText===''">
-          <div class="screen_title">{{ $t('nav.search_components_Popular') }}</div>
+          <div class="screen_title" v-if="popularList.length > 0">{{ $t('nav.search_components_Popular') }}</div>
           <li v-for="(item,index) in popularList" :key="index" @click="choiseItem('currency',item)">
             <p class="seach_li_img"><img :src="item.logoUrl"></p>
             <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
@@ -305,7 +305,9 @@ export default {
       if(this.viewName === 'currency'){
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{return item.purchaseSupported === 1});
+          let popularList = this.basicData.cryptoCurrencyResponse.popularList;
+          popularList !== null && popularList.length > 0 ? this.popularList = popularList.filter(item=>{return item.purchaseSupported === 1}) : '';
+          console.log()
           this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;

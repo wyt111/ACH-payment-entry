@@ -307,18 +307,17 @@ export default {
 
       sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
       let cryptoValue = (merchantParams.crypto!== ''&& merchantParams.crypto!==undefined) ? merchantParams.crypto : "ACH";
-      this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{ //No parameter defaults
-        if(item.name === cryptoValue){
-          this.currencyData = {
-            icon: item.logoUrl,
-            name: item.name,
-            networkFee: item.networkFee,
-            price: item.price,
-            serviceFee: item.serviceFee,
-          }
-          this.$store.state.buyRouterParams.cryptoCurrency = this.currencyData.name;
-        }
-      })
+      //如果匹配到ACH币并且可以买(purchaseSupported===1)赋值,没有则赋值可以买(purchaseSupported===1)列表第一个币种
+      let cryptoDate = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(res=>{ return res.name === cryptoValue && res.purchaseSupported === 1 })[0];
+      cryptoDate === undefined ? cryptoDate = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1})[0] : '';
+      this.currencyData = {
+        icon: cryptoDate.logoUrl,
+        name: cryptoDate.name,
+        networkFee: cryptoDate.networkFee,
+        price: cryptoDate.price,
+        serviceFee: cryptoDate.serviceFee,
+      }
+      this.$store.state.buyRouterParams.cryptoCurrency = cryptoDate.name;
       let params = merchantParams;
       delete params.networkDefault;
       delete params.addressDefault;

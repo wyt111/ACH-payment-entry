@@ -4,7 +4,7 @@
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <div class="icon" @click="goBack"><img src="../assets/images/backIcon.png"></div>
-      <div class="linkName">{{ routerName }}</div>
+      <div class="linkName">{{ $t(routerName) }}</div>
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
@@ -37,7 +37,7 @@ export default {
           this.tabState = false;
         } else {
           this.tabState = true;
-          this.routerName = this.$t(val.meta.title);
+          this.routerName = val.meta.title;
         }
         // console.log(val);
         oldVal ? this.routerPath = oldVal.path : "";

@@ -20,7 +20,7 @@ module.exports = {
         agreement_components_text2: 'AlchemyPay ',
         agreement_components_text3: '當日從我選擇的付款方式中扣除上述金額，我充分瞭解此操作不能取消、召回或退款。',
         //查询订单状态提示
-        orderTips_title: '付款信息未找到',
+        orderTips_title: '系統沒有檢索到付款資訊',
         orderTips_text: '抱歉，我們沒有檢測到您的付款信息。 如果您確認付款，請在此頁面稍作停留，一旦我們收到您的付款，我們會將相應金額的USDT轉給您。',
         orderTips_buttonText: '我已瞭解',
 
@@ -31,7 +31,7 @@ module.exports = {
         routerName_sell: '賣幣',
         routerName_email: '輸入email地址',
         routerName_emailCode: '驗證碼',
-        routerName_Transactions: '交易',
+        routerName_Transactions: '交易記錄',
         routerName_receivingMode: '收幣',
         routerName_paymentMethod: '選擇付款方式',
         routerName_basisIdAuth: 'basis-Id-Auth',
@@ -122,7 +122,7 @@ module.exports = {
         buy_payment_instant: '實時支付',
         buy_payment_ending: '支付完畢',
         //买币 - 确认订单 - 国际卡
-        buy_configPay_title1: '用…支付',
+        buy_configPay_title1: '支付方式',
         buy_configPay_title2: 'CVV',
         //买币 - 填写表单 - 国际卡
         buy_form_firstName: '名字',
@@ -141,10 +141,10 @@ module.exports = {
         buy_configPayIDR_codeTips: '掃描二維碼以完成支付',
         buy_configPayIDR_ovo_phoneTips: '打開 OVO 應用程序完成支付。',
         //订单结果页
-        payResult_errorMessage: '發票過期！',
+        payResult_errorMessage: '支付超時！',
         payResult_timeErrorMessage: '支付失敗！ 請檢查您的銀行卡信息。',
-        payResult_feeAmount: '收費金額',
-        payResult_feeAddress: '收費地址',
+        payResult_feeAmount: '交易金額',
+        payResult_feeAddress: '錢包地址',
         payResult_feeHash: '收費列表',
         payResult_feeWallet: 'ACH 錢包',
         payResult_feePassword: 'ACH 錢包',
@@ -168,7 +168,7 @@ module.exports = {
         Sellorder_success:'成功',
         Sellorder_fail:'失敗',
         Sellorder_Transfer:'匯款中',
-        Sellorder_Id:'訂單識別號',
+        Sellorder_Id:'訂單號',
         Sellorder_Network:'網路',
         Sellorder_Address:'地址',
         Sellorder_Card:'卡',
@@ -253,7 +253,7 @@ module.exports = {
 
         //新增
         history_noListButton: '立即買幣',
-        history_noListText: '不可交易',
+        history_noListText: '沒有交易記錄',
         history_noMore: '沒有了',
         history_noListText2: '少量購幣，莫失良機',
         history_state_Complete: '完成',

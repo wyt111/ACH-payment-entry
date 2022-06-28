@@ -23,7 +23,7 @@ Three channels for successful payment --- 'depositType'
         <div class="fee-content">
           <div class="fee-content-title" @click="expandCollapse">
             <div class="left">
-              You get <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> for <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
+              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
@@ -98,18 +98,32 @@ export default {
     return{
       orderStatus: '', // 5: success 0: error 6: timeOut
       depositType: '', // 1 :ach钱包 2: address
-      resultText: '',
       detailsParameters: {},
       countDown: null,
       detailsState: false,
-      backText: this.$t('nav.orderRsult'), //Return back
     }
   },
   activated(){
     this.queryDetails()
-    let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
-    if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
-      this.backText = this.$t('nav.result_returnText_merchant');
+  },
+  computed:{
+    backText(){
+      let merchantInfo = sessionStorage.getItem("accessMerchantInfo") ? JSON.parse(sessionStorage.getItem("accessMerchantInfo")) : '{}';
+      if(sessionStorage.getItem("accessMerchantInfo") !== '{}' && merchantInfo.redirectUrl && merchantInfo.redirectUrl !== ''){
+        return this.$t('nav.result_returnText_merchant');
+      }
+      return this.$t('nav.orderRsult');
+    },
+    resultText(){
+      if(this.depositType === 1 && this.orderStatus >= 3 && this.orderStatus <= 5){
+        return `Payment success! <span>${ this.detailsParameters.fiatCurrencySymbol }${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency }</span> has deposited to your Alchemy Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
+      }
+      if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
+        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+      }
+      if(this.depositType === 2 && this.orderStatus === 5){
+        return `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+      }
     }
   },
   methods: {
@@ -133,7 +147,7 @@ export default {
 
           (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
           // depositType - Receiving mode
-          this.judgeChannel();
+          // this.judgeChannel();
         }
       })
     },

@@ -18,8 +18,8 @@ export default {
   data(){
     return {
       languageList: [
-        {name: 'English(US)',value: 'EN-US',icon: require('@/assets/images/slices/English(US).png'),state: true},
-        {name: '繁體中文',value: 'ZH-TW',icon: require('@/assets/images/slices/CHN.png'),state: false},
+        {name: 'English(US)',value: 'en-US',icon: require('@/assets/images/slices/English(US).png'),state: true},
+        {name: '繁體中文',value: 'zh-HK',icon: require('@/assets/images/slices/CHN.png'),state: false},
       ],
     }
   },

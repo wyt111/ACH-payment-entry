@@ -171,7 +171,7 @@ export default {
         this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           this.request_loading = false;
-          if(res && res.returnMsg === 'SUCCESS'){
+          if(res && res.returnCode === '0000'){
             this.$store.state.buyRouterParams.orderNo = res.data.orderNo;
             this.$store.state.buyRouterParams.kyc = res.data.kyc;
             this.$store.state.buyRouterParams.submitForm = res.data;
