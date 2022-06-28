@@ -91,18 +91,18 @@ module.exports = {
          * 买币
          */
         home_youPay: '您支付',
-        home_youBuyGet: '您得到',
+        home_youBuyGet: '您支付',
         home_buyFee_timeDownTitle: '剩餘時間',
         home_buyFee_timeDown: '引用更新數據',
         home_buyFee_title1: '您得到',
-        home_buyFee_title2: '為',
+        home_buyFee_title2: '获得',
         home_buyFee_rampFee: '服務費',
         home_buyFee_networkFee: '網絡費',
         //卖币
-        home_youSell: '您賣出',
+        home_youSell: '您卖出',
         home_youSellGet: '您獲得',
         home_sellFee_title1: '您賣出',
-        home_sellFee_title2: '至',
+        home_sellFee_title2: '获得',
         home_sellFee_rampFee: '服務費',
         //搜索组件
         search_components_countryTitle: '選擇國家',

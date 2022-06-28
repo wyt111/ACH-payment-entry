@@ -14,7 +14,7 @@
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">{{ $t('nav.home_youBuyGet') }}</div>
+      <div class="form_title get_title">{{ $t('nav.home_buyFee_title1') }}</div>
       <div class="methods_select cursor">
         <div class="get_input">
           <span v-if="getAmount!==''">{{ getAmount }}</span>
