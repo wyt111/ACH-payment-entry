@@ -21,7 +21,7 @@
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
 
       </div>
-      <div :class="[2,3,4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
+      <div :class="[2,3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
         <div></div>
         <div></div>
         <div></div>
@@ -31,7 +31,7 @@
         <div v-if="[0,1,7].includes(playMoneyState)">2</div>
         <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'"><img src="../../assets/images/icon1.png" alt=""></div>
       </div>
-      <div :class="[3,4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
+      <div :class="[3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
         <div></div>
         <div></div>
         <div></div>
@@ -41,7 +41,7 @@
         <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
         <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
       </div>
-      <div :class="[4,5,6].includes(playMoneyState)?`${$t('nav.sell_order_title')} ${$t('nav.Sellorder_success')}`:`${$t('nav.sell_order_title')}`">
+      <div :class="[4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
         <div></div>
         <div></div>
         <div></div>
@@ -57,7 +57,7 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6?'.45rem':'',textAlign:playMoneyState==5?'right':playMoneyState==6?'center':'right'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.06rem':playMoneyState==6?'.1rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
@@ -263,7 +263,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=6
+          // this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -487,24 +487,28 @@ export default{
     justify-content: space-between;
     margin-top: .1rem;
     div{
-      width: 10%;
+      width: 25%;
       font-family: GeoRegular;
       font-size: .13rem;
       color: #999999;
       line-height: .18rem;
+      text-align: center;
     }
      div:nth-of-type(1){
+       width: 18%;
+       text-align: left;
       // margin-left: .1rem;
     }
     div:nth-of-type(2){
-      margin-left: .03rem;
+      // margin-left: -.1rem;
     }
     div:nth-of-type(3){
-      padding-left: .1rem;
+      // padding-left: .25rem;
     }
      div:nth-of-type(4){
-       width: 17%;
+      //  width: 17%;
       text-align: right;
+      margin-right: .05rem;
     }
   }
   .order-content{
