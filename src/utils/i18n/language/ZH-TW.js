@@ -8,7 +8,7 @@ module.exports = {
         Confirm: '確認',
         ConfirmPayment: '確認付款',
         queryOderState: '我已經完成付款',
-        orderRsult: '繼續下單買幣',
+        orderRsult: '返回首頁',
 
         /**
          * 组件
@@ -163,8 +163,8 @@ module.exports = {
         Sellorder_details:'請修改您銀行卡的詳細信息',
         Sellorder_page:'若繼續賣幣，請返回首頁',
         Sellorder_Crypto:'發送幣',
-        Sellorder_Received:'接收幣',
-        Sellorder_Initiate:'初次匯款',
+        Sellorder_Received:'已接收',
+        Sellorder_Initiate:'匯款中',
         Sellorder_success:'成功',
         Sellorder_fail:'失敗',
         Sellorder_Transfer:'匯款中',
@@ -175,6 +175,7 @@ module.exports = {
         Sellorder_Fail:'失敗原因',
         Sellorder_Continue:'繼續賣幣',
         Sellorder_QRCode:'掃描二維碼',
+        Sellorder_You:'你',
         //菜单栏语言
         RouterMenu_Welcome:'歡迎來到Alchemy Pay!',
         //确认订单页
@@ -273,6 +274,8 @@ module.exports = {
         result_returnText_merchant: ' 返回',
         buy_configPayIDR_ovo_title: 'OVO電話',
         login_getCode: '重新發送',
+        login_VerifyCode:'請輸入六位數驗證碼',
+        login_Agreement:'請勾選用戶協定'
 
     }
 }
