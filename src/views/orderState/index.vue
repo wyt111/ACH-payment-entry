@@ -2,7 +2,7 @@
   <div class="order-container" >
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">You <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">{{ $t('nav.Sellorder_will') }} </span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">{{ $t('nav.Sellorder_You') }} <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">{{ $t('nav.Sellorder_will') }} </span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} ({{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }})</div>
     <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
     <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
     <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
@@ -57,7 +57,8 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.06rem':playMoneyState==6?'.1rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
+      <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.06rem':playMoneyState==6?'.1rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div> -->
+       <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div>
     </div>
     <div class="order-content">
         <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
@@ -78,7 +79,7 @@
           </div>
         </div>
         </transition>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.payResult_feeAddress') }}</div>
+        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Address') }}</div>
         <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="[0,1].includes(playMoneyState)?orderStateData.address:''">
           <p>{{ orderStateData.address }}</p>
           <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
@@ -87,7 +88,7 @@
           </div>
         </div>
         <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">{{ $t('nav.Sellorder_Card') }}</div>
-        <div v-if="[4,5,6].includes(playMoneyState)"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
+        <div v-if="[4,5,6].includes(playMoneyState)" :style="{cursor:playMoneyState===6? 'pointer':''}"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
           <!-- <div style="width:80%"> -->
             <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
             <!-- <div style="display:flex;"> -->
@@ -263,7 +264,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=1
+          // this.playMoneyState=5
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -320,10 +321,8 @@ export default{
         })
 
       }else{
-        this.$toast({
-          duration: 3000,
-          message: 'Cant modify'
-        });
+        this.$toast(this.$t('nav.SellOrder_modified'))
+        return 
       }
     },
     //Calculate minutes and seconds
@@ -441,6 +440,7 @@ export default{
     color: #707070;
     line-height: .23rem;
     margin: .1rem 0 .1rem 0;
+    
   }
   .order-state{
     // padding: 0 .1rem 0;
@@ -500,7 +500,7 @@ export default{
       // margin-left: .1rem;
     }
     div:nth-of-type(2){
-      // margin-left: -.1rem;
+      margin-left: .08rem;
     }
     div:nth-of-type(3){
       // padding-left: .25rem;

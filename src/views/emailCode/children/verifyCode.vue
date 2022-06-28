@@ -172,13 +172,13 @@ import { AES_Encrypt } from '@/utils/encryp.js';
      }else if(this.value.length < 6){
        this.$toast({
          duration: 3000,
-         message: 'Please fill in the verification'
+         message: this.$t('nav.login_VerifyCode')
        });
        return
      }else{
        this.$toast({
          duration: 3000,
-         message: 'Please tick the User Agreement'
+         message: this.$t('nav.login_Agreement')
        });
        return
      }

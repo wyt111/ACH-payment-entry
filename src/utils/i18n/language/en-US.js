@@ -173,6 +173,8 @@ module.exports = {
     Sellorder_Fail:'Fail Reason',
     Sellorder_Continue:'Continue to sell crypto',
     Sellorder_QRCode:'Scan QR Code',
+    Sellorder_You:'You',
+    SellOrder_modified:'Card information cannot be modified at this time',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     RouterMenu_experience:'Login to unlock the full experience',
@@ -279,6 +281,9 @@ module.exports = {
     result_returnText_merchant: 'Return back',
     buy_configPayIDR_ovo_title: 'OVO Phone',
     login_getCode: 'Resend',
+    login_VerifyCode:'Please enter the six-digit verification code',
+    login_Agreement:'Please tick the User Agreement',
+
 
   }
 }
