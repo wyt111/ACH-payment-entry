@@ -321,6 +321,7 @@ export default{
         })
 
       }else{
+        this.$toast(this.$t('nav.SellOrder_modified'))
         return 
       }
     },

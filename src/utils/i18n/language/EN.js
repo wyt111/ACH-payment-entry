@@ -174,6 +174,7 @@ module.exports = {
     Sellorder_Continue:'Continue to sell crypto',
     Sellorder_QRCode:'Scan QR Code',
     Sellorder_You:'You',
+    SellOrder_modified:'Card information cannot be modified at this time',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     RouterMenu_experience:'Login to unlock the full experience',

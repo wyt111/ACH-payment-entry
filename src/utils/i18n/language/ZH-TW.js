@@ -176,6 +176,7 @@ module.exports = {
         Sellorder_Continue:'繼續賣幣',
         Sellorder_QRCode:'掃描二維碼',
         Sellorder_You:'你',
+        SellOrder_modified:'卡資訊目前無法修改',
         //菜单栏语言
         RouterMenu_Welcome:'歡迎來到Alchemy Pay!',
         //确认订单页
