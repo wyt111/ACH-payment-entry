@@ -66,6 +66,10 @@ export default {
         this.LanguageShow = newVal
       },
       deep:true
+    },
+    routerViewState(newVal){
+      this.$store.state.menuState = !newVal
+      
     }
   },
   mounted(){

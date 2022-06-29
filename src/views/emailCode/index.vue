@@ -48,7 +48,7 @@
 
 <script>
 // import includedDetails from "../../components/IncludedDetails";
-import axios from 'axios';
+// import axios from 'axios';
 import { debounce } from '../../utils/index';
 import { AES_Encrypt } from '@/utils/encryp.js';
 
@@ -122,70 +122,70 @@ export default {
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
     },
-    toLogin:debounce(function (){
-      this.login_state = false;
-      let _this = this;
-      if(this.email!==''&&this.code.length===6&&this.agreement===true){
-        var FormData = require('form-data');
-        var data = new FormData();
-        data.append('email', AES_Encrypt(this.email));
-        data.append('verificationCode', AES_Encrypt(this.code));
-        var config = {
-          method: 'post',
-          url: process.env.VUE_APP_BASE_API + this.$api.post_login,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          data : data
-        };
-        axios.interceptors.response.use(function (config) {
-          return config;
-        }, function (error) {
-          // Do something with response error
-          return Promise.reject(error);
-        })
-        axios(config).then(function (response) {
-          _this.login_state = true;
+    // toLogin:debounce(function (){
+    //   this.login_state = false;
+    //   let _this = this;
+    //   if(this.email!==''&&this.code.length===6&&this.agreement===true){
+    //     var FormData = require('form-data');
+    //     var data = new FormData();
+    //     data.append('email', AES_Encrypt(this.email));
+    //     data.append('verificationCode', AES_Encrypt(this.code));
+    //     var config = {
+    //       method: 'post',
+    //       url: process.env.VUE_APP_BASE_API + this.$api.post_login,
+    //       headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded',
+    //       },
+    //       data : data
+    //     };
+    //     axios.interceptors.response.use(function (config) {
+    //       return config;
+    //     }, function (error) {
+    //       // Do something with response error
+    //       return Promise.reject(error);
+    //     })
+    //     axios(config).then(function (response) {
+    //       _this.login_state = true;
 
-          if(response.returnCode === '0000'){
-            _this.codeErrorState = false;
-            if(_this.$route.query.fromName === 'tradeList'){
-              _this.$router.replace('/tradeHistory');
-            }else{
-              //登陆跳转路径根据router.from的路由跳转不同页面
-              if(_this.$store.state.emailFromPath === 'buyCrypto'){
-                _this.$router.push(`/receivingMode`);
-              }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
-                let params = {
-                  country: _this.$store.state.sellRouterParams.positionData.alpha2,
-                  fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
-                };
-                _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
-                  //data - null 没有填写过表单,跳转到表单页
-                  //data - !null 有填写过表单,跳转到确认订单页
-                  if(res && res.returnCode === "0000" && res.data === null){
-                    delete _this.$store.state.sellForm;
-                    _this.$router.push('/sell-formUserInfo')
-                  }else if(res && res.returnCode === "0000" && res.data !== null){
-                    _this.$store.state.sellForm = res.data;
-                    _this.$router.push('/configSell')
-                  }
-                })
-              }else if(_this.$store.state.emailFromPath === 'sellOrder'){
-                _this.$router.push('/sellOrder');
-              }else{
-                _this.$router.push('/');
-              }
-            }
-          }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
-            _this.codeErrorState = true;
-            _this.codeError = response.returnMsg;
-          }
-        }).catch(function (error) {
-          console.log(error);
-        });
-      }
-    },300,false),
+    //       if(response.returnCode === '0000'){
+    //         _this.codeErrorState = false;
+    //         if(_this.$route.query.fromName === 'tradeList'){
+    //           _this.$router.replace('/tradeHistory');
+    //         }else{
+    //           //登陆跳转路径根据router.from的路由跳转不同页面
+    //           if(_this.$store.state.emailFromPath === 'buyCrypto'){
+    //             _this.$router.push(`/receivingMode`);
+    //           }else if(_this.$store.state.emailFromPath === 'sellCrypto'){
+    //             let params = {
+    //               country: _this.$store.state.sellRouterParams.positionData.alpha2,
+    //               fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
+    //             };
+    //             _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
+    //               //data - null 没有填写过表单,跳转到表单页
+    //               //data - !null 有填写过表单,跳转到确认订单页
+    //               if(res && res.returnCode === "0000" && res.data === null){
+    //                 delete _this.$store.state.sellForm;
+    //                 _this.$router.push('/sell-formUserInfo')
+    //               }else if(res && res.returnCode === "0000" && res.data !== null){
+    //                 _this.$store.state.sellForm = res.data;
+    //                 _this.$router.push('/configSell')
+    //               }
+    //             })
+    //           }else if(_this.$store.state.emailFromPath === 'sellOrder'){
+    //             _this.$router.push('/sellOrder');
+    //           }else{
+    //             _this.$router.push('/');
+    //           }
+    //         }
+    //       }else if(response.returnCode === "10002" || response.returnCode === "10003" || response.returnCode === "1026" || response.returnCode === "1027" || response.returnCode === "1025"){
+    //         _this.codeErrorState = true;
+    //         _this.codeError = response.returnMsg;
+    //       }
+    //     }).catch(function (error) {
+    //       console.log(error);
+    //     });
+    //   }
+    // },300,false),
 
     goProtocol(name){
       if(name === 'privacyPolicy'){

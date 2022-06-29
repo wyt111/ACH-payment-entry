@@ -56,7 +56,7 @@
     </div>
     <div class="order-state-content">
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
-      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
+      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000',marginLeft:playMoneyState==5?'-.08rem':''}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
       <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.05rem':playMoneyState==6?'.095rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
        <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div> -->
@@ -265,7 +265,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=4
+          this.playMoneyState=1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -501,7 +501,7 @@ export default{
       // margin-left: .1rem;
     }
     div:nth-of-type(2){
-      margin-left: -.08rem;
+      margin-left: 0rem;
     }
     div:nth-of-type(3){
       // padding-left: -.5rem;

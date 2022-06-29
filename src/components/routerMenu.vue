@@ -141,7 +141,7 @@ export default {
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
             this.$parent.routerViewState = true;
-            this.$parent.menuState = false;
+            this.$parent.menuState = false
             this.$store.state.isLogin = false
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
@@ -208,12 +208,12 @@ export default {
     }
   },
   watch:{
-
+    //打开菜单栏并且已经登陆以后才会获取有没有历史记录
     '$store.state.menuState':{
       immediate:true,
       deep:true,
        handler(newVal){
-        //  console.log(newVal);
+        //  console.log(this.$store.state.isLogin);
          if(newVal === true && this.$store.state.isLogin === true){
            this.transationsList()
            localStorage.getItem("token") ? this.token = true : false;
