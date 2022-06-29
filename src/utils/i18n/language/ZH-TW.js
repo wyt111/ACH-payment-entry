@@ -167,7 +167,7 @@ module.exports = {
         Sellorder_Initiate:'匯款中',
         Sellorder_success:'成功',
         Sellorder_fail:'失敗',
-        Sellorder_Transfer:'匯款中',
+        Sellorder_Transfer:'等待结果',
         Sellorder_Id:'訂單識別號',
         Sellorder_Network:'網路',
         Sellorder_Address:'地址',
