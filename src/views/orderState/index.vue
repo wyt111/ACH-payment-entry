@@ -2,7 +2,8 @@
   <div class="order-container" >
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState)">{{ $t('nav.Sellorder_You') }} <span v-if="playMoneyState!==5" style="color:#000;font-weight:500">{{ $t('nav.Sellorder_will') }} </span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} ({{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }})</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} </div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
     <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
     <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
@@ -57,8 +58,8 @@
       <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
-      <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.06rem':playMoneyState==6?'.1rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div> -->
-       <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div>
+      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.05rem':playMoneyState==6?'.095rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
+       <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div> -->
     </div>
     <div class="order-content">
         <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
@@ -264,7 +265,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=5
+          // this.playMoneyState=4
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -487,7 +488,7 @@ export default{
     justify-content: space-between;
     margin-top: .1rem;
     div{
-      width: 25%;
+      width: 20%;
       font-family: GeoRegular;
       font-size: .13rem;
       color: #999999;
@@ -500,10 +501,10 @@ export default{
       // margin-left: .1rem;
     }
     div:nth-of-type(2){
-      margin-left: .08rem;
+      margin-left: -.08rem;
     }
     div:nth-of-type(3){
-      // padding-left: .25rem;
+      // padding-left: -.5rem;
     }
      div:nth-of-type(4){
       //  width: 17%;

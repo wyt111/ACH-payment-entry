@@ -167,8 +167,11 @@ module.exports = {
         Sellorder_Initiate:'匯款中',
         Sellorder_success:'成功',
         Sellorder_fail:'失敗',
-        Sellorder_Transfer:'匯款中',
-        Sellorder_Id:'訂單號',
+
+        Sellorder_Transfer:'等待结果',
+        Sellorder_Id:'訂單識別號',
+
+
         Sellorder_Network:'網路',
         Sellorder_Address:'地址',
         Sellorder_Card:'卡',
@@ -179,6 +182,7 @@ module.exports = {
         SellOrder_modified:'卡資訊目前無法修改',
         //菜单栏语言
         RouterMenu_Welcome:'歡迎來到Alchemy Pay!',
+        RouterMenu_history:'沒有交易記錄',
         //确认订单页
         sell_configOrder_title: '銀行卡',
         //表单页
