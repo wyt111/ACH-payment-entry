@@ -14,7 +14,7 @@
       </div>
       <div class="warning_text" v-if="warningTextState" v-html="payAmount_tips"></div>
 
-      <div class="form_title get_title">{{ $t('nav.home_youBuyGet') }}</div>
+      <div class="form_title get_title">{{ $t('nav.home_buyFee_title1') }}</div>
       <div class="methods_select cursor">
         <div class="get_input">
           <span v-if="getAmount!==''">{{ getAmount }}</span>
@@ -44,6 +44,11 @@
 </template>
 
 <script>
+/**
+ * 页面小数同意处理
+ * 数值>0，小数点后保留2位
+ * 数值<0，小数点后最多保留6位
+ */
 import common from "../../../utils/common";
 import IncludedDetails from "../../../components/IncludedDetails";
 
@@ -307,18 +312,17 @@ export default {
 
       sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
       let cryptoValue = (merchantParams.crypto!== ''&& merchantParams.crypto!==undefined) ? merchantParams.crypto : "ACH";
-      this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.forEach(item=>{ //No parameter defaults
-        if(item.name === cryptoValue){
-          this.currencyData = {
-            icon: item.logoUrl,
-            name: item.name,
-            networkFee: item.networkFee,
-            price: item.price,
-            serviceFee: item.serviceFee,
-          }
-          this.$store.state.buyRouterParams.cryptoCurrency = this.currencyData.name;
-        }
-      })
+      //如果匹配到ACH币并且可以买(purchaseSupported===1)赋值,没有则赋值可以买(purchaseSupported===1)列表第一个币种
+      let cryptoDate = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(res=>{ return res.name === cryptoValue && res.purchaseSupported === 1 })[0];
+      cryptoDate === undefined ? cryptoDate = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1})[0] : '';
+      this.currencyData = {
+        icon: cryptoDate.logoUrl,
+        name: cryptoDate.name,
+        networkFee: cryptoDate.networkFee,
+        price: cryptoDate.price,
+        serviceFee: cryptoDate.serviceFee,
+      }
+      this.$store.state.buyRouterParams.cryptoCurrency = cryptoDate.name;
       let params = merchantParams;
       delete params.networkDefault;
       delete params.addressDefault;

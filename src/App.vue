@@ -78,9 +78,6 @@ export default {
         else
         return false
       })
-    //语言、展示tab状态
-    this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
-    this.$route.query.showTable ? this.$store.state.homeTabstate = this.$route.query.showTable : '';
     //Vuex store data
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
@@ -93,7 +90,15 @@ export default {
       sessionStorage.setItem("store", JSON.stringify(this.$store.state))
     })
 
-
+    //语言、展示tab状态
+    this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
+    if(this.$route.query.showTable === 'buy'){
+      this.$store.state.tableState = true;
+      this.$store.state.homeTabstate = 'buyCrypto';
+    }else if(this.$route.query.showTable === 'sell'){
+      this.$store.state.tableState = true;
+      this.$store.state.homeTabstate = 'sellCrypto';
+    }
   },
   methods: {
     //动态获取屏幕大小计算rem

@@ -4,8 +4,10 @@
       <div class="homePage_view" v-show="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')">{{ $t('nav.routerName_buy') }}</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')">{{ $t('nav.routerName_sell') }}</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="this.$store.state.tableState===false">{{ $t('nav.routerName_buy') }}</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="this.$store.state.tableState===false">{{ $t('nav.routerName_sell') }}</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="this.$store.state.tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="this.$store.state.tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -75,12 +77,30 @@ export default {
     },
     queryInfo(){
       let _this = this;
-      this.$axios.get(this.$api.get_buyCryptoInfo,"").then(res=>{
+      //带入商户信息 过滤商户加密货币
+      let merchantInfo = "";
+      if(JSON.stringify(this.$route.query) !== "{}"){
+        merchantInfo = this.$route.fullPath.substring(2,this.$route.fullPath.length);
+      }else if(JSON.stringify(this.$route.query) === "{}" && sessionStorage.getItem("accessMerchantInfo") && JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam) {
+        merchantInfo = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam;
+      }
+      this.$axios.get(this.$api.get_buyCryptoInfo + '?' + merchantInfo,"").then(res=>{
         if(res && res.returnCode === "0000"){
           _this.basicData = res.data;
           localStorage.setItem("allBasicData",JSON.stringify(res.data));
         }
       })
+    },
+    //接收商户参数
+    merchantDocking(){
+      //获取商户token
+      this.$route.query.token ? localStorage.setItem("token",this.$route.query.token) : '';
+      this.$route.query.userId ? localStorage.setItem("userId",this.$route.query.userId) : '';
+      this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
+      this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
+      //商户订单信息
+      this.$route.query.returnUrl ? localStorage.setItem("returnUrl",this.$route.query.returnUrl) : '';
+      this.$route.query.buyOrderId ? localStorage.setItem("buyOrderId",this.$route.query.buyOrderId) : '';
     },
   },
 

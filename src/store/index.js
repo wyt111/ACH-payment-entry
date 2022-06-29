@@ -25,6 +25,7 @@ const store = new Vuex.Store({
         cardInfoFromPath: '', //填写卡信息后返回页面地址
         //返回首页状态
         homeTabstate: 'buyCrypto', //sellCrypto buyCrypto
+        tableState: false, //有参数 隐藏买币或者卖币
 
         //语言
         language: '',
