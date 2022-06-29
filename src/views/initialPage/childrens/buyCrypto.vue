@@ -226,7 +226,6 @@ export default {
         this.payCommission.rampFee = Math.min(...rampFeeList);
         //Filter exchange rate - Calculate cost and accepted quantity
         this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
-        this.feeInfo.price = this.exchangeRate * this.feeInfo.price;
         this.feeInfo.networkFee = this.exchangeRate * this.feeInfo.networkFee;
         let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - this.payCommission.rampFee) / this.feeInfo.price;
         newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;

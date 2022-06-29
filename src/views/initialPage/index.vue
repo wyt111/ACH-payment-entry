@@ -98,8 +98,7 @@ export default {
       this.$route.query.userId ? localStorage.setItem("userId",this.$route.query.userId) : '';
       this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
       this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
-      //商户订单信息
-      this.$route.query.returnUrl ? localStorage.setItem("returnUrl",this.$route.query.returnUrl) : '';
+      //商户订单信息 通过商户标识获取卡信息、网络地址、网络名称、加密货币名称
       this.$route.query.buyOrderId ? localStorage.setItem("buyOrderId",this.$route.query.buyOrderId) : '';
     },
   },

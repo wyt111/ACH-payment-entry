@@ -92,6 +92,7 @@ export default {
 
     //语言、展示tab状态
     this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
+    this.$i18n.locale = sessionStorage.getItem("language");
     if(this.$route.query.showTable === 'buy'){
       this.$store.state.tableState = true;
       this.$store.state.homeTabstate = 'buyCrypto';
