@@ -8,7 +8,7 @@
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
           <div class="radioInput">
-            <div class="value">{{ $t(item.model) }}</div>
+            <div class="value">{{ item.model }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
           </div>
         </div>
@@ -157,7 +157,7 @@ export default {
     },
     chiseCheck(item){
       this.selectState = false;
-      this.formJson[this.selected.index].model = item;
+      this.formJson[this.selected.index].model = this.$t(item);
       this.formJson[this.selected.index].tipsState = false;
     },
 

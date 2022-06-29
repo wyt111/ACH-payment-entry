@@ -33,7 +33,7 @@
               <div class="details_line_value">{{ item.orderNo }}</div>
             </div>
             <div class="details_line">
-              <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.payResult_feeAmount') }}:</div>
+              <div class="details_line_title">{{ $t('nav.payResult_feeAmount') }}:</div>
               <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.amount }}</div>
             </div>
             <div class="details_line">

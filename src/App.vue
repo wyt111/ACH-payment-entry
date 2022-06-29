@@ -93,17 +93,6 @@ export default {
     window.addEventListener("beforeunload",()=>{
       sessionStorage.setItem("store", JSON.stringify(this.$store.state))
     })
-
-    //语言、展示tab状态
-    this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
-    this.$i18n.locale = sessionStorage.getItem("language");
-    if(this.$route.query.showTable === 'buy'){
-      this.$store.state.tableState = true;
-      this.$store.state.homeTabstate = 'buyCrypto';
-    }else if(this.$route.query.showTable === 'sell'){
-      this.$store.state.tableState = true;
-      this.$store.state.homeTabstate = 'sellCrypto';
-    }
   },
   methods: {
     //动态获取屏幕大小计算rem
