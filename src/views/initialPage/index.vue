@@ -4,10 +4,10 @@
       <div class="homePage_view" v-show="!menuState">
         <div class="home-header">
           <div class="home-tab">
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="this.$store.state.tableState===false">{{ $t('nav.routerName_buy') }}</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="this.$store.state.tableState===false">{{ $t('nav.routerName_sell') }}</div>
-            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="this.$store.state.tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
-            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="this.$store.state.tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===false">{{ $t('nav.routerName_buy') }}</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="tableState===false">{{ $t('nav.routerName_sell') }}</div>
+            <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
+            <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
           <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
@@ -39,6 +39,7 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
+import { AES_Decrypt } from "../../utils/encryp";
 
 export default {
   name: "index",
@@ -46,7 +47,6 @@ export default {
   data() {
     return {
       menuState: false,
-      // tabstate:
       searchState: true,
       viewName: "",
       basicData: {},
@@ -54,10 +54,23 @@ export default {
     }
   },
   mounted(){
+    this.merchantDocking();
     this.queryInfo();
   },
   computed: {
+    //商户对接tab状态
+    tableState(){
+      return this.$store.state.tableState;
+    },
     tabstate(){
+      let _this = this;
+      if(this.$route.query.showTable === 'buy'){
+        _this.$store.state.tableState = true;
+        _this.$store.state.homeTabstate = 'buyCrypto';
+      }else if(this.$route.query.showTable === 'sell'){
+        _this.$store.state.tableState = true;
+        _this.$store.state.homeTabstate = 'sellCrypto';
+      }
       return this.$store.state.homeTabstate;
     }
   },
@@ -91,15 +104,18 @@ export default {
         }
       })
     },
-    //接收商户参数
+    //对接商户参数
     merchantDocking(){
+      //语言
+      this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
+      this.$i18n.locale = sessionStorage.getItem("language");
       //获取商户token
       this.$route.query.token ? localStorage.setItem("token",this.$route.query.token) : '';
-      this.$route.query.userId ? localStorage.setItem("userId",this.$route.query.userId) : '';
+      this.$route.query.id ? localStorage.setItem("userId",AES_Decrypt(this.$route.query.id)) : '';
       this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
       this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
-      //商户订单信息 通过商户标识获取卡信息、网络地址、网络名称、加密货币名称
-      this.$route.query.buyOrderId ? localStorage.setItem("buyOrderId",this.$route.query.buyOrderId) : '';
+      //通过订单id的获取订单信息
+      this.$route.query.orderNo ? localStorage.setItem("orderNo",this.$route.query.orderNo) : '';
     },
   },
 
