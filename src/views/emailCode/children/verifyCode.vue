@@ -104,6 +104,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
           url: process.env.VUE_APP_BASE_API + this.$api.post_login,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
           },
           data : data
         };

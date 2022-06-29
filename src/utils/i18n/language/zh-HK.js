@@ -48,7 +48,7 @@ module.exports = {
          * 菜单
          */
         login: '登錄',
-        login_required: '錯誤的.',
+        login_required: '格式錯誤.',
         loginOut: '退出',
         loginOut_title: '確定退出?',
         loginOut_Dismiss: '取消',
