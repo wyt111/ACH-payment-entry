@@ -163,7 +163,7 @@ export default {
         'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
         'timestamp': timestamp,
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
-        'Accept-Language': sessionStorage.getItem("language"),
+        'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
       },
     }).then((response) => {
@@ -195,7 +195,7 @@ export default {
         'token': localStorage.getItem('token') ? localStorage.getItem('token') : '',
         'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
         'timestamp': timestamp,
-        'Accept-Language': sessionStorage.getItem("language"),
+        'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
       }
     }).then((response) => {
