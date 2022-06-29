@@ -2,8 +2,8 @@
   <div class="order-container" >
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'ZH-TW'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} </div>
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'ZH-TW'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} </div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
     <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
     <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
     <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
@@ -265,7 +265,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=1
+          // this.playMoneyState=4
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))

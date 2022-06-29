@@ -182,6 +182,7 @@ module.exports = {
         SellOrder_modified:'卡資訊目前無法修改',
         //菜单栏语言
         RouterMenu_Welcome:'歡迎來到Alchemy Pay!',
+        RouterMenu_history:'沒有交易記錄',
         //确认订单页
         sell_configOrder_title: '銀行卡',
         //表单页
