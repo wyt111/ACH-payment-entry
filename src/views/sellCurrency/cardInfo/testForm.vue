@@ -35,7 +35,7 @@
 
     <!-- 单选框 -->
     <!-- bank account type -->
-    <div class="formContent" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+    <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="selectState=false">
       <ul class="selectDate">
         <li v-for="(item,index) in this.selected.item" :key="index" @click="specialChiseCheck(item)">{{ $t(item.value) }}</li>
       </ul>
@@ -101,6 +101,8 @@ export default {
           }
         }
       })
+      let bankAccountTypeDate = this.formJson.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
+      this.bankAccountType(bankAccountTypeDate,1);
     }
   },
   computed: {
@@ -140,7 +142,7 @@ export default {
 
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 && this.request_loading === false ? false : true;
-    }
+    },
   },
   methods: {
     // 正则校验 展示提示信息
@@ -176,16 +178,20 @@ export default {
     },
     specialChiseCheck(item){
       this.selectState = false;
-      this.formJson[this.selected.index].model = this.$t(item.value);
+      this.formJson[this.selected.index].model = this.$t(item.key);
       this.formJson[this.selected.index].tipsState = false;
     },
-    // matchField(val){
-    //   switch (val){
-    //     case: 1:
-    //
-    //       break;
-    //   }
-    // },
+    bankAccountType(value,step){
+      if(step === 1){
+        this.formJson.forEach((item,index)=>{
+          // if(){
+          //   this.formJson[index] = this.$t(item.model);
+          // }
+        })
+      }else{
+
+      }
+    },
 
     submit(){
       let queryForm = {
