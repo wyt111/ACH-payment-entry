@@ -28,13 +28,17 @@ Three channels for successful payment --- 'depositType'
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
           <div class="fee-content-details" :class="{'borderNone': !detailsTitleState}" v-if="detailsState">
+            <div class="fee-content-details-line" v-if="orderStatus === 0">
+              <div class="title">{{ $t('nav.payResult_orderNo') }}</div>
+              <div class="value">{{ detailsParameters.orderNo }}</div>
+            </div>
             <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
             <div class="fee-content-details-line" v-if="orderStatus === 0">
               <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
-              <div class="value">{{ detailsParameters.amount }}</div>
+              <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>
             </div>
             <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
@@ -47,10 +51,6 @@ Three channels for successful payment --- 'depositType'
             <div class="fee-content-details-line" v-if="orderStatus === 0">
               <div class="title">{{ $t('nav.payResult_createdTime') }}</div>
               <div class="value">{{ detailsParameters.createdTime }}</div>
-            </div>
-            <div class="fee-content-details-line" v-if="orderStatus === 0">
-              <div class="title">{{ $t('nav.payResult_orderNo') }}</div>
-              <div class="value">{{ detailsParameters.orderNo }}</div>
             </div>
           </div>
         </div>
