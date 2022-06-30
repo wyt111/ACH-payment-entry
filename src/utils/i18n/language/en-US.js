@@ -123,6 +123,9 @@ module.exports = {
     //买币 - 确认订单 - 国际卡
     buy_configPay_title1: 'Paying with',
     buy_configPay_title2: 'CVV',
+    buy_configPay_title3: 'I confirm that the payment has been completed.',
+    buy_configPay_title4: 'Confirm',
+    buy_configPay_title5: 'Cancel',
     //买币 - 填写表单 - 国际卡
     buy_form_firstName: 'First Name',
     buy_form_lastName: 'Last Name',
@@ -147,7 +150,7 @@ module.exports = {
     payResult_feeHash: 'Hash',
     payResult_feeWallet: 'Wallet',
     payResult_feePassword: 'ACH Wallet',
-
+    payResult_createdTime: 'Create order time',
 
     /**
      * 卖币

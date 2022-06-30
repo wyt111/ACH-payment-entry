@@ -22,10 +22,10 @@
                 </div>
               </div>
               <div class="state">
-                <span v-if="Number(item.orderState) === 4" class="state_success">{{ $t('nav.history_state_Processing') }}</span>
+                <span v-if="Number(item.orderState) === 1" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
                 <span v-if="Number(item.orderState) === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
-<!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
-<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring...</span>-->
+                <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
+<!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
               </div>
             </div>
             <div class="details_line">
@@ -69,7 +69,7 @@ export default {
   data(){
     return{
       query: {
-        orderState: 4,
+        orderState: 1,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5
@@ -82,7 +82,7 @@ export default {
   },
   activated(){
     this.query = {
-      orderState: 4,
+      orderState: 1,
       orderType: 1,
       pageIndex: 1,
       pageSize: 5
@@ -177,7 +177,7 @@ html,body,#tradeHistory,.historyList,.van-list{
           color: #02AF38;
         }
         .state_loading{
-          color: #02AF38;
+          color: #0059DA;
         }
         .state_error{
           color: #E55643;

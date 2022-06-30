@@ -159,8 +159,8 @@
         "model": "",
         "type": "radio",
         "radioList": ["nav.sell_form_bankAccountTypeLi_Saving","nav.sell_form_bankAccountTypeLi_Checking","nav.sell_form_bankAccountTypeLi_TimeDeposit","nav.sell_form_bankAccountTypeLi_Others"],
-        "regular": "^[A-Za-z0-9 .,()_'/-]{1,150}$",
-        "maxLength": "150",
+        "regular": "",
+        "maxLength": "",
         "required": true,
         "tips": "nav.sell_form_bankAccountTypeTips",
         "tipsState": false

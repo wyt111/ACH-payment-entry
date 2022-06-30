@@ -6,7 +6,14 @@
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
           {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
-        <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
+        <!-- bank account type -->
+        <div class="formContent" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+          <div class="radioInput">
+            <div class="value">{{ item.model }}</div>
+            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+          </div>
+        </div>
+        <div class="formContent" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
           <div class="radioInput">
             <div class="value">{{ item.model }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
@@ -27,7 +34,13 @@
     </button>
 
     <!-- 单选框 -->
-    <div class="selectView" v-if="selectState" @click="selectState=false">
+    <!-- bank account type -->
+    <div class="formContent" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+      <ul class="selectDate">
+        <li v-for="(item,index) in this.selected.item" :key="index" @click="specialChiseCheck(item)">{{ $t(item.value) }}</li>
+      </ul>
+    </div>
+    <div class="selectView" v-else-if="selectState" @click="selectState=false">
       <ul class="selectDate">
         <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ $t(item) }}</li>
       </ul>
@@ -153,6 +166,7 @@ export default {
       this.selected = {
         item: item.radioList,
         index: index,
+        paramsName: item.paramsName
       };
     },
     chiseCheck(item){
@@ -160,6 +174,18 @@ export default {
       this.formJson[this.selected.index].model = this.$t(item);
       this.formJson[this.selected.index].tipsState = false;
     },
+    specialChiseCheck(item){
+      this.selectState = false;
+      this.formJson[this.selected.index].model = this.$t(item.value);
+      this.formJson[this.selected.index].tipsState = false;
+    },
+    // matchField(val){
+    //   switch (val){
+    //     case: 1:
+    //
+    //       break;
+    //   }
+    // },
 
     submit(){
       let queryForm = {
@@ -286,15 +312,6 @@ export default {
       outline: none;
       padding: 0 0.16rem;
     }
-    //.rightIcon{
-    //  display: flex;
-    //  position: absolute;
-    //  top: 0.23rem;
-    //  right: 0.2rem;
-    //  img{
-    //    width: 0.12rem;
-    //  }
-    //}
     .radioInput{
       width: 100%;
       display: flex;

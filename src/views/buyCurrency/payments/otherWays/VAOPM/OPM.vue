@@ -61,6 +61,7 @@ export default {
       this.$axios.post(this.$api.post_mxnSubmit,params,'submitToken').then(res=>{
         if(res && res.returnCode === '0000'){
           this.$parent.startPayment = true;
+          this.$router.push('/tradeHistory');
           this.refreshPaystate();
           this.payCode = res.data.vaNumber;
           this.$parent.payCode = res.data.vaNumber;

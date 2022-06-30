@@ -92,18 +92,6 @@ export const constantRoutes = [
 
   },
   {
-    path: "/creditCardForm-address",
-    name: 'creditCardForm-address',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-address.vue"),
-    meta: {
-      requireAuth: true,
-      // fromPage: 'basisIdAuth',
-      title: 'nav.routerName_buyForm',
-      keepAlive: true,
-    }
-  },
-  {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
     component: () =>
@@ -170,39 +158,6 @@ export const constantRoutes = [
       keepAlive: true,
     },
   },
-  // {
-  //   path: "/sell-formUserInfo",
-  //   name: 'sell-formUserInfo',
-  //   component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formUserInfo.vue"),
-  //   meta: {
-  //     requireAuth: true,
-  //     title: 'Enter Information',
-  //     keepAlive: true,
-  //   },
-  // },
-  // {
-  //   path: "/sell-formAddress",
-  //   name: 'sell-formAddress',
-  //   component: () =>
-  //       import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formAddress.vue"),
-  //   meta: {
-  //     requireAuth: true,
-  //     title: 'Enter personal address',
-  //     keepAlive: true,
-  //   }
-  // },
-  // {
-  //   path: "/sell-formBankInfo",
-  //   name: 'sell-formBankInfo',
-  //   component: () =>
-  //       import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/formBankInfo.vue"),
-  //   meta: {
-  //     requireAuth: true,
-  //     title: 'Enter card details',
-  //     goPath: 'configSell',
-  //     keepAlive: true,
-  //   }
-  // },
   {
     path: "/configSell",
     name: 'configSell',

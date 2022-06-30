@@ -142,7 +142,7 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
-            if(res.data === {}){
+            if(JSON.stringify(res.data) === "{}"){
               this.timeDown = setInterval(()=>{
                 this.queryOrderStatus();
               },1000)
