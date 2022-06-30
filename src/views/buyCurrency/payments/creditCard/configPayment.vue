@@ -68,6 +68,13 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to,from,next) {
+    next(vm => {
+      if ((from.path === '/creditCardForm-cardInfo' || from.path === '/paymentMethod' )&& to.path === '/creditCardConfig' && !from.query.configPaymentFrom) {
+        vm.newCvv = "";
+      }
+    })
+  },
   activated(){
     //恢复页面默认状态
     this.buttonData = {
@@ -100,7 +107,6 @@ export default {
 
       //判断上一页路由 控制填写CVV状态
       this.newCvvState = this.$route.query.configPaymentFrom === 'userPayment' ? true : false;
-      this.newCvv = "";
     },
 
     //跳转修改卡信息页面
