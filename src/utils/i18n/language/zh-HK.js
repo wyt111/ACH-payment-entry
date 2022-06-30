@@ -148,7 +148,8 @@ module.exports = {
         payResult_feeHash: '收費列表',
         payResult_feeWallet: 'ACH 錢包',
         payResult_feePassword: 'ACH 錢包',
-        payResult_createdTime: '創建訂單時間',
+        payResult_createdTime: '訂單時間',
+        payResult_orderNo: '訂單號',
 
         /**
          * 卖币

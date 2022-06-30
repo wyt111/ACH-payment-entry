@@ -21,32 +21,36 @@ Three channels for successful payment --- 'depositType'
 
       <div class="paymentInformation">
         <div class="fee-content">
-          <div class="fee-content-title" @click="expandCollapse">
+          <div class="fee-content-title" @click="expandCollapse" v-if="detailsTitleState">
             <div class="left">
               {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
-          <div class="fee-content-details" v-if="detailsState">
+          <div class="fee-content-details" :class="{'borderNone': !detailsTitleState}" v-if="detailsState">
             <div class="fee-content-details-line" v-if="orderStatus !== 0 || orderStatus !== 6">
               <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
-            <div class="fee-content-details-line">
+            <div class="fee-content-details-line" v-if="orderStatus !== 0">
               <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
               <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2||depositType===3 && (orderStatus !== 0 || orderStatus !== 6)">
+            <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
               <div class="value">{{ detailsParameters.address }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null && (orderStatus !== 0 || orderStatus !== 6)">
+            <div class="fee-content-details-line" v-if="detailsParameters.hashId !== null && (orderStatus !== 0 && orderStatus !== 6)">
               <div class="title">{{ $t('nav.payResult_feeHash') }}</div>
               <div class="value">{{ detailsParameters.hashId }}</div>
             </div>
             <div class="fee-content-details-line" v-if="orderStatus === 0">
               <div class="title">{{ $t('nav.payResult_createdTime') }}</div>
               <div class="value">{{ detailsParameters.createdTime }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="orderStatus === 0">
+              <div class="title">{{ $t('nav.payResult_orderNo') }}</div>
+              <div class="value">{{ detailsParameters.orderNo }}</div>
             </div>
           </div>
         </div>
@@ -97,6 +101,7 @@ export default {
       detailsParameters: {},
       countDown: null,
       detailsState: false,
+      detailsTitleState: true,
     }
   },
   activated(){
@@ -142,6 +147,11 @@ export default {
           this.depositType = res.data.depositType;
 
           (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
+
+          if(res.data.orderStatus === 0){
+            this.detailsState = true;
+            this.detailsTitleState = false;
+          }
           // depositType - Receiving mode
           // this.judgeChannel();
         }
@@ -264,6 +274,9 @@ export default {
       }
     }
 
+    .borderNone{
+      border: none!important;
+    }
     .fee-content-details{
       border-top: 1px solid #E6E6E6;
       padding: 0.04rem 0 0.16rem 0;
