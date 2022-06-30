@@ -15,8 +15,8 @@ Three channels for successful payment --- 'depositType'
           <img src="../../../assets/images/paymentFailure.png" v-else-if="orderStatus === 0">
         </div>
         <div class="results_text" v-if="orderStatus >= 3 && orderStatus <= 5" v-html="resultText"></div>
-        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_errorMessage') }}</div>
-        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_timeErrorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_timeErrorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_errorMessage') }}</div>
       </div>
 
       <div class="paymentInformation">

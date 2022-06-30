@@ -222,7 +222,7 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res=>{
-        if(res && res.returnCode === '0000' && res.data.orderStatus > 2 && res.data.orderStatus <= 6){
+        if(res && res.returnCode === '0000' && (res.data.orderStatus === 0 || (res.data.orderStatus > 2 && res.data.orderStatus <= 6))){
           this.$parent.$parent.tipsState = false;
           this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
