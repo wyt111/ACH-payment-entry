@@ -147,7 +147,7 @@ module.exports = {
     payResult_feeHash: 'Hash',
     payResult_feeWallet: 'Wallet',
     payResult_feePassword: 'ACH Wallet',
-
+    payResult_createdTime: 'Create order time',
 
     /**
      * 卖币

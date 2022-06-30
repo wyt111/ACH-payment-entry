@@ -15,8 +15,8 @@ Three channels for successful payment --- 'depositType'
           <img src="../../../assets/images/paymentFailure.png" v-else-if="orderStatus === 0">
         </div>
         <div class="results_text" v-if="orderStatus >= 3 && orderStatus <= 5" v-html="resultText"></div>
-        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_errorMessage') }}</div>
-        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_timeErrorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_errorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_timeErrorMessage') }}</div>
       </div>
 
       <div class="paymentInformation">
@@ -28,7 +28,7 @@ Three channels for successful payment --- 'depositType'
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
           <div class="fee-content-details" v-if="detailsState">
-            <div class="fee-content-details-line">
+            <div class="fee-content-details-line" v-if="orderStatus !== 0 || orderStatus !== 6">
               <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
@@ -36,21 +36,17 @@ Three channels for successful payment --- 'depositType'
               <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
               <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2||depositType===3">
+            <div class="fee-content-details-line" v-if="depositType===2||depositType===3 && (orderStatus !== 0 || orderStatus !== 6)">
               <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
               <div class="value">{{ detailsParameters.address }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null">
+            <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null && (orderStatus !== 0 || orderStatus !== 6)">
               <div class="title">{{ $t('nav.payResult_feeHash') }}</div>
               <div class="value">{{ detailsParameters.hashId }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===1">
-              <div class="title">ACH {{ $t('nav.payResult_feeWallet') }}</div>
-              <div class="value">{{ detailsParameters.address }}</div>
-            </div>
-            <div class="fee-content-details-line" v-if="depositType===1">
-              <div class="title">Password</div>
-              <div class="value">{{ detailsParameters.password }}</div>
+            <div class="fee-content-details-line" v-if="orderStatus === 0">
+              <div class="title">{{ $t('nav.payResult_createdTime') }}</div>
+              <div class="value">{{ detailsParameters.createdTime }}</div>
             </div>
           </div>
         </div>
@@ -282,7 +278,8 @@ export default {
           font-family: "GeoLight", GeoLight;
           font-weight: normal;
           color: #232323;
-          margin-right: 0.34rem;
+          //margin-right: 0.34rem;
+          width: 1.4rem;
           .tipsIcon{
             width: 0.16rem;
             height: 0.16rem;
