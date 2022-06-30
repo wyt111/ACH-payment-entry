@@ -23,18 +23,18 @@ Three channels for successful payment --- 'depositType'
         <div class="fee-content">
           <div class="fee-content-title" @click="expandCollapse" v-if="detailsTitleState">
             <div class="left">
-              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
+              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.amount }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
           <div class="fee-content-details" :class="{'borderNone': !detailsTitleState}" v-if="detailsState">
-            <div class="fee-content-details-line" v-if="orderStatus !== 0 || orderStatus !== 6">
+            <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="orderStatus !== 0">
+            <div class="fee-content-details-line" v-if="orderStatus === 0">
               <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
-              <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
+              <div class="value">{{ detailsParameters.amount }}</div>
             </div>
             <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
@@ -117,13 +117,13 @@ export default {
     },
     resultText(){
       if(this.depositType === 1 && this.orderStatus >= 3 && this.orderStatus <= 5){
-        return `Payment success! <span>${ this.detailsParameters.fiatCurrencySymbol }${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency }</span> has deposited to your Alchemy Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
+        return `Payment success! <span>${ this.detailsParameters.fiatCurrencySymbol }${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency }</span> has deposited to your Alchemy Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
       }
       if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
-        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
       }
       if(this.depositType === 2 && this.orderStatus === 5){
-        return `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+        return `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     }
   },
@@ -172,15 +172,15 @@ export default {
     //Judgment order status display text
     judgeChannel(){
       if(this.depositType === 1 && this.orderStatus >= 3 && this.orderStatus <= 5){
-        this.resultText = `Payment success! <span>${ this.detailsParameters.fiatCurrencySymbol }${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency }</span> has deposited to your Alchemy Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
+        this.resultText = `Payment success! <span>${ this.detailsParameters.fiatCurrencySymbol }${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency }</span> has deposited to your Alchemy Pay Wallet Account. You can download it in <span>Apple Store</span> or<span>Google Play</span>.`;
         return;
       }
       if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
-        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
         return;
       }
       if(this.depositType === 2 && this.orderStatus === 5){
-        this.resultText = `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+        this.resultText = `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     },
 
