@@ -82,9 +82,9 @@ export default {
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
 
     //PHP - 金额大于500000地址必输
-    if(this.currency === 'PHP' && this.$store.state.getAmount > 500000){
+    if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount > 500000){
       this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = true;
-    }else if(this.currency === 'PHP' && this.$store.state.getAmount <= 500000){
+    }else if(this.currency === 'PHP' && this.$store.state.sellRouterParams.getAmount <= 500000){
       this.formJson.filter(item=>{ return item.paramsName === "address" })[0].required = false;
     }
 

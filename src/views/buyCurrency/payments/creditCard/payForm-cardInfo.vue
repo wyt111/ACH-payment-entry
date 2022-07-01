@@ -5,11 +5,13 @@
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
-            <div class="formContent"><input type="text" v-model="params.firstname" maxlength="50"></div>
+            <div class="formContent"><input type="text" v-model="params.firstname" @input="nameChange('first')" maxlength="50"></div>
+            <div class="errorTips" v-if="errorFirstname">{{ $t('nav.sell_form_NameTips') }}</div>
           </div>
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_lastName') }}</div>
-            <div class="formContent"><input type="text" v-model="params.lastname" maxlength="50"></div>
+            <div class="formContent"><input type="text" v-model="params.lastname" @input="nameChange('last')" maxlength="50"></div>
+            <div class="errorTips" v-if="errorLastname">{{ $t('nav.sell_form_NameTips') }}</div>
           </div>
         </div>
         <div class="formLine">
@@ -21,7 +23,7 @@
             </div>
           </div>
           <div class="formContent">
-            <van-field class="number_input" type="digit" v-model="params.cardNumber" @input="cardChange" @blur="cardBlur" maxlength="23"/>
+            <van-field class="number_input" type="digit" v-model="params.cardNumber" @input="cardChange" maxlength="23"/>
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCard">{{ $t('nav.buy_form_cardNumTips') }}</div>
@@ -82,6 +84,8 @@ export default {
       visaState: true,
       masterState: true,
 
+      errorFirstname: false,
+      errorLastname: false,
       errorCard: false,
       errorCvv: false,
       errorTime: false,
@@ -94,7 +98,7 @@ export default {
   },
   computed: {
     buttonState(){
-      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.params.cardNumber !== "" && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false&&this.request_loading === false){
+      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.errorFirstname===false&&this.errorLastname===false&&this.params.cardNumber !== "" && this.errorCard === false && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false&&this.request_loading === false){
         return false;
       }else{
         return true;
@@ -129,6 +133,7 @@ export default {
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
       addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+'));
+      addressForm.cardNumber = addressForm.cardNumber.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')
       //去除地址栏穿参导致参数中拼有空格问题
       addressForm.firstname = AES_Decrypt(addressForm.firstname.replace(/ /g,'+'));
       addressForm.lastname = AES_Decrypt(addressForm.lastname.replace(/ /g,'+'));
@@ -194,25 +199,46 @@ export default {
       })
     },
 
-    //卡号验证
-    cardBlur(){
-
-      // this.buttonIsShow = true
-
-      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
-      let firstCardNumber = cardNumber.substring(0,1);
-      let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
-      if(this.params.cardNumber === '' || !regular.test(cardNumber)){
-        this.errorCard = true;
-      }else {
-        this.errorCard = false;
+    nameChange(witch){
+      if(witch === 'first'){
+        if(!new RegExp("^[A-Za-z0-9 .,()_'/-]{1,150}$").test(this.params.firstname)){
+          this.errorFirstname = true;
+        }else{
+          this.errorFirstname = false;
+        }
+      }else{
+        if(!new RegExp("^[A-Za-z0-9 .,()_'/-]{1,150}$").test(this.params.lastname)){
+          this.errorLastname = true;
+        }else{
+          this.errorLastname = false;
+        }
       }
     },
+
+    // cardBlur(){
+    //   let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
+    //   let firstCardNumber = cardNumber.substring(0,1);
+    //   let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
+    //   if(this.params.cardNumber === '' || !regular.test(cardNumber)){
+    //     this.errorCard = true;
+    //   }else {
+    //     this.errorCard = false;
+    //   }
+    // },
 
     cardChange(value){
       //Add a space between every four digits of the credit card number
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
+        //卡号验证
+        let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
+        let firstCardNumber = cardNumber.substring(0,1);
+        let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
+        if(this.params.cardNumber === '' || !regular.test(cardNumber)){
+          this.errorCard = true;
+        }else {
+          this.errorCard = false;
+        }
       }
       //  if(this.$store.state.isPcAndPhone === 'phone'){
       //    this.buttonIsShow = false

@@ -109,13 +109,6 @@ export default {
       //语言
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
-      //获取商户token
-      this.$route.query.token ? localStorage.setItem("token",this.$route.query.token) : '';
-      this.$route.query.id ? localStorage.setItem("userId",AES_Decrypt(this.$route.query.id)) : '';
-      this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
-      this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
-      //通过订单id的获取订单信息
-      this.$route.query.orderNo ? localStorage.setItem("orderNo",this.$route.query.orderNo) : '';
     },
   },
 
