@@ -6,7 +6,14 @@
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
           {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
-        <div class="formContent" v-if="item.type === 'radio'" @click="openSelect(item,index)" >
+        <!-- bank account type -->
+        <div class="formContent" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+          <div class="radioInput">
+            <div class="value">{{ $t(item.model) }}</div>
+            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+          </div>
+        </div>
+        <div class="formContent" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
           <div class="radioInput">
             <div class="value">{{ item.model }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
@@ -27,7 +34,13 @@
     </button>
 
     <!-- 单选框 -->
-    <div class="selectView" v-if="selectState" @click="selectState=false">
+    <!-- bank account type -->
+    <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="selectState=false">
+      <ul class="selectDate">
+        <li v-for="(item,index) in this.selected.item" :key="index" @click="specialChiseCheck(item)">{{ $t(item.value) }}</li>
+      </ul>
+    </div>
+    <div class="selectView" v-else-if="selectState" @click="selectState=false">
       <ul class="selectDate">
         <li v-for="(item,index) in this.selected.item" :key="index" @click="chiseCheck(item)">{{ $t(item) }}</li>
       </ul>
@@ -44,6 +57,7 @@ export default {
   data(){
     return{
       formJson: [],
+      formJsonCopy: [],
       currency: "",
       buttonIsShow:true,
       selectState: false,
@@ -88,6 +102,8 @@ export default {
           }
         }
       })
+      let bankAccountTypeDate = this.formJson.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
+      this.bankAccountType(bankAccountTypeDate,1);
     }
   },
   computed: {
@@ -127,7 +143,7 @@ export default {
 
       requiredArray.length === 0 ? this.formJson.forEach((item,index)=>{this.formJson[index].tipsState = false}) : '';
       return requiredArray.length === 0 && this.request_loading === false ? false : true;
-    }
+    },
   },
   methods: {
     // 正则校验 展示提示信息
@@ -153,12 +169,89 @@ export default {
       this.selected = {
         item: item.radioList,
         index: index,
+        paramsName: item.paramsName
       };
     },
     chiseCheck(item){
       this.selectState = false;
       this.formJson[this.selected.index].model = this.$t(item);
       this.formJson[this.selected.index].tipsState = false;
+    },
+    specialChiseCheck(item){
+      this.selectState = false;
+      this.bankAccountType(item,2);
+      this.formJson[this.selected.index].tipsState = false;
+    },
+    bankAccountType(value,step){
+      if(step === 1){
+        this.formJson.forEach((item,index)=>{
+          if(item.paramsName === 'bankAccountType'){
+            switch (value.model){
+              case "3":
+                this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Saving";
+                break;
+              case "4":
+                this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Checking";
+                break;
+              case "5":
+                this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_TimeDeposit";
+                break;
+              case "6":
+                this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Others";
+                break;
+              case "7":
+                this.formJson[index].model = "nav.sell_form_accountTypeLi_Maestra";
+                break;
+            }
+          }
+        })
+        return;
+      }
+      if(step === 2){
+        console.log(value.key)
+        switch (value.key){
+          case "3":
+            this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Saving";
+            break;
+          case "4":
+            this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Checking";
+            break;
+          case "5":
+            this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_TimeDeposit";
+            break;
+          case "6":
+            this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Others";
+            break;
+          case "7":
+            this.formJson[this.selected.index].model = "nav.sell_form_accountTypeLi_Maestra";
+            break;
+        }
+        return;
+      }
+      if(step === 3){
+        this.formJsonCopy.forEach((item,index)=> {
+          if (item.paramsName === 'bankAccountType') {
+            switch (value.model) {
+              case 'nav.sell_form_bankAccountTypeLi_Saving':
+                this.formJsonCopy[index].model = "3";
+                break;
+              case "nav.sell_form_bankAccountTypeLi_Checking":
+                this.formJsonCopy[index].model = "4";
+                break;
+              case "nav.sell_form_bankAccountTypeLi_TimeDeposit":
+                this.formJsonCopy[index].model = "5";
+                break;
+              case "nav.sell_form_bankAccountTypeLi_Others":
+                this.formJsonCopy[index].model = "6";
+                break;
+              case "nav.sell_form_accountTypeLi_Maestra":
+                this.formJsonCopy[index].model = "7";
+                break;
+            }
+          }
+        })
+        return;
+      }
     },
 
     submit(){
@@ -167,7 +260,10 @@ export default {
         id: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
         fiatCode: this.$store.state.sellRouterParams.positionData.fiatCode, // 法币Code
       };
-      this.formJson.forEach(item=>{
+      this.formJsonCopy = JSON.parse(JSON.stringify(this.formJson));
+      let bankAccountTypeDate = this.formJsonCopy.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
+      this.bankAccountType(bankAccountTypeDate,3);
+      this.formJsonCopy.forEach(item=>{
         if(item.model !== ''){
           queryForm[item.paramsName] = item.model;
         }
@@ -286,15 +382,6 @@ export default {
       outline: none;
       padding: 0 0.16rem;
     }
-    //.rightIcon{
-    //  display: flex;
-    //  position: absolute;
-    //  top: 0.23rem;
-    //  right: 0.2rem;
-    //  img{
-    //    width: 0.12rem;
-    //  }
-    //}
     .radioInput{
       width: 100%;
       display: flex;

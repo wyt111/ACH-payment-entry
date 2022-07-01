@@ -61,7 +61,7 @@ export default {
       this.$axios.post(this.$api.post_mxnSubmit,params,'submitToken').then(res=>{
         if(res && res.returnCode === '0000'){
           this.$parent.startPayment = true;
-          this.refreshPaystate();
+          // this.refreshPaystate();
           this.payCode = res.data.vaNumber;
           this.$parent.payCode = res.data.vaNumber;
           this.codeState = true;
@@ -97,7 +97,7 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res=>{
-        if(res && res.returnCode === '0000' && res.data.orderStatus > 2 && res.data.orderStatus <= 6){
+        if(res && res.returnCode === '0000' && res.data.orderStatus > 0 && res.data.orderStatus <= 6){
           this.$router.replace(`/paymentResult?customParam=${this.$store.state.buyRouterParams.orderNo}`);
         }
       })

@@ -158,9 +158,26 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Saving","nav.sell_form_bankAccountTypeLi_Checking","nav.sell_form_bankAccountTypeLi_TimeDeposit","nav.sell_form_bankAccountTypeLi_Others"],
-        "regular": "^[A-Za-z0-9 .,()_'/-]{1,150}$",
-        "maxLength": "150",
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          },
+          {
+            "key": "5",
+            "value": "nav.sell_form_bankAccountTypeLi_TimeDeposit"
+          },
+          {
+            "key": "6",
+            "value": "nav.sell_form_bankAccountTypeLi_Others"
+          }
+        ],
+        "regular": "",
+        "maxLength": "",
         "required": true,
         "tips": "nav.sell_form_bankAccountTypeTips",
         "tipsState": false
@@ -675,7 +692,16 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -768,7 +794,20 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving", "nav.sell_form_accountTypeLi_Maestra"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          },
+          {
+            "key": "7",
+            "value": "nav.sell_form_accountTypeLi_Maestra"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -828,7 +867,20 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving", "nav.sell_form_accountTypeLi_Maestra"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          },
+          {
+            "key": "7",
+            "value": "nav.sell_form_accountTypeLi_Maestra"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -875,7 +927,16 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1199,7 +1260,16 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,
@@ -1268,7 +1338,16 @@
         "paramsName": "bankAccountType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_bankAccountTypeLi_Checking", "nav.sell_form_bankAccountTypeLi_Saving"],
+        "radioList": [
+          {
+            "key": "3",
+            "value": "nav.sell_form_bankAccountTypeLi_Saving"
+          },
+          {
+            "key": "4",
+            "value": "nav.sell_form_bankAccountTypeLi_Checking"
+          }
+        ],
         "regular": "",
         "maxLength": "",
         "required": true,

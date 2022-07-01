@@ -7,7 +7,8 @@ const i18n = new VueI18n({
     messages: {
         'en-US': require('./language/en-US'),
         'zh-HK': require('./language/zh-HK'),
-    }
+    },
+    silentTranslationWarn: true,
 })
 export default i18n;
 

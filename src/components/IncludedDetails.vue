@@ -13,7 +13,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -22,7 +22,7 @@
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
           <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ payCommission.symbol }} {{ feeInfo.price }}</div>
+          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
@@ -150,7 +150,6 @@ export default {
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
-          this.feeInfo.price = (res.data.price * this.routerParams.exchangeRate).toFixed(Number(this.payCommission.decimalDigits));
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
             this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo));

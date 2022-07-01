@@ -65,7 +65,7 @@ module.exports = {
         code_name2: '隱私政策',
         code_text: "我同意Alchemy Pay之",
         menu: '菜單',
-        menu_transactions: '交易',
+        menu_transactions: '歷史訂單記錄',
         menu_language: '語言',
         menu_terms: '服務條款',
         menu_privacy: '隱私政策',
@@ -99,7 +99,7 @@ module.exports = {
         home_buyFee_rampFee: '服務費',
         home_buyFee_networkFee: '網絡費',
         //卖币
-        home_youSell: '您卖出',
+        home_youSell: '您賣出',
         home_youSellGet: '您獲得',
         home_sellFee_title1: '您賣出',
         home_sellFee_title2: '獲得',
@@ -124,6 +124,9 @@ module.exports = {
         //买币 - 确认订单 - 国际卡
         buy_configPay_title1: '支付方式',
         buy_configPay_title2: 'CVV',
+        buy_configPay_title3: '我確認付款已完成。',
+        buy_configPay_title4: '確定',
+        buy_configPay_title5: '取消',
         //买币 - 填写表单 - 国际卡
         buy_form_firstName: '名字',
         buy_form_lastName: '姓氏',
@@ -131,7 +134,7 @@ module.exports = {
         buy_form_expirationDate: '有效日期',
         buy_form_CVV: 'CVV',
         buy_form_dataTips: '有效日期輸入有誤',
-        buy_form_cardNumTips: '請輸入正確的有效日期。',
+        buy_form_cardNumTips: '請輸入正確的卡信息。',
         buy_form_cvvTips: '請輸入正確的CVV',
 
         //买币 - 确认订单 - 印尼支付
@@ -148,8 +151,8 @@ module.exports = {
         payResult_feeHash: '收費列表',
         payResult_feeWallet: 'ACH 錢包',
         payResult_feePassword: 'ACH 錢包',
-
-
+        payResult_createdTime: '訂單時間',
+        payResult_orderNo: '訂單號',
 
         /**
          * 卖币
@@ -217,8 +220,8 @@ module.exports = {
         sell_form_bankAccountTypeLi_Checking: '支票賬戶',
         sell_form_bankAccountTypeLi_TimeDeposit: '定期賬戶',
         sell_form_bankAccountTypeLi_Others: '其他',
-        sell_form_bankCode: '銀行行號',
-        sell_form_bankCodeTips: '無效銀行行號!',
+        sell_form_bankCode: '銀行識別碼',
+        sell_form_bankCodeTips: '無效銀行識別碼!',
         sell_form_branchCode: '分行行號',
         sell_form_branchCodeTips: '無效分行行號!',
         sell_form_locationId: '位置編碼',
@@ -254,7 +257,7 @@ module.exports = {
         sell_form_TransitNumber: '轉賬編號',
         sell_form_TransitNumberTips: '無效轉賬編號!',
         sell_form_bankSwiftTips: 'Swift碼和位置編碼不能同時為空',
-        sell_form_bankSwiftCodeTips: '銀行代碼和swift代碼不能同時為空',
+        sell_form_bankSwiftCodeTips: '銀行識別碼和swift代碼不能同時為空',
         sell_form_bankCodeLocationIdTips: '銀行代碼和位置ID不能同時為空',
 
         //新增
@@ -264,6 +267,7 @@ module.exports = {
         history_noListText2: '少量購幣，莫失良機',
         history_state_Complete: '完成',
         history_state_Processing: '正在處理',
+        history_state_Transfer: '加密幣已發送',
         history_listTitle1: '訂單號',
         history_listTitle2: '交易數量',
         history_listTitle3: '服務識別號',

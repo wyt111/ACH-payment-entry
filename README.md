@@ -15,9 +15,9 @@ yarn serve
 yarn build
 ```
 
-### Lints and fixes files
+### 项目介绍
 ```
-yarn lint
+小数规则：数值>0，小数点后保留2位 | 数值<0，小数点后最多保留6位
 ```
 
 ### BASIS ID Document address

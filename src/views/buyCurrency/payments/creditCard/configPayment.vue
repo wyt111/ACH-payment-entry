@@ -68,6 +68,13 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to,from,next) {
+    next(vm => {
+      if ((from.path === '/creditCardForm-cardInfo' || from.path === '/paymentMethod' )&& to.path === '/creditCardConfig' && !from.query.configPaymentFrom) {
+        vm.newCvv = "";
+      }
+    })
+  },
   activated(){
     //恢复页面默认状态
     this.buttonData = {
@@ -100,7 +107,6 @@ export default {
 
       //判断上一页路由 控制填写CVV状态
       this.newCvvState = this.$route.query.configPaymentFrom === 'userPayment' ? true : false;
-      this.newCvv = "";
     },
 
     //跳转修改卡信息页面
@@ -142,7 +148,7 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
-            if(res.data === {}){
+            if(JSON.stringify(res.data) === "{}"){
               this.timeDown = setInterval(()=>{
                 this.queryOrderStatus();
               },1000)
