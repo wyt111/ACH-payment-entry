@@ -115,10 +115,16 @@ export default {
       this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
       this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
       //通过订单id的获取订单信息
-      this.$route.query.orderNo ? localStorage.setItem("orderNo",this.$route.query.orderNo) : '';
+      let orderNo = this.$route.query.orderNo ? this.$route.query.orderNo : '';
+      //填写表单状态 - true填写过 false未填写
+      console.log(this.$route.query.formHistory == true,this.$route.query.formHistory == 'true');
+      if(this.$route.query.formHistory && this.$route.query.formHistory=='true' && orderNo !== ""){
+        this.$router.push(`/creditCardConfig?orderNo=${orderNo}`);
+      }else if(this.$route.query.formHistory && this.$route.query.formHistory=='false'){
+        this.$router.push(`/paymentMethod?orderNo=${orderNo}`);
+      }
     },
   },
-
 };
 </script>
 

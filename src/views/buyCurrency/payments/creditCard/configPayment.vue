@@ -46,6 +46,8 @@ export default {
   data(){
     return{
       cardData: {},
+      wishCardData: "",
+      
       timeDown: null,
       submitState: true,
       cardName: '',
@@ -72,6 +74,8 @@ export default {
     next(vm => {
       if ((from.path === '/creditCardForm-cardInfo' || from.path === '/paymentMethod' )&& to.path === '/creditCardConfig' && !from.query.configPaymentFrom) {
         vm.newCvv = "";
+      }else if(to.path === '/creditCardConfig' && from.path === '/' && from.query.orderNo){
+        vm.buyOrderInfo();
       }
     })
   },
@@ -98,20 +102,38 @@ export default {
     }
   },
   methods: {
+    //商户接入查询
+    buyOrderInfo(){
+      this.$axios.get(this.$api.get_orderState + this.$route.query.orderNo,'').then(res=>{
+        if(res && res.returnCode === "0000" && res.data !== null){
+          this.$store.state.buyRouterParams.cryptoCurrency = res.data.cryptoCurrency;
+          this.$store.state.buyRouterParams.getAmount = res.data.fiatCurrencyAmount;
+          this.$store.state.buyRouterParams.amount = res.data.fiatCurrencyAmount;
+          this.$store.state.buyRouterParams.payCommission.symbol = res.data.currencySymbol;
+          this.$store.state.buyRouterParams.networkDefault = res.data.address;
+          this.$store.state.buyRouterParams.addressDefault = res.data.network;
+          this.wishCardData = res.data.cardInfo;
+        }
+      })
+    },
+
     reviceInfo(){
       //获取卡信息
-      this.cardData = JSON.parse(this.$route.query.submitForm);
-      this.cardData.cardNumber = AES_Decrypt(this.cardData.cardNumber.replace(/ /g,'+'));
-      let cardNum = this.cardData.cardNumber.substring(0,1);
-      this.cardName = cardNum === '4' ? 'visa' : 'master';
+      if(this.$route.query.submitForm){
+        this.cardData = JSON.parse(this.$route.query.submitForm)
+        this.cardData.cardNumber = AES_Decrypt(this.cardData.cardNumber.replace(/ /g,'+'));
+        let cardNum = this.cardData.cardNumber.substring(0,1);
+        this.cardName = cardNum === '4' ? 'visa' : 'master';
+        this.wishCardData = this.$route.query.submitForm;
+      }
 
       //判断上一页路由 控制填写CVV状态
-      this.newCvvState = this.$route.query.configPaymentFrom === 'userPayment' ? true : false;
+      this.newCvvState = (this.$route.query.configPaymentFrom && this.$route.query.configPaymentFrom === 'userPayment') ? true : false;
     },
 
     //跳转修改卡信息页面
     goPayForm(){
-      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.$route.query.submitForm}&configPaymentFrom=userPayment`) : '';
+      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment`) : '';
     },
 
     /**

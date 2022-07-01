@@ -25,6 +25,8 @@ export default {
   "post_mxnSubmit": '/pay/mxn/submit',
   //查询货币支持的支付方式
   "get_payMethods": '/crypto/payment/',
+  //查询订单状态
+  "get_orderState": '/trade/',
 
   //------------------------- 卖币接口 -------------------------
   //卖币查询费用

@@ -93,6 +93,8 @@ export default {
     next(vm => {
       if(to.path === '/paymentMethod' && from.path === '/receivingMode'){
         vm.InitializationData();
+      }else if(to.path === '/paymentMethod' && from.path === '/' && from.query.orderNo){
+        vm.buyOrderInfo();
       }
     })
   },
@@ -104,6 +106,21 @@ export default {
     this.savedCard[this.cardCheck] ? this.savedCard[this.cardCheck].cardNumber = AES_Decrypt(this.savedCard[this.cardCheck].cardNumber) : '';
   },
   methods: {
+    //商户接入查询
+    buyOrderInfo(){
+      this.$axios.get(this.$api.get_orderState + this.$route.query.orderNo,'').then(res=>{
+        if(res && res.returnCode === "0000" && res.data !== null){
+          this.$store.state.buyRouterParams.cryptoCurrency = res.data.cryptoCurrency;
+          this.$store.state.buyRouterParams.getAmount = res.data.fiatCurrencyAmount;
+          this.$store.state.buyRouterParams.amount = res.data.fiatCurrencyAmount;
+          this.$store.state.buyRouterParams.payCommission.symbol = res.data.currencySymbol;
+          this.$store.state.buyRouterParams.networkDefault = res.data.address;
+          this.$store.state.buyRouterParams.addressDefault = res.data.network;
+          this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
+        }
+      })
+    },
+
     async InitializationData(){
       this.cardCheck = '';
       this.savedCard = [];
