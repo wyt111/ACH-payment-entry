@@ -201,13 +201,13 @@ export default {
 
     nameChange(witch){
       if(witch === 'first'){
-        if(!new RegExp("^[A-Za-z0-9 .,()_'/-]{1,150}$").test(this.params.firstname)){
+        if(!new RegExp("^[A-Za-z]{1,50}$").test(this.params.firstname)){
           this.errorFirstname = true;
         }else{
           this.errorFirstname = false;
         }
       }else{
-        if(!new RegExp("^[A-Za-z0-9 .,()_'/-]{1,150}$").test(this.params.lastname)){
+        if(!new RegExp("^[A-Za-z]{1,50}$").test(this.params.lastname)){
           this.errorLastname = true;
         }else{
           this.errorLastname = false;

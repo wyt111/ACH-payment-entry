@@ -46,7 +46,7 @@ export default {
         //倒计时状态
         this.$parent.startPayment = true;
         //刷新订单状态
-        this.refreshPaystate();
+        // this.refreshPaystate();
       }
       //存储地址栏信息
       this.routerParams = this.$store.state.buyRouterParams;
