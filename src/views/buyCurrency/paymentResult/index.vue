@@ -15,36 +15,40 @@ Three channels for successful payment --- 'depositType'
           <img src="../../../assets/images/paymentFailure.png" v-else-if="orderStatus === 0">
         </div>
         <div class="results_text" v-if="orderStatus >= 3 && orderStatus <= 5" v-html="resultText"></div>
-        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_errorMessage') }}</div>
-        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_timeErrorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 0">{{ $t('nav.payResult_timeErrorMessage') }}</div>
+        <div class="errorMessage" v-else-if="orderStatus === 6">{{ $t('nav.payResult_errorMessage') }}</div>
       </div>
 
       <div class="paymentInformation">
         <div class="fee-content">
-          <div class="fee-content-title" @click="expandCollapse">
+          <div class="fee-content-title" @click="expandCollapse" v-if="detailsTitleState">
             <div class="left">
               {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>
-          <div class="fee-content-details" v-if="detailsState">
-            <div class="fee-content-details-line" v-if="orderStatus !== 6 || orderStatus !== 0">
+          <div class="fee-content-details" :class="{'borderNone': !detailsTitleState}" v-if="detailsState">
+            <div class="fee-content-details-line" v-if="orderStatus === 0 || orderStatus === 6">
+              <div class="title">{{ $t('nav.payResult_orderNo') }}</div>
+              <div class="value">{{ detailsParameters.orderNo }}</div>
+            </div>
+            <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
               <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.cryptoPrice }}</div>
             </div>
             <div class="fee-content-details-line">
               <div class="title">{{ $t('nav.payResult_feeAmount') }}</div>
-              <div class="value">{{ detailsParameters.cryptoQuantity }}</div>
+              <div class="value">{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2||depositType===3 && (orderStatus !== 6 || orderStatus !== 0)">
+            <div class="fee-content-details-line" v-if="orderStatus !== 0 && orderStatus !== 6">
               <div class="title">{{ $t('nav.payResult_feeAddress') }}</div>
               <div class="value">{{ detailsParameters.address }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="depositType===2 && detailsParameters.hashId !== null && (orderStatus !== 6 || orderStatus !== 0)">
+            <div class="fee-content-details-line" v-if="detailsParameters.hashId !== null && (orderStatus !== 0 && orderStatus !== 6)">
               <div class="title">{{ $t('nav.payResult_feeHash') }}</div>
               <div class="value">{{ detailsParameters.hashId }}</div>
             </div>
-            <div class="fee-content-details-line" v-if="orderStatus === 6 || orderStatus === 0">
+            <div class="fee-content-details-line" v-if="orderStatus === 0 || orderStatus === 6">
               <div class="title">{{ $t('nav.payResult_createdTime') }}</div>
               <div class="value">{{ detailsParameters.createdTime }}</div>
             </div>
@@ -64,10 +68,10 @@ export default {
   data(){
     return{
       orderStatus: '', // 5: success 0: error 6: timeOut
-      depositType: '', // 1 :ach钱包 2: address
       detailsParameters: {},
       countDown: null,
       detailsState: false,
+      detailsTitleState: true,
     }
   },
   activated(){
@@ -82,11 +86,11 @@ export default {
       return this.$t('nav.orderRsult');
     },
     resultText(){
-      if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
-        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+      if(this.orderStatus >= 3 && this.orderStatus <= 4){
+        return `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
       }
-      if(this.depositType === 2 && this.orderStatus === 5){
-        return `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+      if(this.orderStatus === 5){
+        return `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     }
   },
@@ -107,11 +111,13 @@ export default {
           this.detailsParameters = res.data;
           //order status
           this.orderStatus = res.data.orderStatus;
-          this.depositType = res.data.depositType;
 
           (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
-          // depositType - Receiving mode
-          // this.judgeChannel();
+
+          if(res.data.orderStatus === 0 || res.data.orderStatus === 6){
+            this.detailsState = true;
+            this.detailsTitleState = false;
+          }
         }
       })
     },
@@ -129,12 +135,12 @@ export default {
 
     //Judgment order status display text
     judgeChannel(){
-      if(this.depositType === 2 && this.orderStatus >= 3 && this.orderStatus <= 4){
-        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
+      if(this.orderStatus >= 3 && this.orderStatus <= 4){
+        this.resultText = `${this.$t('nav.result_stateTo4_your')} ${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo4')}`;
         return;
       }
-      if(this.depositType === 2 && this.orderStatus === 5){
-        this.resultText = `${ this.detailsParameters.cryptoQuantity } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
+      if(this.orderStatus === 5){
+        this.resultText = `${ this.detailsParameters.amount } ${ this.detailsParameters.cryptoCurrency } ${this.$t('nav.result_stateTo5')}`
       }
     },
 
@@ -228,6 +234,9 @@ export default {
       }
     }
 
+    .borderNone{
+      border: none!important;
+    }
     .fee-content-details{
       border-top: 1px solid #E6E6E6;
       padding: 0.04rem 0 0.16rem 0;
@@ -242,7 +251,8 @@ export default {
           font-family: "GeoLight", GeoLight;
           font-weight: normal;
           color: #232323;
-          margin-right: 0.34rem;
+          //margin-right: 0.34rem;
+          width: 1.4rem;
           .tipsIcon{
             width: 0.16rem;
             height: 0.16rem;

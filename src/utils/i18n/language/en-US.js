@@ -150,7 +150,8 @@ module.exports = {
     payResult_feeHash: 'Hash',
     payResult_feeWallet: 'Wallet',
     payResult_feePassword: 'ACH Wallet',
-    payResult_createdTime: 'Create order time',
+    payResult_createdTime: 'Order Time',
+    payResult_orderNo: 'Order No',
 
     /**
      * 卖币
@@ -269,6 +270,7 @@ module.exports = {
     history_noListText2: 'Buy some crypto to get started',
     history_state_Complete: 'Complete',
     history_state_Processing: 'Processing',
+    history_state_Transfer: 'Crypto sent',
     history_listTitle1: 'Order No',
     history_listTitle2: 'Crypto',
     history_listTitle3: 'Hash ID',

@@ -1,12 +1,14 @@
 export default {
-  // 公共接口
+  //------------------------- 公共接口 -------------------------
   "post_sendEmail": '/mail/sending',
   "post_login": '/user/login',
   "post_outLogin": '/login/to-logout',
   "get_transactionHistory": '/trade/list',
-  "get_buyCryptoInfo": '/crypto/buy/v1', ///v1
+  "get_buyCryptoInfo": '/crypto/buy/v1',
+  //国家法币列表
+  "get_countryList": 'crypto/world/list',
 
-  // 买币接口
+  //------------------------- 买币接口 -------------------------
   "get_network": '/crypto/network',
   "get_inquiryFee": '/crypto/fee',
   "post_coinSupportedWallet": '/crypto/wallet/check',
@@ -24,7 +26,7 @@ export default {
   //查询货币支持的支付方式
   "get_payMethods": '/crypto/payment/',
 
-  // 卖币接口
+  //------------------------- 卖币接口 -------------------------
   //卖币查询费用
   "get_inquiryFeeSell": '/crypto/sell/fee',
   //银行列表

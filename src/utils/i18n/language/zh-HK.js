@@ -134,7 +134,7 @@ module.exports = {
         buy_form_expirationDate: '有效日期',
         buy_form_CVV: 'CVV',
         buy_form_dataTips: '有效日期輸入有誤',
-        buy_form_cardNumTips: '請輸入正確的有效日期。',
+        buy_form_cardNumTips: '請輸入正確的卡信息。',
         buy_form_cvvTips: '請輸入正確的CVV',
 
         //买币 - 确认订单 - 印尼支付
@@ -151,7 +151,8 @@ module.exports = {
         payResult_feeHash: '收費列表',
         payResult_feeWallet: 'ACH 錢包',
         payResult_feePassword: 'ACH 錢包',
-        payResult_createdTime: '創建訂單時間',
+        payResult_createdTime: '訂單時間',
+        payResult_orderNo: '訂單號',
 
         /**
          * 卖币
@@ -266,6 +267,7 @@ module.exports = {
         history_noListText2: '少量購幣，莫失良機',
         history_state_Complete: '完成',
         history_state_Processing: '正在處理',
+        history_state_Transfer: '加密幣已發送',
         history_listTitle1: '訂單號',
         history_listTitle2: '交易數量',
         history_listTitle3: '服務識別號',

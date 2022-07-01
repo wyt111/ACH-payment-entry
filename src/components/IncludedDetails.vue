@@ -13,7 +13,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">

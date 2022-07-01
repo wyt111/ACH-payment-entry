@@ -160,19 +160,19 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           },
           {
-            "key": 5,
+            "key": "5",
             "value": "nav.sell_form_bankAccountTypeLi_TimeDeposit"
           },
           {
-            "key": 6,
+            "key": "6",
             "value": "nav.sell_form_bankAccountTypeLi_Others"
           }
         ],
@@ -694,11 +694,11 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           }
         ],
@@ -796,15 +796,15 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           },
           {
-            "key": 7,
+            "key": "7",
             "value": "nav.sell_form_accountTypeLi_Maestra"
           }
         ],
@@ -869,15 +869,15 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           },
           {
-            "key": 7,
+            "key": "7",
             "value": "nav.sell_form_accountTypeLi_Maestra"
           }
         ],
@@ -929,11 +929,11 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           }
         ],
@@ -1262,11 +1262,11 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           }
         ],
@@ -1340,11 +1340,11 @@
         "type": "radio",
         "radioList": [
           {
-            "key": 3,
+            "key": "3",
             "value": "nav.sell_form_bankAccountTypeLi_Saving"
           },
           {
-            "key": 4,
+            "key": "4",
             "value": "nav.sell_form_bankAccountTypeLi_Checking"
           }
         ],

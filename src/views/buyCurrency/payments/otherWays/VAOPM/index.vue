@@ -1,7 +1,7 @@
 <template>
   <div id="indonesianPayment">
     <!-- 支付倒计时提示 -->
-    <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
+    <div class="payTips" v-if="startPayment && routerParams.payWayCode === '10003'">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
     <!-- 费用明细 -->
     <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
     <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
@@ -17,15 +17,14 @@
     <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
       <div class="content" @click.stop="show=true">
         <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
-        <div @click.stop="MEXConfirmPay">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
+        <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
         <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
       </div>
     </div>
     <!-- 墨西哥支付按钮 -->
-    <button class="continue" :disabled="payState" @click="MEXPay" v-if="routerParams.payWayCode === '10008'">
-      {{ $t('nav.Continue') }}
-      <img class="rightIcon" src="@/assets/images/button-right-icon.png" v-if="!request_loading">
-      <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
+    <button class="continue" @click="MEXConfirmState = true" v-if="routerParams.payWayCode === '10008'">
+      {{ $t('nav.queryOderState') }}
+      <img class="rightIcon" src="@/assets/images/button-right-icon.png">
     </button>
     <!-- I confirm that the payment has been completed.-->
     <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" v-else></Button>
@@ -70,7 +69,6 @@ export default {
         customName: false,
       },
 
-      request_loading: false,
       MEXConfirmState: false,
     }
   },
@@ -97,6 +95,9 @@ export default {
   methods: {
     receiveInfo(){
       this.routerParams = this.$store.state.buyRouterParams;
+      if(this.routerParams.payWayCode === '10008') {
+        this.MEXPay();
+      }
       //还原刷新前数据状态
       if(sessionStorage.getItem("indonesiaPayment")) { // && this.routerParams.payWayCode === '10003'
         this.payExplain = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
@@ -131,15 +132,15 @@ export default {
       }
     },
     //墨西哥支付
-    MEXPay(){
-      this.MEXConfirmState = true;
-    },
-    async MEXConfirmPay(){
+    async MEXPay(){
       let submitToken = await querySubmitToken();
-      if(submitToken === true && this.routerParams.payWayCode === '10008'){
+      if(submitToken === true){
         this.AuthorizationInfo_state = false;
         this.$refs.opm_ref.OPMpay();
       }
+    },
+    async MEXConfirmOut(){
+      this.$router.push('/tradeHistory');
     },
     //order status
     requestStatus(){
@@ -236,7 +237,7 @@ export default {
       padding: .4rem 0 0 0;
       box-sizing: border-box;
       h2{
-        width: 2.4rem;
+        //width: 2.4rem;
         text-align: center;
         font-weight: normal;
         color: #232323;
@@ -295,7 +296,7 @@ export default {
       width: 0.24rem;
       position: absolute;
       top: 0.17rem;
-      right: 0.32rem;
+      right: 0.16rem;
       font-size: 0.12rem;
     }
     .loadingIcon{

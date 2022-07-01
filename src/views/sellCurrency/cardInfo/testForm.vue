@@ -186,20 +186,20 @@ export default {
       if(step === 1){
         this.formJson.forEach((item,index)=>{
           if(item.paramsName === 'bankAccountType'){
-            switch (item.model){
-              case 3:
+            switch (value.model){
+              case "3":
                 this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Saving";
                 break;
-              case 4:
+              case "4":
                 this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Checking";
                 break;
-              case 5:
+              case "5":
                 this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_TimeDeposit";
                 break;
-              case 6:
+              case "6":
                 this.formJson[index].model = "nav.sell_form_bankAccountTypeLi_Others";
                 break;
-              case 7:
+              case "7":
                 this.formJson[index].model = "nav.sell_form_accountTypeLi_Maestra";
                 break;
             }
@@ -208,20 +208,21 @@ export default {
         return;
       }
       if(step === 2){
+        console.log(value.key)
         switch (value.key){
-          case 3:
+          case "3":
             this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Saving";
             break;
-          case 4:
+          case "4":
             this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Checking";
             break;
-          case 5:
+          case "5":
             this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_TimeDeposit";
             break;
-          case 6:
+          case "6":
             this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Others";
             break;
-          case 7:
+          case "7":
             this.formJson[this.selected.index].model = "nav.sell_form_accountTypeLi_Maestra";
             break;
         }
@@ -232,19 +233,19 @@ export default {
           if (item.paramsName === 'bankAccountType') {
             switch (value.model) {
               case 'nav.sell_form_bankAccountTypeLi_Saving':
-                this.formJsonCopy[index].model = 3;
+                this.formJsonCopy[index].model = "3";
                 break;
               case "nav.sell_form_bankAccountTypeLi_Checking":
-                this.formJsonCopy[index].model = 4;
+                this.formJsonCopy[index].model = "4";
                 break;
               case "nav.sell_form_bankAccountTypeLi_TimeDeposit":
-                this.formJsonCopy[index].model = 5;
+                this.formJsonCopy[index].model = "5";
                 break;
               case "nav.sell_form_bankAccountTypeLi_Others":
-                this.formJsonCopy[index].model = 6;
+                this.formJsonCopy[index].model = "6";
                 break;
               case "nav.sell_form_accountTypeLi_Maestra":
-                this.formJsonCopy[index].model = 7;
+                this.formJsonCopy[index].model = "7";
                 break;
             }
           }

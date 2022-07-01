@@ -22,8 +22,9 @@
                 </div>
               </div>
               <div class="state">
-                <span v-if="Number(item.orderState) === 1" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
-                <span v-if="Number(item.orderState) === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
+                <span v-if="item.orderState === 1 || item.orderState === 2" class="state_loading">{{ $t('nav.history_state_Processing') }}</span>
+                <span v-if="item.orderState === 3 || item.orderState === 4" class="state_loading">{{ $t('nav.history_state_Transfer') }}</span>
+                <span v-if="item.orderState === 5" class="state_success">{{ $t('nav.history_state_Complete') }}</span>
                 <!--                <span v-if="item.orderState === 0" class="state_error">fail</span>-->
 <!--                <span v-if="item.orderState === 2 || item.orderState === 3" class="state_loading">Transferring</span>-->
               </div>
@@ -38,7 +39,7 @@
             </div>
             <div class="details_line">
               <div class="details_line_title">{{ item.cryptoCurrency }} {{ $t('nav.fee_listTitle_price') }}:</div>
-              <div class="details_line_value">{{ item.cryptoCurrencyPrice }}{{ item.fiatCurrency }}</div>
+              <div class="details_line_value">{{ item.fiatCurrencySymbol }}{{ item.cryptoCurrencyPrice }}</div>
             </div>
             <div class="details_line">
               <div class="details_line_title">{{ $t('nav.history_listTitle2') }}:</div>
@@ -98,7 +99,7 @@ export default {
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
         if(res.data){
-          let newArray = res.data.result;
+          let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
           _this.historyList = _this.historyList.concat(newArray);
           _this.loading = false;
           if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.historyList.length === res.data.total){
