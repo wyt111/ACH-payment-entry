@@ -116,6 +116,8 @@ axios.interceptors.response.use(function (response) {
     localStorage.removeItem("userNo");
     localStorage.removeItem("userId");
     localStorage.removeItem("kycStatus");
+    store.commit("clearToken"); //取消请求
+    store.commit("emptyToken"); // 清空token数组
     if(fromRouter === '/receivingMode' && toRouter === '/'){
       router.replace(`/emailCode`);
       return;

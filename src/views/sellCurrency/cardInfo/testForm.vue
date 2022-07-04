@@ -208,7 +208,6 @@ export default {
         return;
       }
       if(step === 2){
-        console.log(value.key)
         switch (value.key){
           case "3":
             this.formJson[this.selected.index].model = "nav.sell_form_bankAccountTypeLi_Saving";

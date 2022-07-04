@@ -323,7 +323,7 @@ export default{
 
       }else{
         this.$toast(this.$t('nav.SellOrder_modified'))
-        return 
+        return
       }
     },
     //Calculate minutes and seconds
@@ -386,7 +386,6 @@ export default{
         }
         this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
           if(res.returnCode && res.data){
-            console.log(res.data);
             this.cardUserName = res.data
             this.accountNumberCode = this.AES(res.data.accountNumber)
           }
@@ -441,7 +440,7 @@ export default{
     color: #707070;
     line-height: .23rem;
     margin: .1rem 0 .1rem 0;
-    
+
   }
   .order-state{
     // padding: 0 .1rem 0;

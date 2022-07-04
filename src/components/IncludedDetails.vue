@@ -52,12 +52,35 @@
  * titleStatus 标题展示状态
  * network 选择接收方式需带入网络信息
  * isHome 是否是首页使用(监听vuex.state加载数据)、初首页以外activated加载数据
+ * useFee 是否使用费用数据
+ * isLoading 是否开始加载费用数据
  */
 import common from "../utils/common";
 
 export default {
   name: "includedDetails",
-  props: ['isHome','network','titleStatus'],
+  props: {
+    isHome: {
+      type: Boolean,
+      default: null
+    },
+    network: {
+      type: Text,
+      default: null
+    },
+    titleStatus: {
+      type: Boolean,
+      default: null
+    },
+    useFee: {
+      type: Boolean,
+      default: null
+    },
+    isLoading: {
+      type: Boolean,
+      default: null
+    }
+  },
   data(){
     return{
       triggerType: "hover",
@@ -82,25 +105,48 @@ export default {
     }
   },
   watch:{
-    'network':{
+    'network': {
       immediate: true,
       deep: true,
       handler(){
-        this.timingSetting();
+        if(!this.$route.query.merchant_orderNo){
+          this.timingSetting();
+        }
       }
     },
     //首页输入金额改变后刷新数据
     '$store.state.buyRouterParams.amount': {
       deep: true,
       handler() {
-        this.timingSetting();
+        if(this.isHome && this.isHome === true){
+          this.timingSetting();
+        }
       }
     },
     //首页选择数字货币后刷新数据
     '$store.state.buyRouterParams.cryptoCurrency': {
       deep: true,
       handler() {
-        this.timingSetting();
+        if(this.isHome && this.isHome === true) {
+          this.timingSetting();
+        }
+      }
+    },
+    '$store.state.buyRouterParams.exchangeRate': {
+      deep: true,
+      handler(val){
+        this.routerParams.exchangeRate = val;
+      }
+    },
+    'isLoading': {
+      deep: true,
+      immediate: true,
+      handler(val){
+        if(val === true && this.$store.state.buyRouterParams.cryptoCurrency !== ''){
+          this.routerParams = this.$store.state.buyRouterParams;
+          this.payCommission = this.$store.state.buyRouterParams.payCommission;
+          this.timingSetting();
+        }
       }
     }
   },
@@ -109,14 +155,14 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.routerParams = this.$store.state.buyRouterParams;
-    this.payCommission = this.routerParams.payCommission;
+    this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
   },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.routerParams = this.$store.state.buyRouterParams;
-    this.payCommission = this.routerParams.payCommission;
+    this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
     if(this.isHome && this.isHome === true){
       this.timingSetting();
     }
@@ -150,11 +196,19 @@ export default {
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
-          //修改首页费用数据
-          if(this.isHome && this.isHome === true){
-            this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo));
-            this.$parent.calculationAmount();
+          //赋值费用数据
+          this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
+          //商户对接计算you get数量
+          if(this.isLoading === true){
+            this.$store.state.buyRouterParams.payCommission.decimalDigits = 2;
+            let rampFee = (Number(this.$store.state.buyRouterParams.feeRate) * Number(this.$store.state.buyRouterParams.amount) + this.$store.state.buyRouterParams.fixedFee).toFixed(2);
+            this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
+            this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
+            let newGetAmount = (Number(this.$store.state.buyRouterParams.amount) - this.feeInfo.networkFee - rampFee) / this.feeInfo.price;
+            newGetAmount > 0 ? this.$store.state.buyRouterParams.getAmount = newGetAmount.toFixed(6) : this.$store.state.buyRouterParams.getAmount = 0;
           }
+          //修改首页get amount数量
+          this.isHome === true ? this.$parent.calculationAmount() : '';
         }
       })
     },

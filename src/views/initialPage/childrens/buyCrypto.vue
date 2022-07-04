@@ -29,7 +29,7 @@
 
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
-        <IncludedDetails :isHome="true"/>
+        <IncludedDetails :isHome="true" :useFee="true"/>
       </div>
     </div>
 

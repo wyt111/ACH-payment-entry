@@ -33,7 +33,17 @@ const store = new Vuex.Store({
         //买币页面参数
         buyRouterParams: {
             amount: 0,
+            getAmount: 0,
             cryptoCurrency: '',
+            exchangeRate: 0,
+            payCommission: {
+                symbol: '',
+                code: '',
+            },
+            networkDefault: '',
+            addressDefault: '',
+            feeRate: '',
+            fixedFee: '',
         },
         //卖币页面参数
         sellRouterParams: {
@@ -55,7 +65,10 @@ const store = new Vuex.Store({
         languageValue:'EN-US', // EN-US ZH-TW
         LanguageIsShow:false,
         menuState:false,
-        isLogin:false
+        isLogin:false,
+
+        //移动端点击logo返回首页
+        goHomeState: true,
     },
     mutations: {
         //结束所有请求进程

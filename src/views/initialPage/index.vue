@@ -39,7 +39,7 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
-import { AES_Decrypt } from "../../utils/encryp";
+import { AES_Encrypt} from "../../utils/encryp";
 
 export default {
   name: "index",
@@ -53,9 +53,15 @@ export default {
       choiseItem: {},
     }
   },
+  beforeRouteEnter(to,from,next){
+    next(vm=>{
+      if(from.path === '/tradeHistory') {
+        vm.merchantDocking()
+      }
+    });
+  },
   mounted(){
     this.merchantDocking();
-    this.queryInfo();
   },
   computed: {
     //商户对接tab状态
@@ -104,24 +110,28 @@ export default {
         }
       })
     },
-    //对接商户参数
+    //对接商户参数 - 语言、tab状态、商户token
     merchantDocking(){
-      //语言
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
-      //获取商户token
-      this.$route.query.token ? localStorage.setItem("token",this.$route.query.token) : '';
-      this.$route.query.id ? localStorage.setItem("userId",AES_Decrypt(this.$route.query.id)) : '';
-      this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
+      this.$route.query.token ? localStorage.setItem("token",decodeURIComponent(this.$route.query.token)) : '';
+      this.$route.query.id ? localStorage.setItem("userId","ACH"+this.$route.query.id) : '';
+      this.$route.query.email ? localStorage.setItem("email",AES_Encrypt(this.$route.query.email)) : '';
       this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
+      this.merchantLoginOrder();
+    },
+    //对接商户 - 获取订单信息
+    merchantLoginOrder(){
       //通过订单id的获取订单信息
       let orderNo = this.$route.query.orderNo ? this.$route.query.orderNo : '';
+      //存在商户订单禁止点击logo跳转
+      this.$store.state.goHomeState = orderNo !== "" ? false : true;
+      this.$store.state.goHomeState ? this.queryInfo() : '';
       //填写表单状态 - true填写过 false未填写
-      console.log(this.$route.query.formHistory == true,this.$route.query.formHistory == 'true');
-      if(this.$route.query.formHistory && this.$route.query.formHistory=='true' && orderNo !== ""){
-        this.$router.push(`/creditCardConfig?orderNo=${orderNo}`);
-      }else if(this.$route.query.formHistory && this.$route.query.formHistory=='false'){
-        this.$router.push(`/paymentMethod?orderNo=${orderNo}`);
+      if(this.$route.query.cardFlag && this.$route.query.cardFlag=='true' && orderNo !== ""){
+        this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}`);
+      }else if(this.$route.query.cardFlag && this.$route.query.cardFlag=='false'){
+        this.$router.push(`/paymentMethod?merchant_orderNo=${orderNo}`);
       }
     },
   },

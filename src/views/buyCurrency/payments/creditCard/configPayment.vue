@@ -25,7 +25,7 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
-      <IncludedDetails class="includedDetails"/>
+      <IncludedDetails class="includedDetails" :useFee="true" :isLoading="isLoading"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
 <!--    </div>-->
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
@@ -47,7 +47,7 @@ export default {
     return{
       cardData: {},
       wishCardData: "",
-      
+
       timeDown: null,
       submitState: true,
       cardName: '',
@@ -63,19 +63,22 @@ export default {
       },
       AuthorizationInfo_state: true,
 
+      feeInfo: {},
+
       //按钮状态
       buttonData: {
         loading: false,
         triggerNum: 0,
-      }
+      },
+
+      //商户信息加载完 加载费用数据
+      isLoading: false,
     }
   },
   beforeRouteEnter(to,from,next) {
     next(vm => {
       if ((from.path === '/creditCardForm-cardInfo' || from.path === '/paymentMethod' )&& to.path === '/creditCardConfig' && !from.query.configPaymentFrom) {
         vm.newCvv = "";
-      }else if(to.path === '/creditCardConfig' && from.path === '/' && from.query.orderNo){
-        vm.buyOrderInfo();
       }
     })
   },
@@ -88,6 +91,12 @@ export default {
     this.submitState = true;
     this.cvvDisabled = false;
     this.AuthorizationInfo_state = true;
+    //接入商户逻辑
+    if(this.$route.query.merchant_orderNo){
+      this.newCvvState = true;
+      this.buyOrderInfo();
+      return
+    }
     this.reviceInfo();
   },
   computed:{
@@ -104,15 +113,31 @@ export default {
   methods: {
     //商户接入查询
     buyOrderInfo(){
-      this.$axios.get(this.$api.get_orderState + this.$route.query.orderNo,'').then(res=>{
+      let _this = this;
+      this.$axios.get(this.$api.get_orderState + this.$route.query.merchant_orderNo,'').then(res=>{
         if(res && res.returnCode === "0000" && res.data !== null){
-          this.$store.state.buyRouterParams.cryptoCurrency = res.data.cryptoCurrency;
-          this.$store.state.buyRouterParams.getAmount = res.data.fiatCurrencyAmount;
-          this.$store.state.buyRouterParams.amount = res.data.fiatCurrencyAmount;
-          this.$store.state.buyRouterParams.payCommission.symbol = res.data.currencySymbol;
-          this.$store.state.buyRouterParams.networkDefault = res.data.address;
-          this.$store.state.buyRouterParams.addressDefault = res.data.network;
-          this.wishCardData = res.data.cardInfo;
+          //获取订单信息
+          _this.$store.state.buyRouterParams.cryptoCurrency = res.data.cryptoCurrency;
+          _this.$store.state.buyRouterParams.getAmount = res.data.fiatCurrencyAmount;
+          _this.$store.state.buyRouterParams.amount = res.data.fiatCurrencyAmount;
+          _this.$store.state.buyRouterParams.payCommission.symbol = res.data.currencySymbol;
+          _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
+          _this.$store.state.buyRouterParams.addressDefault = res.data.address;
+          _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
+          _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
+          _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
+          _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
+          //费用组件计算数量
+          _this.isLoading = true;
+          //获取、处理卡信息
+          _this.cardData = JSON.parse(JSON.stringify(res.data.cardInfo));
+          this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
+          this.$store.state.buyRouterParams.userCardId = res.data.cardInfo.userCardId;
+          _this.cardData.cardNumber = AES_Decrypt(_this.cardData.cardNumber.replace(/ /g,'+'));
+          let cardNum = _this.cardData.cardNumber.substring(0,1);
+          _this.cardName = cardNum === '4' ? 'visa' : 'master';
+          _this.wishCardData = JSON.stringify(res.data.cardInfo);
         }
       })
     },
@@ -180,9 +205,17 @@ export default {
           }else {
             this.submitState = true;
             this.cvvDisabled = false;
+            this.buttonData = {
+              loading: false,
+              triggerNum: 0,
+            };
           }
         }).catch(()=>{
           this.cvvDisabled = false;
+          this.buttonData = {
+            loading: false,
+            triggerNum: 0,
+          };
         })
       }
     },
