@@ -39,7 +39,7 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
-import { AES_Encrypt} from "../../utils/encryp";
+import { AES_Decrypt} from "../../utils/encryp";
 
 export default {
   name: "index",
@@ -115,8 +115,8 @@ export default {
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
       this.$route.query.token ? localStorage.setItem("token",decodeURIComponent(this.$route.query.token)) : '';
-      this.$route.query.id ? localStorage.setItem("userId","ACH"+this.$route.query.id) : '';
-      this.$route.query.email ? localStorage.setItem("email",AES_Encrypt(this.$route.query.email)) : '';
+      this.$route.query.id ? localStorage.setItem("userId","ACH"+AES_Decrypt(this.$route.query.id)) : '';
+      this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
       this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
       this.merchantLoginOrder();
     },

@@ -15,7 +15,8 @@
         <div class="left">
           {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
-        <div class="right">
+        <!-- 商户接入模式禁止点击 -->
+        <div class="right" v-if="!$route.query.merchant_orderNo">
           <img src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
@@ -87,7 +88,7 @@ export default {
 
       timeDown: 60,
       timeOut: null,
-      detailsState: true,
+      detailsState: false,
       feeInfo: {},
       routerParams: {},
       payCommission: {
@@ -215,6 +216,11 @@ export default {
 
     //Control details display status
     expandCollapse(){
+      //商户接入模式禁止点击
+      if(this.$route.query.merchant_orderNo){
+        return;
+      }
+
       this.detailsState = this.detailsState === true ? false : true;
       if(this.$route.path === '/receivingMode' && this.detailsState === true){
         this.$nextTick(()=>{
