@@ -114,10 +114,19 @@ export default {
     merchantDocking(){
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
-      this.$route.query.token ? localStorage.setItem("token",decodeURIComponent(this.$route.query.token)) : '';
-      this.$route.query.id ? localStorage.setItem("userId","ACH"+AES_Decrypt(this.$route.query.id)) : '';
-      this.$route.query.email ? localStorage.setItem("email",this.$route.query.email) : '';
-      this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
+      if(this.$route.query.token){
+        let accessToken = decodeURIComponent(this.$route.query.token);
+        let startIndex = accessToken.indexOf("ACH");
+        let endIndex = accessToken.indexOf("ACH",startIndex + 1);
+        let userNo = accessToken.substring(0,endIndex);
+        let token = accessToken.substring(accessToken.indexOf("ACH", endIndex)+3,accessToken.length);
+        localStorage.setItem("token",token);
+        localStorage.setItem("userNo",userNo);
+      }
+      // this.$route.query.token ? localStorage.setItem("token",decodeURIComponent(this.$route.query.token)) : '';
+      // this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
+      this.$route.query.id ? localStorage.setItem("userId","ACH"+decodeURIComponent(AES_Decrypt(this.$route.query.id))) : '';
+      this.$route.query.email ? localStorage.setItem("email",decodeURIComponent(this.$route.query.email)) : '';
       this.merchantLoginOrder();
     },
     //对接商户 - 获取订单信息
