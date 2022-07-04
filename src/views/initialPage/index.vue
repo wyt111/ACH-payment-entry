@@ -39,7 +39,6 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
-import { AES_Decrypt } from "../../utils/encryp";
 
 export default {
   name: "index",

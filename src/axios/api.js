@@ -6,7 +6,7 @@ export default {
   "get_transactionHistory": '/trade/list',
   "get_buyCryptoInfo": '/crypto/buy/v1',
   //国家法币列表
-  "get_countryList": 'crypto/world/list',
+  "get_countryList": '/crypto/world/list',
 
   //------------------------- 买币接口 -------------------------
   "get_network": '/crypto/network',
@@ -25,6 +25,8 @@ export default {
   "post_mxnSubmit": '/pay/mxn/submit',
   //查询货币支持的支付方式
   "get_payMethods": '/crypto/payment/',
+  //删除卡信息
+  "post_deleteCardInfo": '/user/card/delete/',
 
   //------------------------- 卖币接口 -------------------------
   //卖币查询费用
