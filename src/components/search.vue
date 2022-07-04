@@ -143,22 +143,35 @@ export default {
       if(this.searchText && (this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell')) { //country
         let resultArray_country1 = [],resultArray_country2 = [],resultArray_country3 = [],resultArray_country4 = [],all_resultArray_country = [];
         //根据国家名称筛选
-        resultArray_country1 = this.basicData.filter((value) => {
-          return value.enCommonName.includes(this.searchText)
+        resultArray_country1 = this.basicData.filter((value,index) => {
+          if(value.enCommonName.includes(this.searchText)){
+            this.basicData[index].indexOfNum = value.enCommonName.indexOf(this.searchText);
+            return value;
+          }
         })
-        resultArray_country2 = this.basicData.filter((value) => {
-          return value.enCommonName.includes(this.searchText.charAt(0).toUpperCase() + this.searchText.slice(1))
+        resultArray_country2 = this.basicData.filter((value,index) => {
+          if(value.enCommonName.includes(this.searchText.charAt(0).toUpperCase() + this.searchText.slice(1))){
+            this.basicData[index].indexOfNum = value.enCommonName.indexOf(this.searchText.charAt(0).toUpperCase() + this.searchText.slice(1));
+            return value;
+          }
         })
         //根据国家简称筛选
-        resultArray_country3 = this.basicData.filter((value) => {
-          return value.alpha2.includes(this.searchText)
+        resultArray_country3 = this.basicData.filter((value,index) => {
+          if(value.alpha2.includes(this.searchText)){
+            this.basicData[index].indexOfNum = value.alpha2.indexOf(this.searchText);
+            return value;
+          }
         })
-        resultArray_country4 = this.basicData.filter((value) => {
-          return value.alpha2.includes(this.searchText.toUpperCase())
+        resultArray_country4 = this.basicData.filter((value,index) => {
+          if(value.alpha2.includes(this.searchText.toUpperCase())){
+            this.basicData[index].indexOfNum = value.alpha2.indexOf(this.searchText.toUpperCase());
+            return value;
+          }
         })
-        console.log(resultArray_country1,resultArray_country2)
         all_resultArray_country = all_resultArray_country.concat(resultArray_country4).concat(resultArray_country3).concat(resultArray_country2).concat(resultArray_country1);
         all_resultArray_country = [...new Set(all_resultArray_country)];
+        all_resultArray_country.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
+        console.log(all_resultArray_country)
         return all_resultArray_country;
       }
 
