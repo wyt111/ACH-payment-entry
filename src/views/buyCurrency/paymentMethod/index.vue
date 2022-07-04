@@ -46,7 +46,6 @@
       </div>
       <CryptoCurrencyAddress v-if="$route.query.merchant_orderNo"/>
       <IncludedDetails class="IncludedDetails" :useFee="true" :isLoading="isLoading"/>
-      <AuthorizationInfo :childData="childData" v-if="$route.query.merchant_orderNo"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}
@@ -83,11 +82,6 @@ export default {
 
       feeInfo: {},
 
-      //勾选协议
-      childData: {
-        agreement: false,
-      },
-
       //商户信息加载完 加载费用数据
       isLoading: false,
 
@@ -96,18 +90,10 @@ export default {
   },
   computed: {
     disabled(){
-      if(this.$route.query.merchant_orderNo){ //商户对接按钮监听模式
-        if(this.childData.agreement === true && this.paymethodCheck !== '' && this.request_loading === false){
-          return false;
-        }else{
-          return true;
-        }
-      }else{ //正常选择支付方式按钮监听模式
-        if((JSON.stringify(this.payMethod) !== '{}' && this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
-          return false;
-        }else{
-          return true;
-        }
+      if((JSON.stringify(this.payMethod) !== '{}' && this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
+        return false;
+      }else{
+        return true;
       }
     }
   },
@@ -193,10 +179,13 @@ export default {
               return item.payWayCode === '10001';
             })
             //只有信用卡开放历史卡信息功能
-            if(_this.$route.query.merchant_orderNo && _this.savedCard.length !== 0 ){
+            if(!_this.$route.query.merchant_orderNo && _this.savedCard.length !== 0 ){
               _this.choiseSavedCard(_this.savedCard[0],0)
             }
-            // this.$forceUpdate();
+            //商户接入模式展示国际卡
+            if(this.$route.query.merchant_orderNo){
+              _this.choisePayMethods(_this.paymethodList[0],0)
+            }
           })
         }
       })
