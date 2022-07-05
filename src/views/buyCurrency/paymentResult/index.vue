@@ -23,7 +23,7 @@ Three channels for successful payment --- 'depositType'
         <div class="fee-content">
           <div class="fee-content-title" @click="expandCollapse" v-if="detailsTitleState">
             <div class="left">
-              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span>
+              {{ $t('nav.home_buyFee_title1') }} <span>{{ detailsParameters.fiatCurrencySymbol }}{{ detailsParameters.amount }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ detailsParameters.cryptoQuantity }} {{ detailsParameters.cryptoCurrency }}</span>
             </div>
             <div class="right"><van-icon name="arrow-down" /></div>
           </div>

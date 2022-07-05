@@ -40,7 +40,7 @@ import { timeDown } from '@/utils/index';
 import {querySubmitToken} from "../../../../utils/publicRequest";
 
 export default {
-  // name: "confirmPayment",
+  name: "confirmPayment",
   components: { IncludedDetails, CryptoCurrencyAddress, AuthorizationInfo },
   data(){
     return{
@@ -229,13 +229,16 @@ export default {
       })
     },
   },
-  destroyed(){
-    this.$store.commit("clearToken"); //取消请求
-    this.$store.commit("emptyToken"); // 清空token数组
-    clearInterval(this.paystateTimeOut);
-    clearInterval(this.paymentCountDown);
-    sessionStorage.removeItem("indonesiaPayment");
-  },
+  beforeRouteLeave(to,from,next){
+    if(to.path !== '/tradeHistory'){
+      this.$store.commit("clearToken"); //取消请求
+      this.$store.commit("emptyToken"); // 清空token数组
+      clearInterval(this.paystateTimeOut);
+      clearInterval(this.paymentCountDown);
+      sessionStorage.removeItem("indonesiaPayment");
+    }
+    next()
+  }
 }
 </script>
 
