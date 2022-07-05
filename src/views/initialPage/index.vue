@@ -123,8 +123,6 @@ export default {
         localStorage.setItem("token",token);
         localStorage.setItem("userNo",userNo);
       }
-      // this.$route.query.token ? localStorage.setItem("token",decodeURIComponent(this.$route.query.token)) : '';
-      // this.$route.query.userNo ? localStorage.setItem("userNo",this.$route.query.userNo) : '';
       this.$route.query.id ? localStorage.setItem("userId","ACH"+decodeURIComponent(AES_Decrypt(this.$route.query.id))) : '';
       this.$route.query.email ? localStorage.setItem("email",decodeURIComponent(this.$route.query.email)) : '';
       this.merchantLoginOrder();
