@@ -135,7 +135,7 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
-            sessionStorage.removeItem('accessMerchantInfo')
+            // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
             this.$router.push('/');
             window.location.reload()
@@ -172,7 +172,7 @@ export default {
     transationsList(){
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
-        if(res.data){
+        if(res && res.data){
           // console.log(res.data);
           let newArray = res.data.result;
           if (newArray.length <= 0 ) {
@@ -201,6 +201,7 @@ export default {
        handler(newVal){
         //  console.log(this.$store.state.isLogin);
          if(newVal === true && this.$store.state.isLogin === true){
+     
            this.transationsList()
            localStorage.getItem("token") ? this.token = true : false;
            this.token===true?this.transationsList():''
