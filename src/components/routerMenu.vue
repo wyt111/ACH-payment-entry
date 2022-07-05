@@ -149,7 +149,7 @@ export default {
             localStorage.removeItem("userNo");
             localStorage.removeItem("userId");
             localStorage.removeItem("kycStatus");
-            sessionStorage.removeItem('accessMerchantInfo')
+            // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
             this.$router.push('/');
             window.location.reload()

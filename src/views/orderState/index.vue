@@ -2,17 +2,12 @@
   <div class="order-container" >
     <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} </div>
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ Math.round((orderStateData.fiatAmount-orderStateData.fee) * 100) / 100 }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
+    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
+    
     <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
     <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
-    <!-- <div class="order-state-title" v-if="playMoneyState===1 || playMoneyState===0">Wait Crypto…</div>
-    <div class="order-state-title" v-if="playMoneyState===2">Order Confirming…</div>
-    <div class="order-state-title" v-if="playMoneyState===3">Order Confirmed</div>
-    <div class="order-state-title" v-if="playMoneyState===4">Payment Processing…</div>
-    <div class="order-state-title" v-if="playMoneyState===5">Payment Success</div>
-    <div class="order-state-title" v-if="playMoneyState===6">Payment Fail</div>
-    <div class="order-state-title" v-if="playMoneyState===7">Order expired！</div> -->
+    
 
     <div class="order-state">
       <div class="state">
@@ -149,6 +144,17 @@ export default{
     }
   },
   methods:{
+    //保留小数点两位或者6位
+    getToFixed(firstVal,lastVal){
+      let decimalDigits = 0;
+      let resultValue = firstVal - lastVal;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let price = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || price <= 0 ? price = 0 : '';
+      return price;
+      
+    },
+
     Network_isShow(){
       if(this.playMoneyState==3 || this.playMoneyState==2){
         this.Network_show = false
@@ -265,12 +271,12 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=1
+          // this.playMoneyState=3
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             // sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
-            // clearInterval(this.timer)
+            clearInterval(this.timer)
             // this.$store.replaceState({})
             // this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             // this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
