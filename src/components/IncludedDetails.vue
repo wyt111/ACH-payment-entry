@@ -22,7 +22,7 @@
       <div class="fee-content-details" v-if="detailsState">
         <div class="fee-content-details-line">
           <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.price * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
+          <div class="value">{{ payCommission.symbol }} {{ price }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
@@ -39,7 +39,7 @@
         </div>
         <div class="fee-content-details-line">
           <div class="title">{{ $t('nav.home_buyFee_networkFee') }}</div>
-          <div class="value">{{ payCommission.symbol }} {{ (feeInfo.networkFee * routerParams.exchangeRate).toFixed(payCommission.decimalDigits) }}</div>
+          <div class="value">{{ payCommission.symbol }} {{ networkFee }}</div>
         </div>
       </div>
     </div>
@@ -126,6 +126,25 @@ export default {
   },
   deactivated(){
     clearInterval(this.timeOut)
+  },
+  computed: {
+    //个位数>0，小数点后保留2位、个位数为0，小数点后最多保留6位
+    networkFee(){
+      let decimalDigits = 0;
+      let resultValue = this.feeInfo.networkFee * this.routerParams.exchangeRate;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let networkFee = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
+      return networkFee;
+    },
+    price(){
+      let decimalDigits = 0;
+      let resultValue = this.feeInfo.price * this.routerParams.exchangeRate;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let price = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || price <= 0 ? price = 0 : '';
+      return price;
+    }
   },
   methods:{
     //Countdown 15 refresh data

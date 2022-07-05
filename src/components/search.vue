@@ -7,26 +7,11 @@
         <div class="icon"><img src="../assets/images/closeIcon.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'">
-        <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText"> <!--  @change="countrySearch" -->
-        <div class="searchIcon"><img src="../assets/images/searchIcon.svg"></div>
+        <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText">
+        <div class="searchIcon"><img src="https://alchemywalletdownload.oss-cn-hongkong.aliyuncs.com/alchemypay/crypto-images/searchIcon.svg"></div>
       </div>
     </div>
     <div class="search_core">
-
-<!--      <ul class="infinite-list" v-infinite-scroll="countryLegalCurrencyLoad" infinite-scroll-delay="300" :infinite-scroll-distance="300" style="overflow:auto" v-if="viewName === 'payCurrency'">-->
-<!--        <li v-for="(item,index) in countryLegalCurrency" :key="index" class="infinite-list-item" @click="choiseItem('countryLegalCurrency',item)">-->
-<!--          <p class="seach_li_text currencyCopywriting">-->
-<!--            <img :src="item.flag">-->
-<!--            <span class="allName">{{ item.enCommonName }} -</span>-->
-<!--            <span class="abbreviationName" v-if="viewName === 'payCurrency'"> {{ item.code }}</span>-->
-<!--            <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>-->
-<!--          </p>-->
-<!--          <p class="seach_li_rightIcon">-->
-<!--            <img src="../assets/images/rightIcon.png">-->
-<!--          </p>-->
-<!--        </li>-->
-<!--      </ul>-->
-
       <!-- 选择国家和法币  -->
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li class="payCurrencyLi" v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
@@ -171,7 +156,6 @@ export default {
         all_resultArray_country = all_resultArray_country.concat(resultArray_country4).concat(resultArray_country3).concat(resultArray_country2).concat(resultArray_country1);
         all_resultArray_country = [...new Set(all_resultArray_country)];
         all_resultArray_country.sort((a,b)=>{return a.indexOfNum-b.indexOfNum});
-        console.log(all_resultArray_country)
         return all_resultArray_country;
       }
 
@@ -306,24 +290,6 @@ export default {
         return;
       }
     },
-
-    // countrySearch(){
-    //   this.queryCountryListQuery.pageIndex = 1;
-    //   this.queryCountryListQuery.enCommonName = this.searchText;
-    //   this.countryLegalCurrency = [];
-    //   this.queryCountryList();
-    // },
-    // countryLegalCurrencyLoad(){
-    //   this.queryCountryListQuery.pageIndex += 1;
-    //   this.queryCountryList();
-    // },
-    // queryCountryList(){
-    //   this.$axios.get(this.$api.get_countryList,this.queryCountryListQuery).then(res=>{
-    //     if(res && res.returnCode === "0000"){
-    //       this.countryLegalCurrency = this.countryLegalCurrency.concat(res.data.result);
-    //     }
-    //   })
-    // },
 
     //close component
     closeView(){

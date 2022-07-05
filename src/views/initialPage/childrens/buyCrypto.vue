@@ -149,7 +149,7 @@ export default {
     //币种为USD如果少于两位数，将自动添加0
     youPayBlur(){
       if(this.payAmount > 0 && this.payCommission.code === 'USD'){
-        this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(this.payCommission.decimalDigits);
+        this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(2);
       }
     },
     //币种为USD限制输入两位小数
@@ -221,14 +221,24 @@ export default {
         //取出费用最小的值rampFee
         let rampFeeList = [];
         this.payCommission.payCommission.forEach(item=>{
-          rampFeeList.push((Number(item.feeRate) * Number(this.payAmount) + item.fixedFee).toFixed(this.payCommission.decimalDigits));
+          let decimalDigits = 0;
+          let resultValue = Number(item.feeRate) * Number(this.payAmount) + item.fixedFee;
+          resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+          let price = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || price <= 0 ? price = 0 : '';
+          rampFeeList.push(price);
         })
         this.payCommission.rampFee = Math.min(...rampFeeList);
         //Filter exchange rate - Calculate cost and accepted quantity
         this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
         this.feeInfo.networkFee = this.exchangeRate * this.feeInfo.networkFee;
+        //计算数字货币数量
         let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - this.payCommission.rampFee) / this.feeInfo.price;
-        newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(6) : this.getAmount = 0;
+        let decimalDigits = 0;
+        newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+        newGetAmount = newGetAmount.toFixed(decimalDigits);
+        isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
+        this.getAmount = newGetAmount;
         this.$store.state.buyRouterParams.getAmount = this.getAmount;
         this.$store.state.buyRouterParams.payCommission = this.payCommission;
         this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;

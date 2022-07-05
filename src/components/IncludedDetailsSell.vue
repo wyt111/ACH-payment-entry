@@ -23,7 +23,7 @@
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
           <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{ feeInfo.fiatSymbol }} {{ (feeInfo.price * feeInfo.rate).toFixed(this.feeInfo.accuracy) }}</div>
+          <div class="value">{{ feeInfo.fiatSymbol }} {{ price }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
@@ -38,7 +38,7 @@
           </div>
           <div class="value">
             <span class="minText">{{ $t('nav.home_feeRampFeeTips') }}</span>
-            {{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee ? feeInfo.rampFee.toFixed(this.feeInfo.accuracy) : 0 }}
+            {{ feeInfo.fiatSymbol }} {{ rampFee }}
           </div>
         </div>
       </div>
@@ -57,7 +57,10 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          {{ $t('nav.home_youSell') }} <span> {{ orderState.sellVolume }} {{ orderState.cryptoCurrency }} </span> {{ $t('nav.home_sellFee_title2') }} <span>{{ orderState.feeUnit }}{{ Math.round((orderState.fiatAmount - orderState.fee) * 100) / 100 }}</span>
+          {{ $t('nav.home_youSell') }}
+          <span> {{ orderState.sellVolume }} {{ orderState.cryptoCurrency }} </span>
+          {{ $t('nav.home_sellFee_title2') }}
+          <span>{{ orderState.feeUnit }}{{ orderState_getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -66,7 +69,7 @@
       <div class="fee-content-details" v-if="feeState">
         <div class="fee-content-details-line">
           <div class="title">{{ $t('nav.fee_listTitle_price') }}</div>
-          <div class="value">{{orderState.feeUnit}}{{ Math.round((orderState.cryptoCurrencyRate * orderState.fiatRate)*100) /100 }}</div>
+          <div class="value">{{orderState.feeUnit}}{{ orderState_price }}</div>
         </div>
         <div class="fee-content-details-line">
           <div class="title">
@@ -181,6 +184,40 @@ export default {
   },
   deactivated(){
     clearInterval(this.timeOut)
+  },
+  computed: {
+    price(){
+      let decimalDigits = 0;
+      let resultValue = this.feeInfo.price * this.feeInfo.rate;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let price = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || price <= 0 ? price = 0 : '';
+      return price;
+    },
+    rampFee(){
+      let decimalDigits = 0;
+      let resultValue = this.feeInfo.rampFee;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let networkFee = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
+      return networkFee;
+    },
+    orderState_price(){
+      let decimalDigits = 0;
+      let resultValue = this.orderState.cryptoCurrencyRate * this.orderState.fiatRate;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let price = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || price <= 0 ? price = 0 : '';
+      return price;
+    },
+    orderState_getAmount(){
+      let decimalDigits = 0;
+      let resultValue = this.orderState.fiatAmount - this.orderState.fee;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let getAmount = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || getAmount <= 0 ? getAmount = 0 : '';
+      return getAmount;
+    }
   },
   methods:{
     //Countdown 15 refresh data

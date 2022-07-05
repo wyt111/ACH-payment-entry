@@ -192,8 +192,12 @@ export default {
         //Filter exchange rate - Calculate cost and accepted quantity
         // this.feeInfo.price = this.feeInfo.rate * this.feeInfo.price;
         this.feeInfo.rampFee = ((this.payAmount * this.feeInfo.price * this.feeInfo.percentageFee) + this.feeInfo.fixedFee) * this.feeInfo.rate;
-        let newGetAmount = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
-        newGetAmount > 0 ? this.getAmount = newGetAmount.toFixed(this.feeInfo.accuracy) : this.getAmount = 0;
+        let decimalDigits = 0;
+        let resultValue = (this.payAmount * this.feeInfo.price * this.feeInfo.rate) - this.feeInfo.rampFee;
+        resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+        let getAmount = resultValue.toFixed(decimalDigits);
+        isNaN(resultValue) || getAmount <= 0 ? getAmount = 0 : '';
+        this.getAmount = getAmount;
         this.$store.state.sellRouterParams.getAmount = this.getAmount;
       }
     },
