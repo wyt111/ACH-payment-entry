@@ -844,7 +844,7 @@
         "paramsName": "idType",
         "model": "",
         "type": "radio",
-        "radioList": ["nav.sell_form_IDTypeLi_DNI", "nav.sell_form_IDTypeLi_RUC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTynamepeLi_PASS"],
+        "radioList": ["nav.sell_form_IDTypeLi_DNI", "nav.sell_form_IDTypeLi_RUC", "nav.sell_form_IDTypeLi_CE", "nav.sell_form_IDTypeLi_PASS"],
         "regular": "",
         "maxLength": "",
         "required": true,
