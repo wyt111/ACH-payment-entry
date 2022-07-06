@@ -74,27 +74,8 @@ export default {
       }
     }
   },
-  // beforeRouteEnter(to,from,next){
-  //   console.log(to,from)
-  //   next()
-  // },
-  // beforeRouteUpdate(to,from,next){
-  //   console.log(to,from)
-  //   // if(to.path !== '/tradeHistory'){
-  //   //   this.$store.commit("clearToken"); //取消请求
-  //   //   this.$store.commit("emptyToken"); // 清空token数组
-  //   //   clearInterval(this.paystateTimeOut);
-  //   //   clearInterval(this.paymentCountDown);
-  //   //   sessionStorage.removeItem("indonesiaPayment");
-  //   // }
-  //   next()
-  //   // vm=>{
-  //   //   console.log(vm)
-  //   // }
-  // },
   beforeRouteLeave(to,from,next){
-    console.log(to.path)
-    if(to.path !== '/tradeHistory'){
+    if(to.path !== '/tradeHistory' && to.path !== '/paymentResult'){
       sessionStorage.removeItem("indonesiaPayment");
     }
     next()
@@ -103,15 +84,12 @@ export default {
     this.receiveInfo();
   },
   destroyed(){
-    console.log("离开")
     this.$store.commit("clearToken"); //取消请求
     this.$store.commit("emptyToken"); // 清空token数组
-    clearInterval(this.paystateTimeOut);
-    clearInterval(this.paymentCountDown);
+    window.clearInterval(this.paystateTimeOut);
+    window.clearInterval(this.paymentCountDown);
     this.paystateTimeOut = null;
     this.paymentCountDown = null;
-    console.log(this.paystateTimeOut)
-    console.log(this.paymentCountDown)
   },
   computed: {
     disabled() {
