@@ -133,6 +133,7 @@ export default {
     payAmount: {
       deep: true,
       handler() {
+        this.$store.state.buyRouterParams.network = '';
         this.amountControl();
       }
     },
@@ -224,16 +225,16 @@ export default {
           let decimalDigits = 0;
           let resultValue = Number(item.feeRate) * Number(this.payAmount) + item.fixedFee;
           resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-          let price = resultValue.toFixed(decimalDigits);
-          isNaN(resultValue) || price <= 0 ? price = 0 : '';
-          rampFeeList.push(price);
+          let rampFee = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+          rampFeeList.push(rampFee);
         })
         this.payCommission.rampFee = Math.min(...rampFeeList);
         //Filter exchange rate - Calculate cost and accepted quantity
         this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
         this.feeInfo.networkFee = this.exchangeRate * this.feeInfo.networkFee;
         //计算数字货币数量
-        let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - this.payCommission.rampFee) / this.feeInfo.price;
+        let newGetAmount = (Number(this.payAmount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.exchangeRate);
         let decimalDigits = 0;
         newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
         newGetAmount = newGetAmount.toFixed(decimalDigits);

@@ -3,7 +3,7 @@
     <div class="QueryOrderStatusTips-content">
       <div class="QueryOrderStatusTips-top">
         <p class="title">{{ $t('nav.orderTips_title') }}</p>
-        <p class="tipsText">{{ $t('nav.orderTips_text') }}</p>
+        <p class="tipsText">{{ $t('nav.orderTips_text1') }} {{ $store.state.buyRouterParams.cryptoCurrency }} {{ $t('nav.orderTips_text2') }}</p>
         <footer @click="closeView">
           {{ $t('nav.orderTips_buttonText') }}
           <img class="rightIcon" src="../assets/images/button-right-icon.png" alt="">

@@ -335,8 +335,11 @@ export default {
           color: #999999;
         }
       }
-      .network_input input{
-        padding: 0 0.5rem 0 0.21rem;
+      .network_input{
+        cursor: pointer;
+        input{
+          padding: 0 0.5rem 0 0.21rem;
+        }
       }
       .methods_errorText{
         position: absolute;

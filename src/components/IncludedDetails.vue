@@ -13,7 +13,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -82,9 +82,20 @@ export default {
     }
   },
   watch:{
-    'network':{
-      immediate: true,
+    // '$store.state.buyRouterParams':{
+    //   immediate: true,
+    //   deep: true,
+    //   handler(val,oldVal){
+    //     console.log(val,oldVal)
+    //     if(val.network !== oldVal.network){
+    //       console.log(this.$store.state.buyRouterParams.network,"val")
+    //       this.timingSetting();
+    //     }
+    //   }
+    // },
+    'network': {
       deep: true,
+      immediate: true,
       handler(){
         this.timingSetting();
       }
@@ -102,21 +113,22 @@ export default {
       handler() {
         this.timingSetting();
       }
+    },
+    '$store.state.buyRouterParams.payCommission.symbol': {
+      deep: true,
+      immediate: true,
+      handler(){
+        this.timingSetting();
+      }
     }
   },
   mounted(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
-    //接收路由信息
-    this.routerParams = this.$store.state.buyRouterParams;
-    this.payCommission = this.routerParams.payCommission;
   },
   activated(){
     //判断是pc还是移动端，用于展示的提示信息是click还是hover触发
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
-    //接收路由信息
-    this.routerParams = this.$store.state.buyRouterParams;
-    this.payCommission = this.routerParams.payCommission;
     if(this.isHome && this.isHome === true){
       this.timingSetting();
     }
@@ -132,12 +144,14 @@ export default {
   computed: {
     //个位数>0，小数点后保留2位、个位数为0，小数点后最多保留6位
     networkFee(){
-      let decimalDigits = 0;
-      let resultValue = this.feeInfo.networkFee * this.routerParams.exchangeRate;
-      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-      let networkFee = resultValue.toFixed(decimalDigits);
-      isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
-      return networkFee;
+      if(this.feeInfo.networkFee !== undefined){
+        let decimalDigits = 0;
+        let resultValue = this.feeInfo.networkFee; // * this.routerParams.exchangeRate
+        resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+        let networkFee = resultValue.toFixed(decimalDigits);
+        isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
+        return networkFee;
+      }
     },
     price(){
       let decimalDigits = 0;
@@ -164,17 +178,29 @@ export default {
       },1000)
     },
     queryFee(){
+      //接收路由信息
+      this.routerParams = this.$store.state.buyRouterParams;
+      this.payCommission = this.routerParams.payCommission;
       let params = {
         symbol: this.$store.state.buyRouterParams.cryptoCurrency+"USDT",
         coin: this.$store.state.buyRouterParams.cryptoCurrency,
-        network: this.network
+        network: this.$store.state.buyRouterParams.network
       }
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
+          //选择网络修改you get数量
+          if(this.$store.state.buyRouterParams.network !== ''){
+            let newGetAmount = (Number(this.routerParams.amount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.routerParams.exchangeRate);
+            let decimalDigits = 0;
+            newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+            newGetAmount = newGetAmount.toFixed(decimalDigits);
+            isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
+            this.routerParams.getAmount = newGetAmount;
+          }
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
-            this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo));
+            this.$parent.feeInfo = this.feeInfo;
             this.$parent.calculationAmount();
           }
         }

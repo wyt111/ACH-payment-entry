@@ -20,8 +20,9 @@ module.exports = {
     agreement_components_text2: 'AlchemyPay ',
     agreement_components_text3: 'to debit my chosen payment method for the amount above on today’s date and understand that this can not be cancelled, recalled or refunded. ',
     //查询订单状态提示
-    orderTips_title: 'Payment not funt',
-    orderTips_text: 'Sorry, we did not detect your payment information. If you confirm the payment, please stay on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of USDT to you. ',
+    orderTips_title: 'Please wait on this page',
+    orderTips_text1: 'Sorry, we have not receive your payment yet. If you confirm the payment, please wait on this page for a few minutes, once we receive your payment, we will transfer the corresponding amount of',
+    orderTips_text2: 'to you.',
     orderTips_buttonText: 'I Understand',
     //菜单
     menu: 'Menu',
@@ -139,7 +140,7 @@ module.exports = {
     //买币 - 确认订单 - 印尼支付
     buy_configPayIDR_va_title: 'BANK',
     buy_configPayIDR_va_codeTitle: 'Payment Code',
-    buy_configPayIDR_timeDownTips: 'Plese completa payment with',
+    buy_configPayIDR_timeDownTips: 'Please complete payment with',
     buy_configPayIDR_codeTips: 'Scan QR Code to complete payment',
     buy_configPayIDR_ovo_phoneTips: 'Open OVO app to complete payment.',
     //订单结果页

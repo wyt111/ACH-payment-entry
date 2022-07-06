@@ -319,15 +319,19 @@ export default {
           return;
         }
         if(type === 'network'){
-          this.$parent.buyParams.network = item.network;
-          this.$parent.networkRegular = item.addressRegex;
-          this.$parent.$parent.$refs.viewTab.tabState = true;
-          this.$parent.searchViewState = false;
-          if(!new RegExp(this.$parent.networkRegular).test(this.$parent.buyParams.address)){
-            this.$parent.walletAddress_state = true;
-          }else{
-            this.$parent.walletAddress_state = false;
-          }
+          this.$nextTick(()=>{
+            this.$parent.buyParams.network = item.network;
+            this.$store.state.buyRouterParams.network = item.network;
+            console.log(this.$store.state.buyRouterParams.network)
+            this.$parent.networkRegular = item.addressRegex;
+            this.$parent.$parent.$refs.viewTab.tabState = true;
+            this.$parent.searchViewState = false;
+            if(!new RegExp(this.$parent.networkRegular).test(this.$parent.buyParams.address)){
+              this.$parent.walletAddress_state = true;
+            }else{
+              this.$parent.walletAddress_state = false;
+            }
+          })
           return;
         }
         if(this.viewName === 'currency-sell'){ //卖币
