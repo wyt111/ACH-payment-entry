@@ -66,7 +66,7 @@ export default {
       default: null
     },
     network: {
-      type: Text,
+      type: String,
       default: null
     },
     titleStatus: {
@@ -80,7 +80,7 @@ export default {
     isLoading: {
       type: Boolean,
       default: null
-    }
+    },
   },
   data(){
     return{
@@ -111,6 +111,7 @@ export default {
       immediate: true,
       handler(){
         if(!this.$route.query.merchant_orderNo){
+          this.queryFee();
           this.timingSetting();
         }
       }
@@ -120,6 +121,7 @@ export default {
       deep: true,
       handler() {
         if(this.isHome && this.isHome === true){
+          this.queryFee();
           this.timingSetting();
         }
       }
@@ -129,6 +131,7 @@ export default {
       deep: true,
       handler() {
         if(this.isHome && this.isHome === true) {
+          this.queryFee();
           this.timingSetting();
         }
       }
@@ -146,6 +149,7 @@ export default {
         if(val === true && this.$store.state.buyRouterParams.cryptoCurrency !== ''){
           this.routerParams = this.$store.state.buyRouterParams;
           this.payCommission = this.$store.state.buyRouterParams.payCommission;
+          this.queryFee();
           this.timingSetting();
         }
       }
@@ -154,6 +158,7 @@ export default {
       deep: true,
       immediate: true,
       handler(){
+        this.queryFee();
         this.timingSetting();
       }
     }
@@ -168,14 +173,17 @@ export default {
     //接收路由信息
     this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
     if(this.isHome && this.isHome === true){
+      this.queryFee();
       this.timingSetting();
     }
   },
   destroyed(){
+    this.timeDownNumber = 15;
     window.clearInterval(this.timeOut);
     this.timeOut = null;
   },
   deactivated(){
+    this.timeDownNumber = 15;
     window.clearInterval(this.timeOut);
     this.timeOut = null;
   },
@@ -203,9 +211,9 @@ export default {
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
+      this.timeDownNumber = 15;
       window.clearInterval(this.timeOut);
       this.timeOut = null;
-      this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
           this.timeDownNumber = 15;
@@ -222,13 +230,14 @@ export default {
       let params = {
         symbol: this.$store.state.buyRouterParams.cryptoCurrency+"USDT",
         coin: this.$store.state.buyRouterParams.cryptoCurrency,
-        network: this.$store.state.buyRouterParams.network
+        network: this.isHome && this.isHome === true ? '' : this.$store.state.buyRouterParams.network
       }
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
           //选择网络修改you get数量
           if(this.$store.state.buyRouterParams.network !== ''){
+            this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let newGetAmount = (Number(this.routerParams.amount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.routerParams.exchangeRate);
             let decimalDigits = 0;
             newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
@@ -238,7 +247,7 @@ export default {
           }
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
-            this.$parent.feeInfo = this.feeInfo;
+            this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
             this.$parent.calculationAmount();
             //赋值费用数据
             this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
@@ -264,19 +273,13 @@ export default {
       }
 
       this.detailsState = this.detailsState === true ? false : true;
-      if(this.$route.path === '/receivingMode' && this.detailsState === true){
-        this.$nextTick(()=>{
-          this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
+      if(this.detailsState === true){
+        setTimeout(()=>{
+          this.$parent.$refs.includedDetails_ref.$el.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'});
         })
         return
       }
     },
-
-    expandFee(){
-      this.$nextTick(()=>{
-        this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
-      })
-    }
   }
 }
 </script>

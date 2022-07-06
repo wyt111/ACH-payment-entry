@@ -45,7 +45,7 @@
         </div>
       </div>
       <CryptoCurrencyAddress v-if="$route.query.merchant_orderNo"/>
-      <IncludedDetails class="IncludedDetails" :useFee="true" :isLoading="isLoading"/>
+      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}

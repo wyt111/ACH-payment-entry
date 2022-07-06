@@ -23,7 +23,7 @@
       <div class="ovoTips" v-if="parameter.payWayCode === '10006' && startPayment">{{ $t('nav.buy_configPayIDR_ovo_phoneTips') }}</div>
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
-      <IncludedDetails class="IncludedDetails" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}"/>
+      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
 <!--    </div>-->
 

@@ -3,7 +3,7 @@
     <!-- select network -->
     <search v-if="searchViewState" :viewName="viewName" :allBasicData="networkList"/>
     <!-- Select acceptance method -->
-    <div class="receiveCoins-view" v-show="!searchViewState" ref="includedDetails_ref">
+    <div class="receiveCoins-view" v-show="!searchViewState">
       <div class="receiveCoins-content">
         <div class="promptInformation">
           <span v-if="supportCurrency">Please provide cryptocurrency address to receive your order</span>
@@ -31,10 +31,10 @@
           </div>
         </div>
         <!-- Expense information -->
-        <includedDetails class="includedDetails_view" :network="buyParams.network"/>
+        <includedDetails class="includedDetails_view" ref="includedDetails_ref" :network="buyParams.network"/>
       </div>
       <div class="continueBox" v-show="!searchViewState">
-        <button class="continue" @click="transaction" :disabled="disabled">
+        <button class="continue" @click="transaction" :disabled="disabled" >
           {{ $t('nav.Continue') }}
           <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
         </button>
