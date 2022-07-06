@@ -140,7 +140,8 @@ export default {
       handler(val){
         this.timeDownState_child = (val !== null && val === false) ? false : true;
         if(val === false){
-          clearInterval(this.timeOut);
+          window.clearInterval(this.timeOut);
+          this.timeOut = null;
         }
       }
     },
@@ -180,10 +181,12 @@ export default {
     }
   },
   destroyed(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   deactivated(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   computed: {
     price(){
@@ -225,7 +228,8 @@ export default {
       this.currencyData = this.$store.state.sellRouterParams.currencyData;
       this.positionData = this.$store.state.sellRouterParams.positionData;
       this.routerParams = this.$store.state.sellRouterParams;
-      clearInterval(this.timeOut)
+      window.clearInterval(this.timeOut);
+      this.timeOut = null;
       this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {

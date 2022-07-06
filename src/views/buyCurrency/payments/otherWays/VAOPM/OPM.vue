@@ -128,8 +128,10 @@ export default {
     }
   },
   destroyed(){
-    clearInterval(this.paystateTimeOut);
-    clearInterval(this.paymentCountDown);
+    window.clearInterval(this.paystateTimeOut);
+    window.clearInterval(this.paymentCountDown);
+    this.paystateTimeOut = null;
+    this.paymentCountDown = null;
     sessionStorage.removeItem("indonesiaPayment");
   }
 }

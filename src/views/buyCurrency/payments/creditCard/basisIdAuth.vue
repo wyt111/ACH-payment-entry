@@ -41,7 +41,8 @@ export default {
     this.evokePlugIn();
   },
   deactivated(){
-    clearInterval(this.timeDown);
+    window.clearInterval(this.timeDown);
+    this.timeDown = null;
   },
   methods: {
     evokePlugIn(){
@@ -72,11 +73,13 @@ export default {
                       _this.nextState = true;
                       _this.CallbackState = true;
                       _this.storeInfo(result)
-                      clearInterval(this.timeDown);
+                      window.clearInterval(_this.timeDown);
+                      _this.timeDown = null;
                     }else{
                       _this.nextState = true;
                       _this.CallbackState = false;
-                      clearInterval(_this.timeDown);
+                      window.clearInterval(_this.timeDown);
+                      _this.timeDown = null;
                     }
                   }
                 })

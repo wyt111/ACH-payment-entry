@@ -112,7 +112,7 @@ export default {
           //order status
           this.orderStatus = res.data.orderStatus;
 
-          (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  clearInterval(this.countDown) : '';
+          (res.data.orderStatus === 0 || res.data.orderStatus === 5 || res.data.orderStatus === 6) ?  (window.clearInterval(this.countDown),this.countDown=null) : '';
 
           if(res.data.orderStatus === 0 || res.data.orderStatus === 6){
             this.detailsState = true;
@@ -154,7 +154,8 @@ export default {
     }
   },
   deactivated(){
-    clearInterval(this.countDown);
+    window.clearInterval(this.countDown);
+    this.countDown = null;
   },
 }
 </script>

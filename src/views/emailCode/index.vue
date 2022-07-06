@@ -84,7 +84,8 @@ export default {
     }
   },
   deactivated(){
-    clearInterval(this.timeVal)
+    window.clearInterval(this.timeVal);
+    this.timeVal = null;
   },
   methods: {
     getCode:debounce(function () {

@@ -122,10 +122,12 @@ export default {
     }
   },
   destroyed(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   deactivated(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   computed: {
     //个位数>0，小数点后保留2位、个位数为0，小数点后最多保留6位
@@ -149,7 +151,8 @@ export default {
   methods:{
     //Countdown 15 refresh data
     timingSetting(){
-      clearInterval(this.timeOut)
+      window.clearInterval(this.timeOut);
+      this.timeOut = null;
       this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
