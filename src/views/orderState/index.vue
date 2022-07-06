@@ -509,9 +509,7 @@ export default{
     div:nth-of-type(2){
       margin-left: 0rem;
     }
-    div:nth-of-type(3){
-      // padding-left: -.5rem;
-    }
+    
      div:nth-of-type(4){
       //  width: 17%;
       text-align: right;
@@ -599,10 +597,7 @@ export default{
       width: 140px;
       height: 140px;
       margin: 0 auto 0;
-      // position: absolute;
-      // left: 50%;
-      // top: .44rem;
-      // transform: translate(-50%,0);
+      
     }
     p{
       width: 100%;
