@@ -42,7 +42,7 @@
           <div>
             <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
             <div class="formContent">
-              <van-field class="number_input" type="digit" v-model="params.cardCvv" maxlength="4"/>
+              <van-field class="number_input" type="digit" v-model="params.cardCvv" @input="cvvChange" maxlength="4"/>
             </div>
           </div>
           <!-- error tips -->
@@ -98,7 +98,12 @@ export default {
   },
   computed: {
     buttonState(){
-      if(this.params.firstname !== ''&&this.params.lastname !== ''&&this.errorFirstname===false&&this.errorLastname===false&&this.params.cardNumber !== "" && this.errorCard === false && this.params.cardCvv !== "" && this.timeData.length === 7&&this.errorTime === false&&this.request_loading === false){
+      if(this.params.firstname !== ''&&this.params.lastname !== ''&&
+          this.errorFirstname===false&&this.errorLastname===false&&
+          this.params.cardNumber !== "" && this.errorCard === false &&
+          this.params.cardCvv !== "" && this.params.cardCvv.length >= 3 &&
+          this.timeData.length === 7 && this.errorTime === false&&
+          this.request_loading === false){
         return false;
       }else{
         return true;
@@ -215,17 +220,6 @@ export default {
       }
     },
 
-    // cardBlur(){
-    //   let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
-    //   let firstCardNumber = cardNumber.substring(0,1);
-    //   let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
-    //   if(this.params.cardNumber === '' || !regular.test(cardNumber)){
-    //     this.errorCard = true;
-    //   }else {
-    //     this.errorCard = false;
-    //   }
-    // },
-
     cardChange(value){
       //Add a space between every four digits of the credit card number
       if(value !== '' && value !== undefined){
@@ -240,12 +234,6 @@ export default {
           this.errorCard = false;
         }
       }
-      //  if(this.$store.state.isPcAndPhone === 'phone'){
-      //    this.buttonIsShow = false
-        // this.$refs.sellFormView.style.paddingBottom = 300 + 'px'
-      // }else{
-      //   this.buttonIsShow = true
-      // }
 
       //判断卡号是Visa or Master
       setTimeout(()=>{
@@ -264,6 +252,15 @@ export default {
       })
     },
 
+    //CVV验证
+    cvvChange(value){
+      if(value.length < 3 || value.length > 4){
+        this.errorCvv = true;
+      }else{
+        this.errorCvv = false;
+      }
+    },
+
     //验证、提交卡信息
     submitPay(){
       this.request_loading = true;
@@ -276,12 +273,6 @@ export default {
         return;
       }
 
-      //CVV验证
-      if(this.params.cardCvv.length < 3 || this.params.cardCvv.length > 4){
-        this.errorCvv = true;
-        return;
-      }
-      this.errorCvv = false;
       this.errorCard = false;
 
       //拼接年月日期参数
@@ -411,7 +402,7 @@ export default {
     font-family: "GeoRegular", GeoRegular;
     font-weight: normal;
     color: #FFFFFF;
-    margin-top: 0.16rem;
+    margin-top: 0.36rem;
     cursor: pointer;
     border: none;
     position: relative;

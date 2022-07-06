@@ -232,7 +232,8 @@ export default{
           message: 'error'
         });
       })
-      clearInterval( this.timer)
+      window.clearInterval(this.timer);
+      this.timer = null;
       setTimeout(()=>{
             this.timer = setInterval(()=>{
               this.getCurrencyStatus()
@@ -276,7 +277,8 @@ export default{
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             // sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
-            clearInterval(this.timer)
+            window.clearInterval(this.timer);
+            this.timer = null;
             // this.$store.replaceState({})
             // this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             // this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
@@ -284,7 +286,8 @@ export default{
             return
           }
           if(this.playMoneyState==5){
-            clearInterval(this.timer)
+            window.clearInterval(this.timer);
+            this.timer = null;
             //  this.$store.replaceState({})
           }
           if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
@@ -292,7 +295,8 @@ export default{
             sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
-            clearInterval(this.timer)
+            window.clearInterval(this.timer);
+            this.timer = null;
             this.$store.replaceState({})
             this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
@@ -413,7 +417,8 @@ export default{
 
   },
   deactivated (){
-    clearInterval(this.timer)
+    window.clearInterval(this.timer);
+    this.timer = null;
     this.Network_show = false
     this.Network_show1 = false
     // this.$store.replaceState({})

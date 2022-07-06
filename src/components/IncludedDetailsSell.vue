@@ -140,7 +140,8 @@ export default {
       handler(val){
         this.timeDownState_child = (val !== null && val === false) ? false : true;
         if(val === false){
-          clearInterval(this.timeOut);
+          window.clearInterval(this.timeOut);
+          this.timeOut = null;
         }
       }
     },
@@ -180,10 +181,12 @@ export default {
     }
   },
   destroyed(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   deactivated(){
-    clearInterval(this.timeOut)
+    window.clearInterval(this.timeOut);
+    this.timeOut = null;
   },
   computed: {
     price(){
@@ -198,9 +201,9 @@ export default {
       let decimalDigits = 0;
       let resultValue = this.feeInfo.rampFee;
       resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-      let networkFee = resultValue.toFixed(decimalDigits);
-      isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
-      return networkFee;
+      let rampFee = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+      return rampFee;
     },
     orderState_price(){
       let decimalDigits = 0;
@@ -225,7 +228,8 @@ export default {
       this.currencyData = this.$store.state.sellRouterParams.currencyData;
       this.positionData = this.$store.state.sellRouterParams.positionData;
       this.routerParams = this.$store.state.sellRouterParams;
-      clearInterval(this.timeOut)
+      window.clearInterval(this.timeOut);
+      this.timeOut = null;
       this.queryFee();
       this.timeOut = setInterval(()=> {
         if (this.timeDownNumber === 1) {
@@ -243,8 +247,10 @@ export default {
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
+            console.log("触发")
             this.$parent.feeInfo = this.feeInfo;
             this.$parent.calculationAmount();
+            console.log(this.feeInfo,"---child")
           }
         }
       })

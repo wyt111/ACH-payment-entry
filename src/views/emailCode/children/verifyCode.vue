@@ -81,11 +81,13 @@ import { AES_Encrypt } from '@/utils/encryp.js';
        this.$axios.post(this.$api.post_sendEmail,params,'').then(res=>{
          if(res.returnCode === '0000'){
            this.codeTime = 10
-           clearInterval(this.timeVal)
+           window.clearInterval(this.timeVal);
+           this.timeVal = null;
            this.timeVal = setInterval(()=>{
             this.codeTime--
             if(this.codeTime <= 0){
-              clearInterval(this.timeVal)
+              window.clearInterval(this.timeVal)
+              this.timeVal = null;
             }
           },1000)
          }

@@ -34,6 +34,7 @@ const store = new Vuex.Store({
         buyRouterParams: {
             amount: 0,
             cryptoCurrency: '',
+            network: '',
         },
         //卖币页面参数
         sellRouterParams: {

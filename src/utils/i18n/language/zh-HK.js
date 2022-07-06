@@ -21,7 +21,8 @@ module.exports = {
         agreement_components_text3: '當日從我選擇的付款方式中扣除上述金額，我充分瞭解此操作不能取消、召回或退款。',
         //查询订单状态提示
         orderTips_title: '系統沒有檢索到付款資訊',
-        orderTips_text: '抱歉，我們沒有檢測到您的付款信息。 如果您確認付款，請在此頁面稍作停留，一旦我們收到您的付款，我們會將相應金額的USDT轉給您。',
+        orderTips_text1: '抱歉，我們沒有檢測到您的付款信息。 如果您確認付款，請在此頁面稍作停留，一旦我們收到您的付款，我們會將相應金額的',
+        orderTips_text2: '轉給您。',
         orderTips_buttonText: '我已瞭解',
 
         /**
@@ -91,11 +92,11 @@ module.exports = {
          * 买币
          */
         home_youPay: '您支付',
-        home_youBuyGet: '您支付',
+        home_youBuyGet: '你購買',
         home_buyFee_timeDownTitle: '剩餘時間',
         home_buyFee_timeDown: '引用更新數據',
         home_buyFee_title1: '您得到',
-        home_buyFee_title2: '獲得',
+        home_buyFee_title2: '花費',
         home_buyFee_rampFee: '服務費',
         home_buyFee_networkFee: '網絡費',
         //卖币

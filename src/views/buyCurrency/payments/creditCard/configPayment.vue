@@ -183,7 +183,8 @@ export default {
   deactivated(){
     this.$store.commit("clearToken"); //取消请求
     this.$store.commit("emptyToken"); // 清空token数组
-    clearInterval(this.timeDown);
+    window.clearInterval(this.timeDown);
+    this.timeDown = null;
   },
 }
 </script>
