@@ -69,7 +69,7 @@ export default {
     },
     routerViewState(newVal){
       this.$store.state.menuState = !newVal
-      
+
     }
   },
   mounted(){
@@ -123,6 +123,10 @@ export default {
       })
     },
     goHome(){
+      //存在商户订单禁止点击logo跳转
+      if(this.$store.state.goHomeState === false){
+        return;
+      }
       if(this.$route.path === '/' && this.LanguageShow === true){
         this.$children[1].menuState = false;
         this.$store.state.LanguageIsShow = false;

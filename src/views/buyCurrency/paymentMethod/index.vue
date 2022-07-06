@@ -2,7 +2,7 @@
   <div id="paymentMethod">
     <div class="paymentMethod-content">
       <!-- 历史支付的方式 -->
-      <div class="payMethodsUl" v-if="savedCard.length !== 0">
+      <div class="payMethodsUl" v-if="savedCard.length !== 0 && !$route.query.merchant_orderNo">
         <div class="title">{{ $t('nav.buy_payment_savedTitle') }}</div>
         <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">
           <div class="payMethodsLi-left">
@@ -44,7 +44,8 @@
           </div>
         </div>
       </div>
-      <IncludedDetails class="IncludedDetails" :titleStatus="true"/>
+      <CryptoCurrencyAddress v-if="$route.query.merchant_orderNo"/>
+      <IncludedDetails class="IncludedDetails" :useFee="true" :isLoading="isLoading"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}
@@ -56,12 +57,13 @@
 
 <script>
 import IncludedDetails from "@/components/IncludedDetails.vue";
+import CryptoCurrencyAddress from "@/components/CryptoCurrencyAddress.vue";
 import {querySubmitToken} from "../../../utils/publicRequest";
 import { AES_Decrypt,AES_Encrypt } from "../../../utils/encryp";
 
 export default {
   name: "paymentMethod",
-  components: { IncludedDetails },
+  components: { IncludedDetails,CryptoCurrencyAddress },
   data(){
     return{
       buyParams: {},
@@ -77,12 +79,17 @@ export default {
 
       payMethod: {},
 
+      feeInfo: {},
+
+      //商户信息加载完 加载费用数据
+      isLoading: false,
+
       request_loading: false,
     }
   },
   computed: {
     disabled(){
-      if((JSON.stringify(this.payMethod) !== '{}'&&this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
+      if((JSON.stringify(this.payMethod) !== '{}' && this.request_loading === false) || (this.paymethodCheck !== ''&&this.request_loading === false)){
         return false;
       }else{
         return true;
@@ -97,6 +104,12 @@ export default {
     })
   },
   mounted(){
+    //接入商户逻辑
+    if(this.$route.query.merchant_orderNo){
+      this.buyOrderInfo();
+      return;
+    }
+
     this.InitializationData();
   },
   activated() {
@@ -104,22 +117,43 @@ export default {
     this.savedCard[this.cardCheck] ? this.savedCard[this.cardCheck].cardNumber = AES_Decrypt(this.savedCard[this.cardCheck].cardNumber) : '';
   },
   methods: {
-    async InitializationData(){
+    //商户接入查询
+    buyOrderInfo(){
+      let _this = this;
+      this.$axios.get(this.$api.get_orderState + this.$route.query.merchant_orderNo,'').then(res=>{
+        if(res && res.returnCode === "0000" && res.data !== null){
+          //获取订单信息
+          this.$store.state.buyRouterParams.cryptoCurrency = res.data.cryptoCurrency;
+          _this.$store.state.buyRouterParams.amount = res.data.fiatCurrencyAmount;
+          _this.$store.state.buyRouterParams.payCommission.symbol = res.data.currencySymbol;
+          _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
+          _this.$store.state.buyRouterParams.addressDefault = res.data.address;
+          _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
+          _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
+          _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
+          _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
+          //支付方法列表
+          _this.queryPayMethods();
+          //费用组件计算数量
+          _this.isLoading = true;
+        }
+      })
+    },
+
+    InitializationData(){
       this.cardCheck = '';
       this.savedCard = [];
       this.paymethodCheck = '';
       this.paymethodList = [];
       this.payMethod = {};
-      await this.queryPayMethods();
+      if(!this.$route.query.orderNo){
+        this.queryPayMethods();
+      }
     },
-    async queryPayMethods(){
+    queryPayMethods(){
       let _this = this;
-      // let params = {
-      //   appId: JSON.parse(sessionStorage.getItem("accessMerchantInfo")).appId,
-      //   alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
-      //   currency: this.$store.state.buyRouterParams.payCommission.code,
-      // };
-      await this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
+      this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
@@ -144,8 +178,13 @@ export default {
               return item.payWayCode === '10001';
             })
             //只有信用卡开放历史卡信息功能
-            _this.savedCard.length !== 0 ? _this.choiseSavedCard(_this.savedCard[0],0) : '';
-            // this.$forceUpdate();
+            if(!_this.$route.query.merchant_orderNo && _this.savedCard.length !== 0 ){
+              _this.choiseSavedCard(_this.savedCard[0],0)
+            }
+            //商户接入模式展示国际卡
+            if(this.$route.query.merchant_orderNo){
+              _this.choisePayMethods(_this.paymethodList[0],0)
+            }
           })
         }
       })
@@ -167,6 +206,16 @@ export default {
 
     //确认支付方式
     async confirm(){
+      //接入商户模式不需要创建订单
+      if(this.$route.query.merchant_orderNo){
+        this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
+        this.$store.state.buyRouterParams.payWayCode = this.payMethod.payWayCode;
+        this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;
+        this.JumpRouter();
+        return;
+      }
+
+
       this.request_loading = true;
       let submitToken = await querySubmitToken();
       if(submitToken === true){

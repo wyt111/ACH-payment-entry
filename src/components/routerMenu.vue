@@ -17,20 +17,6 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <!-- <div class="routerMenu_line" @click="goView('/','buyCrypto')">
-      <div class="lineIcon"><img src="../assets/images/menu/icon1.png"></div>
-      <div class="lineName">Buy Crypto</div>
-      <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
-      </div>
-    </div>
-    <div class="routerMenu_line" @click="goView('/','sellCrypto')">
-      <div class="lineIcon"><img src="../assets/images/menu/icon2.png"></div>
-      <div class="lineName">Sell Crypto</div>
-      <div class="lineRight">
-        <div><img src="../assets/images/rightIcon.png"></div>
-      </div>
-    </div> -->
     <div class="routerMenu_line" style="margin-top:.32rem" @click="LanguageIsShow">
       <div class="lineIcon"><img src="../assets/images/slices/iconLang.png"></div>
       <div class="lineName">{{ $t('nav.menu_language') }}</div>
@@ -186,7 +172,7 @@ export default {
     transationsList(){
       let _this = this;
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
-        if(res.data){
+        if(res && res.data){
           // console.log(res.data);
           let newArray = res.data.result;
           if (newArray.length <= 0 ) {
@@ -215,7 +201,6 @@ export default {
        handler(newVal){
         //  console.log(this.$store.state.isLogin);
          if(newVal === true && this.$store.state.isLogin === true){
-          //  this.transationsList()
            localStorage.getItem("token") ? this.token = true : false;
            localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
            this.token===true?this.transationsList():''

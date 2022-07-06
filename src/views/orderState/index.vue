@@ -4,10 +4,10 @@
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
-    
+
     <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
     <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
-    
+
 
     <div class="order-state">
       <div class="state">
@@ -152,7 +152,7 @@ export default{
       let price = resultValue.toFixed(decimalDigits);
       isNaN(resultValue) || price <= 0 ? price = 0 : '';
       return price;
-      
+
     },
 
     Network_isShow(){
@@ -272,7 +272,6 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          // this.playMoneyState=3
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -333,7 +332,7 @@ export default{
 
       }else{
         this.$toast(this.$t('nav.SellOrder_modified'))
-        return 
+        return
       }
     },
     //Calculate minutes and seconds
@@ -396,7 +395,6 @@ export default{
         }
         this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
           if(res.returnCode && res.data){
-            console.log(res.data);
             this.cardUserName = res.data
             this.accountNumberCode = this.AES(res.data.accountNumber)
           }
@@ -452,7 +450,7 @@ export default{
     color: #707070;
     line-height: .23rem;
     margin: .1rem 0 .1rem 0;
-    
+
   }
   .order-state{
     // padding: 0 .1rem 0;
