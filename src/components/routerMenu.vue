@@ -87,7 +87,7 @@ export default {
       show:false,
       loading:false,
       query: {
-        orderState: 4,
+        orderState: 1,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5,
@@ -106,10 +106,10 @@ export default {
      localStorage.getItem("token") ? this.token = true : false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
   },
-  mounted(){
-    localStorage.getItem("token") ? this.token = true : false;
-    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
-  },
+  // mounted(){
+  //   localStorage.getItem("token") ? this.token = true : false;
+  //   localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+  // },
   methods: {
     //Select menu
     goView(name,homeTab){
@@ -215,8 +215,9 @@ export default {
        handler(newVal){
         //  console.log(this.$store.state.isLogin);
          if(newVal === true && this.$store.state.isLogin === true){
-           this.transationsList()
+          //  this.transationsList()
            localStorage.getItem("token") ? this.token = true : false;
+           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
            this.token===true?this.transationsList():''
           //  console.log(this.finished);
          }
