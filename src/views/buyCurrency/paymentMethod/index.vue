@@ -2,7 +2,7 @@
   <div id="paymentMethod">
     <div class="paymentMethod-content">
       <!-- 历史支付的方式 -->
-      <div class="payMethodsUl" v-if="savedCard.length !== 0 && !$route.query.merchant_orderNo">
+      <div class="payMethodsUl" v-if="savedCard.length !== 0 && $store.state.goHomeState">
         <div class="title">{{ $t('nav.buy_payment_savedTitle') }}</div>
         <div class="payMethodsLi" :class="{'cardCheck': cardCheck === index}" v-for="(item,index) in savedCard" :key="index" @click="choiseSavedCard(item,index)">
           <div class="payMethodsLi-left">
@@ -11,7 +11,7 @@
               <img v-if="item.payWayCode === 10004" src="../../../assets/images/10004-icon.png">
               <img v-if="item.payWayCode === 10005" src="../../../assets/images/10005-icon.png">
               <img v-if="item.payWayCode === 10006" src="../../../assets/images/10006-icon.png">
-              <img v-if="item.payWayCode === 10008" src="../../../assets/images/10008-icon.png">
+              <img v-if="item.payWayCode === 10008" src ="../../../assets/images/10008-icon.png">
             </div>
             <div class="cardInfo">
               <p>{{ item.payWayName }} <span>{{ $t('nav.buy_payment_ending') }} {{ item.cardNumber.substring(item.cardNumber.length-4) }}</span></p>
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <CryptoCurrencyAddress v-if="$route.query.merchant_orderNo"/>
+      <CryptoCurrencyAddress v-if="$store.state.goHomeState"/>
       <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
@@ -105,7 +105,7 @@ export default {
   },
   mounted(){
     //接入商户逻辑
-    if(this.$route.query.merchant_orderNo){
+    if(!this.$store.state.goHomeState){
       this.buyOrderInfo();
       return;
     }
@@ -178,11 +178,11 @@ export default {
               return item.payWayCode === '10001';
             })
             //只有信用卡开放历史卡信息功能
-            if(!_this.$route.query.merchant_orderNo && _this.savedCard.length !== 0 ){
+            if(_this.$store.state.goHomeState && _this.savedCard.length !== 0 ){
               _this.choiseSavedCard(_this.savedCard[0],0)
             }
             //商户接入模式展示国际卡
-            if(this.$route.query.merchant_orderNo){
+            if(!_this.$store.state.goHomeState){
               _this.choisePayMethods(_this.paymethodList[0],0)
             }
           })
@@ -207,7 +207,7 @@ export default {
     //确认支付方式
     async confirm(){
       //接入商户模式不需要创建订单
-      if(this.$route.query.merchant_orderNo){
+      if(!this.$store.state.goHomeState){
         this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
         this.$store.state.buyRouterParams.payWayCode = this.payMethod.payWayCode;
         this.$store.state.buyRouterParams.payWayName = this.payMethod.payWayName;

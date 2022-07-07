@@ -123,6 +123,7 @@ export default {
     }
   },
   watch: {
+    //获取首页基本数据
     allBasicData: {
       immediate: true,
       deep: true,

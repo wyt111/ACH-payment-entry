@@ -4,7 +4,7 @@
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
-      <div class="icon" v-if="!$route.query.merchant_orderNo" @click="goBack"><img src="../assets/images/backIcon.png"></div>
+      <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/backIcon.png"></div>
       <div class="linkName">{{ $t(routerName) }}</div>
     </div>
     <!-- close menu view -->

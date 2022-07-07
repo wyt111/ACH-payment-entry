@@ -92,7 +92,7 @@ export default {
     this.cvvDisabled = false;
     this.AuthorizationInfo_state = true;
     //接入商户逻辑
-    if(this.$route.query.merchant_orderNo){
+    if(!this.$store.state.goHomeState){
       this.newCvvState = true;
       this.buyOrderInfo();
       return

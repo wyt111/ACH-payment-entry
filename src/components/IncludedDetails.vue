@@ -16,7 +16,7 @@
           {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
         </div>
         <!-- 商户接入模式禁止点击 -->
-        <div class="right" v-if="!$route.query.merchant_orderNo">
+        <div class="right" v-if="this.$store.state.goHomeState">
           <img src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
@@ -110,7 +110,7 @@ export default {
       deep: true,
       immediate: true,
       handler(){
-        if(!this.$route.query.merchant_orderNo){
+        if(this.$store.state.goHomeState){
           this.queryFee();
           this.timingSetting();
         }
@@ -268,7 +268,7 @@ export default {
     //Control details display status
     expandCollapse(){
       //商户接入模式禁止点击
-      if(this.$route.query.merchant_orderNo){
+      if(!this.$store.state.goHomeState){
         return;
       }
 
