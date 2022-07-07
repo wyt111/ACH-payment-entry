@@ -202,8 +202,6 @@ html,body,#app,#viewBox{
 }
 
 #viewBox{
-  //background: url(./assets/images/buyCrypto_background.png) no-repeat !important;
-  //background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;

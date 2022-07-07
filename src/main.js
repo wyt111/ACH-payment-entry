@@ -40,11 +40,6 @@ if(process.env.NODE_ENV !== 'development'){
   });
 }
 
-//VConsole
-// import VConsole from 'vconsole';
-// const vConsole = new VConsole();
-// Vue.use(vConsole);
-
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;
 

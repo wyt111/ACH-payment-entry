@@ -4,21 +4,24 @@ function resolve(dir) {
 }
 
 module.exports = {
-
     publicPath: './',
-    // host: '0.0.0.0',
     lintOnSave: false,
     assetsDir: 'static',
     productionSourceMap: false,
     chainWebpack(config) {
+        // if (process.env.ENV === "production") {
+        //     config.plugin("webpack-bundle-analyzer")
+        //         .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin)
+        //         .end();
+        // }
+
         config
             .plugin('html')
             .tap(args => {
                 args[0].title= 'Alchemy Pay Ramp'
                 return args
             })
-        // it can improve the speed of the first screen, it is recommended to turn on preload
-        // it can improve the speed of the first screen, it is recommended to turn on preload
+        // 它可以提高第一个屏幕的速度，建议打开预加载
         config.plugin('preload').tap(() => [
             {
                 rel: 'preload',
@@ -30,10 +33,10 @@ module.exports = {
             }
         ])
 
-        // when there are many pages, it will cause too many meaningless requests
+        // 当页面太多时，会导致太多无意义的请求
         config.plugins.delete('prefetch')
 
-        // set svg-sprite-loader
+        // 设置svg精灵加载程序
         config.module
             .rule('svg')
             .exclude.add(resolve('src/icons'))
