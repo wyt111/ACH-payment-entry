@@ -11,6 +11,7 @@
     "test contract": "node --experimental-json-modules ./scripts/contractTest.js"
   },
   "dependencies": {
+    "alife-logger": "^1.8.30",
     "axios": "^0.24.0",
     "better-scroll": "^2.4.2",
     "clipboard": "^2.0.10",
