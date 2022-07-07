@@ -20,7 +20,7 @@
             </div>
             <div class="methods_myAddress">
               <div class="methods_title">{{ $t('nav.Sellorder_Network') }}</div>
-              <div class="methods_input network_input" @click="openSelect">
+              <div class="methods_input network_input" :class="{'disabled': !networkDefault}" @click="openSelect">
                 <div class="selectNetwork">
                   <span v-if="buyParams.network!==''">{{ buyParams.network }}</span>
                   <span class="networkPlaceholder" v-else>{{ $t('nav.search_components_networkTitle') }}</span>
@@ -313,6 +313,9 @@ export default {
           &::placeholder{
             color: #999999;
           }
+          &:disabled{
+            cursor: no-drop;
+          }
         }
         .rightIcon{
           position: absolute;
@@ -340,6 +343,9 @@ export default {
         input{
           padding: 0 0.5rem 0 0.21rem;
         }
+      }
+      .disabled{
+        cursor: no-drop;
       }
       .methods_errorText{
         position: absolute;

@@ -7,13 +7,13 @@
           {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <!-- bank account type -->
-        <div class="formContent" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+        <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
           <div class="radioInput">
             <div class="value">{{ $t(item.model) }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
           </div>
         </div>
-        <div class="formContent" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
+        <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
           <div class="radioInput">
             <div class="value">{{ item.model }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
@@ -363,6 +363,9 @@ export default {
         width: 0.4rem;
       }
     }
+  }
+  .cursor{
+    cursor: pointer;
   }
   .formContent{
     display: flex;
