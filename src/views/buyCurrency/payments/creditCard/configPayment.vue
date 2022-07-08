@@ -130,6 +130,7 @@ export default {
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           //费用组件计算数量
           _this.isLoading = true;
+          console.log(_this.loading)
           //获取、处理卡信息
           _this.cardData = JSON.parse(JSON.stringify(res.data.cardInfo));
           this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;

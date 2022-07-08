@@ -166,6 +166,7 @@ export default {
   methods:{
     //Enter date limit manually
     timeChange(val){
+      this.timeData = this.timeData.replace(/[^0-9/// /]/g, '');
       var target = Number(val.target.value[val.target.value.length-1]);
       if(target == '1' || target == '2' || target == '3' || target == '4' || target == '5' || target == '6' || target == '7' || target == '8' || target == '9' || target == '0'){
         setTimeout(()=> {

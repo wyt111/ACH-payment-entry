@@ -158,8 +158,10 @@ export default {
       deep: true,
       immediate: true,
       handler(){
-        this.queryFee();
-        this.timingSetting();
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.buyRouterParams.goHomeState === true){
+          this.queryFee();
+          this.timingSetting();
+        }
       }
     }
   },
@@ -251,15 +253,15 @@ export default {
             this.$parent.calculationAmount();
             //赋值费用数据
             this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
-            //商户对接计算you get数量
-            if(this.isLoading === true){
-              this.$store.state.buyRouterParams.payCommission.decimalDigits = 2;
-              let rampFee = (Number(this.$store.state.buyRouterParams.feeRate) * Number(this.$store.state.buyRouterParams.amount) + this.$store.state.buyRouterParams.fixedFee).toFixed(2);
-              this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
-              this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
-              let newGetAmount = (Number(this.$store.state.buyRouterParams.amount) - this.feeInfo.networkFee - rampFee) / this.feeInfo.price;
-              newGetAmount > 0 ? this.$store.state.buyRouterParams.getAmount = newGetAmount.toFixed(6) : this.$store.state.buyRouterParams.getAmount = 0;
-            }
+          }
+          //商户对接计算you get数量
+          if(this.isLoading === true){
+            this.$store.state.buyRouterParams.payCommission.decimalDigits = 2;
+            let rampFee = (Number(this.$store.state.buyRouterParams.feeRate) * Number(this.$store.state.buyRouterParams.amount) + this.$store.state.buyRouterParams.fixedFee).toFixed(2);
+            this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
+            this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
+            let newGetAmount = (Number(this.$store.state.buyRouterParams.amount) - this.feeInfo.networkFee - rampFee) / this.feeInfo.price;
+            newGetAmount > 0 ? this.$store.state.buyRouterParams.getAmount = newGetAmount.toFixed(6) : this.$store.state.buyRouterParams.getAmount = 0;
           }
         }
       })

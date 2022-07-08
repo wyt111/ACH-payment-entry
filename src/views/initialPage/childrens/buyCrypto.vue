@@ -102,7 +102,7 @@ export default {
     }
   },
   computed: {
-    //you pay input status - Data can only be entered after loading
+    //you pay input status - 数据加载后放开状态
     payAmountState(){
       if(this.payCommission.payMax > 0 && this.payCommission.payMin > 0){
         return false
@@ -110,7 +110,7 @@ export default {
         return true
       }
     },
-    //确认按钮状态
+    //continue button status - 限制确认按钮状态
     continueState(){
       if(this.positionData.positionValue !== ''&&
           this.payAmount !== '' && Number(this.payAmount) >= this.payCommission.payMin &&
@@ -132,6 +132,7 @@ export default {
         this.allBasicData.worldList !== undefined ? this.currentLocation() : '';
       },
     },
+    //监听you pay input完成页面基本数据加载
     payAmount: {
       deep: true,
       handler() {
@@ -140,42 +141,35 @@ export default {
     },
   },
   methods: {
-    //选择币种
+    //选择法币或加密货币
     openSearch(view){
-      //The address bar contains merchant information. It is forbidden to select
+      //地址栏携带商户加密货币种禁止选择加密货币
       if(view === 'currency' && this.cryptoSate === false){
         return;
       }
       this.$parent.openSearch(view,this.allPayCommission);
     },
-    //币种为USD如果少于两位数，将自动添加0
+    //法币币种为USD如果少于两位小数，将自动添加0
     youPayBlur(){
       if(this.payAmount > 0 && this.payCommission.code === 'USD'){
         this.payAmount = (Math.round(this.payAmount*100)/100).toFixed(2);
       }
     },
-    //币种为USD限制输入两位小数
+    //法币币种为USD限制只能输入两位小数
     inputChange(val){
       if(val.indexOf('.') > 0 && this.payCommission.code === 'USD'){
         this.payAmount = val.substr(0,val.indexOf('.')+3);
       }
     },
 
-    //Process the quantity and display status of received legal currency
+    //处理收到的法币的数量和显示状态
     amountControl(){
       if(this.payAmount === ''){
         this.warningTextState = false;
         return;
       }
 
-      //Cannot enter string
-      // if(typeof Number(this.payAmount) === typeof NaN && typeof this.payAmount !== "number"){
-      //   setTimeout(()=>{
-      //     this.payAmount = this.payAmount.replace(/[^\d](\.)/g, "")
-      //   })
-      // }
-
-      //币种为USD限制输入两位小数 其他都为整数
+      //法币币种为USD限制只能输入两位小数 其他都为整数
       if(this.payAmount > 0){
         if(this.payCommission.code === 'USD'){
           this.youPaytype = 'number';
@@ -185,10 +179,10 @@ export default {
         }
       }
 
-      //Purchase amount prompt
+      //限制法币的最小值、最大值
       if (Number(this.payAmount) >= this.payCommission.payMin && Number(this.payAmount) <= this.payCommission.payMax){
         this.warningTextState = false;
-        //How many digital currencies can I exchange
+        //计算加密货币数量
         this.payinfo();
       }else{
         var minError = `${this.$t('nav.home_minAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMin}.`;
