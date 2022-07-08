@@ -29,7 +29,7 @@
 
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
-        <IncludedDetailsSell :isHome="true"/>
+        <IncludedDetailsSell ref="includedDetails_ref" :isHome="true"/>
       </div>
     </div>
 

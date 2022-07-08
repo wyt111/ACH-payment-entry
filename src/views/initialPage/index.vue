@@ -39,6 +39,7 @@ import sellCrypto from '/src/views/initialPage/childrens/sellCrypto'
 import buyCrypto from '/src/views/initialPage/childrens/buyCrypto'
 import search from '/src/components/search'
 import routerMenu from '/src/components/routerMenu'
+import { AES_Decrypt} from "../../utils/encryp";
 
 export default {
   name: "index",
@@ -52,9 +53,15 @@ export default {
       choiseItem: {},
     }
   },
+  beforeRouteEnter(to,from,next){
+    next(vm=>{
+      if(from.path === '/tradeHistory') {
+        vm.merchantDocking()
+      }
+    });
+  },
   mounted(){
     this.merchantDocking();
-    this.queryInfo();
   },
   computed: {
     //商户对接tab状态
@@ -103,14 +110,38 @@ export default {
         }
       })
     },
-    //对接商户参数
+    //对接商户参数 - 语言、tab状态、商户token
     merchantDocking(){
-      //语言
       this.$route.query.language ? sessionStorage.setItem("language",this.$route.query.language) : '';
       this.$i18n.locale = sessionStorage.getItem("language");
+      if(this.$route.query.token){
+        let accessToken = decodeURIComponent(this.$route.query.token);
+        let startIndex = accessToken.indexOf("ACH");
+        let endIndex = accessToken.indexOf("ACH",startIndex + 1);
+        let userNo = accessToken.substring(0,endIndex);
+        let token = accessToken.substring(accessToken.indexOf("ACH", endIndex)+3,accessToken.length);
+        localStorage.setItem("token",token);
+        localStorage.setItem("userNo",userNo);
+      }
+      this.$route.query.id ? localStorage.setItem("userId","ACH"+decodeURIComponent(AES_Decrypt(this.$route.query.id))) : '';
+      this.$route.query.email ? localStorage.setItem("email",decodeURIComponent(this.$route.query.email)) : '';
+      this.merchantLoginOrder();
+    },
+    //对接商户 - 获取订单信息
+    merchantLoginOrder(){
+      //通过订单id的获取订单信息
+      let orderNo = this.$route.query.orderNo ? this.$route.query.orderNo : '';
+      //存在商户订单禁止点击logo跳转
+      this.$store.state.goHomeState = orderNo !== "" ? false : true;
+      this.$store.state.goHomeState ? this.queryInfo() : '';
+      //填写表单状态 - true填写过 false未填写
+      if(this.$route.query.cardFlag && this.$route.query.cardFlag=='true' && orderNo !== ""){
+        this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}`);
+      }else if(this.$route.query.cardFlag && this.$route.query.cardFlag=='false'){
+        this.$router.push(`/paymentMethod?merchant_orderNo=${orderNo}`);
+      }
     },
   },
-
 };
 </script>
 

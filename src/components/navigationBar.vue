@@ -3,12 +3,12 @@
   <div class="navigationBar_view" v-if="tabState  &&  $route.path !== '/emailCode'">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
-      <div class="icon" @click="goBack"><img src="../assets/images/backIcon.png"></div>
+      <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
+      <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/backIcon.png"></div>
       <div class="linkName">{{ $t(routerName) }}</div>
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
-    <!-- {{}} -->
     <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
       <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
       <img src="../assets/images/closeIcon.png" v-else @click="openMenu">

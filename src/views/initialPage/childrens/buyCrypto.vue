@@ -29,7 +29,7 @@
 
       <!-- 费用模块 -->
       <div class="calculationProcess" v-if="detailedInfo_state">
-        <IncludedDetails :isHome="true"/>
+        <IncludedDetails ref="includedDetails_ref" :isHome="true" :useFee="true"/>
       </div>
     </div>
 
@@ -123,17 +123,18 @@ export default {
     }
   },
   watch: {
+    //获取首页基本数据
     allBasicData: {
       immediate: true,
       deep: true,
       handler() {
+        this.$store.state.buyRouterParams.network = '';
         this.allBasicData.worldList !== undefined ? this.currentLocation() : '';
       },
     },
     payAmount: {
       deep: true,
       handler() {
-        this.$store.state.buyRouterParams.network = '';
         this.amountControl();
       }
     },

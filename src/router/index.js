@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "../views/initialPage";
 
 Vue.use(Router)
 
@@ -18,7 +17,7 @@ export const constantRoutes = [
   {
     path: "/",
     name: 'home',
-    component: Home,
+    component: resolve => require(['../views/initialPage'], resolve),
     redirectTo: '/',
     meta: {
       title: 'Home',
@@ -29,8 +28,7 @@ export const constantRoutes = [
   {
     path: "/emailCode",
     name: 'emailCode',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/emailCode/index.vue"),
+    component: resolve => require(['../views/emailCode/index.vue'], resolve),
     meta: {
       title: 'nav.routerName_email',
       keepAlive: true,
@@ -40,8 +38,7 @@ export const constantRoutes = [
   {
     path: "/verifyCode",
     name: 'verifyCode',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/emailCode/children/verifyCode"),
+    component: resolve => require(['../views/emailCode/children/verifyCode.vue'], resolve),
     meta: {
       title: 'nav.routerName_emailCode',
       keepAlive: true,
@@ -51,8 +48,7 @@ export const constantRoutes = [
   {
     path: "/tradeHistory",
     name: 'tradeHistory',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/tradeHistory/index.vue"),
+    component: resolve => require(['../views/tradeHistory/index.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_Transactions',
@@ -63,7 +59,7 @@ export const constantRoutes = [
   {
     path: "/receivingMode",
     name: 'receivingMode',
-    component: () => import(/* webpackChunkName: "about" */ "../views/buyCurrency/receivingMode/index.vue"),
+    component: resolve => require(['../views/buyCurrency/receivingMode/index.vue'], resolve),
     meta: {
       title: 'nav.routerName_receivingMode',
       keepAlive: true,
@@ -72,8 +68,7 @@ export const constantRoutes = [
   {
     path: "/paymentMethod",
     name: 'paymentMethod',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentMethod/index.vue"),
+    component: resolve => require(['../views/buyCurrency/paymentMethod/index.vue'], resolve),
     meta: {
       title: 'nav.routerName_paymentMethod',
       keepAlive: true,
@@ -82,8 +77,7 @@ export const constantRoutes = [
   {
     path: "/basisIdAuth",
     name: 'basisIdAuth',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/basisIdAuth.vue"),
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/basisIdAuth.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_basisIdAuth',
@@ -94,8 +88,7 @@ export const constantRoutes = [
   {
     path: "/creditCardForm-cardInfo",
     name: 'creditCardForm-cardInfo',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue"),
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/payForm-cardInfo.vue'], resolve),
     meta: {
       requireAuth: true,
       // fromPage: 'basisIdAuth',
@@ -106,8 +99,7 @@ export const constantRoutes = [
   {
     path: "/creditCardConfig",
     name: 'creditCardConfig',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/creditCard/configPayment.vue"),
+    component: resolve => require(['../views/buyCurrency/payments/creditCard/configPayment.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_creditCardConfig',
@@ -117,8 +109,7 @@ export const constantRoutes = [
   {
     path: "/otherWays-VA",
     name: 'otherWays-VA',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/VAOPM"),
+    component: resolve => require(['../views/buyCurrency/payments/otherWays/VAOPM'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_buyPayment',
@@ -128,8 +119,7 @@ export const constantRoutes = [
   {
     path: "/otherWayPay",
     name: 'otherWayPay',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/payments/otherWays/indonesian.vue"),
+    component: resolve => require(['../views/buyCurrency/payments/otherWays/indonesian.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_buyOtherWayPay',
@@ -139,8 +129,7 @@ export const constantRoutes = [
   {
     path: "/paymentResult",
     name: 'paymentResult',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/buyCurrency/paymentResult/index.vue"),
+    component: resolve => require(['../views/buyCurrency/paymentResult/index.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_paymentResult',
@@ -151,7 +140,7 @@ export const constantRoutes = [
   {
     path: "/sell-formUserInfo",
     name: 'testForm',
-    component: () => import(/* webpackChunkName: "about" */ "../views/sellCurrency/cardInfo/testForm.vue"),
+    component: resolve => require(['../views/sellCurrency/cardInfo/testForm.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellForm',
@@ -161,8 +150,7 @@ export const constantRoutes = [
   {
     path: "/configSell",
     name: 'configSell',
-    component: () =>
-        import(/* webpackChunkName: "about" */ "../views/sellCurrency/configSell/index.vue"),
+    component: resolve => require(['../views/sellCurrency/configSell/index.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_configSell',
@@ -175,7 +163,7 @@ export const constantRoutes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../views/orderState/index.vue"),
+    component: resolve => require(['../views/orderState/index.vue'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellOrder',

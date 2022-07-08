@@ -26,6 +26,9 @@ export default {
   mounted(){
     this.routerParams = this.$store.state.buyRouterParams;
   },
+  activated(){
+    this.routerParams = this.$store.state.buyRouterParams;
+  },
   methods:{
     copy(){
       //copy bank code

@@ -11,7 +11,7 @@
     <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
     <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
     <CryptoCurrencyAddress/>
-    <IncludedDetails class="includedDetails"/>
+    <IncludedDetails class="includedDetails" ref="includedDetails_ref"/>
     <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
     <!-- 墨西哥支付确认弹框 -->
     <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">

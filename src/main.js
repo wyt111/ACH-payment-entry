@@ -29,11 +29,16 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Vant);
 
-
-//VConsole
-// import VConsole from 'vconsole';
-// const vConsole = new VConsole();
-// Vue.use(vConsole);
+//阿里云接口埋点
+if(process.env.NODE_ENV !== 'development'){
+  const BrowserLogger = require('alife-logger');
+  const __bl = BrowserLogger.singleton({
+    pid: process.env.VUE_APP_Aliyun_pid,
+    imgUrl: 'https://arms-retcode.aliyuncs.com/r.png?',
+    enableLinkTrace:true,
+    behavior:true
+  });
+}
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;

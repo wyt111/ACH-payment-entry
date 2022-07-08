@@ -258,9 +258,9 @@ export default {
 
     expandFee(){
       this.feeState = this.feeState === true ? false : true;
-      if(this.$route.path === '/receivingMode' && this.feeState === true){
-        this.$nextTick(()=>{
-          this.$parent.$refs.includedDetails_ref.scrollIntoView({behavior: "smooth", block: "end"})
+      if(this.feeState === true){
+        setTimeout(()=>{
+          this.$parent.$refs.includedDetails_ref.$el.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'});
         })
         return
       }

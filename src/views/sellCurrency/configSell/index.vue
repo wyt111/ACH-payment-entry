@@ -11,7 +11,7 @@
           <div class="bankCardInfo-view-right"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
         </div>
       </div>
-      <IncludedDetails-sell class="includedDetails-view"/>
+      <IncludedDetails-sell class="includedDetails-view" ref="includedDetails_ref"/>
     </div>
     <Button :buttonData="buttonData" :disabled="false" @click.native="submit">{{ $t('nav.Confirm') }}</Button>
   </div>
