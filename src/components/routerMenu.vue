@@ -22,7 +22,7 @@
       <div class="lineName">{{ $t('nav.menu_language') }}</div>
 
       <div class="lineRight">
-        <p>{{ $store.state.languageValue }}</p>
+        <p>{{ $store.state.languageName?$store.state.languageName:'English(US)' }}</p>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -159,7 +159,7 @@ export default {
         this.loading = false
         this.$toast({
           duration: 3000,
-          message: 'You re already logged in'
+          message: this.$t('nav.login_Youlogged')
         });
       }else{
         this.loading = false

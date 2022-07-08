@@ -71,6 +71,7 @@ module.exports = {
     code_name: 'Terms of Service',
     code_and: 'and',
     code_name2: 'Privacy Policy',
+    login_Youlogged:'You re already logged in',
 
     /**
      * 首页

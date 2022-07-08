@@ -26,6 +26,7 @@ export default {
   methods:{
     choiseItem(item){
       this.$store.state.languageValue = item.value
+      this.$store.state.languageName = item.name
       sessionStorage.setItem("language",item.value)
       i18n.locale = item.value
       this.$store.state.LanguageIsShow = false

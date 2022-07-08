@@ -72,6 +72,7 @@ module.exports = {
         menu_privacy: '隱私政策',
         menu_logOut: '退出',
         RouterMenu_experience: '登錄方可體驗全部功能',
+        login_Youlogged:'你已經在登陸頁了',
 
         /**
          * 首页
