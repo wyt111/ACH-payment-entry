@@ -302,7 +302,7 @@ export default {
             return;
           }
           //跳转确认订单页
-          this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}`);
+          this.$router.replace(`/creditCardConfig?submitForm=${JSON.stringify(queryParams)}&merchant_orderNo=${this.$route.query.merchant_orderNo}`);
         }
       }).catch(()=>{
         this.request_loading = false;

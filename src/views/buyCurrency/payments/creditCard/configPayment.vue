@@ -159,7 +159,7 @@ export default {
 
     //跳转修改卡信息页面
     goPayForm(){
-      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment`) : '';
+      this.submitState === true ? this.$router.push(`/creditCardForm-cardInfo?submitForm=${this.wishCardData}&configPaymentFrom=userPayment&merchant_orderNo=${this.$route.query.merchant_orderNo}`) : '';
     },
 
     /**

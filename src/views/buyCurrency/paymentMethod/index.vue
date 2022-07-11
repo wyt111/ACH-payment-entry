@@ -261,7 +261,7 @@ export default {
 
       //选择新填写支付方式
       if(this.paymethodCheck !== '' && this.payMethod.payWayCode === '10001'){ //USD
-        this.$router.push(`/creditCardForm-cardInfo`);
+        this.$router.push(`/creditCardForm-cardInfo?merchant_orderNo=${this.$route.query.merchant_orderNo}`);
         return;
       }
       if(this.paymethodCheck !== ''  && this.payMethod.payWayCode !== '10001'){ //IDR | 10008
