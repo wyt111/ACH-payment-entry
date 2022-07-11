@@ -69,7 +69,6 @@ export default {
     },
     routerViewState(newVal){
       this.$store.state.menuState = !newVal
-
     }
   },
   mounted(){
@@ -144,8 +143,26 @@ export default {
 
 <style lang="scss">
 //@font-face {
-//  font-family: "Jost-Bold";
-//  src: url('./assets/fonts/Jost-Medium.ttf');
+//  font-family: "GeoDemibold";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork13-SemiBoldGeo.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoBold";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork16-GeoBold.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoLight";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork7-GeoLight.otf');
+//  font-weight: normal;
+//  font-style: normal;
+//}
+//@font-face {
+//  font-family: "GeoRegular";
+//  src: url('https://static.alchemypay.org/alchemypay/crypto-images/Fieldwork10-GeoRegular.otf');
 //  font-weight: normal;
 //  font-style: normal;
 //}
@@ -192,6 +209,7 @@ a,img,button,input,textarea,span,div {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  touch-action: pan-y;
 }
 
 html,body,#app,#viewBox{

@@ -1,3 +1,6 @@
+/**
+ * 项目工程多语言配置
+ */
 import Vue from "vue";
 import VueI18n from 'vue-i18n'
 

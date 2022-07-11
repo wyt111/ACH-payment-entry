@@ -83,7 +83,7 @@ const store = new Vuex.Store({
             })
             cancelTokenArr = []
         },
-        emptyToken (state, payload) {
+        emptyToken (state) {
             state.cancelTokenArr = []
         },
     }

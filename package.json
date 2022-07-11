@@ -11,6 +11,7 @@
     "test contract": "node --experimental-json-modules ./scripts/contractTest.js"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs-pro": "^3.6.3",
     "alife-logger": "^1.8.30",
     "axios": "^0.24.0",
     "better-scroll": "^2.4.2",
@@ -30,6 +31,8 @@
     "@vue/cli-service": "~4.5.0",
     "@walletconnect/web3-provider": "^1.4.1",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-import": "^1.13.5",
     "crypto-js": "^4.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",

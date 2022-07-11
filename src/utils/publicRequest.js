@@ -5,17 +5,20 @@ import { AES_Encrypt } from '@/utils/encryp.js';
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
 
+/**
+ * 提交订单、确认订单前获取submit-token公共接口
+ * @returns 获取成功返回true，失败则是fasle
+ */
 export function querySubmitToken(){
-    //Payment or submission interface failed to obtain again 'submit-token'
     let params = {
         "coin": store.state.buyRouterParams.cryptoCurrency,
         "email": localStorage.getItem("email")
     }
-    //timestamp and sign
+    //请求接口请求头信息
     let timestamp = '';
     if(localStorage.getItem("token")){
         let sign = localStorage.getItem("userId");
-        let userId = sign.substring(sign.lastIndexOf("\H")+1,sign.length);
+        let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
         let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
         timestamp = new Date().getTime();
         let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);

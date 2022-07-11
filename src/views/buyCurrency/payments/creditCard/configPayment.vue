@@ -18,7 +18,7 @@
       <div class="formLine" v-if="newCvvState">
         <div class="formTitle">{{ $t('nav.buy_configPay_title2') }}</div>
         <div class="formContent">
-          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="4" >
+          <input type="text" v-model="newCvv" :disabled="cvvDisabled" oninput ="value=value.replace(/[^0-9]/g,'')" maxlength="3" >
           <img class="rightIcon" src="../../../../assets/images/cvv-icon.png">
         </div>
       </div>
@@ -101,7 +101,7 @@ export default {
   },
   computed:{
     disabled(){
-      if(this.newCvvState === true && this.childData.agreement === true && (this.newCvv.length === 3||this.newCvv.length === 4)){
+      if(this.newCvvState === true && this.childData.agreement === true && this.newCvv.length === 3){
         return false;
       }else if(this.newCvvState === false && this.childData.agreement === true){
         return false;

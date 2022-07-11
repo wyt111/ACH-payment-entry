@@ -1,3 +1,6 @@
+/**
+ * 项目工程rem自适应配置
+ */
 import common from './common.js';
 
 export default function rem_size(){

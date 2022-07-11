@@ -19,7 +19,7 @@ var timestamp = '';
 function processSign_encryption(){
   if(localStorage.getItem("token")){
     let sign = localStorage.getItem("userId");
-    let userId = sign.substring(sign.lastIndexOf("\H")+1,sign.length);
+    let userId = sign.substring(sign.lastIndexOf("H")+1,sign.length);
     let userNo = localStorage.getItem("userNo").substring(localStorage.getItem("userNo").length-5);
     timestamp = new Date().getTime();
     let newSign = AES_Encrypt(userId + "-" + userNo + "-" + timestamp);

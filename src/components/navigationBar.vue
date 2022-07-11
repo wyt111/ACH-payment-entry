@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       routerName: "",
-      tabState: true,
+      tabState: false,
       routerPath: '',
     };
   },
@@ -33,15 +33,15 @@ export default {
     $route:{
       immediate: true,
       handler: function(val,oldVal){
-        if(val.meta.title === 'Home') {
-          this.tabState = false;
-        } else {
-          this.tabState = true;
-          this.routerName = val.meta.title;
+        if(val.meta.title){
+          if(val.meta.title === 'Home') {
+            this.tabState = false;
+          } else {
+            this.tabState = true;
+            this.routerName = val.meta.title;
+          }
+          oldVal ? this.routerPath = oldVal.path : "";
         }
-        // console.log(val);
-        oldVal ? this.routerPath = oldVal.path : "";
-        // console.log(this.routerPath);
       },
     }
   },

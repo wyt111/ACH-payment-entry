@@ -18,16 +18,20 @@ Vue.component('Button', Button)
 import i18n from './utils/i18n/index'
 
 //ui - element
-import { Popover,InfiniteScroll,Checkbox } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import { Popover,InfiniteScroll,Checkbox } from 'element-ui';
 Vue.use(Popover);
 Vue.use(InfiniteScroll);
 Vue.use(Checkbox);
 
 //ui - vant
-import Vant from 'vant';
 import 'vant/lib/index.css';
-Vue.use(Vant);
+import { Icon,Loading,Field,Popup,List } from 'vant';
+Vue.use(List);
+Vue.use(Popup);
+Vue.use(Field);
+Vue.use(Icon);
+Vue.use(Loading);
 
 //阿里云接口埋点
 if(process.env.NODE_ENV !== 'development'){
@@ -39,6 +43,17 @@ if(process.env.NODE_ENV !== 'development'){
     behavior:true
   });
 }
+
+//fingerprint - 设备指纹 ｜ 设备唯一id
+import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
+// Initialize an agent at application startup.
+const fpPromise = FingerprintJS.load({
+  apiKey: 'tj43GDmCqsLyYSJYmaMc'
+})
+// Get the visitor identifier when you need it.
+fpPromise.then(fp => fp.get()).then(result => {
+  window.localStorage.setItem("fingerprint_id",result.visitorId);
+});
 
 Vue.prototype.$api = api;
 Vue.prototype.$axios = axios;

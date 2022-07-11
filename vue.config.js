@@ -9,8 +9,8 @@ module.exports = {
     assetsDir: 'static',
     productionSourceMap: false,
     //分包处理
-    configureWebpack(config) {
-        if (process.env.NODE_ENV !== 'production') return
+    configureWebpack() {
+        if (process.env.NODE_ENV === 'development') return
         return {
             plugins: [
                 // ......
