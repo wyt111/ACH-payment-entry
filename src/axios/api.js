@@ -24,7 +24,7 @@ export default {
   "get_orderVerification": '/merchant/order/check',
   "post_mxnSubmit": '/pay/mxn/submit',
   //查询货币支持的支付方式
-  "get_payMethods": '/crypto/payment', // v2
+  "get_payMethods": '/crypto/payment/v2', //
   //查询订单状态
   "get_orderState": '/trade/',
 
