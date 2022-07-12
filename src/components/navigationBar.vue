@@ -1,13 +1,14 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="tabState  &&  $route.path !== '/emailCode'">
+  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode' && !this.$parent.routerViewState) || $route.path !== '/'&&  $route.path !== '/emailCode'" >
     <!-- open menu view -->
-    <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
+    <div class="navigationBar_view_left" v-if="this.$parent.routerViewState ">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
       <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/backIcon.png"></div>
       <div class="linkName">{{ $t(routerName) }}</div>
     </div>
     <!-- close menu view -->
+    <!-- <div class="navigationBar_view_left" v-else-if="!this.$parent.routerViewState && $route.oath==='/'">{{ $t('nav.menu') }}</div> -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
       <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
@@ -34,12 +35,13 @@ export default {
       immediate: true,
       handler: function(val,oldVal){
         if(val.meta.title){
-          if(val.meta.title === 'Home') {
+          if(val.meta.title === 'Home' && !this.$parent.routerViewState) {
             this.tabState = false;
-          } else {
+          }else {
             this.tabState = true;
             this.routerName = val.meta.title;
           }
+          
           oldVal ? this.routerPath = oldVal.path : "";
         }
       },

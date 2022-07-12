@@ -132,7 +132,6 @@ export default {
       let LanguageName = ''
       for(let item of Object.keys(this.$i18n.messages)){
             if(item === language){
-              console.log(this.$i18n.messages[item].language);
               LanguageName = this.$i18n.messages[item].language
             }
           }
@@ -142,10 +141,11 @@ export default {
     outLogin(){
      
       if(this.email){
+        
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
-            this.$parent.routerViewState = true;
-            this.$parent.menuState = false
+            // this.$parent.routerViewState = true;
+            // this.$parent.menuState = false
             this.$store.state.isLogin = false
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
@@ -155,10 +155,19 @@ export default {
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
-            // this.show = false;
-            // this.email = ''
-            // this.token = false
-            this.$router.push('/');
+            this.show = false
+            if(this.$route.path !== '/'){
+              this.$parent.routerViewState = true;
+              setTimeout(()=>{
+                this.$parent.routerViewState = false
+             
+              },200)
+              this.$router.replace('/')
+            return
+            }else{
+                this.token = false
+                this.email = ''
+            }
           }
         })
       }
@@ -185,6 +194,7 @@ export default {
         this.loading = false
         //是否是从菜单进入
         this.$store.state.routerQueryPath = true
+        this.$parent.routerViewState = true;
         this.$router.push('/emailCode')
       }
     },
