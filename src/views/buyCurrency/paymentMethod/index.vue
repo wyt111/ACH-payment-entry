@@ -153,12 +153,12 @@ export default {
     },
     queryPayMethods(){
       let _this = this;
-      let params = {
-        appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
-        alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
-        currency: this.$store.state.buyRouterParams.payCommission.code,
-      }
-      this.$axios.get(this.$api.get_payMethods ,params).then(res=>{
+      // let params = {
+      //   appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
+      //   alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
+      //   currency: this.$store.state.buyRouterParams.payCommission.code,
+      // }
+      this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{

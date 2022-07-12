@@ -34,7 +34,7 @@ export function querySubmitToken(){
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
             'timestamp': timestamp,
             'Content-Type': 'application/json',
-            timezone: moment.tz.guess(),
+            // timezone: moment.tz.guess(),
         }
     }).then(res=>{
         if(res.data !== null && res.returnCode === '0000') {
