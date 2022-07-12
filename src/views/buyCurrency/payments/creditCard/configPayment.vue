@@ -124,13 +124,17 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.network = res.data.network;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           //费用组件计算数量
-          _this.isLoading = true;
-          console.log(_this.loading)
+          // _this.isLoading = true;
+          this.$refs.includedDetails_ref.routerParams = this.$store.state.buyRouterParams;
+          this.$refs.includedDetails_ref.payCommission = this.$store.state.buyRouterParams.payCommission;
+          this.$refs.includedDetails_ref.queryFee();
+          this.$refs.includedDetails_ref.timingSetting();
           //获取、处理卡信息
           _this.cardData = JSON.parse(JSON.stringify(res.data.cardInfo));
           this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
