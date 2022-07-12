@@ -1,5 +1,5 @@
 module.exports = {
-  language:'english',
+  language:'English(US)',
   nav:{
     /**
      * 按钮文案
