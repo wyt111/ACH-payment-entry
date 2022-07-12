@@ -3,7 +3,7 @@
  */
 import common from './common.js';
 
-export default function rem_size(){
+export default function remSize(){
     (function (doc, win) {
         const uiWidth = common.uiSize; // view width 375
         const docEl = doc.documentElement;

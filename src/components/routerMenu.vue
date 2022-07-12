@@ -204,7 +204,7 @@ export default {
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
         }
          if(newVal === true && localStorage.getItem("token")){
-           
+
            this.token===true?this.transationsList():''
           //  console.log(this.finished);
          }

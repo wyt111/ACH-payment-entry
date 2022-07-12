@@ -39,7 +39,7 @@ import routerMenu from "./components/routerMenu";
 import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
 import Language from './components/Language.vue'
 import common from "./utils/common";
-import rem_size from  './utils/rem_size';
+import remSize from './utils/remSize';
 
 export default {
   name: 'App',
@@ -109,14 +109,14 @@ export default {
         if(width < 791){ //991
           common.uiSize = 375;
           common.equipmentEnd = 'phone';
-          rem_size();
+          remSize();
           this.logoState = false;
           this.$store.state.isPcAndPhone = 'phone'
           return;
         }
         common.uiSize = width + 100;
         common.equipmentEnd = 'pc';
-        rem_size();
+        remSize();
         this.logoState = true;
         this.$store.state.isPcAndPhone = 'pc'
       })

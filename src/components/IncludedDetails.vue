@@ -250,9 +250,9 @@ export default {
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
             this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
-            this.$parent.calculationAmount();
             //赋值费用数据
             this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
+            this.$parent.calculationAmount();
           }
           //商户对接计算you get数量
           if(this.isLoading === true){

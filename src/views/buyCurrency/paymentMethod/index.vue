@@ -158,7 +158,7 @@ export default {
         alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
         currency: this.$store.state.buyRouterParams.payCommission.code,
       }
-      this.$axios.get(this.$api.get_payMethods,params).then(res=>{
+      this.$axios.get(this.$api.get_payMethods ,params).then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
