@@ -62,7 +62,7 @@ const store = new Vuex.Store({
         cancelTokenArr: [], //ajax请求队列
 
         //多语言
-        languageValue:'EN-US', // EN-US ZH-TW
+        languageValue:'en-US', // EN-US ZH-TW
         LanguageIsShow:false,
         menuState:false,
         isLogin:false,

@@ -22,7 +22,7 @@
       <div class="lineName">{{ $t('nav.menu_language') }}</div>
 
       <div class="lineRight">
-        <p>{{ $store.state.languageName?$store.state.languageName:'English(US)' }}</p>
+        <p>{{ languageName() }}</p>
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
@@ -78,14 +78,19 @@ export default {
         pageIndex: 1,
         pageSize: 5,
         historyList:[],
+        
       },
+     
       finished:false,
-      newVal:''
+      newVal:'',
+      
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : this.token =false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
+ 
+    
     // this.transationsList()
   },
   deactivated(){
@@ -121,8 +126,21 @@ export default {
     onClose(){
       this.show = false
     },
+    //语言栏显示切换语言
+     languageName(){
+      let language = sessionStorage.getItem('language')?sessionStorage.getItem('language'):'en-US'
+      let LanguageName = ''
+      for(let item of Object.keys(this.$i18n.messages)){
+            if(item === language){
+              console.log(this.$i18n.messages[item].language);
+              LanguageName = this.$i18n.messages[item].language
+            }
+          }
+          return LanguageName
+    },
     //Exit the login hidden menu and clear the login information
     outLogin(){
+     
       if(this.email){
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
@@ -137,8 +155,10 @@ export default {
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
+            // this.show = false;
+            // this.email = ''
+            // this.token = false
             this.$router.push('/');
-            window.location.reload()
           }
         })
       }
@@ -191,7 +211,9 @@ export default {
       let email = this.email
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
       return email1
-    }
+    },
+   
+  
   },
   watch:{
     //打开菜单栏并且已经登陆以后才会获取有没有历史记录
@@ -202,6 +224,7 @@ export default {
         if(newVal  === true){
           localStorage.getItem("token") ? this.token = true :this.token = false;
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
+       
         }
          if(newVal === true && localStorage.getItem("token")){
 
@@ -209,7 +232,8 @@ export default {
           //  console.log(this.finished);
          }
       }
-    }
+    },
+    
   }
 }
 </script>
