@@ -2,8 +2,6 @@
   <div id="viewBox" ref="viewApp">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
-          <!-- logo view for phone -->
-          <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
@@ -121,22 +119,6 @@ export default {
         this.$store.state.isPcAndPhone = 'pc'
       })
     },
-    goHome(){
-      //存在商户订单禁止点击logo跳转
-      if(this.$store.state.goHomeState === false){
-        return;
-      }
-      if(this.$route.path === '/' && this.LanguageShow === true){
-        this.$children[1].menuState = false;
-        this.$store.state.LanguageIsShow = false;
-        return;
-      }
-      if(this.$route.path === '/'){
-        this.$children[1].menuState = false;
-        return;
-      }
-      this.$router.push('/');
-    }
   },
 }
 </script>
@@ -252,20 +234,6 @@ html,body,#app,#viewBox{
     img{
       width: 1.4rem;
       margin-left: 0.26rem;
-    }
-  }
-  .logoView_phone{
-    display: flex;
-    // justify-content: center;
-    // align-items: center;
-    padding-bottom: 15px;
-    align-items: center;
-    // padding-left: 0.06rem;
-    padding-bottom: 0.24rem;
-    cursor: pointer;
-
-    img{
-      width: 1.3rem;
     }
   }
   .version{

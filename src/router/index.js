@@ -44,7 +44,7 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
-  //切换语言的路由
+  //交易历史列表
   {
     path: "/tradeHistory",
     name: 'tradeHistory',
@@ -52,6 +52,17 @@ export const constantRoutes = [
     meta: {
       requireAuth: true,
       title: 'nav.routerName_Transactions',
+      keepAlive: true,
+    }
+  },
+  //交易历史详情
+  {
+    path: "/tradeHistory-details",
+    name: 'tradeHistory-details',
+    component: resolve => require(['../views/tradeHistory/details.vue'], resolve),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Transactions_details',
       keepAlive: true,
     }
   },
