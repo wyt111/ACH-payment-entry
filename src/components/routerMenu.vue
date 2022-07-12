@@ -84,13 +84,13 @@ export default {
     }
   },
   activated(){
-    localStorage.getItem("token") ? this.token = true : false;
-    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+    localStorage.getItem("token") ? this.token = true : this.token =false;
+    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
     // this.transationsList()
   },
   deactivated(){
-     localStorage.getItem("token") ? this.token = true : false;
-    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+     localStorage.getItem("token") ? this.token = true :this.token = false;
+    localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
   },
   // mounted(){
   //   localStorage.getItem("token") ? this.token = true : false;
@@ -199,10 +199,12 @@ export default {
       immediate:true,
       deep:true,
        handler(newVal){
-        //  console.log(this.$store.state.isLogin);
-         if(newVal === true && this.$store.state.isLogin === true){
-           localStorage.getItem("token") ? this.token = true : false;
-           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) : '';
+        if(newVal  === true){
+          localStorage.getItem("token") ? this.token = true :this.token = false;
+          localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
+        }
+         if(newVal === true && localStorage.getItem("token")){
+           
            this.token===true?this.transationsList():''
           //  console.log(this.finished);
          }
