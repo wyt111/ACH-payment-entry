@@ -178,6 +178,7 @@ export default {
       this.queryFee();
       this.timingSetting();
     }
+    //商户对接费用
   },
   destroyed(){
     this.timeDownNumber = 15;
@@ -238,7 +239,7 @@ export default {
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
           //选择网络修改you get数量
-          if(this.$store.state.buyRouterParams.network !== ''){
+          if(this.$store.state.buyRouterParams.network !== '' && this.isLoading === false){
             this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let newGetAmount = (Number(this.routerParams.amount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.routerParams.exchangeRate);
             let decimalDigits = 0;
@@ -250,9 +251,9 @@ export default {
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
             this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
-            this.$parent.calculationAmount();
             //赋值费用数据
             this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
+            this.$parent.calculationAmount();
           }
           //商户对接计算you get数量
           if(this.isLoading === true){
@@ -262,6 +263,7 @@ export default {
             this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let newGetAmount = (Number(this.$store.state.buyRouterParams.amount) - this.feeInfo.networkFee - rampFee) / this.feeInfo.price;
             newGetAmount > 0 ? this.$store.state.buyRouterParams.getAmount = newGetAmount.toFixed(6) : this.$store.state.buyRouterParams.getAmount = 0;
+            this.routerParams.getAmount = this.$store.state.buyRouterParams.getAmount;
           }
         }
       })

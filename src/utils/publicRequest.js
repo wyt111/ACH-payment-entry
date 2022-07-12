@@ -1,6 +1,7 @@
 import store from "../store";
 import axios from "axios";
 import { AES_Encrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
@@ -33,6 +34,7 @@ export function querySubmitToken(){
             'sign': localStorage.getItem('sign') ? localStorage.getItem('sign') : '',
             'timestamp': timestamp,
             'Content-Type': 'application/json',
+            // timezone: moment.tz.guess(),
         }
     }).then(res=>{
         if(res.data !== null && res.returnCode === '0000') {

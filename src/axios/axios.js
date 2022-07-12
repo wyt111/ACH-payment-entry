@@ -3,6 +3,7 @@ import { Toast } from 'vant';
 import router from "../router";
 import store from '../store/index';
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
+import moment from 'moment-timezone';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
@@ -167,6 +168,7 @@ export default {
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
+        // timezone: moment.tz.guess(),
       },
     }).then((response) => {
       if (response.returnCode === "0000") {
@@ -199,6 +201,7 @@ export default {
         'timestamp': timestamp,
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
+        // timezone: moment.tz.guess(),
       }
     }).then((response) => {
       if (response.returnCode === "0000") {

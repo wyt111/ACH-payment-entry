@@ -124,13 +124,17 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.network = res.data.network;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           //费用组件计算数量
-          _this.isLoading = true;
-          console.log(_this.loading)
+          // _this.isLoading = true;
+          this.$refs.includedDetails_ref.routerParams = this.$store.state.buyRouterParams;
+          this.$refs.includedDetails_ref.payCommission = this.$store.state.buyRouterParams.payCommission;
+          this.$refs.includedDetails_ref.queryFee();
+          this.$refs.includedDetails_ref.timingSetting();
           //获取、处理卡信息
           _this.cardData = JSON.parse(JSON.stringify(res.data.cardInfo));
           this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
@@ -196,12 +200,11 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
+            this.timeDown = setInterval(()=>{
+              this.queryOrderStatus();
+            },1000)
             if(JSON.stringify(res.data) === "{}"){
-              this.timeDown = setInterval(()=>{
-                this.queryOrderStatus();
-              },1000)
-            }else{
-              window.location = res.data.webUrl;
+              this.$store.state.buyRouterParams.payment_webUrl = res.data.webUrl;
             }
           }else {
             this.submitState = true;
@@ -226,6 +229,10 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res2=>{
+        if(res2.data.orderStatus && res2.data.orderStatus === 1){
+          window.location = this.$store.state.buyRouterParams.payment_webUrl;
+          return
+        }
         if(res2.data.orderStatus && res2.data.orderStatus > 2 && res2.data.orderStatus <= 6){
           // Clear create order token
           localStorage.removeItem("submit-token");

@@ -78,19 +78,19 @@ export default {
         pageIndex: 1,
         pageSize: 5,
         historyList:[],
-        
+
       },
-     
+
       finished:false,
       newVal:'',
-      
+
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : this.token =false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
- 
-    
+
+
     // this.transationsList()
   },
   deactivated(){
@@ -139,7 +139,7 @@ export default {
     },
     //Exit the login hidden menu and clear the login information
     outLogin(){
-     
+
       if(this.email){
         
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
@@ -222,8 +222,8 @@ export default {
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
       return email1
     },
-   
-  
+
+
   },
   watch:{
     //打开菜单栏并且已经登陆以后才会获取有没有历史记录
@@ -234,16 +234,16 @@ export default {
         if(newVal  === true){
           localStorage.getItem("token") ? this.token = true :this.token = false;
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
-       
+
         }
          if(newVal === true && localStorage.getItem("token")){
-           
+
            this.token===true?this.transationsList():''
           //  console.log(this.finished);
          }
       }
     },
-    
+
   }
 }
 </script>

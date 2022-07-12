@@ -129,6 +129,7 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.network = res.data.network;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
@@ -153,12 +154,12 @@ export default {
     },
     queryPayMethods(){
       let _this = this;
-      let params = {
-        appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
-        alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
-        currency: this.$store.state.buyRouterParams.payCommission.code,
-      }
-      this.$axios.get(this.$api.get_payMethods,params).then(res=>{
+      // let params = {
+      //   appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
+      //   alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
+      //   currency: this.$store.state.buyRouterParams.payCommission.code,
+      // }
+      this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
