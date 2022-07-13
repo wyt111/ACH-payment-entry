@@ -36,7 +36,7 @@
       <div class="continueBox" v-show="!searchViewState">
         <button class="continue" @click="transaction" :disabled="disabled" >
           {{ $t('nav.Continue') }}
-          <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+          <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
         </button>
       </div>
     </div>

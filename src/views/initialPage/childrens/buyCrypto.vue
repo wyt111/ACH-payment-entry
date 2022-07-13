@@ -36,7 +36,7 @@
     <footer>
       <button class="continue" @click="nextStep" :disabled="!continueState" :class="{'continue_true': continueState}">
         {{ $t('nav.Continue') }}
-        <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
       </button>
       {{ $t('nav.home_Tips') }}
     </footer>

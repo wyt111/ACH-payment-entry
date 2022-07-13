@@ -17,6 +17,10 @@ import i18n from './utils/i18n/index'
 //ui类库、公共组件
 import "./utils/UI-ClassLibrary.js";
 
+// import Vconsole from 'vconsole'
+// let vConsole = new Vconsole()
+// Vue.use(vConsole);
+
 //fingerprint - 设备指纹 ｜ 设备唯一id
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
 // Initialize an agent at application startup.

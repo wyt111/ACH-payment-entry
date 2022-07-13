@@ -49,7 +49,7 @@
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="" v-if="!request_loading">
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="" v-if="!request_loading">
       <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
     </button>
   </div>
@@ -228,6 +228,7 @@ export default {
         this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
+        this.buyParams.alpha2 = this.$store.state.buyRouterParams.positionData.alpha2;
         this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
           this.request_loading = false;
           if(res && res.returnCode === '0000'){

@@ -8,13 +8,13 @@
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <!-- bank account type -->
         <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
-          <div class="radioInput">
+          <div class="radioInput" :class="{'radioInput_focus': selectState === true}">
             <div class="value">{{ $t(item.model) }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
           </div>
         </div>
         <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
-          <div class="radioInput">
+          <div class="radioInput" :class="{'radioInput_focus': selectState === true}">
             <div class="value">{{ item.model }}</div>
             <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
           </div>
@@ -25,11 +25,15 @@
         <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
       </div>
+      <div class="cardTips">
+        <span>Attention: </span>
+        Please ensure the bank account belongs to you and the information is accurate. Returned transactions are subjected to $25 fee charged by our banking partners.
+      </div>
     </div>
 
     <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow">
-      {{ $t('nav.Continue') }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
+      {{ $t('nav.Confirm') }}
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" v-if="!request_loading">
       <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
     </button>
 
@@ -333,7 +337,7 @@ export default {
 
 <style lang="scss" scoped>
 #sell-form{
-  height: auto !important;
+  //height: auto !important;
   display: flex;
   flex-direction: column;
   .sellForm-content{
@@ -342,14 +346,15 @@ export default {
   }
 }
 .formLine{
-  margin-top: 0.28rem;
+  margin-top: 0.24rem;
   clear: both;
   position: relative;
   .formTitle{
+    font-family: 'SF Pro Display';
+    font-style: normal;
+    font-weight: 400;
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
-    font-weight: normal;
-    color: #707070;
+    color: #949EA4;
     display: flex;
     align-items: flex-end;
     span{
@@ -374,15 +379,18 @@ export default {
     input{
       width: 100%;
       height: 0.56rem;
-      background: #F3F4F5;
-      border-radius: 0.12rem;
+      border: 1px solid #EEEEEE;
+      border-radius: 0.06rem;
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
       color: #232323;
-      border: none;
       outline: none;
       padding: 0 0.16rem;
+      &:focus{
+        border: 1px solid #D0ECFC;
+        box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
+      }
     }
     .radioInput{
       width: 100%;
@@ -391,8 +399,8 @@ export default {
       height: 0.56rem;
       line-height: 0.56rem;
       padding: 0 0.16rem;
-      background: #F3F4F5;
-      border-radius: 0.12rem;
+      border-radius: 0.06rem;
+      border: 1px solid #EEEEEE;
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
@@ -405,6 +413,10 @@ export default {
           width: 0.24rem;
         }
       }
+    }
+    .radioInput_focus{
+      border: 1px solid #D0ECFC;
+      box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
     }
   }
   .errorMessage{
@@ -429,6 +441,19 @@ export default {
   }
 }
 
+.cardTips{
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-size: 0.13rem;
+  letter-spacing: 0.5px;
+  color: #C2C2C2;
+  margin-top: 0.08rem;
+  span{
+    color: #949EA4;
+    font-weight: 600;
+  }
+}
+
 .continue{
   width: 100%;
   height: 0.58rem;
@@ -441,12 +466,13 @@ export default {
   margin-top: 0.16rem;
   cursor: pointer;
   border: none;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .rightIcon{
-    width: 0.24rem;
-    position: absolute;
-    top: 0.17rem;
-    right: 0.32rem;
+    width: 0.2rem;
+    margin-left: 0.08rem;
+    margin-top: 0.02rem;
   }
 }
 .continue:disabled{
