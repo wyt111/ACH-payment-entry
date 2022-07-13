@@ -174,7 +174,7 @@ module.exports = {
     Sellorder_fail:'fail',
     Sellorder_Transfer:'In Transfer',
     Sellorder_Id:'Order ID',
-    Sellorder_Network:'Network',
+    Sellorder_Network:'Choose Network',
     Sellorder_Address:'Address',
     Sellorder_Card:'Card',
     Sellorder_Fail:'Fail Reason',
@@ -182,6 +182,7 @@ module.exports = {
     Sellorder_QRCode:'Scan QR Code',
     Sellorder_You:'You',
     SellOrder_modified:'Card information cannot be modified at this time',
+    SellOrder_title:'Sell ',
     //菜单栏语言
     RouterMenu_Welcome:'Welcome to Alchemy Pay!',
     RouterMenu_experience:'Login to unlock the full experience',

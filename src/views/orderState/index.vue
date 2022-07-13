@@ -1,7 +1,7 @@
 <template>
   <div class="order-container" >
-    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
-    <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
+    <!-- <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
+   
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
 
@@ -11,7 +11,7 @@
 
     <div class="order-state">
       <div class="state">
-        <!-- <div v-if="state===0">1</div> -->
+      
         <div  v-if="[1,0].includes(playMoneyState)" style="background:#959595FF"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
         <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
@@ -54,7 +54,7 @@
       <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000',marginLeft:playMoneyState==5?'-.08rem':''}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
       <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
       <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.05rem':playMoneyState==6?'.095rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
-       <!-- <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'17.5%':'17%',marginRight:playMoneyState==6?'.1rem':'.1rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{[0,1,2,3,4,5].includes(playMoneyState)?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):'' }}</div> -->
+ 
     </div>
     <div class="order-content">
         <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
@@ -85,13 +85,10 @@
         </div>
         <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">{{ $t('nav.Sellorder_Card') }}</div>
         <div v-if="[4,5,6].includes(playMoneyState)" :style="{cursor:playMoneyState===6? 'pointer':''}"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
-          <!-- <div style="width:80%"> -->
-            <!-- <p style="width:100%">{{ orderStateData.bank }}</p> -->
-            <!-- <div style="display:flex;"> -->
+         
               <p style="width:36%">{{ AES(cardUserName.name)?AES(cardUserName.name):'John Tan' }}</p>
                <p style="margin-left:.16rem;overflow: none;width:100%">{{ accountNumberCode.slice(0,4) }} **** **** {{accountNumberCode.slice(accountNumberCode.length-4,accountNumberCode.length) }}</p>
-            <!-- </div>
-          </div> -->
+          
           <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
         </div>
         <div class="order-state_title" v-if="playMoneyState===6">{{ $t('nav.Sellorder_Fail') }}</div>
@@ -111,7 +108,9 @@
     <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }">
         <div class="Network-title">{{ $t('nav.Sellorder_Network') }}</div>
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
-    </van-popup>
+    </van-popup> -->
+    <sendCrypto v-if="$store.state.nextOrderState==1"/>
+    <sellState v-else/>
   </div>
 
 </template>
@@ -119,11 +118,15 @@
 import Clipboard from 'clipboard'
 import QRCode from 'qrcodejs2';
 import {AES_Decrypt} from '../../utils/encryp'
-import IncludedDetailsSell from '../../components/IncludedDetailsSell'
+// import IncludedDetailsSell from '../../components/IncludedDetailsSell'
+import sendCrypto from './children/sendCrypto.vue'
+import  sellState from './children/sellState'
 export default{
   name:'orderState',
   components:{
-    IncludedDetailsSell
+    sendCrypto,
+    sellState
+    // IncludedDetailsSell
   },
   data(){
     return {
@@ -139,7 +142,8 @@ export default{
       timer:null,
       timeText:'',
       cardUserName:'',
-      accountNumberCode:''
+      accountNumberCode:'',
+      nextOrderState:1
 
     }
   },
@@ -383,32 +387,32 @@ export default{
   },
 
   activated (){
-    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
-    this.$store.state.emailFromPath = 'sellOrder'
-    this.getCurrencyStatus()
-    this.timer = setInterval(()=>{
-      this.getCurrencyStatus()
-    },1000)
-    if(this.playMoneyState == 6){
-      let params = {
-          id:this.orderStateData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res.returnCode && res.data){
-            this.cardUserName = res.data
-            this.accountNumberCode = this.AES(res.data.accountNumber)
-          }
-        })
-    }
+    // this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
+    // this.$store.state.emailFromPath = 'sellOrder'
+    // this.getCurrencyStatus()
+    // this.timer = setInterval(()=>{
+    //   this.getCurrencyStatus()
+    // },1000)
+    // if(this.playMoneyState == 6){
+    //   let params = {
+    //       id:this.orderStateData.userCardId,
+    //     }
+    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+    //       if(res.returnCode && res.data){
+    //         this.cardUserName = res.data
+    //         this.accountNumberCode = this.AES(res.data.accountNumber)
+    //       }
+    //     })
+    // }
 
-      setTimeout(()=>{
-      if(this.playMoneyState == 7)
-      this.getNetworkList = null
-      else if(this.$store.state.orderStatus.cryptoCurrency)
-      this.getNetworkList()
-      else
-      this.getNetworkList()
-    },1200)
+    //   setTimeout(()=>{
+    //   if(this.playMoneyState == 7)
+    //   this.getNetworkList = null
+    //   else if(this.$store.state.orderStatus.cryptoCurrency)
+    //   this.getNetworkList()
+    //   else
+    //   this.getNetworkList()
+    // },1200)
 
 
 
@@ -429,7 +433,7 @@ export default{
 
 .order-container{
   // padding: 0 .2rem .3rem;
-  padding-bottom: .2rem;
+  // padding-bottom: .2rem;
 
   .timing{
     font-family: GeoLight;

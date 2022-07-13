@@ -132,7 +132,7 @@ export default {
       let LanguageName = ''
       for(let item of Object.keys(this.$i18n.messages)){
             if(item === language){
-              console.log(this.$i18n.messages[item].language);
+              // console.log(this.$i18n.messages[item].language);
               LanguageName = this.$i18n.messages[item].language
             }
           }

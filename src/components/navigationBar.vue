@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="tabState  &&  $route.path !== '/emailCode'">
+  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode') || ( $route.path === '/sellOrder' && $store.state.nextOrderState == 1?true:false)">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
@@ -53,6 +53,7 @@ export default {
       // }
       //add sellOrder page back home
       if(this.$route.path === '/paymentResult'|| this.$route.path === '/sellOrder' ){
+        this.$store.state.nextOrderState=1
         this.$router.push('/');
         return;
       }
