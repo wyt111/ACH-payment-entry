@@ -24,7 +24,7 @@
     <!-- 墨西哥支付按钮 -->
     <button class="continue" @click="MEXConfirmState = true" v-if="routerParams.payWayCode === '10008'">
       {{ $t('nav.queryOderState') }}
-      <img class="rightIcon" src="@/assets/images/button-right-icon.png">
+      <img class="rightIcon" src="@/assets/images/button-right-icon.svg">
     </button>
     <!-- I confirm that the payment has been completed.-->
     <Button :buttonData="buttonData" :disabled="payState" @click.native="submit" v-else></Button>

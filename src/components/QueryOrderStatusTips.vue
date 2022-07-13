@@ -6,7 +6,7 @@
         <p class="tipsText">{{ $t('nav.orderTips_text1') }} {{ $store.state.buyRouterParams.cryptoCurrency }} {{ $t('nav.orderTips_text2') }}</p>
         <footer @click="closeView">
           {{ $t('nav.orderTips_buttonText') }}
-          <img class="rightIcon" src="../assets/images/button-right-icon.png" alt="">
+          <img class="rightIcon" src="../assets/images/button-right-icon.svg" alt="">
         </footer>
       </div>
     </div>

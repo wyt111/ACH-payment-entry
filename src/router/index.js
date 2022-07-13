@@ -66,6 +66,16 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  {
+    path: "/Refund",
+    name: 'Refund',
+    component: resolve => require(['../views/tradeHistory/refund.vue'], resolve),
+    meta: {
+      requireAuth: true,
+      title: 'nav.routerName_Refund',
+      keepAlive: true,
+    }
+  },
     //买币路由
   {
     path: "/receivingMode",
@@ -151,7 +161,7 @@ export const constantRoutes = [
   {
     path: "/sell-formUserInfo",
     name: 'testForm',
-    component: resolve => require(['../views/sellCurrency/cardInfo/testForm.vue'], resolve),
+    component: resolve => require(['../views/sellCurrency/cardInfo'], resolve),
     meta: {
       requireAuth: true,
       title: 'nav.routerName_sellForm',

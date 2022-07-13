@@ -41,6 +41,7 @@ module.exports = {
     routerName_emailCode: 'Verification code',
     routerName_Transactions: 'Order History',
     routerName_Transactions_details: 'Order History',
+    routerName_Refund: 'Request Refund of ',
     routerName_receivingMode: 'Receive coins',
     routerName_paymentMethod: 'Choose payment method',
     routerName_basisIdAuth: 'basis-Id-Auth',
@@ -49,7 +50,7 @@ module.exports = {
     routerName_buyPayment: 'Payment',
     routerName_buyOtherWayPay: 'Confirm Payment',
     routerName_paymentResult: 'Payment Result',
-    routerName_sellForm: 'Enter Information',
+    routerName_sellForm: 'Add Bank Account',
     routerName_configSell: 'Confirm',
     routerName_sellOrder: 'Order',
 

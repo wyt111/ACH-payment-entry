@@ -58,7 +58,7 @@ Three channels for successful payment --- 'depositType'
     </div>
     <button class="continue" @click="goHome">
       {{ backText }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" alt="">
+      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" alt="">
     </button>
   </div>
 </template>

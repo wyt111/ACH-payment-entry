@@ -5,13 +5,17 @@
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
       <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/backIcon.png"></div>
-      <div class="linkName">{{ $t(routerName) }}</div>
+      <div class="linkName">
+        {{ $t(routerName) }}
+        <!-- 退款页面标题添加币种 -->
+        <span class="currency" v-if="$route.path === '/Refund'">{{ $route.query.currency }}</span>
+      </div>
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
-      <img src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
-      <img src="../assets/images/closeIcon.png" v-else @click="openMenu">
+      <img class="menu" src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
+      <img class="closeIcon" src="../assets/images/closeIcon.png" v-else @click="openMenu">
     </div>
   </div>
 </template>
@@ -124,7 +128,6 @@ export default {
   .navigationBar_view_left {
     display: flex;
     align-items: center;
-
     font-size: 0.21rem;
     font-family: "GeoDemibold", GeoDemibold;
     font-weight: normal;
@@ -139,13 +142,21 @@ export default {
     .linkName {
       margin-left: 0.15rem;
       display: flex;
+      .currency{
+        margin-left: 0.06rem;
+      }
     }
   }
   .navigationBar_view_right {
     display: flex;
     margin-left: auto;
-    img {
+    .menu{
+      width: 0.18rem;
+    }
+    .closeIcon{
       width: 0.24rem;
+    }
+    img {
       cursor: pointer;
     }
   }

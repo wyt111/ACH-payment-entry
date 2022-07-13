@@ -50,7 +50,7 @@
 
           <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
             {{ $t('nav.Continue') }}
-            <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
+            <img class="rightIcon" src="../../../../assets/images/button-right-icon.svg" v-if="!request_loading">
             <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
           </button>
         </div>
