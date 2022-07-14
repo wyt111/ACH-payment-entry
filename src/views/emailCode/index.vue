@@ -22,26 +22,32 @@
   <!-- </div> -->
   <div class="emailCode-container" ref="emailCode">
     <div>
-      <div class="emailCode_tab">
-      <img  @click="$router.replace('/')" src="@/assets/images/closeIcon.png" alt="">
-    </div>
+      
       <div class="emailCode-container_top">
         <img src="@/assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.loginTitle1') }}</h2>
         <p>{{ $t('nav.loginTitle2') }}</p>
       </div>
       <div class="emailCode_content" ref="emailInput">
-        <p>{{ $t('nav.enterEmail') }}</p>
+        <p v-if="!loggedIn">{{ $t('nav.enterEmail') }}</p>
+        <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
         <input type="text"  v-model="email" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
+      <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
     </div>
 
-      <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
-        {{ $t('nav.Continue') }}
-        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
-        <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
+      <div>
+        <div class="emailCode_checke" v-if="!loggedIn">
+          <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
+          <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
+        </div>
+        <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true && checked === true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
+          {{ $t('nav.Continue') }}
+          <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
+          <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
+        </div>
       </div>
   </div>
 </template>
@@ -50,7 +56,7 @@
 // import includedDetails from "../../components/IncludedDetails";
 // import axios from 'axios';
 import { debounce } from '../../utils/index';
-import { AES_Encrypt } from '@/utils/encryp.js';
+import { AES_Encrypt,AES_Decrypt } from '@/utils/encryp.js';
 
 export default {
   name: "emailCode",
@@ -60,6 +66,7 @@ export default {
       timeDown: 60,
       timeVal: null,
       emailErrorState: false,
+      checked:false,
       emailError: '',
       detailsState: true,
       email: '',
@@ -71,7 +78,8 @@ export default {
 
       getCode_state: true,
       login_state: true,
-      login_loading:true
+      login_loading:true,
+      loggedIn:false
     }
   },
   activated(){
@@ -81,11 +89,21 @@ export default {
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
     if(sessionStorage.getItem("accessMerchantInfo") !== "{}" && sessionStorage.getItem("accessMerchantInfo") !== null){
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
+      return
+    }
+    if(localStorage.getItem('login_email')){
+      this.email = AES_Decrypt(localStorage.getItem('login_email'))
+      this.loggedIn = true
+      this.checked = true
+    }else{
+      this.loggedIn = false
+      this.checked = false
     }
   },
   deactivated(){
     window.clearInterval(this.timeVal);
     this.timeVal = null;
+    this.email = ''
   },
   methods: {
     getCode:debounce(function () {
@@ -97,10 +115,19 @@ export default {
         // this.emailError = "Not a valid email address.";
         this.emailError = this.$t('nav.login_required');
         // this.login_loading = false
-        this.$refs.emailInput.style = 'border:1px solid #D92D20'
+        // this.$refs.emailInput.style = 'border:1px solid #D92D20'
         return;
+      }else if(!this.checked){
+        this.$toast({
+         duration: 3000,
+         message: this.$t('nav.login_Agreement')
+       });
+       return
       }
-      this.$refs.emailInput.style = 'border:none'
+      if(this.loggedIn===true){
+        alert('一键登陆')
+        return
+      }
       this.emailErrorState = false;
       this.login_loading = false
       //Get code
@@ -122,6 +149,12 @@ export default {
     },500,false),
     expandCollapse(){
       this.detailsState = this.detailsState === true ? false : true;
+    },
+    signAddress(){
+      this.loggedIn = false
+      this.checked = false
+      this.email = ''
+      localStorage.removeItem('login_email')
     },
     // toLogin:debounce(function (){
     //   this.login_state = false;
@@ -188,13 +221,13 @@ export default {
     //   }
     // },300,false),
 
-    goProtocol(name){
-      if(name === 'privacyPolicy'){
-        window.location = 'https://alchemypay.org/privacy-policy/';
-        return;
+   openView(name){
+      if(name==='Privacy'){
+        window.location = 'https://alchemypay.org/privacy-policy/'
+        return
       }
-      if(name === 'termsUse'){
-        window.location = 'https://alchemypay.org/terms-of-use/';
+      if(name === 'Terms'){
+         window.location = 'https://alchemypay.org/terms-of-use/';
         return;
       }
     }
@@ -206,108 +239,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#emailCode{
-  .form-title{
-    font-size: 0.14rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #232323;
-    padding-top: 0.2rem;
-  }
-  .form-input{
-    height: 0.6rem;
-    background: #F3F4F5;
-    border-radius: 10px;
-    margin-top: 0.1rem;
-    display: flex;
-    position: relative;
-    input{
-      width: 100%;
-      height: 100%;
-      background: #F3F4F5;
-      border-radius: 10px;
-      font-size: 0.16rem;
-      color: #232323;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      padding: 0 1rem 0 0.2rem;
-      border: none;
-      outline: none;
-    }
-  }
-  .emailCode input::placeholder{
-    letter-spacing: 0;
-  }
-  .emailCode input{
-    letter-spacing: 3px;
-  }
-  .errorMessage{
-    font-size: 0.14rem;
-    font-family: "GeoDemibold", GeoDemibold;
-    font-weight: 400;
-    color: #FF0000;
-    margin: 0.1rem 0 0 0.2rem;
-  }
-  .formOptions{
-    position: absolute;
-    top: 0.19rem;
-    right: 0.2rem;
-    font-size: 0.16rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: bold;
-    color: #4479D9;
-    cursor: pointer;
-  }
-  .getCodeClass{
-    opacity: 0.5;
-    cursor: no-drop;
-  }
-  .agreement-content{
-    display: flex;
-    margin-top: 0.2rem;
-    padding-bottom: 0.4rem;
-    .agreement-radio{
-      display: flex;
-      margin-top: 0.05rem;
-      input{
-        cursor: pointer;
-        width: 0.13rem;
-        height: 0.13rem;
-      }
-    }
-    .agreement-text{
-      font-size: 0.14rem;
-      font-family: "GeoDemibold", GeoDemibold;
-      font-weight: 400;
-      color: #333333;
-      margin-left: 0.2rem;
-      span{
-        font-weight: bold;
-        color: #4479DA;
-        cursor: pointer;
-      }
-    }
-  }
 
-  .continue{
-    width: 100%;
-    height: 0.6rem;
-    background: rgba(68, 121, 217, 0.5);
-    border-radius: 4px;
-    text-align: center;
-    line-height: 0.6rem;
-    font-size: 0.18rem;
-    font-family: 'Jost', sans-serif;
-    font-weight: 500;
-    color: #FAFAFA;
-    margin-top: 0.4rem;
-    cursor: no-drop;
-  }
-  .buttonTrue{
-    background: #4479D9 !important;
-    cursor: pointer;
-  }
-}
 .emailCode-container{
   width: 100%;
   // height: 100%;
@@ -321,30 +253,42 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: .4rem;
     h2{
       font-size: .21rem;
       font-family:"GeoBold";
       font-weight: normal;
-      color: #232323;
       margin: .24rem 0 .16rem 0;
+      color: #063376;
     }
     p{
       width: 2.5rem;
       font-size: .13rem;
       font-family: "GeoRegular";
       font-weight: normal;
-      color: #232323;
+      color: #949EA4;
       text-align: center;
     }
     img{
       width: .4rem;
-      height: .4rem;
+      // height: .4rem;
+    }
+  }
+  .emailCode_content_title{
+    margin-top: .16rem;
+    font-size: .13rem;
+    text-align: center;
+    font-family: "GeoLight";
+    color: #949EA4;
+    span{
+      color: #0059DA;
+      cursor: pointer;
     }
   }
   .emailCode_content{
     width: 100%;
     height: .56rem;
-    background: #F3F4F5;
+    border: 1px solid #EEEEEE;
     border-radius: .12rem;
     position: relative;
     input{
@@ -354,6 +298,7 @@ export default {
       font-size: .16rem;
       position: absolute;
       left: .42rem;
+      color: #0059DA;
       background: transparent;
       font-family: "GeoLight";
       outline: none;
@@ -363,7 +308,7 @@ export default {
       color: #707070;
       position: absolute;
       font-family: "GeoRegular";
-      top: -.22rem;
+      top: -.23rem;
     }
     img{
       width: .16rem;
@@ -416,5 +361,27 @@ export default {
     font-family:GeoRegular;
     margin-top: .08rem;
   }
+}
+.emailCode_checke{
+  width: 100%;
+  display: flex;
+  color: #949EA4;
+  font-size: .13rem;
+  line-height: .16rem;
+  margin-bottom: .16rem;
+   font-family: "GeoRegular";
+  span{
+    color: #0059DA;
+  }
+  .checkbox{
+    margin-right: .08rem;
+    ::v-deep .el-checkbox__inner{
+      border-radius: 100% !important;   
+    }
+  }
+ .checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+   background: #0059DA;
+   border-color:#0059DA ;
+ }
 }
 </style>

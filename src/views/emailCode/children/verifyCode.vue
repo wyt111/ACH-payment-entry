@@ -1,7 +1,7 @@
 <template>
   <div class="verifyCode-container">
       <div style="position:relative;flex:1">
-        <div class="verifyCode_title">{{ $t('nav.codeTitle1') }}</div>
+        <div class="verifyCode_title" style="font-size:.16rem;color:#063376;margin:.42rem 0 .0rem">{{ $t('nav.codeTitle1') }}</div>
       <div class="verifyCode_content">
         <span v-for="(item,index) in number" :key="index" @click="changeBlur" :class="index===value.length?'active':''">{{ value[index] }}</span>
         <input type="input" style="outline: none; color:transparent;" v-model="value" :maxlength="6" ref="input">
@@ -9,10 +9,8 @@
       <div class="verifyCode_title" style="margin-top:.4rem;text-align: center;" v-if="codeTime>0">{{ $t('nav.codeTitle3') }} {{ codeTime }}{{ $t('nav.codeSecond') }}</div>
       <div class="verifyCode_title" v-else style="margin-top:.4rem;text-align: center;" >{{ $t('nav.codeTitle2') }}  <span @click="getEmailCode">{{ $t('nav.login_getCode') }} </span></div>
       </div>
-      <div style="position:relative;height: 1.1rem;">
-        <div class="verifyCode_title bottom">
-        <el-checkbox size="small" v-model="checked"></el-checkbox>
-        <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">&lt;{{ $t('nav.code_name') }}&gt;</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">&lt;{{ $t('nav.code_name2') }}&gt;.</span></div></div>
+      <div style="position:relative;">
+        
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
         {{ $t('nav.Continue') }}
         <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
@@ -31,7 +29,6 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     return {
       number:6,
       value:'',
-      checked:false,
       codeTime:0,
       timeVal:null,
       showLoading:false
@@ -55,15 +52,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     setTimeout(()=>{
       this.changeBlur()
     },500)
-    // clearInterval(this.timeVal)
-    // this.codeTime = 10
-    //   this.timeVal = setInterval(()=>{
-    //   this.codeTime--
-    //   if(this.codeTime <= 0){
-    //     // this.codeTime = 10
-    //     clearInterval(this.timeVal)
-    //   }
-    // },1000)
+
   },
   methods:{
     //input聚焦
@@ -124,6 +113,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
             _this.showLoading = false
             _this.$store.state.isLogin = true
             _this.$store.state.menuState = 'login'
+            localStorage.setItem('login_email',_this.$store.state.userEmail)
             // debugger
             // console.log(_this.$store.state.routerQueryPath);
         if(_this.$store.state.routerQueryPath === true){
@@ -180,29 +170,14 @@ import { AES_Encrypt } from '@/utils/encryp.js';
          message: this.$t('nav.login_VerifyCode')
        });
        return
-     }else{
-       this.$toast({
-         duration: 3000,
-         message: this.$t('nav.login_Agreement')
-       });
-       return
      }
 
     },
-    openView(name){
-      if(name==='Privacy'){
-        window.location = 'https://alchemypay.org/privacy-policy/'
-        return
-      }
-      if(name === 'Terms'){
-         window.location = 'https://alchemypay.org/terms-of-use/';
-        return;
-      }
-    }
+    
   },
   computed:{
     netActive(){
-      if(this.checked && this.value.length === 6){
+      if( this.value.length === 6){
         return true
       }else if(isNaN(this.value) === true){
         return false

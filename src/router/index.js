@@ -30,7 +30,7 @@ export const constantRoutes = [
     name: 'emailCode',
     component: resolve => require(['../views/emailCode/index.vue'], resolve),
     meta: {
-      title: 'nav.routerName_email',
+      title: ' ',
       keepAlive: true,
     }
   },
@@ -40,7 +40,7 @@ export const constantRoutes = [
     name: 'verifyCode',
     component: resolve => require(['../views/emailCode/children/verifyCode.vue'], resolve),
     meta: {
-      title: 'nav.routerName_emailCode',
+      title: ' ',
       keepAlive: true,
     }
   },
