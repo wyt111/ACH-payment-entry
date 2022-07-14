@@ -286,7 +286,10 @@ module.exports = {
         buy_configPayIDR_ovo_title: 'OVO電話',
         login_getCode: '重新發送',
         login_VerifyCode:'請輸入六位數驗證碼',
-        login_Agreement:'請勾選用戶協定'
+        login_Agreement:'請勾選用戶協定',
+        sell_Order_network_selected:'請確保所選網路正確無誤，以免資產損失。',
+        Sell_Order_haveSent:'我已發送',
+        Sell_Order_transferred:'我已將加密貨幣轉移到指定的位址和網路。'
 
     }
 }

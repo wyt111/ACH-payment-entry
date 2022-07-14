@@ -6,48 +6,48 @@
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0].includes(state)" src="@/assets/images/stateSell/icon1_no.png" alt="">
-          <img v-else-if="[1].includes(state)"  src="@/assets/images/stateSell/icon1_In.png" alt="">
-          <img v-else-if="[2,3,4,5,6,7].includes(state)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
+          <img v-if="[0].includes(playMoneyState)" src="@/assets/images/stateSell/icon1_no.png" alt="">
+          <img v-else-if="[1].includes(playMoneyState)"  src="@/assets/images/stateSell/icon1_In.png" alt="">
+          <img v-else-if="[2,3,4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:state==0?'#949EA4':'' }">Crypto Sent</p>
-          <p :style="{ color:state==0?'#949EA4':'' }">Block confirmed (50/50)</p>
+          <p :style="{ color:playMoneyState==0?'#949EA4':'' }">Crypto Sent</p>
+          <p :style="{ color:playMoneyState==0?'#949EA4':'' }">Block confirmed (50/50)</p>
         </div>
       </div>
-      <img class="line" :src="[0,1].includes(state)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1].includes(state)" src="@/assets/images/stateSell/icon2_no.png" alt="">
-          <img v-else-if="[2].includes(state)" src="@/assets/images/stateSell/icon2_In.png" alt="">
-          <img v-else-if="[2,3,4,5,6,7].includes(state)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
+          <img v-if="[0,1].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_no.png" alt="">
+          <img v-else-if="[2].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_In.png" alt="">
+          <img v-else-if="[2,3,4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:[0,1,2].includes(state)?'#949EA4':'' }">Confirm Order</p>
-          <p :style="{ color:[0,1,2].includes(state)?'#949EA4':'' }">Your order has been confirmed</p>
+          <p :style="{ color:[0,1,2].includes(playMoneyState)?'#949EA4':'' }">Confirm Order</p>
+          <p :style="{ color:[0,1,2].includes(playMoneyState)?'#949EA4':'' }">Your order has been confirmed</p>
         </div>
       </div>
-      <img class="line" :src="[0,1,2].includes(state)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1,2].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1,2].includes(state)" src="@/assets/images/stateSell/icon3_no.png" alt="">
-          <img  v-else-if="[3].includes(state)" src="@/assets/images/stateSell/icon3_In.png" alt="">
-          <img v-else-if="[4,5,6,7].includes(state)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
+          <img v-if="[0,1,2].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_no.png" alt="">
+          <img  v-else-if="[3].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_In.png" alt="">
+          <img v-else-if="[4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(state)?'#949EA4':'' }">In Transfer</p>
-          <p :style="{ color:[0,1,2,3].includes(state)?'#949EA4':'' }">Your fiat is in transfer</p>
+          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">In Transfer</p>
+          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">Your fiat is in transfer</p>
         </div>
       </div>
-      <img class="line" :src="[0,1,2,3].includes(state)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1,2,3].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1,2,3].includes(state)" src="@/assets/images/stateSell/icon4_no.png" alt="">
-          <img v-else-if="state==4" src="@/assets/images/stateSell/icon4_In.png" alt="">
-          <img v-else-if="state==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
-          <img v-else-if="state==6 || state==7" src="@/assets/images/stateSell/icon4_error.png" alt="">
+          <img v-if="[0,1,2,3].includes(playMoneyState)" src="@/assets/images/stateSell/icon4_no.png" alt="">
+          <img v-else-if="playMoneyState==4" src="@/assets/images/stateSell/icon4_In.png" alt="">
+          <img v-else-if="playMoneyState==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
+          <img v-else-if="playMoneyState==6 || playMoneyState==7" src="@/assets/images/stateSell/icon4_error.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(state)?'#949EA4':'' }">Result</p>
+          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">Result</p>
         </div>
       </div>
       
@@ -64,6 +64,12 @@
 <script>
 export default {
   name:'sellState',
+  props:{
+    playMoneyState:{
+      type:Number,
+      default:0
+    }
+  },
   data(){
     return{
       sellStateList:[
@@ -114,6 +120,7 @@ export default {
   },
   methods:{
     goSellOrder(){
+      this.$router.replace('/')
       this.$store.state.nextOrderState = 1
     }
   }
@@ -178,6 +185,7 @@ export default {
     position: absolute;
     bottom: .2rem;
     left: 6%;
+    cursor: pointer;
     >p{
       font-style: normal;
       line-height: 18px;

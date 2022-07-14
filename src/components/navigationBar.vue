@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode') || ( $route.path === '/sellOrder' && $store.state.nextOrderState == 1?true:false)">
+  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode' && $route.path !== '/sellOrder') ">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
@@ -13,7 +13,7 @@
     </div>
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
-    <div class="navigationBar_view_right" v-if="$route.path !== '/Language'">
+    <div class="navigationBar_view_right" >
       <img class="menu" src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
       <img class="closeIcon" src="../assets/images/closeIcon.png" v-else @click="openMenu">
     </div>
@@ -31,6 +31,7 @@ export default {
       routerName: "",
       tabState: false,
       routerPath: '',
+      routerCrypto:''
     };
   },
   watch: {
@@ -43,6 +44,7 @@ export default {
           } else {
             this.tabState = true;
             this.routerName = val.meta.title;
+
           }
           oldVal ? this.routerPath = oldVal.path : "";
         }

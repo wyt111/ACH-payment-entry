@@ -1,65 +1,71 @@
 <template>
   <div class="sendCrypto-container">
+    <div class="sendCrypto_nav">
+      <div class="sendCrypto_nav_left">
+        <img src="@/assets/images/goBack.png" alt="">
+        <p>Sell {{orderStateData.cryptoCurrency}}</p>
+      </div>
+          <div class="sendCrypto_nav_right" >
+            <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
+          </div>
+      </div>
     <div>
+      
       <div class="sendCrypto_title">
-      <p>You get <span> 300.00 USD </span>  for <span> 123.00 USDT </span> </p>
-      <p>
-        <img src="@/assets/images/SellTime.png" alt="">
-        15s
-      </p>
+      <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
+      
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
-      <p>Ramp fee </p>
-      <p style="color:#063376">$ 0.81</p>
+      <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
+      <p style="color:#063376">{{ orderStateData.feeUnit }} {{ orderStateData.fee }}</p>
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
-      <p >Order ID </p>
-      <p style="cursor: pointer;" class="order-con" @click="copy" data-clipboard-text="d7bHJKBY2n2BIBwbd2739BN2911">
-        <span style="width:2rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;">d7bHJKBY2n2BIBwbd2739BN2911</span>
+      <p >{{ $t('nav.Sellorder_Id') }}</p>
+      <p style="cursor: pointer;" class="order-con" @click="copy" :data-clipboard-text="orderStateData.orderId">
+        <span style="width:2rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;text-align:right">{{ orderStateData.orderId }}</span>
         <img style="height:.2rem;margin-left:.08rem;flex:1" src="@/assets/images/copySell.png" alt="">
       </p>
     </div>
     <div class="sendCrypto_qrcode">
-      <p>Please transfer ETH to the address within <span>2:00:00</span></p>
+      <p>{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }} <span>{{ turnMinute(orderStateData.expirationTime) }}</span></p>
       <div ref="qrCodeUrl" class="qrCodeUrl" style="width:1.4rem;height:1.4rem;"></div>
     </div>
-    <div class="sendCrypto_content">
-      <div class="title">Address (ACH)</div>
-      <div class="content order-con" @click="copy" data-clipboard-text="23hd8932bc3455ert76e4rre2345">
-        <p style="width:2.5rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;">23hd8932bc3455ert76e4rre2345</p>
+    <div class="sendCrypto_content" style=" align-items: center;">
+      <div class="title">{{ $t('nav.Sellorder_Address') }} (ACH)</div>
+      <div class="content order-con" @click="copy" :data-clipboard-text="orderStateData.address">
+        <p style="max-width:2.5rem;height:.4rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; ">{{ orderStateData.address }}</p>
         <img src="@/assets/images/copySell.png" alt="">
       </div>
     </div>
     <div class="sendCrypto_content">
-      <div class="title">Network</div>
+      <div class="title">{{  $t('nav.Sellorder_Network') }}</div>
       <div class="content" @click="Network_show = true">
-        <p>Ethereum</p>
+        <p>{{ orderStateData.networkName }}</p>
         <img style="height:.15rem" src="@/assets/images/SelectNetwork.png" alt="">
       </div>
     </div>
-    <div class="sendCrypto_bottom_title">Please ensure the network selected is correct to avoid loss of assets.</div>
+    <div class="sendCrypto_bottom_title">{{ $t('nav.sell_Order_network_selected') }}</div>
     </div>
     <div class="sendCrypto_button" @click="transferredShow=true">
-      I have sent the USDT
+      {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
       <img src="@/assets/images/rightIconSell.png" alt="">
     </div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
       <div class="content">
-        <p>I have transferred the crypto to the indicated address and network.</p>
+        <p style="height:.5rem">{{ $t('nav.Sell_Order_transferred') }}</p>
         <div>
-          <p @click.stop="confirmSell">Confirm</p>
+          <p @click.stop="confirmSell">{{ $t('nav.Confirm') }}</p>
           <p @click.stop="transferredShow = false">Not Yet</p>
         </div>
       </div>
     </div>
+
    <div class="sendCrypto_bottom" v-show="Network_show" @click.stop="Network_show = false">
      
    </div>
    <div :class="!Network_show?'sendCrypto_bottomContent':'sendCrypto_bottomContent sendCrypto_bottomContentActive'" >
        <div class="Network-title">{{ $t('nav.Sellorder_Network') }} <img @click="Network_show = false" src="@/assets/images/ShutDown.png" alt=""></div>
-       <div class="Network-content">Ethereum (ERC20)</div>
-       <div class="Network-content">Ethereum (ERC20)</div>
-       <div class="Network-content">Ethereum (ERC20)</div>
+       <div class="Network-content" v-for="item in Sellorder_NetworkList?Sellorder_NetworkList:''" :key="item.id" @click="networkSelect(item)">{{ item.networkName }} <img :src="item.networkName==orderStateData.networkName?NetworkCheck:''" alt=""></div>
      </div>
   </div>
 </template>
@@ -69,18 +75,35 @@ import QRCode from 'qrcodejs2';
 export default {
   
   name:'sendCrypto',
+  props:{
+    orderStateData:{
+      default:''
+    }
+  },
   data(){
     return{
       transferredShow:false,
       Network_show:false,
+      timeText:'',
+      Sellorder_NetworkList:'',
+      NetworkCheck:require('@/assets/images/cardCheckIcon.png'),
     }
   },
   mounted(){
-    this.generateQRcode()
-    console.log(this.$route.meta.title = 'nav.SellOrder_title');
+    // this.$parent.routerViewState = true 
+    setTimeout(() => {
+      this.getNetworkList()
+      this.$route.meta.title = 'nav.SellOrder_title' 
+    }, 1000);
   },
   activated(){
-    console.log(this.$route.meta.title = 'nav.SellOrder_title');
+   
+    //网络列表延迟请求
+    this.$route.meta.title = 'nav.SellOrder_title' 
+    setTimeout(() => {
+      this.getNetworkList()
+      this.$route.meta.title1 =  this.orderStateData.cryptoCurrency
+    }, 1000);
   },
   methods:{
     //确认切换
@@ -105,16 +128,82 @@ export default {
     generateQRcode(){
        this.$refs.qrCodeUrl.innerHTML = "";
       new QRCode(this.$refs.qrCodeUrl, {
-        text: 'd7bHJKBY2n2BIBwbd2739BN2911',
+        text: this.orderStateData.address,
         width: '140',
         height: '140',
         colorDark: '#000000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       })
+    },
+    //获取网络列表
+     async  getNetworkList(){
+      let params = {
+        coin:this.$store.state.orderStatus.cryptoCurrency
+      }
+      let res  = await this.$axios.get(this.$api.get_networkList,params)
+      
+      this.Sellorder_NetworkList =  res.data
+     },
+     //Calculate minutes and seconds
+    turnMinute(value){
+      if(value >= 0){
+        var second = value;
+        var minute=0;
+        minute = parseInt(second/60);
+        second%=60;
+        // if(minute>60) {
+        //   minute%=60;
+        // }
+        second = second>9?second:"0"+second;
+        minute = minute>9?minute:"0"+minute;
+        return minute+":"+second;
+      }
+    },
+    //确认网络
+    networkSelect(val){
+      if(this.orderStateData.networkName===val.networkName){
+        this.Network_show = false
+        return false
+      }
+       let params = {
+        // id:'15',
+        id:this.$store.state.sellOrderId,
+        cryptoCurrencyNetworkId:val.id
+      }
+      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
+        if(res && res.data){
+          this.Network_show = false
+        }
+      })
+    } ,
+    //保留小数点两位或者6位
+    getToFixed(firstVal,lastVal){
+      let decimalDigits = 0;
+      let resultValue = firstVal - lastVal;
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let price = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || price <= 0 ? price = 0 : '';
+      return price;
+
+    },
+    openMenu(){
+      this.$parent.$parent.routerViewState === true ? this.$parent.$parent.routerViewState = false : this.$parent.$parent.routerViewState = true;
     }
- 
   
+  },
+  watch:{
+    'orderStateData.address':{
+      immediate:true,
+      deep:true,
+      handler(newVal,oldVal){
+        if(newVal !== oldVal){
+          this.$nextTick(()=>{
+            this.generateQRcode()
+          })
+        }
+      }
+    }
   }
 }
 </script>
@@ -127,7 +216,29 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   // position: relative;
-  
+ 
+ .sendCrypto_nav{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   img{
+       width: .19rem;
+     }
+   .sendCrypto_nav_left{
+     display: flex;
+     cursor: pointer;
+     img{
+       width: .12rem;
+       height: .2rem;
+     }
+     p{
+       margin-left: .15rem;
+       font-size: .18rem;
+       color: #063376;
+       font-family: "GeoDemibold", GeoDemibold;
+     }
+   }
+ }
 
   .sendCrypto_title{
     width: 100%;
@@ -318,6 +429,13 @@ export default {
       margin-bottom: .16rem;
       color: #949EA4;
       font-size: .16rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      img{
+        height: .15rem;
+      }
     }
   }
   .sendCrypto_bottomContentActive{

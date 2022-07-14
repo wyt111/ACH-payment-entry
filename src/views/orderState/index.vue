@@ -1,122 +1,13 @@
 <template>
   <div class="order-container" >
-    <!-- <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
-   
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
-    <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
-
-    <div class="timing" v-if="playMoneyState===6"> <span>{{ $t('nav.Sellorder_details') }}</span></div>
-    <div class="timing" v-if="playMoneyState===7">{{ $t('nav.Sellorder_page') }}</div>
-
-
-    <div class="order-state">
-      <div class="state">
-      
-        <div  v-if="[1,0].includes(playMoneyState)" style="background:#959595FF"><img src="../../assets/images/icon4.png" alt=""></div>
-        <div :class="[2,3,4,5,6].includes(playMoneyState)?'stateSuccessful':''" v-if="[2,3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon4.png" alt=""></div>
-        <div :class="[7].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===7"><img src="../../assets/images/errorIcon.png" alt=""></div>
-
-      </div>
-      <div :class="[2,3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,7].includes(playMoneyState)">2</div>
-        <div  v-if="[2,3,4,5,6].includes(playMoneyState)" :class="[3,4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'"><img src="../../assets/images/icon1.png" alt=""></div>
-      </div>
-      <div :class="[3,4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,2,7].includes(playMoneyState)">3</div>
-        <div :class="[4,5,6].includes(playMoneyState)?'stateSuccessful':'stateLoading'" v-if="[3,4,5,6].includes(playMoneyState)"><img src="../../assets/images/icon2.png" alt=""></div>
-      </div>
-      <div :class="[4,5,6].includes(playMoneyState)?`state-content success`:`state-content`">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div class="state">
-        <div v-if="[0,1,2,3,4,7].includes(playMoneyState)" :style="{background:playMoneyState===4?'#959595FF':''}">4</div>
-        <div :class="playMoneyState===5?'stateSuccessful':''" v-if="[5].includes(playMoneyState)"><img src="../../assets/images/icon3.png" alt=""></div>
-        <div :class="[6].includes(playMoneyState)?'stateError':''" v-if="playMoneyState===6"><img src="../../assets/images/errorIcon.png" alt=""></div>
-      </div>
-    </div>
-    <div class="order-state-content">
-      <div :class="playMoneyState===7?'payCions':''" :style="{color:[0,1].includes(playMoneyState)?'':'#000',}">{{ $t('nav.Sellorder_Crypto') }}</div>
-      <div :style="{color:[0,1,2].includes(playMoneyState)?'':'#000',marginLeft:playMoneyState==5?'-.08rem':''}">{{ playMoneyState===7?'': $t('nav.Sellorder_Received') }}</div>
-      <div :style="{color:[0,1,2,3].includes(playMoneyState)?'':'#000'}">{{ playMoneyState===7?'':$t('nav.Sellorder_Initiate') }}</div>
-      <div :style="{color:[0,1,2,3,4,].includes(playMoneyState)?'':'#000',width:playMoneyState==6 || playMoneyState==5?'.45rem':'17%',marginRight:playMoneyState==5?'.05rem':playMoneyState==6?'.095rem':'-.0rem'}" v-if="[0,1,2,3,4,5,6].includes(playMoneyState)">{{playMoneyState==5?$t('nav.Sellorder_success'):playMoneyState==6?$t('nav.Sellorder_fail'):$t('nav.Sellorder_Transfer') }}</div>
- 
-    </div>
-    <div class="order-content">
-        <div class="order-title">{{ $t('nav.Sellorder_Id') }}</div>
-        <div class="order-con order-conId" style="cursor: pointer;" @click="copy" :data-clipboard-text="orderStateData.orderId">
-          <p>{{ orderStateData.orderId }}</p>
-          <img src="../../assets/images/copy.png" alt="">
-        </div>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Network') }}</div>
-        <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
-          <p>{{ Network?Network.networkName: network1}}</p>
-          <img v-if="[0,1].includes(playMoneyState)" style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
-        </div>
-        <transition name="fade">
-        <div class="network-content" v-show="Network_show1">
-          <div v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)">
-            <p>{{ item.networkName }}</p>
-            <img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" style="border:none" alt="">
-          </div>
-        </div>
-        </transition>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Address') }}</div>
-        <div class="order-con" v-if="[0,1,2,3].includes(playMoneyState)" style="cursor: pointer;"  @click="copy" :data-clipboard-text="[0,1].includes(playMoneyState)?orderStateData.address:''">
-          <p>{{ orderStateData.address }}</p>
-          <div style="margin-top:.03rem" v-if="playMoneyState===0||playMoneyState===1">
-            <img style="margin-right:.2rem" @click.stop="qrCode" src="../../assets/images/Qrcode.png" alt="">
-            <img src="../../assets/images/copy.png"  alt="">
-          </div>
-        </div>
-        <div v-if="[4,5,6].includes(playMoneyState)" class="order-title">{{ $t('nav.Sellorder_Card') }}</div>
-        <div v-if="[4,5,6].includes(playMoneyState)" :style="{cursor:playMoneyState===6? 'pointer':''}"  class="order-con" @click="goBank(playMoneyState,orderStateData)">
-         
-              <p style="width:36%">{{ AES(cardUserName.name)?AES(cardUserName.name):'John Tan' }}</p>
-               <p style="margin-left:.16rem;overflow: none;width:100%">{{ accountNumberCode.slice(0,4) }} **** **** {{accountNumberCode.slice(accountNumberCode.length-4,accountNumberCode.length) }}</p>
-          
-          <img style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
-        </div>
-        <div class="order-state_title" v-if="playMoneyState===6">{{ $t('nav.Sellorder_Fail') }}</div>
-        <div class="order-state_content" v-if="playMoneyState===6" >
-          {{ orderStateData.errorMsg }}
-        </div>
-
-    </div>
-    <div class="ContinueButton" v-if="playMoneyState===7" @click="$router.replace('/')">{{ $t('nav.orderRsult') }} <img src="../../assets/images/slices/rightIcon.png" alt=""></div>
-    <IncludedDetailsSell ref="includedDetails_ref" :orderState="[3,4,5,6].includes(playMoneyState)?orderStateData:null" style="margin-top:.4rem" v-if="playMoneyState!==7" :time-down-state="[0,1,2].includes(playMoneyState)?true:false"/>
-    <van-popup class="popup_center" v-model="show" round>
-      <div class="qrcode" >
-        <div  ref="qrCodeUrl" class="qrCodeUrl"></div>
-        <p>{{ $t('nav.Sellorder_QRCode') }}</p>
-      </div>
-    </van-popup>
-    <van-popup v-model="Network_show" position="bottom" round :style="{ height: '30%' }">
-        <div class="Network-title">{{ $t('nav.Sellorder_Network') }}</div>
-        <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
-    </van-popup> -->
-    <sendCrypto v-if="$store.state.nextOrderState==1"/>
-    <sellState v-else/>
+    
+    <sendCrypto v-if="$store.state.nextOrderState==1" :orderStateData="orderStateData"/>
+    <sellState v-else :playMoneyState="playMoneyState"/>
   </div>
 
 </template>
 <script>
-import Clipboard from 'clipboard'
-import QRCode from 'qrcodejs2';
+
 import {AES_Decrypt} from '../../utils/encryp'
 // import IncludedDetailsSell from '../../components/IncludedDetailsSell'
 import sendCrypto from './children/sendCrypto.vue'
@@ -173,38 +64,6 @@ export default{
         }
       }
     },
-
-    copy(){
-        let clipboard = new Clipboard('.order-con');
-      clipboard.on('success', () => {
-        this.$toast({
-          duration: 3000,
-          message: this.$t('nav.copyTips')
-        });
-        clipboard.destroy()
-      })
-      clipboard.on('error', () => {
-        clipboard.destroy()
-      })
-    },
-     generateQRcode(){
-       this.$refs.qrCodeUrl.innerHTML = "";
-      new QRCode(this.$refs.qrCodeUrl, {
-        text: this.orderStateData.address,
-        width: 140,
-        height: 140,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      })
-    },
-    qrCode(){
-      this.show = true
-      setTimeout(()=>{
-        this.generateQRcode()
-      },500)
-
-    },
     //设置网络
     SetNetwork(text){
       let _chiletWidth = document.documentElement.clientWidth
@@ -252,6 +111,7 @@ export default{
       let res  = await this.$axios.get(this.$api.get_networkList,params)
       if(res.returnCode == '0000' && res.data){
         this.Network_data = res.data
+        this.$store.state.Sellorder_Network = res.data
         res.data.forEach(item => {
             if(item.network==this.orderStateData.cryptoCurrencyNetwork){
               this.Network = item
@@ -276,6 +136,7 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
+          this.playMoneyState = 6
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -387,12 +248,12 @@ export default{
   },
 
   activated (){
-    // this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
-    // this.$store.state.emailFromPath = 'sellOrder'
-    // this.getCurrencyStatus()
-    // this.timer = setInterval(()=>{
-    //   this.getCurrencyStatus()
-    // },1000)
+    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
+    this.$store.state.emailFromPath = 'sellOrder'
+    this.getCurrencyStatus()
+    this.timer = setInterval(()=>{
+      this.getCurrencyStatus()
+    },1000)
     // if(this.playMoneyState == 6){
     //   let params = {
     //       id:this.orderStateData.userCardId,

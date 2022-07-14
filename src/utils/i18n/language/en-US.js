@@ -267,6 +267,9 @@ module.exports = {
     sell_form_bankSwiftTips: 'Swift code and location id cannot be empty at the same time',
     sell_form_bankSwiftCodeTips: 'Bank code and swift code cannot be empty at the same time',
     // sell_form_bankCodeLocationIdTips: 'Bank code and location id cannot be empty at the same time',
+    sell_Order_network_selected:'Please ensure the network selected is correct to avoid loss of assets.',
+    Sell_Order_haveSent:'I have sent the ',
+    Sell_Order_transferred:'I have transferred the crypto to the indicated address and network.',
 
     // 后增
     history_noListButton: 'Buy crypto now',

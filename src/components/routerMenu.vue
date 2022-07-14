@@ -1,5 +1,11 @@
 <template>
   <div id="routerMenu">
+    <div class="router_nav" v-if="$route.path==='/sellOrder'">
+      <div class="navigationBar_view_left" >{{ $t('nav.menu') }}</div>
+      <div class="navigationBar_view_right" >
+        <img class="closeIcon" src="../assets/images/closeIcon.png" @click="$parent.routerViewState=true">
+      </div>
+    </div>
     <div class="routerMenu_isLogo" v-if="token===false">
         <img src="../assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
@@ -241,7 +247,20 @@ export default {
 <style lang="scss" scoped>
 #routerMenu{
   position: relative;
-
+.router_nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .05rem 0 .15rem;
+  font-size: 0.21rem;
+    font-family: "GeoDemibold", GeoDemibold;
+    font-weight: normal;
+    color: #232323;
+  img{
+    width: .2rem;
+    cursor: pointer;
+  }
+}
   .routerMenu_line{
     display: flex;
     align-items: center;

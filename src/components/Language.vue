@@ -37,11 +37,11 @@ export default {
 
 .Language-container{
   width: 95%;
-  height: calc(100% - .8rem);
+  height: calc(100%);
   // height: 100%;
   background: #fff;
   position: absolute;
-  top: .65rem;
+  // top: .65rem;
   padding-right: .1rem;
   .Language_title{
     width: 100%;
