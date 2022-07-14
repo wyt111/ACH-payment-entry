@@ -200,11 +200,12 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
-            this.timeDown = setInterval(()=>{
-              this.queryOrderStatus();
-            },1000)
             if(JSON.stringify(res.data) === "{}"){
-              this.$store.state.buyRouterParams.payment_webUrl = res.data.webUrl;
+              this.timeDown = setInterval(()=>{
+                this.queryOrderStatus();
+              },1000)
+            }else{
+              window.location = res.data.webUrl;
             }
           }else {
             this.submitState = true;
@@ -229,10 +230,6 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res2=>{
-        if(res2.data.orderStatus && res2.data.orderStatus === 1){
-          window.location = this.$store.state.buyRouterParams.payment_webUrl;
-          return
-        }
         if(res2.data.orderStatus && res2.data.orderStatus > 2 && res2.data.orderStatus <= 6){
           // Clear create order token
           localStorage.removeItem("submit-token");
