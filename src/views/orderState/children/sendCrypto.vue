@@ -33,7 +33,7 @@
     <div class="sendCrypto_content" style=" align-items: center;">
       <div class="title">{{ $t('nav.Sellorder_Address') }} (ACH)</div>
       <div class="content order-con" @click="copy" :data-clipboard-text="orderStateData.address">
-        <p style="max-width:2.5rem;height:.4rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; ">{{ orderStateData.address }}</p>
+        <p style="max-width:2.5rem;white-space: normal;overflow:hidden;overflow:hidden;font-style: normal;text-overflow: ellipsis; ">{{ orderStateData.address }}</p>
         <img src="@/assets/images/copySell.png" alt="">
       </div>
     </div>
@@ -211,18 +211,23 @@ export default {
 
 .sendCrypto-container{
   width: 100%;
-  padding-bottom: .6rem;
+  // padding-bottom: .6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // position: relative;
+  padding: .3rem 0 .6rem 0;
  
  .sendCrypto_nav{
+   width: 85%;
    display: flex;
    justify-content: space-between;
    align-items: center;
+   position: absolute;
+   background: #FFFFFF;
+   top: .4rem;
    img{
        width: .19rem;
+       cursor: pointer;
      }
    .sendCrypto_nav_left{
      display: flex;
@@ -230,6 +235,7 @@ export default {
      img{
        width: .12rem;
        height: .2rem;
+       
      }
      p{
        margin-left: .15rem;
