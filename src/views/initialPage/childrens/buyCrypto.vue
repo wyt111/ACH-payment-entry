@@ -247,11 +247,11 @@ export default {
 
       //将you pay的币种和国家数据合并在一起
       this.basicData.worldList.forEach((item,index)=>{
-        if(item.fiatList){
-          item.fiatList.forEach((item2,index2)=>{
+        if(item.buyFiatList){
+          item.buyFiatList.forEach((item2,index2)=>{
             this.basicData.fiatCurrencyList.forEach(item3=>{
               if(item3.code === item2){
-                this.basicData.worldList[index].fiatList[index2] = item3;
+                this.basicData.worldList[index].buyFiatList[index2] = item3;
               }
             })
           })
@@ -265,6 +265,10 @@ export default {
           return item;
         }
       })
+      //商家配置的法币没有默认国家的法币，默认商家配置币种第一个
+      if(worldData[0].buyEnable === 0){
+        worldData = this.basicData.worldList.filter(item=>{return item.buyEnable === 1});
+      }
       this.handlePayWayList(worldData[0],1);
 
       //接入商户信息处理
@@ -282,15 +286,15 @@ export default {
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.payCommission = data.fiatList[0];
+        this.payCommission = data.buyFiatList[0];
       }else{
-        data.fiatList.forEach(item=>{
+        data.buyFiatList.forEach(item=>{
           if(item.code === data.code){
             this.payCommission = item;
           }
         })
       }
-      // this.allPayCommission = data.fiatList;
+      // this.allPayCommission = data.buyFiatList;
       //根据you pay币种类过滤费用
       this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
       //you pay输入的最大值最小值：最小值里面取最大, 最大值里面取最小

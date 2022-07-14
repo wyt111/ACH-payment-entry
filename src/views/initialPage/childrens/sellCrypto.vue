@@ -22,7 +22,7 @@
         </div>
         <div class="pay_company" @click="openSearch('payCurrency-sell')">
           <div class="countryIcon"><img :src="positionData.positionImg"></div>
-          <div>{{ payCommission.fiatCode }}</div>
+          <div>{{ payCommission.code }}</div>
           <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
@@ -229,6 +229,10 @@ export default {
           return item;
         }
       })
+      //商家配置的法币没有默认国家的法币，默认商家配置币种第一个
+      if(worldData[0].sellFiatList === 0){
+        worldData = this.basicData.worldList.filter(item=>{return item.sellFiatList === 1});
+      }
       this.handlePayWayList(worldData[0],1);
     },
 

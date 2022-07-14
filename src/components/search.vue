@@ -18,8 +18,8 @@
           <p class="seach_li_text currencyCopywriting">
             <img :src="item.flag">
             <span class="allName">{{ item.enCommonName }} -</span>
-            <span class="abbreviationName" v-if="viewName === 'payCurrency'"> {{ item.code }}</span>
-            <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
+            <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
+            <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
           </p>
           <p class="seach_li_rightIcon">
             <img src="../assets/images/rightIcon.png">
@@ -113,12 +113,6 @@ export default {
 
       //国家法币
       countryLegalCurrency: [],
-      queryCountryListQuery: {
-        pageIndex: 1,
-        pageSize: 10,
-        state: 1,
-        enCommonName: "",
-      }
     }
   },
   computed: {
@@ -261,8 +255,8 @@ export default {
         let newWorldList = [];
         if(this.allBasicData.worldList){
           this.allBasicData.worldList.forEach(item=>{
-            if(item.fiatList){
-              item.fiatList.forEach(item2=>{
+            if(item.buyFiatList){
+              item.buyFiatList.forEach(item2=>{
                 let fiat = {
                   code: item2.code,
                 }
@@ -271,14 +265,29 @@ export default {
               })
             }
           });
+          newWorldList = newWorldList.filter(item=>{return item.buyEnable === 1});
         }
         this.basicData = newWorldList;
-        // this.queryCountryList();
         return;
       }
       if(this.viewName === 'payCurrency-sell'){
         this.basicData = [];
-        this.basicData = this.allBasicData.worldList.filter(item=>{return item.sellEnable === 1});
+        let newWorldList = [];
+        if(this.allBasicData.worldList){
+          this.allBasicData.worldList.forEach(item=>{
+            if(item.sellFiatList){
+              item.sellFiatList.forEach(item2=>{
+                let fiat = {
+                  code: item2,
+                }
+                fiat = {...fiat,...item};
+                newWorldList.push(fiat);
+              })
+            }
+          });
+          newWorldList = newWorldList.filter(item=>{return item.sellEnable === 1});
+        }
+        this.basicData = newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){
@@ -322,7 +331,6 @@ export default {
           this.$nextTick(()=>{
             this.$parent.buyParams.network = item.network;
             this.$store.state.buyRouterParams.network = item.network;
-            console.log(this.$store.state.buyRouterParams.network)
             this.$parent.networkRegular = item.addressRegex;
             this.$parent.$parent.$refs.viewTab.tabState = true;
             this.$parent.searchViewState = false;
