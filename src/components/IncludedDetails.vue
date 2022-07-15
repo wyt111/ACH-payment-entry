@@ -239,7 +239,7 @@ export default {
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
           //选择网络修改you get数量
-          if(this.$store.state.buyRouterParams.network !== '' && this.isLoading === false){
+          if(this.$store.state.buyRouterParams.network !== '' && this.isLoading === true){
             this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let newGetAmount = (Number(this.routerParams.amount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.routerParams.exchangeRate);
             let decimalDigits = 0;
