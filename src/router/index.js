@@ -44,6 +44,16 @@ export const constantRoutes = [
       keepAlive: true,
     }
   },
+  //kyc验证
+  {
+    path: "/kycVerification",
+    name: 'KycVerification',
+    component: resolve => require(['../views/KycVerification/index'], resolve),
+    meta: {
+      title: ' ',
+      keepAlive: true,
+    }
+  },
   //交易历史列表
   {
     path: "/tradeHistory",
