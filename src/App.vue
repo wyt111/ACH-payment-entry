@@ -256,16 +256,11 @@ html,body,#app,#viewBox{
   }
   .logoView_phone{
     display: flex;
-    // justify-content: center;
-    // align-items: center;
-    padding-bottom: 15px;
     align-items: center;
-    // padding-left: 0.06rem;
     padding-bottom: 0.24rem;
-    cursor: pointer;
-
     img{
       width: 1.3rem;
+      cursor: pointer;
     }
   }
   .version{

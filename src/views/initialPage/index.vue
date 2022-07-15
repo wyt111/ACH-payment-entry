@@ -53,13 +53,13 @@ export default {
       choiseItem: {},
     }
   },
-  beforeRouteEnter(to,from,next){
-    next(vm=>{
-      if(from.path === '/tradeHistory') {
-        vm.merchantDocking()
-      }
-    });
-  },
+  // beforeRouteEnter(to,from,next){
+  //   next(vm=>{
+  //     if(from.path === '/tradeHistory') {
+  //       vm.merchantDocking()
+  //     }
+  //   });
+  // },
   mounted(){
     this.merchantDocking();
   },

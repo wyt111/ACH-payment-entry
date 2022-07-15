@@ -45,7 +45,7 @@
         </div>
       </div>
       <CryptoCurrencyAddress v-if="$store.state.goHomeState"/>
-      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
+      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}

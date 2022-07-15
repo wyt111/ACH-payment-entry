@@ -54,7 +54,7 @@ export default {
     queryCardInfo(){
       let params = {
         country: this.$store.state.sellRouterParams.positionData.alpha2,
-        fiatName: this.$store.state.sellRouterParams.positionData.fiatCode,
+        fiatName: this.$store.state.sellRouterParams.positionData.code,
       };
       this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
         if(res && res.returnCode === "0000" && res.data !== null){

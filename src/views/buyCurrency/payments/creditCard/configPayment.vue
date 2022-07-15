@@ -25,7 +25,7 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
-      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
+      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
 <!--    </div>-->
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
@@ -175,9 +175,10 @@ export default {
       if(this.buttonData.triggerNum === 1){
         this.cvvDisabled = true;
         await this.pay();
-      }else{
-        this.queryOrderStatus();
       }
+      // else{
+      //   this.queryOrderStatus();
+      // }
     },
     //支付
     /**
@@ -195,12 +196,14 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
-            this.timeDown = setInterval(()=>{
-              this.queryOrderStatus();
-            },1000)
-            if(JSON.stringify(res.data) === "{}"){
-              this.$store.state.buyRouterParams.payment_webUrl = res.data.webUrl;
+            if(JSON.stringify(res.data) !== "{}"){
+              window.location = res.data.webUrl;
+            }else{
+              this.timeDown = setInterval(()=>{
+                this.queryOrderStatus();
+              },1000)
             }
+            this.submitState = true;
           }else {
             this.submitState = true;
             this.cvvDisabled = false;
@@ -211,6 +214,7 @@ export default {
           }
         }).catch(()=>{
           this.cvvDisabled = false;
+          this.submitState = true;
           this.buttonData = {
             loading: false,
             triggerNum: 0,
@@ -224,10 +228,6 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res2=>{
-        if(res2.data.orderStatus && res2.data.orderStatus === 1){
-          window.location = this.$store.state.buyRouterParams.payment_webUrl;
-          return
-        }
         if(res2.data.orderStatus && res2.data.orderStatus > 2 && res2.data.orderStatus <= 6){
           // Clear create order token
           localStorage.removeItem("submit-token");

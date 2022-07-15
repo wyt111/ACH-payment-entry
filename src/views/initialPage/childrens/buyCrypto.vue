@@ -138,6 +138,9 @@ export default {
       deep: true,
       handler() {
         this.$store.state.buyRouterParams.network = '';
+        this.payAmount = '';
+        this.getAmount = '';
+        this.detailedInfo_state = false;
         this.allBasicData.worldList !== undefined ? this.currentLocation() : '';
       },
     },

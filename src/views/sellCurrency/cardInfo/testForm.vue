@@ -257,7 +257,7 @@ export default {
       let queryForm = {
         countryCode: this.$store.state.sellRouterParams.positionData.alpha2, // 国家Code
         id: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
-        fiatCode: this.$store.state.sellRouterParams.positionData.fiatCode, // 法币Code
+        fiatCode: this.$store.state.sellRouterParams.positionData.code, // 法币Code
       };
       this.formJsonCopy = JSON.parse(JSON.stringify(this.formJson));
       let bankAccountTypeDate = this.formJsonCopy.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
