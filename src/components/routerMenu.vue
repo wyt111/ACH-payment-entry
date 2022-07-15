@@ -146,28 +146,37 @@ export default {
     },
     //Exit the login hidden menu and clear the login information
     outLogin(){
-     
-      if(this.email){
-        this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
-          if(res && res.returnCode === "0000"){
-            this.$parent.routerViewState = true;
-            this.$parent.menuState = false
-            this.$store.state.isLogin = false
-            localStorage.removeItem("sign");
-            localStorage.removeItem("token");
-            localStorage.removeItem("email");
-            localStorage.removeItem("userNo");
-            localStorage.removeItem("userId");
-            localStorage.removeItem("kycStatus");
-            // sessionStorage.removeItem('accessMerchantInfo')
-            sessionStorage.removeItem('store')
-            // this.show = false;
-            // this.email = ''
-            // this.token = false
-            this.$router.push('/');
-          }
-        })
-      }
+      this.show = false
+            if(this.$route.path !== '/'){
+              this.$parent.routerViewState = true;
+              setTimeout(()=>{
+                this.$parent.routerViewState = false
+             
+              },200)
+              this.$router.replace('/')
+            return
+            }else{
+                this.token = false
+                this.email = ''
+            }
+      // if(this.email){
+      //   this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
+      //     if(res && res.returnCode === "0000"){
+      //       this.$parent.routerViewState = true;
+      //       this.$parent.menuState = false
+      //       this.$store.state.isLogin = false
+      //       localStorage.removeItem("sign");
+      //       localStorage.removeItem("token");
+      //       localStorage.removeItem("email");
+      //       localStorage.removeItem("userNo");
+      //       localStorage.removeItem("userId");
+      //       localStorage.removeItem("kycStatus");
+      //       // sessionStorage.removeItem('accessMerchantInfo')
+      //       sessionStorage.removeItem('store')
+             
+      //     }
+      //   })
+      // }
     },
     goProtocol(name){
       if(name === 'privacyPolicy'){
