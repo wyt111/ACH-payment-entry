@@ -78,7 +78,7 @@ export default {
   },
   activated(){
     //根据货币类型来过滤不同表单
-    this.currency = this.$store.state.sellRouterParams.positionData.fiatCode;
+    this.currency = this.$store.state.sellRouterParams.positionData.code;
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
 
     //PHP - 金额大于500000地址必输

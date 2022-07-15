@@ -16,7 +16,7 @@
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li class="payCurrencyLi" v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting">
-            <img :src="item.flag">
+            <img :src="item.flag" :onload="loadImg(item.flag)" :onerror="errorImg()">
             <span class="allName">{{ item.enCommonName }} -</span>
             <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
             <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
@@ -217,6 +217,13 @@ export default {
     this.customComponentTitle();
   },
   methods: {
+    loadImg(val){
+      return `this.onload=null;this.src="${val}"`;
+    },
+    errorImg(){
+      return 'this.onload=null;this.src='+'"../../static/img/10004-icon.png";'
+    },
+
     //Judge title name
     customComponentTitle(){
       if(this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell'){
@@ -278,7 +285,7 @@ export default {
             if(item.sellFiatList){
               item.sellFiatList.forEach(item2=>{
                 let fiat = {
-                  code: item2,
+                  code: item2.code,
                 }
                 fiat = {...fiat,...item};
                 newWorldList.push(fiat);
@@ -293,7 +300,7 @@ export default {
       if(this.viewName === 'currency-sell'){
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
+          // this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
           this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
         })
         return;

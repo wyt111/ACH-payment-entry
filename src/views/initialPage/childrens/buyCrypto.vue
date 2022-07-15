@@ -60,7 +60,6 @@ export default {
     return{
       //you pay Prompt information
       warningTextState: false,
-      payAmount_tips: '',
 
       //All data
       basicData: {},
@@ -119,6 +118,16 @@ export default {
         return true
       }else{
         return false
+      }
+    },
+    //法币最大最小值提示
+    payAmount_tips(){
+      var minError = `${this.$t('nav.home_minAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMin}.`;
+      var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMax}.`;
+      if(Number(this.payAmount) < this.payCommission.payMin){
+        return minError;
+      }else if(Number(this.payAmount) > this.payCommission.payMax){
+        return maxError;
       }
     }
   },
@@ -185,13 +194,6 @@ export default {
         //计算加密货币数量
         this.payinfo();
       }else{
-        var minError = `${this.$t('nav.home_minAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMin}.`;
-        var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMax}.`;
-        if(Number(this.payAmount) < this.payCommission.payMin){
-          this.payAmount_tips = minError;
-        }else if(Number(this.payAmount) > this.payCommission.payMax){
-          this.payAmount_tips = maxError;
-        }
         this.warningTextState = true;
         this.getAmount = "";
         this.detailedInfo_state = false;

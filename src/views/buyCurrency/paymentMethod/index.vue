@@ -228,7 +228,12 @@ export default {
         this.buyParams = this.$store.state.placeOrderQuery;
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
-        this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
+        //存在商户信息将信息带入请求地址
+        let urlQuery = '';
+        if(JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam){
+          urlQuery = `?${JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam}`;
+        }
+        this.$axios.post(this.$api.post_buy + urlQuery,this.buyParams,'submitToken').then(res=>{
           this.request_loading = false;
           if(res && res.returnCode === '0000'){
             this.$store.state.buyRouterParams.orderNo = res.data.orderNo;

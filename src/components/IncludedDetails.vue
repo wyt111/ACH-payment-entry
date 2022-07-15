@@ -100,7 +100,6 @@ export default {
         payMin: 0,
         rampFee: 0,
         symbol: "",
-        symbolNative: ""
       },
       timeDownNumber: 15,
     }
@@ -110,7 +109,7 @@ export default {
       deep: true,
       immediate: true,
       handler(){
-        if(this.$store.state.goHomeState){
+        if(this.$store.state.goHomeState && (this.isHome === false || this.isHome === null)){
           this.queryFee();
           this.timingSetting();
         }
@@ -119,6 +118,7 @@ export default {
     //首页输入金额改变后刷新数据
     '$store.state.buyRouterParams.amount': {
       deep: true,
+      immediate: true,
       handler() {
         if(this.isHome && this.isHome === true){
           this.queryFee();
@@ -174,7 +174,7 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
-    if(this.isHome && this.isHome === true){
+    if(this.isHome === false || this.isHome === null){
       this.queryFee();
       this.timingSetting();
     }
@@ -194,7 +194,10 @@ export default {
     networkFee(){
       if(this.feeInfo.networkFee !== undefined){
         let decimalDigits = 0;
-        let resultValue = this.feeInfo.networkFee; // * this.routerParams.exchangeRate
+        let resultValue = this.feeInfo.networkFee;
+        if(this.isHome && this.isHome === true){
+          resultValue = this.feeInfo.networkFee * this.$store.state.buyRouterParams.exchangeRate;
+        }
         resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
         let networkFee = resultValue.toFixed(decimalDigits);
         isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
@@ -208,7 +211,8 @@ export default {
       let price = resultValue.toFixed(decimalDigits);
       isNaN(resultValue) || price <= 0 ? price = 0 : '';
       return price;
-    }
+    },
+
   },
   methods:{
     //Countdown 15 refresh data
@@ -237,6 +241,13 @@ export default {
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
+          //修改首页费用数据
+          if(this.isHome && this.isHome === true){
+            this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
+            //赋值费用数据
+            this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
+            this.$parent.calculationAmount();
+          }
           //选择网络修改you get数量
           if(this.$store.state.buyRouterParams.network !== ''){
             this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
@@ -246,13 +257,6 @@ export default {
             newGetAmount = newGetAmount.toFixed(decimalDigits);
             isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
             this.routerParams.getAmount = newGetAmount;
-          }
-          //修改首页费用数据
-          if(this.isHome && this.isHome === true){
-            this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
-            //赋值费用数据
-            this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
-            this.$parent.calculationAmount();
           }
           //商户对接计算you get数量
           if(this.isLoading === true){
@@ -266,6 +270,8 @@ export default {
         }
       })
     },
+
+    //计算总价
 
     //Control details display status
     expandCollapse(){
