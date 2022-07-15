@@ -9,6 +9,7 @@ module.exports = {
     ConfirmPayment: 'Confirm Payment',
     queryOderState: 'I have completed the payment',
     orderRsult: 'Continue to buy crypto',
+    Proceed:'Proceed',
 
     /**
      * 组件

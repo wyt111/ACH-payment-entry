@@ -125,8 +125,8 @@ export default{
       let sellOrderId = sessionStorage.getItem('sellOrderId')
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        // id:'426'
-        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        id:'140'
+        // id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{

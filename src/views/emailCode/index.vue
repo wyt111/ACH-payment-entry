@@ -32,7 +32,7 @@
         <p v-if="!loggedIn">{{ $t('nav.enterEmail') }}</p>
         <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
-        <input type="text"  v-model="email" placeholder="john.doe@example.com">
+        <input type="text"  v-model="email" :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
       <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
@@ -44,8 +44,8 @@
           <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
         </div>
         <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true && checked === true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
-          {{ $t('nav.Continue') }}
-          <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="login_loading">
+          {{ $t('nav.Proceed') }}
+          <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
           <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
         </div>
       </div>
@@ -256,7 +256,7 @@ export default {
     margin-top: .4rem;
     h2{
       font-size: .21rem;
-      font-family:"GeoBold";
+      font-family:"GeoLight";
       font-weight: normal;
       margin: .24rem 0 .16rem 0;
       color: #063376;
@@ -332,12 +332,13 @@ export default {
     color: #FAFAFA;
     font-family: "GeoRegular";
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .icon{
-      width: .24rem;
-      height: .24rem;
-      position: absolute;
-      right: .16rem;
-      top: .18rem;
+      // width: .12rem;
+      height: .15rem;
+      margin-left: .12rem;
       span{
         position: absolute;
         left: 0;
@@ -350,7 +351,7 @@ export default {
     height: .35rem;
     img{
       height: .24rem;
-      float: right;
+      // float: right;
     }
   }
   .errorMessage{

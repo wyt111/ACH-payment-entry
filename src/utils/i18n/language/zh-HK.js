@@ -9,6 +9,7 @@ module.exports = {
         ConfirmPayment: '確認付款',
         queryOderState: '我已經完成付款',
         orderRsult: '返回首頁',
+        Proceed:'進行',
 
         /**
          * 组件

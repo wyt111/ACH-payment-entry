@@ -12,8 +12,8 @@
       <div style="position:relative;">
         
       <div class="verifyCode_button" @click="toLogin" :style="{background:netActive && !showLoading?'#0059DAFF':''}">
-        {{ $t('nav.Continue') }}
-        <img class="icon" src="@/assets/images/slices/rightIcon.png" alt="" v-if="!showLoading">
+        {{ $t('nav.Proceed') }}
+        <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="!showLoading">
         <van-loading class="icon" type="spinner" color="#fff" v-else/>
       </div>
       </div>
@@ -247,8 +247,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     background: rgba(0, 89, 218, 0.5);
     border-radius: .29rem;
     font-size: .17rem;
-    text-align: center;
-    line-height: .58rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // position: absolute;
     // bottom: 0rem;
     position: relative;
@@ -256,11 +257,9 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     font-family: "GeoRegular";
     cursor: pointer;
     .icon{
-      width: .24rem;
-      height: .24rem;
-      position: absolute;
-      right: .16rem;
-      top: .18rem;
+      // width: .24rem;
+      height: .15rem;
+      margin-left: .12rem;
       span{
         position: absolute;
         left: 0;
