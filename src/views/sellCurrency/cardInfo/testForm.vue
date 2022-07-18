@@ -4,9 +4,9 @@
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
-        (currency === 'NPR' && item.paramsName === 'swiftCode') ||
+        (currency === 'NPR' && item.paramsName === 'routingCodeValue1') ||
         (currency === 'BRL' && item.paramsName === 'bankCode') ||
-        (currency === 'BDT' && item.paramsName === 'swiftCode')">
+        (currency === 'BDT' && item.paramsName === 'routingCodeValue1')">
           {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <!-- bank account type -->
