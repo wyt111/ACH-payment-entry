@@ -15,8 +15,8 @@ remSize();
 import i18n from './utils/i18n/index'
 
 //监听页面滑动
-import vueTouch from 'kim-vue-touch'
-Vue.use(vueTouch)
+import vueTouch from 'kim-vue-touch';
+Vue.use(vueTouch);
 
 //ui类库、公共组件
 import "./utils/UI-ClassLibrary.js";

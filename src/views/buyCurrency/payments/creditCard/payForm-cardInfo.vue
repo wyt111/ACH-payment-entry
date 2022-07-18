@@ -1,14 +1,7 @@
 <template>
   <div id="internationalCardPay_box">
-    <div id="internationalCardPay">
-      <div class="view-content"
-           v-tap="(e)=>vueTouch(e)"
-           v-longtap="(e)=>vueTouch(e)"
-           v-swipeleft="(e)=>vueTouch(e)"
-           v-swiperight="(e)=>vueTouch(e)"
-           v-swipeup="(e)=>vueTouch(e)"
-           v-swipedown="(e)=>vueTouch(e)"
-      >
+    <div id="internationalCardPay" ref="box_ref">
+      <div class="view-content" ref="form_ref">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
@@ -54,14 +47,70 @@
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
-
-          <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
-            {{ $t('nav.Continue') }}
-            <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
-            <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
-          </button>
         </div>
+
+
+        <div class="formLine">
+          <div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+            </div>
+          </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
+        </div>
+        <div class="formLine">
+          <div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+            </div>
+          </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
+        </div>
+        <div class="formLine">
+          <div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+            </div>
+          </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
+        </div>
+        <div class="formLine">
+          <div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+            </div>
+          </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
+        </div>
+        <div class="formLine">
+          <div>
+            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
+            <div class="formContent">
+              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
+            </div>
+          </div>
+          <!-- error tips -->
+          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
+        </div>
+
+
+
+        <!-- tips icon -->
+        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" alt=""></div>
       </div>
+      <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
+        {{ $t('nav.Continue') }}
+        <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
+        <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
+      </button>
     </div>
   </div>
 </template>
@@ -100,6 +149,7 @@ export default {
 
       request_loading: false,
 
+      goDown_state: false,
     }
   },
   computed: {
@@ -140,6 +190,7 @@ export default {
     });
   },
   activated(){
+    window.addEventListener('scroll', this.handleScroll,true) // 监听页面滚动
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
@@ -268,8 +319,38 @@ export default {
       }
     },
 
-    vueTouch(e){
-      console.log(e,"触发")
+    handleScroll(){
+      //
+      //表单页面总高度，包括按钮
+      let clientHeight = this.$refs.box_ref.scrollHeight;
+      //获取表单高度
+      let viewHeight = this.$refs.form_ref.scrollHeight;
+      //获取按钮高度
+      let buttonHeight = this.$refs.button_ref.scrollHeight;
+      // this.goDown_state = true;
+
+      // console.log(this.$el.getBoundingClientRect())
+      // console.log(this.$refs.button_ref.getBoundingClientRect().top)
+      // console.log(this.$refs.form_ref.getBoundingClientRect().top)
+      // console.log(clientHeight,"---可视高度")
+
+      //按钮进入可视区域，隐藏滚动到底部按钮
+      const offset = this.$refs.button_ref.getBoundingClientRect();
+      const offsetTop = offset.top; // + 20
+      const offsetBottom = offset.bottom;
+      if (offsetTop <= window.innerHeight && offsetBottom >= 0) {
+        this.goDown_state = false;
+      } else {
+        this.goDown_state = true;
+      }
+
+      // console.log(this.$refs.button_ref.getBoundingClientRect().top)
+      // console.log(document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset)
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+      })
     },
 
     //验证、提交卡信息
@@ -323,14 +404,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#internationalCardPay{
+html,body,#internationalCardPay,#internationalCardPay_box{
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+}
+#internationalCardPay{
   .view-content{
-    flex: 1;
-    overflow: auto;
+    padding-bottom: 0.36rem;
     .errorTips{
       position: absolute;
       font-size: 0.13rem;
@@ -413,7 +493,6 @@ export default {
     font-family: "GeoRegular", GeoRegular;
     font-weight: normal;
     color: #FFFFFF;
-    margin-top: 0.36rem;
     cursor: pointer;
     border: none;
     position: relative;
@@ -427,6 +506,23 @@ export default {
   .continue:disabled{
     background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
+  }
+
+  .downTips-icon{
+    position: absolute;
+    bottom: 1.1rem;
+    right: 0.3rem;
+    width: 0.58rem;
+    height: 0.58rem;
+    border-radius: 50%;
+    background: #0059DA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    img{
+      width: 0.24rem;
+    }
   }
 }
 .year ::v-deep .van-picker-column:nth-of-type(2){
