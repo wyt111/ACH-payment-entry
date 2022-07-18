@@ -86,7 +86,7 @@ export default {
           swiftCode: this.$store.state.sellForm.swiftCode,
           bank: this.$store.state.sellForm.bankCode,
           cryptoCurrencyNetworkId: this.routerParams.currencyData.cryptoCurrencyNetworkId,
-          fiatName: this.routerParams.payCommission.fiatCode,
+          fiatName: this.$store.state.sellRouterParams.positionData.code,
           userCardId: this.$store.state.sellForm.id,
         };
         this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{

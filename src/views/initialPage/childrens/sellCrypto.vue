@@ -284,16 +284,16 @@ export default {
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
 
-      this.payCommission.symbol = this.$store.state.feeParams.symbol;
-      let routerParams = {
-        amount: this.payAmount,
-        getAmount: this.getAmount,
-        cryptoCurrency: this.currencyData.name,
-        currencyData: this.currencyData,
-        payCommission: this.payCommission,
-        positionData: this.positionData
-      }
-      this.$store.state.sellRouterParams = routerParams;
+      // this.payCommission.symbol = this.$store.state.feeParams.symbol;
+      // let routerParams = {
+      //   amount: this.payAmount,
+      //   getAmount: this.getAmount,
+      //   cryptoCurrency: this.currencyData.name,
+      //   currencyData: this.currencyData,
+      //   payCommission: this.payCommission,
+      //   positionData: this.positionData
+      // }
+      // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
       //获取用户卡信息
       let params = {
         country: this.positionData.alpha2,
@@ -302,7 +302,6 @@ export default {
       // Login information
       this.$store.state.emailFromPath = 'sellCrypto';
       this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-        console.log(res)
         //data - null 没有填写过表单,跳转到表单页
         //data - !null 有填写过表单,跳转到确认订单页
         if(res && res.returnCode === "0000" && res.data === null){
