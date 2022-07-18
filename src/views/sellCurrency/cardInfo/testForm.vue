@@ -3,7 +3,10 @@
     <div class="sellForm-content" ref="sellFormView">
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
-        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
+        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
+        (currency === 'NPR' && item.paramsName === 'swiftCode') ||
+        (currency === 'BRL' && item.paramsName === 'bankCode') ||
+        (currency === 'BDT' && item.paramsName === 'swiftCode')">
           {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
         <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
         <!-- bank account type -->
@@ -149,10 +152,10 @@ export default {
     // 正则校验 展示提示信息
     inputChange(val,index){
       //BDT - Swift code不是以DBBLBDDH开头的时候branch name必输
-      if(this.currency === 'BDT' && val.paramsName === 'swiftCode' && val.model.substr(0,8) === 'DBBLBDDH'){
-        this.formJson.filter(item=>{ return item.paramsName === "branchName" })[0].required = true;
-      }else if(this.currency === 'BDT' && val.paramsName === 'swiftCode' && val.model.substr(0,8) !== 'DBBLBDDH'){
-        this.formJson.filter(item=>{ return item.paramsName === "branchName" })[0].required = false
+      if(this.currency === 'BDT' && val.paramsName === 'routingCodeValue1' && val.model.substr(0,8) !== 'DBBLBDDH'){
+        this.formJson.filter(item=>{ return item.paramsName === "routingCodeValue2" })[0].required = true;
+      }else if(this.currency === 'BDT' && val.paramsName === 'routingCodeValue1' && val.model.substr(0,8) === 'DBBLBDDH'){
+        this.formJson.filter(item=>{ return item.paramsName === "routingCodeValue2" })[0].required = false
       }
       //所有表单正则验证
       if(!new RegExp(val.regular).test(this.formJson[index].model)){
