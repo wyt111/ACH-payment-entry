@@ -117,6 +117,7 @@
 
 <script>
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
+import {debounce} from "../../../../utils";
 
 export default {
   name: "International-card-payment",
@@ -149,7 +150,9 @@ export default {
 
       request_loading: false,
 
-      goDown_state: false,
+      goDown_state: true,
+      oldOffsetTop: 0,
+      timeDown: null,
     }
   },
   computed: {
@@ -165,6 +168,9 @@ export default {
         return true;
       }
     },
+    isPcAndPhone(){
+      return this.$store.state.isPcAndPhone;
+    }
   },
   //选择支付方式页选择新增卡信息进入 - configPaymentFrom判断是否是新增卡信息
   beforeRouteEnter(to,from,next){
@@ -319,37 +325,39 @@ export default {
       }
     },
 
+    //按钮进入可视区域，隐藏滚动到底部按钮
     handleScroll(){
-      //
-      //表单页面总高度，包括按钮
-      let clientHeight = this.$refs.box_ref.scrollHeight;
-      //获取表单高度
-      let viewHeight = this.$refs.form_ref.scrollHeight;
-      //获取按钮高度
-      let buttonHeight = this.$refs.button_ref.scrollHeight;
-      // this.goDown_state = true;
-
-      // console.log(this.$el.getBoundingClientRect())
-      // console.log(this.$refs.button_ref.getBoundingClientRect().top)
-      // console.log(this.$refs.form_ref.getBoundingClientRect().top)
-      // console.log(clientHeight,"---可视高度")
-
-      //按钮进入可视区域，隐藏滚动到底部按钮
-      const offset = this.$refs.button_ref.getBoundingClientRect();
-      const offsetTop = offset.top; // + 20
-      const offsetBottom = offset.bottom;
-      if (offsetTop <= window.innerHeight && offsetBottom >= 0) {
-        this.goDown_state = false;
-      } else {
-        this.goDown_state = true;
+      window.clearTimeout(this.timeDown);
+      this.timeDown = null;
+      let offset = this.$refs.button_ref.getBoundingClientRect();
+      let offsetBottom = offset.bottom;
+      let offsetTop = offset.top + 50;
+      //判断设备型号
+      if(this.isPcAndPhone === 'phone'){
+        offsetTop = offset.top + 50;
+      }else{
+        offsetTop = offset.top + 15;
       }
-
-      // console.log(this.$refs.button_ref.getBoundingClientRect().top)
-      // console.log(document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset)
+      if(this.oldOffsetTop !== offset.top && (offsetTop > 580 || offsetBottom < 0)){
+        this.goDown_state = false;
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.timeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+      //580为App.vue设置内容高度
+      if (offsetTop <= 580 && offsetBottom >= 0) {
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
     },
     goDown(){
       setTimeout(()=>{
         this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
       })
     },
 
