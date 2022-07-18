@@ -1,7 +1,14 @@
 <template>
   <div id="internationalCardPay_box">
     <div id="internationalCardPay">
-      <div class="view-content">
+      <div class="view-content"
+           v-tap="(e)=>vueTouch(e)"
+           v-longtap="(e)=>vueTouch(e)"
+           v-swipeleft="(e)=>vueTouch(e)"
+           v-swiperight="(e)=>vueTouch(e)"
+           v-swipeup="(e)=>vueTouch(e)"
+           v-swipedown="(e)=>vueTouch(e)"
+      >
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
@@ -55,7 +62,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -260,6 +266,10 @@ export default {
       }else{
         this.errorCvv = false;
       }
+    },
+
+    vueTouch(e){
+      console.log(e,"触发")
     },
 
     //验证、提交卡信息
