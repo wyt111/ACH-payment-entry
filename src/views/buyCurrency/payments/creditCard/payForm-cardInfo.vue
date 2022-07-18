@@ -1,6 +1,6 @@
 <template>
-  <div id="internationalCardPay_box">
-    <div id="internationalCardPay" ref="box_ref">
+  <div id="internationalCardPay_box" ref="box_ref" @scroll="handleScrollA">
+    <div id="internationalCardPay">
       <div class="view-content" ref="form_ref">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
@@ -48,61 +48,6 @@
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
         </div>
-
-
-        <div class="formLine">
-          <div>
-            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
-            <div class="formContent">
-              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-            </div>
-          </div>
-          <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
-        </div>
-        <div class="formLine">
-          <div>
-            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
-            <div class="formContent">
-              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-            </div>
-          </div>
-          <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
-        </div>
-        <div class="formLine">
-          <div>
-            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
-            <div class="formContent">
-              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-            </div>
-          </div>
-          <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
-        </div>
-        <div class="formLine">
-          <div>
-            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
-            <div class="formContent">
-              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-            </div>
-          </div>
-          <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
-        </div>
-        <div class="formLine">
-          <div>
-            <div class="formTitle">{{ $t('nav.buy_form_expirationDate') }}</div>
-            <div class="formContent">
-              <input type="text" v-model="timeData" @input="timeChange" @blur="timeBlur" @keyup.delete="timeDelete" maxlength="7" placeholder="MM / YY">
-            </div>
-          </div>
-          <!-- error tips -->
-          <div class="errorTips" v-if="errorTime">{{ $t('nav.buy_form_dataTips') }}</div>
-        </div>
-
-
-
         <!-- tips icon -->
         <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" alt=""></div>
       </div>
@@ -195,8 +140,14 @@ export default {
       }
     });
   },
+  mounted(){
+    // 监听页面滚动
+    this.$nextTick(()=>{
+      this.$refs.box_ref.addEventListener('scroll', this.handleScroll,true);
+    })
+    // 初始化判断按钮是否在可视区域内，580为App.vue设置内容高度
+  },
   activated(){
-    window.addEventListener('scroll', this.handleScroll,true) // 监听页面滚动
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
@@ -325,34 +276,61 @@ export default {
       }
     },
 
+    handleScrollA(val){
+      // console.log(val.target.scrollTop)
+      //可视区域高度
+      val.target.clientHeight
+      console.log(val.target.clientHeight)
+    },
     //按钮进入可视区域，隐藏滚动到底部按钮
     handleScroll(){
-      window.clearTimeout(this.timeDown);
-      this.timeDown = null;
-      let offset = this.$refs.button_ref.getBoundingClientRect();
-      let offsetBottom = offset.bottom;
-      let offsetTop = offset.top + 50;
-      //判断设备型号
-      if(this.isPcAndPhone === 'phone'){
-        offsetTop = offset.top + 50;
-      }else{
-        offsetTop = offset.top + 15;
+      console.log("触发")
+      const offset = this.$el.getBoundingClientRect();
+      const offsetTop = offset.top;
+      const offsetBottom = offset.bottom;
+      // const offsetHeight = offset.height;
+      console.log(this.$refs.form_ref.scrollTop)
+      // 进入可视区域
+      // console.log(offsetTop)
+      if (offsetTop <= this.$refs.box_ref.clientHeight && offsetBottom >= 0) {
+        console.log('进入可视区域');
+
+      } else {
+        console.log('移出可视区域');
       }
-      if(this.oldOffsetTop !== offset.top && (offsetTop > 580 || offsetBottom < 0)){
-        this.goDown_state = false;
-        window.clearTimeout(this.timeDown);
-        this.timeDown = null;
-        this.timeDown = setTimeout(()=>{
-          this.goDown_state = true;
-        },1000)
-      }
-      //580为App.vue设置内容高度
-      if (offsetTop <= 580 && offsetBottom >= 0) {
-        window.clearTimeout(this.timeDown);
-        this.timeDown = null;
-        this.goDown_state = false;
-      }
-      this.oldOffsetTop = offset.top;
+
+      // window.clearTimeout(this.timeDown);
+      // this.timeDown = null;
+      // let offset = this.$refs.button_ref.getBoundingClientRect();
+      // let offsetBottom = offset.bottom;
+      // let offsetTop = offset.top ; // + 50
+      // //判断设备型号
+      // if(this.isPcAndPhone === 'phone'){
+      //   // offsetTop = offset.top + 50;
+      //   offsetTop = offset.top - 60;
+      // }else{
+      //   offsetTop = offset.top + 15;
+      // }
+      //
+      // // if(this.oldOffsetTop !== offset.top && (offsetTop > this.$refs.box_ref.clientHeight || offsetBottom < 0)){
+      // //   this.goDown_state = false;
+      // //   window.clearTimeout(this.timeDown);
+      // //   this.timeDown = null;
+      // //   this.timeDown = setTimeout(()=>{
+      // //     this.goDown_state = true;
+      // //   },1000)
+      // // }
+      // console.log(this.$refs.form_ref.getBoundingClientRect().top)
+      //
+      //
+      // //580为App.vue设置内容高度
+      // // console.log(offsetTop,this.$refs.box_ref.clientHeight)
+      // if (offsetTop <= this.$refs.box_ref.clientHeight && offsetBottom >= 0) {
+      //   window.clearTimeout(this.timeDown);
+      //   this.timeDown = null;
+      //   this.goDown_state = false;
+      // }
+      // this.oldOffsetTop = offset.top;
     },
     goDown(){
       setTimeout(()=>{
@@ -412,13 +390,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html,body,#internationalCardPay,#internationalCardPay_box{
-  width: 100%;
+#internationalCardPay_box{
   height: 100%;
+  overflow-y: scroll
 }
 #internationalCardPay{
   .view-content{
     padding-bottom: 0.36rem;
+    padding-top: 0.28rem;
     .errorTips{
       position: absolute;
       font-size: 0.13rem;
@@ -480,6 +459,9 @@ html,body,#internationalCardPay,#internationalCardPay_box{
       .loadingIcon{
         top: 0.15rem;
       }
+    }
+    &:first-child{
+      margin-top: 0;
     }
   }
   .formLine_flex{
