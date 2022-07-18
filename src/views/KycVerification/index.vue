@@ -74,16 +74,21 @@ export default {
         .withConf({
             lang: 'zh', //language of WebSDK texts and comments (ISO 639-1 format)
         })
+        
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
         // see below what kind of messages WebSDK generates
         .on('idCheck.stepCompleted', (payload) => {
-            console.log('stepCompleted', payload)
+           console.log(payload);
+            
+        })
+        .on('idCheck.onAction',(res)=>{
+          console.log(res);
         })
         .on('idCheck.onError', (error) => {
             console.log('onError', error)
         })
         .build();
-
+  
     // you are ready to go:
     // just launch the WebSDK by providing the container element for it
     snsWebSdkInstance.launch('#sumsub-websdk-container')
@@ -97,7 +102,7 @@ export default {
     nextKycVer(val){
       this.status=1
       setTimeout(()=>{
-        this.launchWebSdk('_act-sbx-080f8eef-29d9-42a2-b9f8-dd894ad94e7e')
+        this.launchWebSdk('_act-sbx-71d678b8-5172-4238-a5f0-e54d4ca4f9c4')
       },1000)
     }
   },
@@ -111,20 +116,22 @@ export default {
 <style lang="scss" scoped>
 .KycVer-container{
   height: 100%;
-  display: flex;
-  flex-direction: column;
+ display: flex;
+ justify-content: center;
+ align-items: center;
   .kyc_nav{
     width: 100%;
     height: .2rem;
     // margin-bottom: .65rem;
     img{
+      float: right;
       height: .11rem;
       cursor: pointer;
-      float: right;
     }
   }
   .Verification_content{
     width: 100%;
+    height: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -185,11 +192,19 @@ export default {
     }
   }
   .verif_kyc{
-    >img{
-      float: right;
-      height: .12rem;
-      cursor: pointer;
-    }
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   >img{
+     height: .15rem;
+     cursor: pointer;
+     position: absolute;
+     right: .3rem;
+     top: .4rem;
+   }
+ 
   }
 }
 </style>
