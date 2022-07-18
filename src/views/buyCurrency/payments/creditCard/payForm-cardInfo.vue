@@ -1,6 +1,6 @@
 <template>
-  <div id="internationalCardPay_box" ref="box_ref" @scroll="handleScrollA">
-    <div id="internationalCardPay">
+  <div id="internationalCardPay_box" ref="box_ref">
+    <div id="internationalCardPay" @scroll="handleScroll">
       <div class="view-content" ref="form_ref">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
@@ -49,7 +49,7 @@
           <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
         </div>
         <!-- tips icon -->
-        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" alt=""></div>
+        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
       </div>
       <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
         {{ $t('nav.Continue') }}
@@ -62,7 +62,6 @@
 
 <script>
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
-import {debounce} from "../../../../utils";
 
 export default {
   name: "International-card-payment",
@@ -113,9 +112,6 @@ export default {
         return true;
       }
     },
-    isPcAndPhone(){
-      return this.$store.state.isPcAndPhone;
-    }
   },
   //选择支付方式页选择新增卡信息进入 - configPaymentFrom判断是否是新增卡信息
   beforeRouteEnter(to,from,next){
@@ -140,14 +136,18 @@ export default {
       }
     });
   },
-  mounted(){
-    // 监听页面滚动
-    this.$nextTick(()=>{
-      this.$refs.box_ref.addEventListener('scroll', this.handleScroll,true);
-    })
-    // 初始化判断按钮是否在可视区域内，580为App.vue设置内容高度
-  },
   activated(){
+    // setInterval(()=>{
+    //   this.elShaking(this.$refs.downTips_ref)
+    // },2000)
+    //初始化根据可视高度控制向下提示按钮状态
+    this.$nextTick(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
@@ -276,61 +276,28 @@ export default {
       }
     },
 
-    handleScrollA(val){
-      // console.log(val.target.scrollTop)
-      //可视区域高度
-      val.target.clientHeight
-      console.log(val.target.clientHeight)
-    },
     //按钮进入可视区域，隐藏滚动到底部按钮
-    handleScroll(){
-      console.log("触发")
-      const offset = this.$el.getBoundingClientRect();
-      const offsetTop = offset.top;
-      const offsetBottom = offset.bottom;
-      // const offsetHeight = offset.height;
-      console.log(this.$refs.form_ref.scrollTop)
-      // 进入可视区域
-      // console.log(offsetTop)
-      if (offsetTop <= this.$refs.box_ref.clientHeight && offsetBottom >= 0) {
-        console.log('进入可视区域');
+    handleScroll(val){
+      window.clearTimeout(this.timeDown);
+      this.timeDown = null;
+      let offset = this.$refs.button_ref.getBoundingClientRect();
 
-      } else {
-        console.log('移出可视区域');
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.timeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
       }
 
-      // window.clearTimeout(this.timeDown);
-      // this.timeDown = null;
-      // let offset = this.$refs.button_ref.getBoundingClientRect();
-      // let offsetBottom = offset.bottom;
-      // let offsetTop = offset.top ; // + 50
-      // //判断设备型号
-      // if(this.isPcAndPhone === 'phone'){
-      //   // offsetTop = offset.top + 50;
-      //   offsetTop = offset.top - 60;
-      // }else{
-      //   offsetTop = offset.top + 15;
-      // }
-      //
-      // // if(this.oldOffsetTop !== offset.top && (offsetTop > this.$refs.box_ref.clientHeight || offsetBottom < 0)){
-      // //   this.goDown_state = false;
-      // //   window.clearTimeout(this.timeDown);
-      // //   this.timeDown = null;
-      // //   this.timeDown = setTimeout(()=>{
-      // //     this.goDown_state = true;
-      // //   },1000)
-      // // }
-      // console.log(this.$refs.form_ref.getBoundingClientRect().top)
-      //
-      //
-      // //580为App.vue设置内容高度
-      // // console.log(offsetTop,this.$refs.box_ref.clientHeight)
-      // if (offsetTop <= this.$refs.box_ref.clientHeight && offsetBottom >= 0) {
-      //   window.clearTimeout(this.timeDown);
-      //   this.timeDown = null;
-      //   this.goDown_state = false;
-      // }
-      // this.oldOffsetTop = offset.top;
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
     },
     goDown(){
       setTimeout(()=>{
@@ -338,6 +305,30 @@ export default {
         this.goDown_state = false;
       })
     },
+    // elShaking(el) {
+    //   const maxAngle = 10 // 震动偏移角度
+    //   const interval = 12 // 震动快慢，数字越小越快，太小DOM反应不过来，看不出动画
+    //   const quarterCycle = 10 // 一次完整来回震动的四分之一周期
+    //   let curAngle = 0
+    //   let direction = 1
+    //   const timer = setInterval(function(){
+    //     if (direction > 0) {
+    //       curAngle++
+    //       if (curAngle === maxAngle) {
+    //         direction = -1
+    //       }
+    //     } else {
+    //       curAngle--
+    //       if (curAngle === -maxAngle) {
+    //         direction = 1
+    //       }
+    //     }
+    //     el.style.transform = 'rotate(' + curAngle + 'deg)';
+    //   }, interval)
+    //   setTimeout(function(){
+    //     clearInterval(timer)
+    //   }, maxAngle * interval * quarterCycle);
+    // },
 
     //验证、提交卡信息
     submitPay(){
@@ -390,11 +381,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#internationalCardPay_box{
-  height: 100%;
-  overflow-y: scroll
-}
 #internationalCardPay{
+  height: 100%;
+  overflow-y: scroll;
   .view-content{
     padding-bottom: 0.36rem;
     padding-top: 0.28rem;
@@ -514,6 +503,22 @@ export default {
       width: 0.24rem;
     }
   }
+  .downTips-icon img{
+    animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+  }
+
+  @keyframes jumpBoxHandler { /* css事件 */
+    0% {
+      transform: translate(0px, 0);
+    }
+    50% {
+      transform: translate(0px, 0.1rem); /* 可配置跳动方向 */
+    }
+    100% {
+      transform: translate(0px, 0px);
+    }
+  }
+
 }
 .year ::v-deep .van-picker-column:nth-of-type(2){
   display: none !important;
