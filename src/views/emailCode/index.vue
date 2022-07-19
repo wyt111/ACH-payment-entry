@@ -93,16 +93,16 @@ export default {
       return
     }
    
-      if(localStorage.getItem('login_email')){
-        
-        this.email = AES_Decrypt(localStorage.getItem('login_email'))
-        this.loggedIn = true
-        this.checked = true
-        return
-      }else{
-        this.loggedIn = false
-        this.checked = false
-      }
+    //  this.$nextTick(()=>{
+    //  if(localStorage.getItem('login_email')){
+    //     this.email = AES_Decrypt(localStorage.getItem('login_email'))
+    //     this.loggedIn = true
+    //     this.checked = true
+    //   }else{
+    //     this.loggedIn = false
+    //     this.checked = false
+    //   }
+    // })
  
   },
 
@@ -112,17 +112,18 @@ export default {
     this.timeVal = null;
   },
   mounted(){
-    //  debugger;
-     this.email = AES_Decrypt(localStorage.getItem('login_email'))
-     if(this.email){
-        console.log(this.email);
-        // 
+    this.$nextTick(()=>{
+     if(localStorage.getItem('login_email')){
+        this.email = AES_Decrypt(localStorage.getItem('login_email'))
         this.loggedIn = true
         this.checked = true
       }else{
         this.loggedIn = false
         this.checked = false
       }
+    })
+      
+   
 },
   methods: {
     getCode:debounce(function () {
@@ -143,6 +144,7 @@ export default {
        });
        return
       }
+      
       if(this.loggedIn===true){
         alert('一键登陆')
         return
@@ -172,7 +174,7 @@ export default {
     signAddress(){
       this.loggedIn = false
       this.checked = false
-      // this.email = ''
+      this.email = ''
       localStorage.removeItem('login_email')
     },
     // toLogin:debounce(function (){
