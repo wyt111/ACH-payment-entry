@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode' && !this.$parent.routerViewState) || $route.path !== '/'&&  $route.path !== '/emailCode'" >
+  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/emailCode' && !this.$parent.routerViewState) || tabState && $route.path !== '/'&&  $route.path !== '/emailCode'" >
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState ">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
@@ -38,6 +38,7 @@ export default {
           if(val.meta.title === 'Home' && !this.$parent.routerViewState) {
             this.tabState = false;
           }else {
+           
             this.tabState = true;
             this.routerName = val.meta.title;
           }
@@ -114,7 +115,7 @@ export default {
     openMenu(){
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
     }
-  }
+  },
 };
 </script>
 
