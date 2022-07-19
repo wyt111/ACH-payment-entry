@@ -78,19 +78,19 @@ export default {
         pageIndex: 1,
         pageSize: 5,
         historyList:[],
-        
+
       },
-     
+
       finished:false,
       newVal:'',
-      
+
     }
   },
   activated(){
     localStorage.getItem("token") ? this.token = true : this.token =false;
     localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
- 
-    
+
+
     // this.transationsList()
   },
   deactivated(){
@@ -139,12 +139,13 @@ export default {
     },
     //Exit the login hidden menu and clear the login information
     outLogin(){
-     
+
       if(this.email){
+        
         this.$axios.post(this.$api.post_outLogin,'','').then(res=>{
           if(res && res.returnCode === "0000"){
-            this.$parent.routerViewState = true;
-            this.$parent.menuState = false
+            // this.$parent.routerViewState = true;
+            // this.$parent.menuState = false
             this.$store.state.isLogin = false
             localStorage.removeItem("sign");
             localStorage.removeItem("token");
@@ -154,10 +155,19 @@ export default {
             localStorage.removeItem("kycStatus");
             // sessionStorage.removeItem('accessMerchantInfo')
             sessionStorage.removeItem('store')
-            // this.show = false;
-            // this.email = ''
-            // this.token = false
-            this.$router.push('/');
+            this.show = false
+            if(this.$route.path !== '/'){
+              this.$parent.routerViewState = true;
+              setTimeout(()=>{
+                this.$parent.routerViewState = false
+             
+              },200)
+              this.$router.replace('/')
+            return
+            }else{
+                this.token = false
+                this.email = ''
+            }
           }
         })
       }
@@ -184,6 +194,7 @@ export default {
         this.loading = false
         //是否是从菜单进入
         this.$store.state.routerQueryPath = true
+        this.$parent.routerViewState = true;
         this.$router.push('/emailCode')
       }
     },
@@ -211,8 +222,8 @@ export default {
       let email1 = email.slice(0,3)+' *** '+ email.slice(email.indexOf('@'),email.length)
       return email1
     },
-   
-  
+
+
   },
   watch:{
     //打开菜单栏并且已经登陆以后才会获取有没有历史记录
@@ -223,7 +234,7 @@ export default {
         if(newVal  === true){
           localStorage.getItem("token") ? this.token = true :this.token = false;
           localStorage.getItem("email") ? this.email = AES_Decrypt(localStorage.getItem("email")) :this.email = '';
-       
+
         }
          if(newVal === true && localStorage.getItem("token")){
 
@@ -232,7 +243,7 @@ export default {
          }
       }
     },
-    
+
   }
 }
 </script>

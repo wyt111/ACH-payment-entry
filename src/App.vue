@@ -3,7 +3,7 @@
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
           <!-- logo view for phone -->
-          <div class="logoView_phone" @click="goHome"><img src="./assets/images/phoneLogo.svg"></div>
+          <div class="logoView_phone"><img src="./assets/images/phoneLogo.svg" @click="goHome"></div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->

@@ -129,6 +129,7 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.network = res.data.network;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;

@@ -1,7 +1,7 @@
 <template>
   <div id="internationalCardPay_box">
-    <div id="internationalCardPay">
-      <div class="view-content">
+    <div id="internationalCardPay" ref="box_ref" @scroll="handleScroll">
+      <div class="view-content" ref="form_ref">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
             <div class="formTitle">{{ $t('nav.buy_form_firstName') }}</div>
@@ -47,15 +47,15 @@
           </div>
           <!-- error tips -->
           <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
-
-          <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow">
-            {{ $t('nav.Continue') }}
-            <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
-            <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
-          </button>
         </div>
+        <!-- tips icon -->
+        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
       </div>
-
+      <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
+        {{ $t('nav.Continue') }}
+        <img class="rightIcon" src="../../../../assets/images/button-right-icon.png" v-if="!request_loading">
+        <van-loading class="icon rightIcon loadingIcon" type="spinner" color="#fff" v-else/>
+      </button>
     </div>
   </div>
 </template>
@@ -94,6 +94,9 @@ export default {
 
       request_loading: false,
 
+      goDown_state: true,
+      oldOffsetTop: 0,
+      timeDown: null,
     }
   },
   computed: {
@@ -134,6 +137,17 @@ export default {
     });
   },
   activated(){
+    // setInterval(()=>{
+    //   this.elShaking(this.$refs.downTips_ref)
+    // },2000)
+    //初始化根据可视高度控制向下提示按钮状态
+    this.$nextTick(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
     //获取地址卡信息或历史卡信息
       if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
@@ -262,6 +276,60 @@ export default {
       }
     },
 
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.timeDown);
+      this.timeDown = null;
+      let offset = this.$refs.button_ref.getBoundingClientRect();
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.timeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
+      })
+    },
+    elShaking(el) {
+      const maxAngle = 10 // 震动偏移角度
+      const interval = 12 // 震动快慢，数字越小越快，太小DOM反应不过来，看不出动画
+      const quarterCycle = 10 // 一次完整来回震动的四分之一周期
+      let curAngle = 0
+      let direction = 1
+      const timer = setInterval(function(){
+        if (direction > 0) {
+          curAngle++
+          if (curAngle === maxAngle) {
+            direction = -1
+          }
+        } else {
+          curAngle--
+          if (curAngle === -maxAngle) {
+            direction = 1
+          }
+        }
+        el.style.transform = 'rotate(' + curAngle + 'deg)';
+      }, interval)
+      setTimeout(function(){
+        clearInterval(timer)
+      }, maxAngle * interval * quarterCycle);
+    },
+
     //验证、提交卡信息
     submitPay(){
       this.request_loading = true;
@@ -314,13 +382,11 @@ export default {
 
 <style lang="scss" scoped>
 #internationalCardPay{
-  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  overflow-y: scroll;
   .view-content{
-    flex: 1;
-    overflow: auto;
+    padding-bottom: 0.36rem;
+    padding-top: 0.28rem;
     .errorTips{
       position: absolute;
       font-size: 0.13rem;
@@ -383,6 +449,9 @@ export default {
         top: 0.15rem;
       }
     }
+    &:first-child{
+      margin-top: 0;
+    }
   }
   .formLine_flex{
     display: flex;
@@ -403,7 +472,6 @@ export default {
     font-family: "GeoRegular", GeoRegular;
     font-weight: normal;
     color: #FFFFFF;
-    margin-top: 0.36rem;
     cursor: pointer;
     border: none;
     position: relative;
@@ -418,6 +486,40 @@ export default {
     background: rgba(0, 89, 218, 0.5);
     cursor: no-drop;
   }
+
+  .downTips-icon{
+    position: absolute;
+    bottom: 1.1rem;
+    right: 0.3rem;
+    width: 0.58rem;
+    height: 0.58rem;
+    border-radius: 50%;
+    //background: #0059DA;
+    background: rgba(131,179,249,1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    img{
+      width: 0.3rem;
+    }
+  }
+  .downTips-icon img{
+    animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+  }
+
+  @keyframes jumpBoxHandler { /* css事件 */
+    0% {
+      transform: translate(0px, 0);
+    }
+    50% {
+      transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+    }
+    100% {
+      transform: translate(0px, 0px);
+    }
+  }
+
 }
 .year ::v-deep .van-picker-column:nth-of-type(2){
   display: none !important;
