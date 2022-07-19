@@ -247,7 +247,6 @@ export default {
         this.$nextTick(()=>{
           let popularList = this.basicData.cryptoCurrencyResponse.popularList;
           popularList !== null && popularList.length > 0 ? this.popularList = popularList.filter(item=>{return item.purchaseSupported === 1}) : '';
-          console.log()
           this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;
@@ -359,6 +358,7 @@ export default {
             symbol: item.symbol,
           }
           this.$parent.$refs.sellCrypto_ref.currencyData = currencyData;
+          this.$store.state.sellRouterParams.currencyData = currencyData;
           this.$store.state.sellRouterParams.cryptoCurrency = item.name;
           this.$store.state.feeParams.symbol = item.name;
           this.$parent.$refs.sellCrypto_ref.amountControl();
