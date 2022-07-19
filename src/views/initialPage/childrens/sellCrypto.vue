@@ -78,9 +78,10 @@ export default {
       currencyData: {
         icon: '',
         name: '',
-        price: '',
         maxSell: '',
-        minSell: ''
+        minSell: '',
+        cryptoCurrencyNetworkId: '',
+        symbol: ''
       },
 
       //Payment method information

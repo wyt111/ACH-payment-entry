@@ -1,43 +1,45 @@
 <template>
-  <div id="sell-form" ref="box_ref" @scroll="handleScroll">
-    <div class="sellForm-content" ref="form_ref">
-      <div class="formLine" v-for="(item,index) in formJson" :key="index">
-        <!-- 提示信息 - JPY NPR BRL -->
-        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
+  <div id="box">
+    <div id="sell-form" ref="box_ref" @scroll="handleScroll">
+      <div class="sellForm-content" ref="form_ref">
+        <div class="formLine" v-for="(item,index) in formJson" :key="index">
+          <!-- 提示信息 - JPY NPR BRL -->
+          <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
         (currency === 'NPR' && item.paramsName === 'routingCodeValue1') ||
         (currency === 'BRL' && item.paramsName === 'bankCode') ||
         (currency === 'BDT' && item.paramsName === 'routingCodeValue1')">
-          {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
-        <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
-        <!-- bank account type -->
-        <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
-          <div class="radioInput">
-            <div class="value">{{ $t(item.model) }}</div>
-            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+            {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
+          <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
+          <!-- bank account type -->
+          <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+            <div class="radioInput">
+              <div class="value">{{ $t(item.model) }}</div>
+              <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+            </div>
           </div>
-        </div>
-        <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
-          <div class="radioInput">
-            <div class="value">{{ item.model }}</div>
-            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+          <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
+            <div class="radioInput">
+              <div class="value">{{ item.model }}</div>
+              <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+            </div>
           </div>
+          <div class="formContent" v-else>
+            <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)"  @focus="inputFocus" @blur="inputBlur">
+          </div>
+          <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
+          <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
         </div>
-        <div class="formContent" v-else>
-          <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)"  @focus="inputFocus" @blur="inputBlur">
-        </div>
-        <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
-        <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
+        <!-- tips icon -->
+        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
       </div>
-      <!-- tips icon -->
-      <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+
+      <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
+        {{ $t('nav.Continue') }}
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
+        <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
+      </button>
+
     </div>
-
-    <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
-      {{ $t('nav.Continue') }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
-      <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
-    </button>
-
     <!-- 单选框 -->
     <!-- bank account type -->
     <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="selectState=false">
@@ -183,6 +185,7 @@ export default {
     //表单 - 单选框
     openSelect(item,index){
       this.selectState = true;
+      console.log(this.selectState)
       this.selected = {
         item: item.radioList,
         index: index,
@@ -375,9 +378,12 @@ export default {
 
 <style lang="scss" scoped>
 #sell-form{
+  width: 100%;
   height: 100%;
   overflow-y: scroll;
+  position: absolute;
   .sellForm-content{
+    position: relative;
     .downTips-icon{
       position: absolute;
       bottom: 1.1rem;
@@ -412,6 +418,43 @@ export default {
     }
   }
 }
+
+#box{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.selectView{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  .selectDate{
+    z-index: 99;
+    position: absolute;
+    top: 2rem;
+    left: 0.16rem;
+    background: #FFFFFF;
+    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0.16rem;
+    max-height: 4rem;
+    min-width: 1.8rem;
+    overflow: auto;
+    li{
+      font-size: 0.16rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
+      text-indent: 0.16rem;
+      border: 1px solid #F3F4F5;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      &:last-child{
+        border: none;
+      }
+    }
+  }
+}
+
 .formLine{
   margin-top: 0.28rem;
   clear: both;
@@ -509,7 +552,7 @@ export default {
   font-family: "GeoRegular", GeoRegular;
   font-weight: normal;
   color: #FFFFFF;
-  margin-top: 0.16rem;
+  margin-top: 0.3rem;
   cursor: pointer;
   border: none;
   position: relative;
@@ -523,35 +566,5 @@ export default {
 .continue:disabled{
   background: rgba(0, 89, 218, 0.5);
   cursor: no-drop;
-}
-
-.selectView{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  .selectDate{
-    position: absolute;
-    top: 2rem;
-    left: 0.16rem;
-    background: #FFFFFF;
-    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
-    border-radius: 0.16rem;
-    max-height: 4rem;
-    min-width: 1.8rem;
-    overflow: auto;
-    li{
-      font-size: 0.16rem;
-      font-family: "GeoRegular", GeoRegular;
-      font-weight: normal;
-      color: #232323;
-      text-indent: 0.16rem;
-      border: 1px solid #F3F4F5;
-      height: 0.56rem;
-      line-height: 0.56rem;
-      &:last-child{
-        border: none;
-      }
-    }
-  }
 }
 </style>

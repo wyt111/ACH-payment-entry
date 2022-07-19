@@ -350,12 +350,16 @@ export default {
           return;
         }
         if(this.viewName === 'currency-sell'){ //卖币
-          this.$parent.$refs.sellCrypto_ref.currencyData.icon = item.logoUrl;
-          this.$parent.$refs.sellCrypto_ref.currencyData.name = item.name;
-          this.$parent.$refs.sellCrypto_ref.currencyData.maxSell = item.maxSell;
-          this.$parent.$refs.sellCrypto_ref.currencyData.minSell = item.minSell;
-          this.$parent.$refs.sellCrypto_ref.currencyData.cryptoCurrencyNetworkId = item.cryptoCurrencyNetworkId;
-          this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.symbol;
+          let currencyData = {
+            icon: item.logoUrl,
+            name: item.name,
+            maxSell: item.maxSell,
+            minSell: item.minSell,
+            cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
+            symbol: item.symbol,
+          }
+          this.$parent.$refs.sellCrypto_ref.currencyData = currencyData;
+          this.$store.state.sellRouterParams.cryptoCurrency = item.name;
           this.$store.state.feeParams.symbol = item.name;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;

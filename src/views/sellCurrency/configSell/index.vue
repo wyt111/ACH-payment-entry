@@ -81,7 +81,7 @@ export default {
           cryptoCurrency: this.routerParams.cryptoCurrency,
           sellVolume: this.routerParams.amount,
           worldId: this.routerParams.positionData.worldId,
-          symbol: this.routerParams.payCommission.symbol,
+          symbol: this.routerParams.cryptoCurrency,
           cardNumber: this.$store.state.sellForm.accountNumber,
           swiftCode: this.$store.state.sellForm.swiftCode,
           bank: this.$store.state.sellForm.bankCode,
