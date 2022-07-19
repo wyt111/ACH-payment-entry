@@ -135,6 +135,11 @@ export default {
         this.$children[1].menuState = false;
         return;
       }
+      if(this.$route.path !== '/' && this.routerViewState === false){
+        this.routerViewState = true
+        this.$router.push('/');
+        return
+      }
       this.$router.push('/');
     }
   },
