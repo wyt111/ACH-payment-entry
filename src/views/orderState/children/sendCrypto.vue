@@ -9,7 +9,7 @@
             <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
           </div>
       </div>
-    <div v-if="orderStateData.orderStatus==0">
+    <div v-if="[0,1].includes(orderStateData.orderStatus)">
       <div>
         <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
@@ -54,7 +54,7 @@
       </div>
     </div>
     </div>
-    <div v-else class="sendCrypto_timeError">
+    <div v-else-if="orderStateData.orderStatus === 7 || orderStateData.expirationTime === 0" class="sendCrypto_timeError">
       <div class="sendCrypto_title" style="margin-top:.42rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
       <p style="cursor: pointer;" class="order-con" @click="copy" :data-clipboard-text="orderStateData.orderId">
@@ -62,18 +62,18 @@
         <img style="height:.2rem;margin-left:.08rem;flex:1" src="@/assets/images/copySell.png" alt="">
       </p>
     </div>
-    <div class="sendCrypto_content">
+    <div class="sendCrypto_content1">
       <img src="@/assets/images/SellOrderTime.svg" alt="">
       <p>Take a timeout! The address has been invalidated, please go back to the homepage to re-operate. If you insist on transferring digital currency to the current address, any loss will be borne by you!</p>
     </div>
-    <div class="sendCrypto_button1" @click="transferredShow=true">
+    <div class="sendCrypto_button" @click="$router.replace('/')">
       <div>
-          {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
+          Back to Home page
           <img src="@/assets/images/rightIconSell.png" alt="">
       </div>
     </div>
     </div>
-    
+    <div v-else></div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
       <div class="content">
         <p style="height:.5rem">{{ $t('nav.Sell_Order_transferred') }}</p>
@@ -120,17 +120,16 @@ export default {
     // this.$parent.routerViewState = true 
     setTimeout(() => {
       this.getNetworkList()
-      this.$route.meta.title = 'nav.SellOrder_title' 
     }, 1000);
     this.queryFee()
-    if(this.timerNumber === 15){
+    if(this.timerNumber >= 0 ){
         clearInterval(this.timeOut)
        this.timeOut =  setInterval(()=>{
           this.timerNumber--
-          if(this.timerNumber<= 0 && this.orderStateData.orderStatus===0){
+          if(this.timerNumber< 0 && [0,1].includes(this.orderStateData.orderStatus)){
             this.queryFee()
             this.timerNumber = 15
-          }else{
+          }else if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
             clearInterval(this.timeOut)
           }
         },1000)
@@ -139,14 +138,27 @@ export default {
     
   },
   activated(){
-   this.orderStateData.payStatus = 1
+  
     //网络列表延迟请求
     setTimeout(() => {
       this.getNetworkList()
     }, 1000);
     this.queryFee()
+    if(this.timerNumber > 0 ){
+        clearInterval(this.timeOut)
+       this.timeOut =  setInterval(()=>{
+          this.timerNumber--
+          if(this.timerNumber< 0 && [0,1].includes(this.orderStateData.orderStatus)){
+            this.queryFee()
+            this.timerNumber = 15
+          }else if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
+            clearInterval(this.timeOut)
+          }
+        },1000)
+      }
   },
   deactivated(){
+    this.timerNumber = 15
     clearInterval(this.timeOut)
   },
   destroyed(){
@@ -174,6 +186,8 @@ export default {
     },
     //二维码
     generateQRcode(){
+      // console.log(this.orderStateData.orderStatus);
+    if(this.orderStateData.orderStatus==1 || this.orderStateData.orderStatus==0){
        this.$refs.qrCodeUrl.innerHTML = "";
       new QRCode(this.$refs.qrCodeUrl, {
         text: this.orderStateData.address,
@@ -183,6 +197,9 @@ export default {
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       })
+      return
+    }
+      
     },
     //获取网络列表
      async  getNetworkList(){
@@ -191,7 +208,7 @@ export default {
         coin:this.$store.state.orderStatus.cryptoCurrency
       }
       let res  = await this.$axios.get(this.$api.get_networkList,params)
-      
+      if(res.data && res.returnCode === '0000')
       this.Sellorder_NetworkList =  res.data
      },
      //Calculate minutes and seconds
@@ -253,6 +270,7 @@ export default {
          }
        })
     },
+    //打开菜单栏
     openMenu(){
       this.$parent.$parent.routerViewState === true ? this.$parent.$parent.routerViewState = false : this.$parent.$parent.routerViewState = true;
     }
@@ -277,6 +295,7 @@ export default {
 
 .sendCrypto-container{
   width: 100%;
+
   // padding-bottom: .6rem;
   display: flex;
   flex-direction: column;
@@ -287,11 +306,14 @@ export default {
    height: 100%;
    display: flex;
    flex-direction: column;
-   .sendCrypto_content{
+   .sendCrypto_content1{
      width: 100%;
      text-align: center;
+     margin-top: .2rem;
+     border-top: 1px solid #EEEEEE;
      >img{
        height: 1.58rem;
+       margin: .8rem 0 .2rem;
      }
      p{
        text-align: justify;
@@ -362,13 +384,13 @@ export default {
   }
   .sendCrypto_qrcode{
     width: 100%;
-    height: 2.12rem;
     margin-top: .24rem;
     background: #F7F8FA;
     border-radius: .06rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: .3rem;
     p{
       font-size: .13rem;
       color: #949EA4;

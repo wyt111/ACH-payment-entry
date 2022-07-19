@@ -46,7 +46,7 @@
         <div><img src="../assets/images/slices/right_icon.png"></div>
       </div>
     </div>
-    <div class="routerMenu_line" @click="show=!show" v-if="email !== ''">
+    <div class="routerMenu_line" @click="loginOutIsShow" v-if="email !== ''">
       <div class="lineIcon"><img src="../assets/images/slices/logOut.png"></div>
       <div class="lineName">{{ $t('nav.menu_logOut') }}</div>
       <div class="lineRight">
@@ -55,10 +55,12 @@
       </div>
     </div>
     <div class="routerMenu_loginOut" v-show="show" @click="show=false">
-      <div class="content" @click.stop="show=true">
+      <div class="content" ref="loginOutView" @click.stop="show=true">
         <h2>{{ $t('nav.loginOut_title') }}</h2>
-        <div @click.stop="outLogin">{{ $t('nav.loginOut') }} <img src="../assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
+       <div>
+          <div @click.stop="outLogin">{{ $t('nav.loginOut') }} </div>
+          <p @click.stop="show=false">{{ $t('nav.loginOut_Dismiss') }}</p>
+       </div>
       </div>
     </div>
   </div>
@@ -201,6 +203,17 @@ export default {
         this.$parent.routerViewState = true;
         this.$router.push('/emailCode')
       }
+    },
+    //显示退出登陆判断是否是pc 还是 移动
+    loginOutIsShow(){
+      let winWidth = document.body.clientWidth || document.documentElement.clientWidth
+      if(winWidth < 791){
+        this.$refs.loginOutView.style = 'top:10%;tannsfrom:translate(-50%,-10%)'
+      }else{
+        this.$refs.loginOutView.style = 'left:50%;top:30%;tannsfrom:translate(-50%,-30%)'
+      }
+      this.show = true
+      
     },
     //是否有历史记录
     transationsList(){
@@ -424,62 +437,66 @@ export default {
     left: 0;
     top: 0;
     .content{
-      width: 90%;
-      height: 2.6rem;
+     
       max-width: 3.5rem;
       background: #FFFFFF;
       border-radius: 16px;
       position: absolute;
       left:50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
+      top: 30%;
+      transform: translate(-50%,30%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: .4rem 0 0 0;
+      padding: .32rem .16rem .32rem;
       box-sizing: border-box;
+      
       h2{
-        width: 2.4rem;
         text-align: center;
-        font-weight: normal;
-        color: #232323;
+        font-style: normal;
+        font-weight: 400;
+        color: #949EA4;;
         line-height: .31rem;
-        font-family: GeoDemibold;
-        font-size: .21rem;
+        font-size: .16rem;
       }
-      div{
-        width: 90%;
-        height: .58rem;
-        background: #E55643;
-        border-radius: .29rem;
-        text-align: center;
-        line-height: .58rem;
-        position: relative;
-        font-size: .17rem;
-        font-weight: normal;
-        color: #FFFFFF;
-        font-family: GeoRegular;
-        margin-top: .05rem;
-        cursor: pointer;
-        img{
-          width: .24rem;
-          position: absolute;
-          right: .16rem;
-          top: .17rem;
+      >div{
+        width: 3.3rem;
+        height: .6rem;
+        display: flex;
+        margin-top: .2rem;
+        justify-content: center;
+        align-items: center;
+        div{
+          width: 1.5rem;
+          height: .5rem;
+          background: #E55643;
+          border-radius: .29rem;
+          text-align: center;
+          line-height: .49rem;
+          font-size: .16rem;
+          font-weight: normal;
+          color: #FFFFFF;
+          font-family: GeoRegular;
+          margin-top: .05rem;
+          margin-right: .13rem;
+          cursor: pointer;
+        }
+        p{
+           width: 1.5rem;
+          height: .5rem;
+          text-align: center;
+          font-weight: normal;
+          color: #063376;
+          font-family: GeoDemibold;
+          font-size: .16rem;
+          line-height: .49rem;
+          border: 1px solid #EEEEEE;
+          border-radius: .25rem;
+          cursor: pointer;
         }
       }
-      p{
-        width: 90%;
-        height: .56rem;
-        text-align: center;
-        font-weight: normal;
-        color: #232323;
-        font-family: GeoDemibold;
-        font-size: .17rem;
-        margin-top: .24rem;
-        cursor: pointer;
-      }
     }
+   
   }
 }
 </style>

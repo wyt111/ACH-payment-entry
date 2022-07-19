@@ -11,7 +11,7 @@
           <img v-else-if="[2,3,4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
         <div class="sellState_right" >
           <p :style="{ color:orderStateData.orderStatus==0?'#949EA4':'' }">Crypto Sent</p>
-          <p v-if="orderStateData.orderStatus!==0" style="color:#0059DA">Block confirmed ( {{ orderStateData.blockNumber?orderStateData.blockNumber:0 }} / {{ orderStateData.confirmedNum }} )</p>
+          <p v-if="orderStateData.orderStatus!==0" :style="{color:orderStateData.orderStatus==1?'#0059DA':'#063376'}">Block confirmed ( {{ orderStateData.blockNumber?orderStateData.blockNumber:0 }} / {{ orderStateData.confirmedNum }} )</p>
         </div>
       </div>
       <img class="line" :src="[0,1].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
@@ -23,7 +23,7 @@
           <img v-else-if="[2,3,4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
         <div class="sellState_right" >
           <p :style="{ color:[0,1,2].includes(orderStateData.orderStatus)?'#949EA4':'' }">Confirm Order</p>
-          <p v-if="[3,4,5,6,7].includes(orderStateData.orderStatus)" style="color:#0059DA">Your order has been confirmed</p>
+          <p v-if="[3,4,5,6,7].includes(orderStateData.orderStatus)" style="color:#063376">Your order has been confirmed</p>
         </div>
       </div>
       <img class="line" :src="[0,1,2].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
@@ -35,7 +35,7 @@
           <img v-else-if="[4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
         <div class="sellState_right">
           <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">In Transfer</p>
-          <p v-if="[4,5,6,7].includes(orderStateData.orderStatus)" style="color:#0059DA">Your fiat is in transfer</p>
+          <p v-if="[4,5,6,7].includes(orderStateData.orderStatus)" style="color:#063376">Your fiat is in transfer</p>
         </div>
       </div>
       <img class="line" :src="[0,1,2,3].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">

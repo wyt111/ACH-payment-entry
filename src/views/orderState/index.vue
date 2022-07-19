@@ -42,86 +42,86 @@ export default{
   },
   methods:{
     //保留小数点两位或者6位
-    getToFixed(firstVal,lastVal){
-      let decimalDigits = 0;
-      let resultValue = firstVal - lastVal;
-      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-      let price = resultValue.toFixed(decimalDigits);
-      isNaN(resultValue) || price <= 0 ? price = 0 : '';
-      return price;
+    // getToFixed(firstVal,lastVal){
+    //   let decimalDigits = 0;
+    //   let resultValue = firstVal - lastVal;
+    //   resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+    //   let price = resultValue.toFixed(decimalDigits);
+    //   isNaN(resultValue) || price <= 0 ? price = 0 : '';
+    //   return price;
 
-    },
+    // },
 
-    Network_isShow(){
-      if(this.playMoneyState==3 || this.playMoneyState==2){
-        this.Network_show = false
-        this.Network_show1 = false
-        return false
-      }else{
-        let _chiletWidth = document.documentElement.clientWidth
-        if(_chiletWidth<750){
-          this.Network_show = true
-        }else{
-          this.Network_show1 = !this.Network_show1
-        }
-      }
-    },
+    // Network_isShow(){
+    //   if(this.playMoneyState==3 || this.playMoneyState==2){
+    //     this.Network_show = false
+    //     this.Network_show1 = false
+    //     return false
+    //   }else{
+    //     let _chiletWidth = document.documentElement.clientWidth
+    //     if(_chiletWidth<750){
+    //       this.Network_show = true
+    //     }else{
+    //       this.Network_show1 = !this.Network_show1
+    //     }
+    //   }
+    // },
     //设置网络
-    SetNetwork(text){
-      let _chiletWidth = document.documentElement.clientWidth
+    // SetNetwork(text){
+    //   let _chiletWidth = document.documentElement.clientWidth
 
-      if(_chiletWidth<750){
-        this.Network_show = false
-      }else{
-        this.Network_show1 = false
-      }
+    //   if(_chiletWidth<750){
+    //     this.Network_show = false
+    //   }else{
+    //     this.Network_show1 = false
+    //   }
 
-      if(this.Network.id === text.id){
-        return false
-      }
+    //   if(this.Network.id === text.id){
+    //     return false
+    //   }
 
-      let params = {
-        // id:'15',
-        id:this.$store.state.sellOrderId,
-        cryptoCurrencyNetworkId:text.id
-      }
-      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
-        if(res && res.data){
-          this.orderStateData = res.data
-          // this.$toast(res.returnMsg)
-          this.Network = text
-          return
-        }
-        this.$toast({
-          duration: 3000,
-          message: 'error'
-        });
-      })
-      window.clearInterval(this.timer);
-      this.timer = null;
-      setTimeout(()=>{
-            this.timer = setInterval(()=>{
-              this.getCurrencyStatus()
-              },1000)
-          },2000)
-    },
+    //   let params = {
+    //     // id:'15',
+    //     id:this.$store.state.sellOrderId,
+    //     cryptoCurrencyNetworkId:text.id
+    //   }
+    //   this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
+    //     if(res && res.data){
+    //       this.orderStateData = res.data
+    //       // this.$toast(res.returnMsg)
+    //       this.Network = text
+    //       return
+    //     }
+    //     this.$toast({
+    //       duration: 3000,
+    //       message: 'error'
+    //     });
+    //   })
+    //   window.clearInterval(this.timer);
+    //   this.timer = null;
+    //   setTimeout(()=>{
+    //         this.timer = setInterval(()=>{
+    //           this.getCurrencyStatus()
+    //           },1000)
+    //       },2000)
+    // },
     //获取网络列表
-    async  getNetworkList(){
-      let params = {
-        coin:this.$store.state.orderStatus.cryptoCurrency
-      }
-      let res  = await this.$axios.get(this.$api.get_networkList,params)
-      if(res.returnCode == '0000' && res.data){
-        this.Network_data = res.data
-        this.$store.state.Sellorder_Network = res.data
-        res.data.forEach(item => {
-            if(item.network==this.orderStateData.cryptoCurrencyNetwork){
-              this.Network = item
-            }
-          });
-      }
+    // async  getNetworkList(){
+    //   let params = {
+    //     coin:this.$store.state.orderStatus.cryptoCurrency
+    //   }
+    //   let res  = await this.$axios.get(this.$api.get_networkList,params)
+    //   if(res.returnCode == '0000' && res.data){
+    //     this.Network_data = res.data
+    //     this.$store.state.Sellorder_Network = res.data
+    //     res.data.forEach(item => {
+    //         if(item.network==this.orderStateData.cryptoCurrencyNetwork){
+    //           this.Network = item
+    //         }
+    //       });
+    //   }
 
-    },
+    // },
     //获取买币状态
     getCurrencyStatus(){
       let sellOrderId = sessionStorage.getItem('sellOrderId')
@@ -139,7 +139,7 @@ export default{
           this.network1 = res.data.networkName
           // console.log(this.network1);
           // this.playMoneyState = 6
-          res.data.orderStatus = 7
+          // res.data.orderStatus = 5
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))

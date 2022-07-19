@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/sellOrder' && !this.$parent.routerViewState && $route.path !== '/kycVerification') || $route.path !== '/'&&  $route.path !== '/sellOrder'&& $route.path !== '/kycVerification' ">
+  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/sellOrder' && !this.$parent.routerViewState && $route.path !== '/kycVerification') ||tabState&& $route.path !== '/'&&  $route.path !== '/sellOrder'&& $route.path !== '/kycVerification' ">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
