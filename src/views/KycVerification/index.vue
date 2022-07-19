@@ -3,10 +3,10 @@
     
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
-      <img src="@/assets/images/ShutDown.png" @click="$router.replace('/')" alt="">
+      <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
         <div class="content" v-if="kycVerState==0">
-          <img src="@/assets/images/kycIcon1.png" alt="">
+          <img src="@/assets/images/kycIcon1.svg" alt="">
             <p>Please verify your identity.
             It usually takes about 2 minutes.</p>
             <div>
@@ -17,17 +17,17 @@
             </div>
         </div>
         <div class="content" v-else-if="kycVerState==1">
-          <img src="@/assets/images/kycIcon1.png" alt="">
+          <img src="@/assets/images/kycIcon2.svg" alt="">
             <p style="text-align:center">Congrats! Your verification completed.</p>
             
         </div>
         <div class="content" v-else>
-          <img src="@/assets/images/kycIcon1.png" alt="">
+          <img src="@/assets/images/kycIcon3.svg" alt="">
             <p style="text-align:center">Your verification failed.</p>
             <ul class="verify_list">
                 <li>Please ensure:</li>
                 <li>· You submitted your own ID document .</li>
-                <li>T· The name on your ID document is identical to your payment's cardholder name .</li>
+                <li>· The name on your ID document is identical to your payment's cardholder name .</li>
                 <li>· You did not use multiple ID documents for the KYC verification .</li>
             </ul>
         </div>
@@ -35,11 +35,11 @@
           <p  >Begin Verification</p>
           <img src="@/assets/images/rightIconSell.png" alt="">
         </div>
-        <div class="Verification_button" v-else-if="kycVerState==1">
+        <div class="Verification_button" v-else-if="kycVerState==1" @click="nextKycVer(1)">
           <p>Continue the Payment</p>
           <img src="@/assets/images/rightIconSell.png" alt="">
         </div>
-        <div class="Verification_button" v-else>
+        <div class="Verification_button" v-else @click="nextKycVer(2)">
           <p >Try Again </p>
           <img src="@/assets/images/rightIconSell.png" alt="">
         </div>
@@ -72,20 +72,44 @@ export default {
             () => this.getNewAccessToken()
         )
         .withConf({
-            lang: 'zh', //language of WebSDK texts and comments (ISO 639-1 format)
+            lang: sessionStorage.getItem('language') &&sessionStorage.getItem('language') === 'zh-HK'?'zh':'en-US', //language of WebSDK texts and comments (ISO 639-1 format)
         })
         
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
-        // see below what kind of messages WebSDK generates
-        .on('idCheck.stepCompleted', (payload) => {
-           console.log(payload);
+       
+        .on('idCheck.applicantStatus', (type,payload) => {
+          console.log(type);
+          if(!type){
+            return
+          }
+          if(type.reviewStatus === "pending"){
+            console.log('正在处理')
+            return
+          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
+            this.status = 0
+            this.kycVerState = 1
+            return
+          }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED'){
+            this.status = 0
+            this.kycVerState = 2
+            return
+          }else{
+            this.status = 0
+            this.kycVerState = 2
+            return
+          }
             
         })
-        .on('idCheck.onAction',(res)=>{
-          console.log(res);
+       
+       
+        .on('idCheck.onResize', (type,error) => {
+           let innerHeight = document.querySelector('.verif_kyc')
+           let kycInneHeight = document.querySelector('.KycVer-container')
+           innerHeight.style = `height:${kycInneHeight.clientHeight}px;overflow:scroll`
         })
-        .on('idCheck.onError', (error) => {
+        .on('idCheck.onError', (type,error) => {
             console.log('onError', error)
+            console.log(type);
         })
         .build();
   
@@ -100,15 +124,43 @@ export default {
     },
     //next
     nextKycVer(val){
-      this.status=1
+      if(val===0){
+        this.status=1
+        setTimeout(()=>{
+          this.launchWebSdk('_act-sbx-2d9bb0c6-2127-4125-ab15-32cf343a0c63')
+        },1000)
+        return 
+      }else if(val === 1){
+        this.status=0
+        console.log('成功继续下一步')
+        return
+      }else{
+        this.status=1
+        setTimeout(()=>{
+          this.launchWebSdk('_act-sbx-2d9bb0c6-2127-4125-ab15-32cf343a0c63')
+        },1000)
+      }
+      
+    },
+    //关闭页面
+    goHome(){
       setTimeout(()=>{
-        this.launchWebSdk('_act-sbx-71d678b8-5172-4238-a5f0-e54d4ca4f9c4')
+        this.kycVerState = 0
       },1000)
+      this.$router.replace('/')
+    }
+  },
+  watch:{
+    //保存页面状态
+    kycVerState(newVal,oldVal){
+      if(newVal !== oldVal){
+        sessionStorage.setItem('kycVerState',newVal)
+      }
     }
   },
   mounted(){
-   
-    
+    //保存页面状态
+   sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
   }
 }
 </script>
@@ -116,9 +168,8 @@ export default {
 <style lang="scss" scoped>
 .KycVer-container{
   height: 100%;
- display: flex;
- justify-content: center;
- align-items: center;
+ overflow: hidden;
+
   .kyc_nav{
     width: 100%;
     height: .2rem;
@@ -132,7 +183,7 @@ export default {
   .Verification_content{
     width: 100%;
     height: 100%;
-    flex: 1;
+    // flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -192,19 +243,21 @@ export default {
     }
   }
   .verif_kyc{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 3.4rem;
+    position: fixed;
+    overflow: scroll;
    >img{
      height: .15rem;
      cursor: pointer;
      position: absolute;
-     right: .3rem;
-     top: .4rem;
+     right: .0rem;
+     top: .0rem;
    }
- 
+ #sumsub-websdk-container{
+  height: 100%;
+  
+  overflow: scroll;
+ }
   }
 }
 </style>

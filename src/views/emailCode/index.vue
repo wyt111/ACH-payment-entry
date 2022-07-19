@@ -32,12 +32,13 @@
         <p v-if="!loggedIn">{{ $t('nav.enterEmail') }}</p>
         <p v-else>{{ $t('nav.enterEmail1') }}</p>
         <img src="@/assets/images/slices/emailIcon.png" alt="">
-        <input type="text"  v-model="email" :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
+        
+        <input type="text"  v-model="email"  :style="{cursor: loggedIn?'not-allowed':''}" :disabled="loggedIn" placeholder="john.doe@example.com">
       </div>
       <div class="errorMessage" v-if="emailErrorState" v-html="emailError"></div>
       <div class="emailCode_content_title" v-if="loggedIn">Not you? <span @click="signAddress">{{ $t('nav.emailanother') }}</span></div>
     </div>
-
+      
       <div>
         <div class="emailCode_checke" v-if="!loggedIn">
           <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
@@ -91,20 +92,38 @@ export default {
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
       return
     }
-    if(localStorage.getItem('login_email')){
-      this.email = AES_Decrypt(localStorage.getItem('login_email'))
-      this.loggedIn = true
-      this.checked = true
-    }else{
-      this.loggedIn = false
-      this.checked = false
-    }
+   
+      if(localStorage.getItem('login_email')){
+        
+        this.email = AES_Decrypt(localStorage.getItem('login_email'))
+        this.loggedIn = true
+        this.checked = true
+        return
+      }else{
+        this.loggedIn = false
+        this.checked = false
+      }
+ 
   },
+
+
   deactivated(){
     window.clearInterval(this.timeVal);
     this.timeVal = null;
-    this.email = ''
   },
+  mounted(){
+    //  debugger;
+     this.email = AES_Decrypt(localStorage.getItem('login_email'))
+     if(this.email){
+        console.log(this.email);
+        // 
+        this.loggedIn = true
+        this.checked = true
+      }else{
+        this.loggedIn = false
+        this.checked = false
+      }
+},
   methods: {
     getCode:debounce(function () {
       this.getCode_state = false;
@@ -153,7 +172,7 @@ export default {
     signAddress(){
       this.loggedIn = false
       this.checked = false
-      this.email = ''
+      // this.email = ''
       localStorage.removeItem('login_email')
     },
     // toLogin:debounce(function (){
@@ -232,9 +251,7 @@ export default {
       }
     }
   },
-  mounted(){
-
-  }
+  
 }
 </script>
 
@@ -298,7 +315,7 @@ export default {
       font-size: .16rem;
       position: absolute;
       left: .42rem;
-      color: #0059DA;
+      color: #949EA4;
       background: transparent;
       font-family: "GeoLight";
       outline: none;

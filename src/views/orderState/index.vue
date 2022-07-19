@@ -2,7 +2,7 @@
   <div class="order-container" >
     
     <sendCrypto v-if="$store.state.nextOrderState==1" :orderStateData="orderStateData"/>
-    <sellState v-else :playMoneyState="playMoneyState"/>
+    <sellState v-else :orderStateData="orderStateData"/>
   </div>
 
 </template>
@@ -34,7 +34,9 @@ export default{
       timeText:'',
       cardUserName:'',
       accountNumberCode:'',
-      nextOrderState:1
+      nextOrderState:1,
+      feeInfo:'',
+      
 
     }
   },
@@ -125,8 +127,8 @@ export default{
       let sellOrderId = sessionStorage.getItem('sellOrderId')
       // console.log(this.$store.state.sellOrderId);
       let parmas = {
-        id:'140'
-        // id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
+        // id:'140'
+        id:this.$store.state.sellOrderId?this.$store.state.sellOrderId:sellOrderId
       }
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
@@ -136,7 +138,8 @@ export default{
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
           // console.log(this.network1);
-          this.playMoneyState = 6
+          // this.playMoneyState = 6
+          res.data.orderStatus = 1
           if(this.playMoneyState==7){
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
@@ -216,6 +219,7 @@ export default{
         // console.log(this.timeText);
       }
     },
+   
     //解密了一些数据
     AES(value){
       if(value){

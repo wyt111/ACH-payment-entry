@@ -6,48 +6,48 @@
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0].includes(playMoneyState)" src="@/assets/images/stateSell/icon1_no.png" alt="">
-          <img v-else-if="[1].includes(playMoneyState)"  src="@/assets/images/stateSell/icon1_In.png" alt="">
-          <img v-else-if="[2,3,4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
+          <img v-if="[0].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon1_no.png" alt="">
+          <img v-else-if="[1].includes(orderStateData.orderStatus)"  src="@/assets/images/stateSell/icon1_In.png" alt="">
+          <img v-else-if="[2,3,4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon1_finish.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:playMoneyState==0?'#949EA4':'' }">Crypto Sent</p>
-          <p :style="{ color:playMoneyState==0?'#949EA4':'' }">Block confirmed (50/50)</p>
+          <p :style="{ color:orderStateData.orderStatus==0?'#949EA4':'' }">Crypto Sent</p>
+          <p v-if="orderStateData.orderStatus!==0" style="color:#0059DA">Block confirmed ( {{ orderStateData.blockNumber?orderStateData.blockNumber:0 }} / {{ orderStateData.confirmedNum }} )</p>
         </div>
       </div>
-      <img class="line" :src="[0,1].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_no.png" alt="">
-          <img v-else-if="[2].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_In.png" alt="">
-          <img v-else-if="[2,3,4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
+          <img v-if="[0,1].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_no.png" alt="">
+          <img v-else-if="[2].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_In.png" alt="">
+          <img v-else-if="[2,3,4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon2_fil.png" alt="">
         <div class="sellState_right" >
-          <p :style="{ color:[0,1,2].includes(playMoneyState)?'#949EA4':'' }">Confirm Order</p>
-          <p :style="{ color:[0,1,2].includes(playMoneyState)?'#949EA4':'' }">Your order has been confirmed</p>
+          <p :style="{ color:[0,1,2].includes(orderStateData.orderStatus)?'#949EA4':'' }">Confirm Order</p>
+          <p v-if="[3,4,5,6,7].includes(orderStateData.orderStatus)" style="color:#0059DA">Your order has been confirmed</p>
         </div>
       </div>
-      <img class="line" :src="[0,1,2].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1,2].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1,2].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_no.png" alt="">
-          <img  v-else-if="[3].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_In.png" alt="">
-          <img v-else-if="[4,5,6,7].includes(playMoneyState)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
+          <img v-if="[0,1,2].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_no.png" alt="">
+          <img  v-else-if="[3].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_In.png" alt="">
+          <img v-else-if="[4,5,6,7].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon3_fil.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">In Transfer</p>
-          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">Your fiat is in transfer</p>
+          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">In Transfer</p>
+          <p v-if="[4,5,6,7].includes(orderStateData.orderStatus)" style="color:#0059DA">Your fiat is in transfer</p>
         </div>
       </div>
-      <img class="line" :src="[0,1,2,3].includes(playMoneyState)?line.LineImg:line.LineImgActive" alt="">
+      <img class="line" :src="[0,1,2,3].includes(orderStateData.orderStatus)?line.LineImg:line.LineImgActive" alt="">
     </div>
     <div class="sellState_content">
       <div class="sellState" >
-          <img v-if="[0,1,2,3].includes(playMoneyState)" src="@/assets/images/stateSell/icon4_no.png" alt="">
-          <img v-else-if="playMoneyState==4" src="@/assets/images/stateSell/icon4_In.png" alt="">
-          <img v-else-if="playMoneyState==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
-          <img v-else-if="playMoneyState==6 || playMoneyState==7" src="@/assets/images/stateSell/icon4_error.png" alt="">
+          <img v-if="[0,1,2,3].includes(orderStateData.orderStatus)" src="@/assets/images/stateSell/icon4_no.png" alt="">
+          <img v-else-if="orderStateData.orderStatus==4" src="@/assets/images/stateSell/icon4_In.png" alt="">
+          <img v-else-if="orderStateData.orderStatus==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
+          <img v-else-if="orderStateData.orderStatus==6 || orderStateData.orderStatus==7" src="@/assets/images/stateSell/icon4_error.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(playMoneyState)?'#949EA4':'' }">Result</p>
+          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">{{orderStateData.orderStatus==5?'Success':orderStateData.orderStatus==6?'Fail':'Result'}}</p>
         </div>
       </div>
       
@@ -65,63 +65,26 @@
 export default {
   name:'sellState',
   props:{
-    playMoneyState:{
-      type:Number,
-      default:0
-    }
+    orderStateData:{
+      default:''
+    },
+
   },
   data(){
     return{
-      sellStateList:[
-        {
-          id:1,
-          name:'Crypto Sent',
-          con:'Block confirmed (50/50)',
-          finish:require('@/assets/images/stateSell/icon1_finish.png'),
-          In:require('@/assets/images/stateSell/icon1_In.png'),
-          no:require('@/assets/images/stateSell/icon1_no.png')
-        },
-       
-        {
-          id:3,
-          name:'Confirm Order',
-          con:'Your order has been confirmed ',
-          finish:require('@/assets/images/stateSell/icon2_fil.png'),
-          In:require('@/assets/images/stateSell/icon2_In.png'),
-          no:require('@/assets/images/stateSell/icon2_no.png')
-        },
-        
-        {
-          id:5,
-          name:'In Transfer',
-          con:'Your fiat is in transfer',
-          finish:require('@/assets/images/stateSell/icon3_fil.png'),
-          In:require('@/assets/images/stateSell/icon3_In.png'),
-          no:require('@/assets/images/stateSell/icon3_no.png')
-        },
-       
-        {
-          id:7,
-          name:'Result',
-          con:'',
-          finish:require('@/assets/images/stateSell/icon4_fil.png'),
-          In:require('@/assets/images/stateSell/icon4_In.png'),
-          no:require('@/assets/images/stateSell/icon4_no.png'),
-          error:require('@/assets/images/stateSell/icon4_error.png'),
-        },
-       
-      ],
+  
       line: {
           LineImg:require('@/assets/images/stateSell/Line.png'),
           LineImgActive:require('@/assets/images/stateSell/LineActive.png'),
         },
-      state:0
+      state:2
     }
   },
   methods:{
     goSellOrder(){
-      this.$router.replace('/')
+    
       this.$store.state.nextOrderState = 1
+      this.$router.replace('/')
     }
   }
 }
@@ -160,13 +123,13 @@ export default {
        display: flex;
        flex-direction: column;
        justify-content: center;
-       p:first-child{
+       p:nth-of-type(1){
          color: #063376;
          font-size: .16rem;
          line-height: .18rem;
          margin-top: .02rem;
        }
-       p:last-child{
+       p:nth-of-type(2){
          font-size: .13rem;
          color: #063376;
          line-height: .13rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="sendCrypto-container">
     <div class="sendCrypto_nav">
-      <div class="sendCrypto_nav_left">
+      <div class="sendCrypto_nav_left" @click="$router.replace('/')">
         <img src="@/assets/images/goBack.png" alt="">
         <p>Sell {{orderStateData.cryptoCurrency}}</p>
       </div>
@@ -13,11 +13,12 @@
       
       <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
+      <p>{{ timerNumber }} s</p>
       
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
-      <p style="color:#063376">{{ orderStateData.feeUnit }} {{ orderStateData.fee }}</p>
+      <p style="color:#063376">{{ orderStateData.feeUnit }} {{ feeInfo.rampFee }}</p>
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
@@ -47,8 +48,10 @@
     <div class="sendCrypto_bottom_title">{{ $t('nav.sell_Order_network_selected') }}</div>
     </div>
     <div class="sendCrypto_button" @click="transferredShow=true">
-      {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
-      <img src="@/assets/images/rightIconSell.png" alt="">
+      <div>
+          {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
+          <img src="@/assets/images/rightIconSell.png" alt="">
+      </div>
     </div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
       <div class="content">
@@ -87,6 +90,9 @@ export default {
       timeText:'',
       Sellorder_NetworkList:'',
       NetworkCheck:require('@/assets/images/cardCheckIcon.png'),
+      feeInfo:'',
+      timerNumber:15,
+      timeOut:null
     }
   },
   mounted(){
@@ -95,15 +101,33 @@ export default {
       this.getNetworkList()
       this.$route.meta.title = 'nav.SellOrder_title' 
     }, 1000);
+    this.queryFee()
+    if(this.timerNumber === 15){
+        clearInterval(this.timeOut)
+       this.timeOut =  setInterval(()=>{
+          this.timerNumber--
+          if(this.timerNumber<= 0){
+            this.queryFee()
+            this.timerNumber = 15
+          }
+        },1000)
+      }
+     
+    
   },
   activated(){
    
     //网络列表延迟请求
-    this.$route.meta.title = 'nav.SellOrder_title' 
     setTimeout(() => {
       this.getNetworkList()
-      this.$route.meta.title1 =  this.orderStateData.cryptoCurrency
     }, 1000);
+    this.queryFee()
+  },
+  deactivated(){
+    clearInterval(this.timeOut)
+  },
+  destroyed(){
+    clearInterval(this.timeOut)
   },
   methods:{
     //确认切换
@@ -138,6 +162,7 @@ export default {
     },
     //获取网络列表
      async  getNetworkList(){
+     
       let params = {
         coin:this.$store.state.orderStatus.cryptoCurrency
       }
@@ -171,6 +196,7 @@ export default {
         id:this.$store.state.sellOrderId,
         cryptoCurrencyNetworkId:val.id
       }
+      this.Network_show = false
       this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
         if(res && res.data){
           this.Network_show = false
@@ -186,6 +212,22 @@ export default {
       isNaN(resultValue) || price <= 0 ? price = 0 : '';
       return price;
 
+    },
+     //费率刷新
+    queryFee(){
+      // console.log(this.$store.state.feeParams);
+       this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+         if(res && res.returnCode === "0000"){
+          this.feeInfo = res.data;
+          this.feeInfo.rampFee = (this.$store.state.sellRouterParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
+           let decimalDigits = 0;
+            let resultValue = this.feeInfo.rampFee;
+            resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+            let rampFee = resultValue.toFixed(decimalDigits);
+            isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+            this.feeInfo.rampFee = rampFee
+         }
+       })
     },
     openMenu(){
       this.$parent.$parent.routerViewState === true ? this.$parent.$parent.routerViewState = false : this.$parent.$parent.routerViewState = true;
@@ -218,13 +260,15 @@ export default {
   padding: .3rem 0 .6rem 0;
  
  .sendCrypto_nav{
-   width: 85%;
+   width: 100%;
+   padding: .15rem .22rem .15rem .22rem;
    display: flex;
    justify-content: space-between;
    align-items: center;
    position: absolute;
    background: #FFFFFF;
-   top: .4rem;
+   top: .22rem;
+   left: 0;
    img{
        width: .19rem;
        cursor: pointer;
@@ -326,14 +370,21 @@ export default {
   }
   .sendCrypto_button{
     width: 90%;
-    height: .58rem;
-    background: #0059DA;
-    color: #FFFFFF;
-    border-radius: .3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+    height: .65rem;
+    background: #FFFFFF;
+    padding-top: .07rem;
+    div{
+      width: 100%;
+      height: .58rem;
+       background: #0059DA;
+      color: #FFFFFF;
+      border-radius: .3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+   
     position: absolute;
     bottom: .2rem;
     left: 5%;
