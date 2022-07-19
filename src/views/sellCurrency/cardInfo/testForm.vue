@@ -1,6 +1,6 @@
 <template>
-  <div id="sell-form" >
-    <div class="sellForm-content" ref="sellFormView">
+  <div id="sell-form" ref="box_ref" @scroll="handleScroll">
+    <div class="sellForm-content" ref="form_ref">
       <div class="formLine" v-for="(item,index) in formJson" :key="index">
         <!-- 提示信息 - JPY NPR BRL -->
         <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
@@ -25,9 +25,11 @@
         <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
         <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
       </div>
+      <!-- tips icon -->
+      <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
     </div>
 
-    <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow">
+    <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
       {{ $t('nav.Continue') }}
       <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
       <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
@@ -66,6 +68,10 @@ export default {
         index: 0,
       },
       request_loading: false,
+
+      goDown_state: true,
+      oldOffsetTop: 0,
+      timeDown: null,
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -77,6 +83,14 @@ export default {
     })
   },
   activated(){
+    //初始化根据可视高度控制向下提示按钮状态
+    this.$nextTick(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
     //根据货币类型来过滤不同表单
     this.currency = this.$store.state.sellRouterParams.positionData.fiatCode;
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
@@ -305,21 +319,46 @@ export default {
       }
     },
     inputFocus(){
-
       if(this.$store.state.isPcAndPhone === 'phone'){
         this.buttonIsShow = false
         return
-        // this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
       }else{
         this.buttonIsShow = true
         return
-        // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
     },
     inputBlur(){
-
         this.buttonIsShow = true
-      // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+    },
+
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.timeDown);
+      this.timeDown = null;
+      let offset = this.$refs.button_ref.getBoundingClientRect();
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.timeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
+      })
     },
 
     encrypt(val){
@@ -339,6 +378,38 @@ export default {
   .sellForm-content{
     flex: 1;
     overflow: auto;
+    .downTips-icon{
+      position: absolute;
+      bottom: 1.1rem;
+      right: 0.3rem;
+      width: 0.58rem;
+      height: 0.58rem;
+      border-radius: 50%;
+      //background: #0059DA;
+      background: rgba(131,179,249,1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      img{
+        width: 0.3rem;
+      }
+    }
+    .downTips-icon img{
+      animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+    }
+
+    @keyframes jumpBoxHandler { /* css事件 */
+      0% {
+        transform: translate(0px, 0);
+      }
+      50% {
+        transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+      }
+      100% {
+        transform: translate(0px, 0px);
+      }
+    }
   }
 }
 .formLine{

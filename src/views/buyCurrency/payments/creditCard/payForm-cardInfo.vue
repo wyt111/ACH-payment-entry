@@ -1,6 +1,6 @@
 <template>
-  <div id="internationalCardPay_box" ref="box_ref">
-    <div id="internationalCardPay" @scroll="handleScroll">
+  <div id="internationalCardPay_box">
+    <div id="internationalCardPay" ref="box_ref" @scroll="handleScroll">
       <div class="view-content" ref="form_ref">
         <div class="formLine formLine_flex">
           <div class="formLine_flex_child">
@@ -305,30 +305,30 @@ export default {
         this.goDown_state = false;
       })
     },
-    // elShaking(el) {
-    //   const maxAngle = 10 // 震动偏移角度
-    //   const interval = 12 // 震动快慢，数字越小越快，太小DOM反应不过来，看不出动画
-    //   const quarterCycle = 10 // 一次完整来回震动的四分之一周期
-    //   let curAngle = 0
-    //   let direction = 1
-    //   const timer = setInterval(function(){
-    //     if (direction > 0) {
-    //       curAngle++
-    //       if (curAngle === maxAngle) {
-    //         direction = -1
-    //       }
-    //     } else {
-    //       curAngle--
-    //       if (curAngle === -maxAngle) {
-    //         direction = 1
-    //       }
-    //     }
-    //     el.style.transform = 'rotate(' + curAngle + 'deg)';
-    //   }, interval)
-    //   setTimeout(function(){
-    //     clearInterval(timer)
-    //   }, maxAngle * interval * quarterCycle);
-    // },
+    elShaking(el) {
+      const maxAngle = 10 // 震动偏移角度
+      const interval = 12 // 震动快慢，数字越小越快，太小DOM反应不过来，看不出动画
+      const quarterCycle = 10 // 一次完整来回震动的四分之一周期
+      let curAngle = 0
+      let direction = 1
+      const timer = setInterval(function(){
+        if (direction > 0) {
+          curAngle++
+          if (curAngle === maxAngle) {
+            direction = -1
+          }
+        } else {
+          curAngle--
+          if (curAngle === -maxAngle) {
+            direction = 1
+          }
+        }
+        el.style.transform = 'rotate(' + curAngle + 'deg)';
+      }, interval)
+      setTimeout(function(){
+        clearInterval(timer)
+      }, maxAngle * interval * quarterCycle);
+    },
 
     //验证、提交卡信息
     submitPay(){
@@ -494,13 +494,14 @@ export default {
     width: 0.58rem;
     height: 0.58rem;
     border-radius: 50%;
-    background: #0059DA;
+    //background: #0059DA;
+    background: rgba(131,179,249,1);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     img{
-      width: 0.24rem;
+      width: 0.3rem;
     }
   }
   .downTips-icon img{
@@ -512,7 +513,7 @@ export default {
       transform: translate(0px, 0);
     }
     50% {
-      transform: translate(0px, 0.1rem); /* 可配置跳动方向 */
+      transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
     }
     100% {
       transform: translate(0px, 0px);
