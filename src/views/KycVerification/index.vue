@@ -77,7 +77,7 @@ export default {
         
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
        
-        .on('idCheck.applicantStatus', (type,payload) => {
+        .on('idCheck.applicantStatus', (type,) => {
           console.log(type);
           if(!type){
             return
@@ -102,7 +102,7 @@ export default {
         })
        
        
-        .on('idCheck.onResize', (type,error) => {
+        .on('idCheck.onResize', () => {
            let innerHeight = document.querySelector('.verif_kyc')
            let kycInneHeight = document.querySelector('.KycVer-container')
            innerHeight.style = `height:${kycInneHeight.clientHeight}px;overflow:scroll`
@@ -126,6 +126,7 @@ export default {
     nextKycVer(val){
       if(val===0){
         this.status=1
+        sessionStorage.setItem('kycState',this.status)
         setTimeout(()=>{
           this.launchWebSdk('_act-sbx-2d9bb0c6-2127-4125-ab15-32cf343a0c63')
         },1000)
@@ -161,6 +162,7 @@ export default {
   mounted(){
     //保存页面状态
    sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
+   
   }
 }
 </script>

@@ -9,9 +9,9 @@
             <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
           </div>
       </div>
-    <div>
-      
-      <div class="sendCrypto_title">
+    <div v-if="orderStateData.orderStatus==0">
+      <div>
+        <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
       <p>{{ timerNumber }} s</p>
       
@@ -46,13 +46,34 @@
       </div>
     </div>
     <div class="sendCrypto_bottom_title">{{ $t('nav.sell_Order_network_selected') }}</div>
-    </div>
-    <div class="sendCrypto_button" @click="transferredShow=true">
+      </div>
+      <div class="sendCrypto_button" @click="transferredShow=true">
       <div>
           {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
           <img src="@/assets/images/rightIconSell.png" alt="">
       </div>
     </div>
+    </div>
+    <div v-else class="sendCrypto_timeError">
+      <div class="sendCrypto_title" style="margin-top:.42rem">
+      <p >{{ $t('nav.Sellorder_Id') }}</p>
+      <p style="cursor: pointer;" class="order-con" @click="copy" :data-clipboard-text="orderStateData.orderId">
+        <span style="width:2rem;overflow:hidden;font-style: normal;text-overflow: ellipsis;text-align:right">{{ orderStateData.orderId }}</span>
+        <img style="height:.2rem;margin-left:.08rem;flex:1" src="@/assets/images/copySell.png" alt="">
+      </p>
+    </div>
+    <div class="sendCrypto_content">
+      <img src="@/assets/images/SellOrderTime.svg" alt="">
+      <p>Take a timeout! The address has been invalidated, please go back to the homepage to re-operate. If you insist on transferring digital currency to the current address, any loss will be borne by you!</p>
+    </div>
+    <div class="sendCrypto_button1" @click="transferredShow=true">
+      <div>
+          {{ $t('nav.Sell_Order_haveSent') }} {{orderStateData.cryptoCurrency}}
+          <img src="@/assets/images/rightIconSell.png" alt="">
+      </div>
+    </div>
+    </div>
+    
     <div class="sendCrypto_confing" v-show="transferredShow" >
       <div class="content">
         <p style="height:.5rem">{{ $t('nav.Sell_Order_transferred') }}</p>
@@ -106,9 +127,11 @@ export default {
         clearInterval(this.timeOut)
        this.timeOut =  setInterval(()=>{
           this.timerNumber--
-          if(this.timerNumber<= 0){
+          if(this.timerNumber<= 0 && this.orderStateData.orderStatus===0){
             this.queryFee()
             this.timerNumber = 15
+          }else{
+            clearInterval(this.timeOut)
           }
         },1000)
       }
@@ -116,7 +139,7 @@ export default {
     
   },
   activated(){
-   
+   this.orderStateData.payStatus = 1
     //网络列表延迟请求
     setTimeout(() => {
       this.getNetworkList()
@@ -128,6 +151,7 @@ export default {
   },
   destroyed(){
     clearInterval(this.timeOut)
+    
   },
   methods:{
     //确认切换
@@ -258,7 +282,26 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   padding: .3rem 0 .6rem 0;
- 
+ .sendCrypto_timeError{
+   width: 100%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   .sendCrypto_content{
+     width: 100%;
+     text-align: center;
+     >img{
+       height: 1.58rem;
+     }
+     p{
+       text-align: justify;
+       font-style: normal;
+       font-size: .13rem;
+       line-height: .18rem;
+       color: #949EA4;
+     }
+   }
+ }
  .sendCrypto_nav{
    width: 100%;
    padding: .15rem .22rem .15rem .22rem;
