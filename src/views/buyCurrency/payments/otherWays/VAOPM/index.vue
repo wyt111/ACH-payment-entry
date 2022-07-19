@@ -1,24 +1,26 @@
 <template>
   <div id="indonesianPayment">
-    <!-- 支付倒计时提示 -->
-    <div class="payTips" v-if="startPayment && routerParams.payWayCode === '10003'">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
-    <!-- 费用明细 -->
-    <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
-    <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
-    <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
-    <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
-    <!-- 支付方式 VA-Virtual Account | OPM-->
-    <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
-    <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
-    <CryptoCurrencyAddress/>
-    <IncludedDetails class="includedDetails" ref="includedDetails_ref" :network="$store.state.buyRouterParams.network"/>
-    <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-    <!-- 墨西哥支付确认弹框 -->
-    <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
-      <div class="content" @click.stop="show=true">
-        <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
-        <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
-        <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+    <div class="view-content">
+      <!-- 支付倒计时提示 -->
+      <div class="payTips" v-if="startPayment && routerParams.payWayCode === '10003'">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
+      <!-- 费用明细 -->
+      <!-- 支付方式 10003-Virtual Account | 10008-OPM -->
+      <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
+      <div class="payAmountInfo-box" v-if="routerParams.payWayCode === '10003'">Virtual Account</div>
+      <div class="payAmountInfo-box" v-else-if="routerParams.payWayCode === '10008'">OPM</div>
+      <!-- 支付方式 VA-Virtual Account | OPM-->
+      <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
+      <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
+      <CryptoCurrencyAddress/>
+      <IncludedDetails class="includedDetails" ref="includedDetails_ref"/>
+      <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
+      <!-- 墨西哥支付确认弹框 -->
+      <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
+        <div class="content" @click.stop="show=true">
+          <h2>{{ $t('nav.buy_configPay_title3') }}</h2>
+          <div @click="MEXConfirmOut">{{ $t('nav.buy_configPay_title4') }} <img src="@/assets/images/slices/rightIcon.png" alt=""></div>
+          <p @click.stop="MEXConfirmState=false">{{ $t('nav.buy_configPay_title5') }}</p>
+        </div>
       </div>
     </div>
     <!-- 墨西哥支付按钮 -->
@@ -163,17 +165,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//html,body,#indonesianPayment{
-//  width: 100%;
-//  height: 100%;
-//}
 #indonesianPayment{
-  //display: flex;
-  //flex-direction: column;
-  //.view-content{
-  //  flex: 1;
-  //  overflow: auto;
-  //}
+  display: flex;
+  flex-direction: column;
+  .view-content{
+    flex: 1;
+    overflow: auto;
+  }
   .payTips{
     margin: 0.08rem 0 0.1rem 0;
     font-size: 0.13rem;

@@ -1,6 +1,6 @@
 <template>
   <div id="confirmPayment">
-<!--    <div class="confirmPayment-content">-->
+    <div class="confirmPayment-content">
       <div class="payTips" v-if="startPayment">{{ $t('nav.buy_configPayIDR_timeDownTips') }} <span>{{ paymentCountDownMinute }}</span></div>
       <div class="payAmountInfo-title">{{ $t('nav.buy_configPay_title1') }}</div>
       <div class="payAmountInfo-box">{{ parameter.payWayName }}</div>
@@ -25,7 +25,7 @@
       <CryptoCurrencyAddress class="CryptoCurrencyAddress"/>
       <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :class="{'IncludedDetails_top': AuthorizationInfo_state===false}" :network="$store.state.buyRouterParams.network"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-<!--    </div>-->
+    </div>
 
     <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
   </div>
@@ -249,12 +249,12 @@ export default {
 <style lang="scss" scoped>
 #confirmPayment{
   position: relative;
-  //display: flex;
-  //flex-direction: column;
-  //.confirmPayment-content{
-  //  flex: 1;
-  //  overflow: auto;
-  //}
+  display: flex;
+  flex-direction: column;
+  .confirmPayment-content{
+    flex: 1;
+    overflow: auto;
+  }
   .payTips{
     padding: 0.1rem 0;
     font-size: 0.13rem;

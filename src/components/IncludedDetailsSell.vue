@@ -14,7 +14,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandFee">
         <div class="left">
-          {{ $t('nav.home_youSell') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ positionData.code }}{{ routerParams.getAmount }}</span>
+          {{ $t('nav.home_sellFee_title1') }} <span>{{ routerParams.amount }} {{ currencyData.name }}</span> {{ $t('nav.home_sellFee_title2') }} <span>{{ positionData.fiatCode }} {{ routerParams.getAmount }}</span>
         </div>
         <div class="right">
           <img src="@/assets/images/blackDownIcon.png">
@@ -153,9 +153,10 @@ export default {
       }
     },
     //选择国家后刷新数据
-    '$store.state.sellRouterParams.payCommission.code': {
+    '$store.state.sellRouterParams.payCommission.fiatCode': {
       deep: true,
       handler(val){
+        console.log(val,"---val")
         this.timingSetting();
       }
     },
@@ -246,8 +247,10 @@ export default {
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
+            console.log("触发")
             this.$parent.feeInfo = this.feeInfo;
             this.$parent.calculationAmount();
+            console.log(this.feeInfo,"---child")
           }
         }
       })
