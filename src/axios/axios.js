@@ -3,7 +3,7 @@ import { Toast } from 'vant';
 import router from "../router";
 import store from '../store/index';
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
-// import moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 //Request service address
 const baseUrl = process.env.VUE_APP_BASE_API;
