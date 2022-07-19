@@ -87,8 +87,8 @@ export default {
   },
   activated(){
     //初始化根据可视高度控制向下提示按钮状态
-    this.$nextTick(()=>{
-      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
+    setTimeout(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("sell-form").scrollHeight - 50){
         this.goDown_state = true;
       }else{
         this.goDown_state = false;
@@ -375,12 +375,9 @@ export default {
 
 <style lang="scss" scoped>
 #sell-form{
-  height: auto !important;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
   .sellForm-content{
-    flex: 1;
-    overflow: auto;
     .downTips-icon{
       position: absolute;
       bottom: 1.1rem;

@@ -221,6 +221,7 @@ export default {
     transaction(){
       this.$store.state.placeOrderQuery = {};
       let buyParams = JSON.parse(JSON.stringify(this.buyParams));
+      buyParams.alpha2 = this.$store.state.buyRouterParams.positionData.alpha2;
       //下单接口参数
       if(this.checkModel[0] === 'address' && (buyParams.address === '' || buyParams.network === '')){
         return;
@@ -250,6 +251,7 @@ export default {
       this.$store.state.buyRouterParams.networkDefault = buyParams.network;
       this.$store.state.buyRouterParams.addressDefault = buyParams.address;
       this.$store.state.placeOrderQuery = buyParams;
+
       this.$router.push('/paymentMethod');
     },
   }

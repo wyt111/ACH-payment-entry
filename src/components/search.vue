@@ -16,7 +16,7 @@
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li class="payCurrencyLi" v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting">
-            <img :src="item.flag" :onload="loadImg(item.flag)" :onerror="errorImg()">
+            <img :src="item.flag" :key="item.flag"> <!--  :onload="loadImg(item.flag)" :onerror="errorImg()" -->
             <span class="allName">{{ item.enCommonName }} -</span>
             <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
             <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
@@ -217,12 +217,12 @@ export default {
     this.customComponentTitle();
   },
   methods: {
-    loadImg(val){
-      return `this.onload=null;this.src="${val}"`;
-    },
-    errorImg(){
-      return 'this.onload=null;this.src='+'"../../static/img/10004-icon.png";'
-    },
+    // loadImg(val){
+    //   return `this.onload=null;this.src="${val}"`;
+    // },
+    // errorImg(){
+    //   return 'this.onload=null;this.src='+'"../../static/img/10004-icon.png";'
+    // },
 
     //Judge title name
     customComponentTitle(){

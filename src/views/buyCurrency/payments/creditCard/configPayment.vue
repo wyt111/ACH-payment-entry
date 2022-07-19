@@ -3,7 +3,7 @@
 <!--    <div class="cardConfigPayment-content">-->
       <div class="formLine">
         <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
-        <div class="formContent" @click="goPayForm">
+        <div class="formContent cardInfo" @click="goPayForm">
           <div class="formContent-left">
             <div class="card-icon">
               <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
@@ -273,6 +273,9 @@ export default {
         width: 0.4rem;
       }
     }
+  }
+  .cardInfo{
+    cursor: pointer;
   }
   .formContent{
     display: flex;
