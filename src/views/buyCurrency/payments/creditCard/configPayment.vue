@@ -93,7 +93,7 @@ export default {
     this.AuthorizationInfo_state = true;
     //接入商户逻辑
     if(!this.$store.state.goHomeState){
-      this.newCvvState = true;
+      this.newCvvState = (this.$route.query.configPaymentFrom && this.$route.query.configPaymentFrom === 'userPayment') ? true : false;
       this.buyOrderInfo();
       return
     }

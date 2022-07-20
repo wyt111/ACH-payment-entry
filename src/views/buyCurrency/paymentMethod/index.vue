@@ -134,6 +134,13 @@ export default {
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
+          //计算rampFee
+          let decimalDigits = 0;
+          let resultValue = Number(res.data.feeRate) * Number(res.data.amount) + res.data.fixedFee;
+          resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+          let rampFee = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+          this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
           //支付方法列表
           _this.queryPayMethods();
           //费用组件计算数量
@@ -156,7 +163,7 @@ export default {
       let _this = this;
       let params = {
         appId: sessionStorage.getItem('accessMerchantInfo') ? JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId : '',
-        alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
+        alpha2: this.$store.state.buyRouterParams.positionData ? this.$store.state.buyRouterParams.positionData.alpha2 : '',
         currency: this.$store.state.buyRouterParams.payCommission.code,
       }
       this.$axios.get(this.$api.get_payMethods,params).then(res=>{

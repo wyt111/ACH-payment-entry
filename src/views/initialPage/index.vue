@@ -136,7 +136,7 @@ export default {
       this.$store.state.goHomeState ? this.queryInfo() : '';
       //填写表单状态 - true填写过 false未填写
       if(this.$route.query.cardFlag && this.$route.query.cardFlag=='true' && orderNo !== ""){
-        this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}`);
+        this.$router.push(`/creditCardConfig?merchant_orderNo=${orderNo}&configPaymentFrom=userPayment`);
       }else if(this.$route.query.cardFlag && this.$route.query.cardFlag=='false'){
         this.$router.push(`/paymentMethod?merchant_orderNo=${orderNo}`);
       }

@@ -151,7 +151,7 @@ export default {
       }
     })
     //获取地址卡信息或历史卡信息
-      if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
+    if(this.$route.query.submitForm && this.$route.query.configPaymentFrom === 'userPayment'){
       let addressForm = JSON.parse(this.$route.query.submitForm);
       addressForm.cardNumber = AES_Decrypt(addressForm.cardNumber.replace(/ /g,'+'));
       addressForm.cardNumber = addressForm.cardNumber.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')
