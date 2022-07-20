@@ -23,7 +23,7 @@
         <div class="navigationBar_view">
           <div class="navigationBar_view_left">{{ $t('nav.menu') }}</div>
           <div class="navigationBar_view_right">
-            <img src="@/assets/images/closeIcon.png" @click="openMenu">
+            <img src="@/assets/images/ShutDown.png" @click="openMenu">
           </div>
         </div>
         <routerMenu/>
@@ -201,13 +201,13 @@ html,body,#homePage,.homePage_view,.homePage_content{
     font-size: 0.2rem;
     font-family: 'GeoDemibold';
     font-weight: bold;
-    color: #232323;
+    color: #063376;
   }
   .navigationBar_view_right {
     display: flex;
     margin-left: auto;
     img {
-      width: 0.24rem;
+      width: 0.11rem;
       cursor: pointer;
     }
   }

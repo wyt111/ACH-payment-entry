@@ -4,7 +4,7 @@
     <div class="searchHeader">
       <div class="searchHeader_view1">
         <div class="text">{{ viewTitle }}</div>
-        <div class="icon"><img src="../assets/images/closeIcon.png" @click="closeView"></div>
+        <div class="icon"><img src="../assets/images/ShutDown.png" @click="closeView"></div>
       </div>
       <div class="searchHeader_view2" v-if="viewName !== 'network'">
         <input type="text" :placeholder="$t('nav.search_components_placeHolder')" v-model="searchText">
@@ -374,9 +374,9 @@ export default {
     flex: 1;
     overflow: auto;
     .screen_title{
-      font-size: 0.14rem;
+      font-size: 0.13rem;
       font-family: "GeoDemibold", GeoDemibold;
-      color: #232323;
+      color: #949EA4;
       margin-top: 0.24rem;
       &:first-child{
         margin-top: 0;
@@ -407,7 +407,7 @@ export default {
           font-size: 0.16rem;
           font-family: "GeoDemibold", GeoDemibold;
           font-weight: 400;
-          color: #232323;
+          color: #949EA4;
           display: flex;
           align-items: center;
           .seach_li_allText{
@@ -418,11 +418,12 @@ export default {
             font-size: 0.16rem;
             font-family: "GeoDemibold", GeoDemibold;
             font-weight: normal;
-            color: #232323;
+            color: #949EA4;
           }
           .abbreviationName{
             font-family: "GeoLight",GeoLight;
             margin-left: 0.03rem;
+            color: #949EA4;
           }
           img{
             width: 0.36rem;
@@ -462,12 +463,16 @@ export default {
     color: #232323;
     display: flex;
     align-items: center;
+    .text{
+      font-size: .18rem;
+      color: #063376;
+    }
     .icon{
       display: flex;
       margin-left: auto;
       cursor: pointer;
       img{
-        width: 0.24rem;
+        width: 0.11rem;
       }
     }
   }
@@ -476,10 +481,12 @@ export default {
     height: 0.6rem;
     background: #F3F4F5;
     border-radius: 10px;
-    border: 1px solid #4479D9;
+    border: 1px solid #EEEEEE;
     display: flex;
-    margin-top: 0.16rem;
+    margin-top: 0.4rem;
     position: relative;
+    border-radius: .3rem;
+    overflow: hidden;
     input{
       width: 100%;
       height: 100%;
@@ -487,10 +494,13 @@ export default {
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
       padding: 0 0.47rem;
-      background: #F3F4F5;
+      background: #F7F8FA;
       border-radius: 10px;
       outline: none;
       border: none;
+    }
+    input::placeholder{
+      color: #C2C2C2;
     }
     .searchIcon{
       display: flex;

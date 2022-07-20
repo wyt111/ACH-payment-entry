@@ -1,10 +1,11 @@
 <template>
   <div class="KycVer-container">
-    
+    <!-- 展示成功失败页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
       <div class="kyc_nav">
       <img src="@/assets/images/ShutDown.png" @click="goHome" alt="">
     </div>
+    <!-- 点击进行kyc验证 -->
         <div class="content" v-if="kycVerState==0">
           <img src="@/assets/images/kycIcon1.svg" alt="">
             <p>Please verify your identity.
@@ -16,11 +17,13 @@
               · Get ready to take a selfie with document.
             </div>
         </div>
+        <!-- kyc验证成功 -->
         <div class="content" v-else-if="kycVerState==1">
           <img src="@/assets/images/kycIcon2.svg" alt="">
             <p style="text-align:center">Congrats! Your verification completed.</p>
             
         </div>
+        <!-- kyc验证失败 -->
         <div class="content" v-else>
           <img src="@/assets/images/kycIcon3.svg" alt="">
             <p style="text-align:center">Your verification failed.</p>
@@ -47,6 +50,7 @@
           <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
     </div>
+    <!-- kyc验证页面 -->
     <div class="verif_kyc" v-else :key="1">
           <img src="@/assets/images/ShutDown.png" @click="status=0" alt="">
       <div id="sumsub-websdk-container" ></div>
@@ -82,8 +86,10 @@ export default {
         })
         
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
-       
+       //获取成功或失败或等待状态
+      
         .on('idCheck.applicantStatus', (type,) => {
+           console.log(type);
           if(!type){
             return
           }
@@ -107,7 +113,7 @@ export default {
             
         })
        
-       
+       //获取kyc高度
         .on('idCheck.onResize', () => {
            let innerHeight = document.querySelector('.verif_kyc')
            let kycInneHeight = document.querySelector('.KycVer-container')
@@ -119,32 +125,37 @@ export default {
         })
         .build();
   
-    // you are ready to go:
-    // just launch the WebSDK by providing the container element for it
+    //kyc容器
     snsWebSdkInstance.launch('#sumsub-websdk-container')
 },
     //获取kyc验证的token
     getNewAccessToken() {
-
       // let newAccessToken = '_act-sbx-080f8eef-29d9-42a2-b9f8-dd894ad94e7e'
         return Promise.resolve('')// get a new token from your backend
     },
-    //next
+    //next 下一步
     nextKycVer(val){
+      //0进行kyc验证 1 成功跳转到卖币或者卖币订单page 2失败重新验证kyc
       if(val===0 && this.nextKyc){
-        console.log(this.$store.state.cardInfoFromPath);
+        // console.log(this.$store.state.cardInfoFromPath);
         this.status=1
         this.nextKyc = false
         this.getUserToken()
         setTimeout(()=>{
           this.nextKyc = true
-          // console.log(this.getToken);
           this.launchWebSdk(this.getToken)
         },2000)
         return 
       }else if(val === 1){
         this.status=0
-        console.log('成功继续下一步')
+        this.kycVerState = 0
+        if(this.$store.state.cardInfoFromPath === 'configSell'){
+          this.$router.push(`/sellOrder`)
+          return
+        }
+          alert('买币跳转')
+        
+        
         return
       }else if(val === 2){
         this.status=1
@@ -171,15 +182,14 @@ export default {
     },
     //获取用户的kyc验证token
     getUserToken(){
-      return '_act-sbx-f9e07552-6f29-4cc4-9e5a-a00abb13aae0'
-      // let data = {
-      //   fullName:'Dong'
-      // }
-      //  this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
-      //     if(res.data && res.returnCode === '0000'){
-      //       this.getToken =  res.data
-      //     }
-      //   })
+      let data = {
+        fullName:'sgahsgah'
+      }
+       this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
+          if(res.data && res.returnCode === '0000'){
+            this.getToken =  res.data
+          }
+        })
     }
   },
   watch:{

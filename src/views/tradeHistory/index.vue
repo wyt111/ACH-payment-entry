@@ -6,7 +6,7 @@
       <p>{{ $t('nav.history_noListText2') }}</p>
       <button class="continue" @click="goHome">
         {{ $t('nav.history_noListButton') }}
-        <img class="rightIcon" src="../../assets/images/slices/rightIcon.png" alt="">
+        <img class="rightIcon" src="../../assets/images/rightIconSell.png" alt="">
       </button>
     </div>
     <div class="historyList" v-else>
@@ -256,12 +256,12 @@ html,body,#tradeHistory,.historyList,.van-list{
       margin-top: 0.16rem;
       cursor: pointer;
       border: none;
-      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .rightIcon{
-        width: 0.24rem;
-        position: absolute;
-        top: 0.17rem;
-        right: 0.32rem;
+        width: 0.12rem;
+        margin-left: .12rem;
       }
     }
     .continue:disabled{

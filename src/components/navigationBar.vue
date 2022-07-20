@@ -15,7 +15,7 @@
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right" >
       <img class="menu" src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
-      <img class="closeIcon" src="../assets/images/closeIcon.png" v-else @click="openMenu">
+      <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-else @click="openMenu">
     </div>
   </div>
 </template>
@@ -134,7 +134,7 @@ export default {
     font-size: 0.21rem;
     font-family: "GeoDemibold", GeoDemibold;
     font-weight: normal;
-    color: #232323;
+    color: #063376;
     .icon {
       cursor: pointer;
       display: flex;

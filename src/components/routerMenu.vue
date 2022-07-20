@@ -10,7 +10,7 @@
         <img src="../assets/images/slices/pay.png" alt="">
         <h2>{{ $t('nav.RouterMenu_Welcome') }}</h2>
         <p>{{ $t('nav.RouterMenu_experience') }}</p>
-        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/slices/rightIcon.png" alt="" v-if="!loading">
+        <div @click="goLogin" :style="{background:loading?'#0059DA80':''}">{{ $t('nav.login') }} <img class="icon" src="../assets/images/rightIconSell.png" alt="" v-if="!loading">
         <van-loading  class="icon" type="spinner" color="#fff" v-else/></div>
     </div>
     <div class="routerMenu_history" @click="goView('/tradeHistory')" v-else >
@@ -297,7 +297,7 @@ export default {
       font-size: 0.17rem;
       font-family: "GeoRegular";
       font-weight: 500;
-      color: #232323;
+      color: #949EA4;
       margin-left: 0.08rem;
     }
     .lineRight{
@@ -308,7 +308,7 @@ export default {
         font-size: .15rem;
         font-family: GeoLight;
         font-weight: normal;
-        color: #707070;
+        color: #C2C2C2;
         margin-right: .12rem;
       }
       .email{
@@ -316,7 +316,7 @@ export default {
         font-size: 0.14rem;
         font-family: "GeoLight", GeoLight;
         font-weight: 400;
-        color: #999999;;
+        color: #C2C2C2;
       }
       div{
         display: flex;
@@ -346,18 +346,19 @@ export default {
       margin-top: .18rem;
     }
     h2{
-      font-size: .21rem;
-      font-family: "GeoBold";
+      font-size: .2rem;
+      font-family: "GeoLight";
       font-weight: normal;
-      color: #232323;
+      color: #063376;
       line-height: .25rem;
+      font-weight: 500;
       margin: .2rem 0 .06rem 0;
     }
     p{
-      font-size: .15rem;
+      font-size: .13rem;
       font-family: "GeoRegular";
       font-weight: normal;
-      color: #232323;
+      color: #949EA4;
     }
     >div{
       width: 90%;
@@ -373,16 +374,9 @@ export default {
       position: relative;
       cursor: pointer;
       .icon{
-        width: .24rem;
-        height: .24rem;
-        position: absolute;
-        right: .16rem;
-        top: .16rem;
-        span{
-          position: absolute;
-          // top: -.13rem;
-          right: .01rem;
-        }
+        width: .13rem;
+        // height: .1rem;
+        margin-left: .05rem;
       }
     }
   }
@@ -397,14 +391,16 @@ export default {
     justify-content: space-between;
     padding: 0 .31rem 0 .24rem;
     cursor: pointer;
+    margin-top: .3rem;
     .lineName{
+      
       margin-left: .16rem;
       flex: 1;
       p:first-child{
         font-family: GeoRegular;
         font-size: .17rem;
         font-weight: normal;
-        color: #232323;
+        color: #063376;
         line-height: .17rem;
       }
       p:last-child{
