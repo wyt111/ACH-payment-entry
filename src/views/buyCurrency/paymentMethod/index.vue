@@ -155,7 +155,7 @@ export default {
     queryPayMethods(){
       let _this = this;
       let params = {
-        appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
+        appId: sessionStorage.getItem('accessMerchantInfo') ? JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId : '',
         alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
         currency: this.$store.state.buyRouterParams.payCommission.code,
       }

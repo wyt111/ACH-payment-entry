@@ -15,7 +15,7 @@
             </div>
           </div>
           <!-- 菜单栏 -->
-          <routerMenu v-if="!routerViewState" />
+          <routerMenu v-if="!routerViewState"/>
           <!-- 语言切换 -->
           <Language v-if="LanguageShow"/>
           <!-- 确认支付后查询支付状态提示框 -->

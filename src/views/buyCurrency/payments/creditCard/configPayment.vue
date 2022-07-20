@@ -25,7 +25,7 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
-      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
+      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.networkDefault"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
     </div>
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
@@ -128,6 +128,13 @@ export default {
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
+          //计算rampFee
+          let decimalDigits = 0;
+          let resultValue = Number(res.data.feeRate) * Number(res.data.amount) + res.data.fixedFee;
+          resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+          let rampFee = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+          this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
           //费用组件计算数量
           _this.isLoading = true;
           //获取、处理卡信息
