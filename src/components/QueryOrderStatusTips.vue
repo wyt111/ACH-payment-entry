@@ -29,6 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 #QueryOrderStatusTips{
+  z-index: 9;
   position: absolute;
   top: 0;
   left: 0;

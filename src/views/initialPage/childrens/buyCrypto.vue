@@ -310,7 +310,6 @@ export default {
       this.payCommission.payMin = Math.max(...minNumList);
       this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       this.$store.state.buyRouterParams.payCommission = this.payCommission;
-
       this.amountControl();
     },
 
@@ -350,8 +349,8 @@ export default {
           sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
           //network address All passed the verification
           if(res.success === true && res.data === null){
-            merchantParams.addressDefault = true;
-            merchantParams.networkDefault = true;
+            merchantParams.addressDefault = false;
+            merchantParams.networkDefault = false;
             sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
             return;
           }
@@ -359,14 +358,14 @@ export default {
           //Judge whether a network｜address has passed
           if(res.success === true && res.data !== null){
             //you pay currency - address: false - Address is not brought out by default
-            if(res.data.address === false){ //No parameter defaults
+            if(res.data.address === false || res.data.address === undefined){ //No parameter defaults
               merchantParams.addressDefault = false;
             }else{
               merchantParams.addressDefault = true;
             }
 
             //network: false - The network is not brought out by default
-            if(res.data.network === false) {
+            if(res.data.network === false || res.data.network === undefined) {
               merchantParams.networkDefault = false;
             }else{
               merchantParams.networkDefault = true;

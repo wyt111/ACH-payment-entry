@@ -29,8 +29,6 @@
           <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
           <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
         </div>
-        <!-- tips icon -->
-        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
       </div>
 
       <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
@@ -38,8 +36,13 @@
         <img class="rightIcon" src="../../../assets/images/button-right-icon.png" v-if="!request_loading">
         <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
       </button>
-
     </div>
+
+    <!-- tips icon -->
+    <transition>
+      <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+    </transition>
+
     <!-- 单选框 -->
     <!-- bank account type -->
     <div class="selectView" v-if="selectState && selected.paramsName === 'bankAccountType'" @click="selectState=false">
@@ -74,7 +77,7 @@ export default {
       },
       request_loading: false,
 
-      goDown_state: true,
+      goDown_state: false,
       oldOffsetTop: 0,
       timeDown: null,
     }
@@ -384,38 +387,67 @@ export default {
   position: absolute;
   .sellForm-content{
     position: relative;
-    .downTips-icon{
-      position: absolute;
-      bottom: 1.1rem;
-      right: 0.3rem;
-      width: 0.58rem;
-      height: 0.58rem;
-      border-radius: 50%;
-      //background: #0059DA;
-      background: rgba(131,179,249,1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      img{
-        width: 0.3rem;
-      }
-    }
-    .downTips-icon img{
-      animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
-    }
+  }
+}
+.downTips-icon{
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  //background: #0059DA;
+  background: rgba(131,179,249,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
-    @keyframes jumpBoxHandler { /* css事件 */
-      0% {
-        transform: translate(0px, 0);
-      }
-      50% {
-        transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
-      }
-      100% {
-        transform: translate(0px, 0px);
-      }
-    }
+  //-webkit-animation: anime 1s linear;
+  //animation: anime 1s linear;
+
+  img{
+    width: 0.3rem;
+  }
+}
+.downTips-icon img{
+  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+}
+
+.v-enter-active,.v-leave-active{
+  transition: all 1s;
+}
+.v-enter,.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,.v-leave{
+  opacity: 0.8;
+}
+
+
+//@keyframes anime {
+//  0% {
+//    background: rgba(131,179,249,0.2);
+//  }
+//
+//  50% {
+//    background: rgba(131,179,249,0.6);
+//  }
+//
+//  100% {
+//    background: rgba(131,179,249,1);
+//  }
+//}
+
+@keyframes jumpBoxHandler { /* css事件 */
+  0% {
+    transform: translate(0px, 0);
+  }
+  50% {
+    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+  }
+  100% {
+    transform: translate(0px, 0px);
   }
 }
 

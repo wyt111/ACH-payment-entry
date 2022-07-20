@@ -40,7 +40,7 @@ import { timeDown } from '@/utils/index';
 import {querySubmitToken} from "../../../../utils/publicRequest";
 
 export default {
-  name: "confirmPayment",
+  name: "otherWayPay",
   components: { IncludedDetails, CryptoCurrencyAddress, AuthorizationInfo },
   data(){
     return{

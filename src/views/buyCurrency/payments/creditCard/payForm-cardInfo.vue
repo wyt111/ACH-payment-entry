@@ -49,7 +49,9 @@
           <div class="errorTips" v-if="errorCvv">{{ $t('nav.buy_form_cvvTips') }}</div>
         </div>
         <!-- tips icon -->
-        <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+        <transition>
+          <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+        </transition>
       </div>
       <button class="continue" :disabled="buttonState" @click="submitPay" v-show="buttonIsShow" ref="button_ref">
         {{ $t('nav.Continue') }}
@@ -94,7 +96,7 @@ export default {
 
       request_loading: false,
 
-      goDown_state: true,
+      goDown_state: false,
       oldOffsetTop: 0,
       timeDown: null,
     }
@@ -507,6 +509,17 @@ export default {
   .downTips-icon img{
     animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
   }
+
+  .v-enter-active,.v-leave-active{
+    transition: all 1s;
+  }
+  .v-enter,.v-leave-to{
+    opacity: 0;
+  }
+  .v-enter-to,.v-leave{
+    opacity: 0.8;
+  }
+
 
   @keyframes jumpBoxHandler { /* css事件 */
     0% {

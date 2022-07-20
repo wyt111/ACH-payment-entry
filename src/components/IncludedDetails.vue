@@ -158,7 +158,7 @@ export default {
       deep: true,
       immediate: true,
       handler(){
-        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.buyRouterParams.goHomeState === true){
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true){
           this.queryFee();
           this.timingSetting();
         }

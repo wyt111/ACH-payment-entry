@@ -12,7 +12,7 @@
       <VA ref="va_ref" v-if="routerParams.payWayCode === '10003'"/>
       <OPM ref="opm_ref" v-else-if="routerParams.payWayCode === '10008'"/>
       <CryptoCurrencyAddress/>
-      <IncludedDetails class="includedDetails" ref="includedDetails_ref"/>
+      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :network="$store.state.buyRouterParams.network"/>
       <AuthorizationInfo class="authorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
       <!-- 墨西哥支付确认弹框 -->
       <div class="routerMenu_loginOut" v-show="MEXConfirmState" @click="MEXConfirmState=false">
@@ -42,7 +42,7 @@ import VA from './VA';
 import OPM from './OPM';
 
 export default {
-  name: "",
+  name: "otherWays-VA",
   components: { VA, OPM, CryptoCurrencyAddress, AuthorizationInfo, IncludedDetails },
   data(){
     return{
@@ -91,17 +91,18 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted(){
     this.receiveInfo();
   },
   methods: {
     receiveInfo(){
       this.routerParams = this.$store.state.buyRouterParams;
-      if(this.routerParams.payWayCode === '10008') {
+      if(this.routerParams.payWayCode === '10008' && !sessionStorage.getItem("indonesiaPayment")) {
         this.MEXPay();
       }
       //还原刷新前数据状态
       if(sessionStorage.getItem("indonesiaPayment")) { // && this.routerParams.payWayCode === '10003'
+        console.log("还原数据")
         this.payExplain = JSON.parse(sessionStorage.getItem("indonesiaPayment"));
         this.AuthorizationInfo_state = JSON.parse(sessionStorage.getItem("indonesiaPayment")).AuthorizationInfo_state;
         this.childData = {
