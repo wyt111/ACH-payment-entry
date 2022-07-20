@@ -1,7 +1,6 @@
 <template>
   <div class="order-container" >
-    
-    <sendCrypto v-if="$store.state.nextOrderState==1" :orderStateData="orderStateData"/>
+    <sendCrypto v-if="$store.state.nextOrderState?$store.state.nextOrderState==1:nextOrderState" :orderStateData="orderStateData"/>
     <sellState v-else :orderStateData="orderStateData"/>
   </div>
 
@@ -133,14 +132,33 @@ export default{
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
+          // res.data.orderStatus = 7
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
+
+          // res.data.expirationTime = 0
           // console.log(this.network1);
           // this.playMoneyState = 6
-          // res.data.orderStatus = 5
+          // res.data.orderStatus = 0
+          if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1){
+            this.$store.state.nextOrderState = 2
+          }
           if(this.playMoneyState==7){
+            window.clearInterval(this.timer);
+            this.timer = null;
+            return
+          }
+          if(this.playMoneyState==5){
+            window.clearInterval(this.timer);
+            this.timer = null;
+            //  this.$store.replaceState({})
+          }
+          if(res.data.expirationTime<=0 || this.playMoneyState=== 7){
+          //   // this.playMoneyState = 7
+            this.orderStateData.orderStatus = 7
+            this.$store.state.nextOrderState = 1
             // sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
             // sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
             // sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
@@ -150,24 +168,8 @@ export default{
             // this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
             // this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
             // this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
-            return
-          }
-          if(this.playMoneyState==5){
-            window.clearInterval(this.timer);
-            this.timer = null;
-            //  this.$store.replaceState({})
-          }
-          if(res.data.expirationTime<=0 && this.playMoneyState=== 7){
-            this.playMoneyState = 7
-            sessionStorage.setItem('feeParams',JSON.stringify(this.$store.state.feeParams))
-            sessionStorage.setItem('homeTabstate',JSON.stringify(this.$store.state.homeTabstate))
-            sessionStorage.setItem('cancelTokenArr',JSON.stringify(this.$store.state.cancelTokenArr))
-            window.clearInterval(this.timer);
-            this.timer = null;
-            this.$store.replaceState({})
-            this.$store.state.feeParams =  JSON.parse(sessionStorage.getItem('feeParams'))
-            this.$store.state.homeTabstate =  JSON.parse(sessionStorage.getItem('homeTabstate'))
-            this.$store.state.cancelTokenArr =  JSON.parse(sessionStorage.getItem('cancelTokenArr'))
+
+            
             return
           }
 
@@ -234,21 +236,21 @@ export default{
   watch:{
 
     //监听支付状态的变化请求卡信息
-    playMoneyState(newVal){
-      if(newVal!==1||newVal!==2||newVal!==3){
-        let params = {
-          id:this.orderStateData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res.returnCode && res.data){
-            // console.log(res.data);
-            this.cardUserName = res.data
-            this.accountNumberCode = this.AES(res.data.accountNumber)
-          }
-        })
+    // playMoneyState(newVal){
+    //   if(newVal!==1||newVal!==2||newVal!==3){
+    //     let params = {
+    //       id:this.orderStateData.userCardId,
+    //     }
+    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+    //       if(res.returnCode && res.data){
+    //         // console.log(res.data);
+    //         this.cardUserName = res.data
+    //         this.accountNumberCode = this.AES(res.data.accountNumber)
+    //       }
+    //     })
 
-      }
-    }
+    //   }
+    // }
   },
 
   activated (){
@@ -258,26 +260,7 @@ export default{
     this.timer = setInterval(()=>{
       this.getCurrencyStatus()
     },1000)
-    // if(this.playMoneyState == 6){
-    //   let params = {
-    //       id:this.orderStateData.userCardId,
-    //     }
-    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-    //       if(res.returnCode && res.data){
-    //         this.cardUserName = res.data
-    //         this.accountNumberCode = this.AES(res.data.accountNumber)
-    //       }
-    //     })
-    // }
-
-    //   setTimeout(()=>{
-    //   if(this.playMoneyState == 7)
-    //   this.getNetworkList = null
-    //   else if(this.$store.state.orderStatus.cryptoCurrency)
-    //   this.getNetworkList()
-    //   else
-    //   this.getNetworkList()
-    // },1200)
+  
 
 
 
@@ -289,6 +272,9 @@ export default{
     this.Network_show = false
     this.Network_show1 = false
     // this.$store.replaceState({})
+  },
+  mounted(){
+    this.$route.query.id?sessionStorage.setItem('sellOrderId',this.$route.query.id):''
   }
 }
 

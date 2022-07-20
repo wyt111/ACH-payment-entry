@@ -43,4 +43,9 @@ export default {
   "get_networkList":'/crypto/sell/network',
   //卖币添加或修改UserCard接口
   "post_sellForm": '/user/card/sell/submit',
+    //------------------------- kyc验证获取token接口 -------------------------
+    //获取kyc验证token
+  "post_getKycToken":'/kyc/getKycToken',
+  //买币是否要kyc验证
+  "post_getKycThrough":'/rypto/buyKycThrough'
 }

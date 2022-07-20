@@ -88,21 +88,22 @@ export default {
     this.code = "";
     this.timeDown = 60;
     this.includedDetails_state = this.$route.query.fromName ? this.$route.query.fromName === 'tradeList' ? false : true : '';
+     setTimeout(()=>{
+     if(localStorage.getItem('login_email')){
+        this.email = AES_Decrypt(localStorage.getItem('login_email'))
+        this.loggedIn = true
+        this.checked = true
+      }else{
+        this.loggedIn = false
+        this.checked = false
+      }
+    },300)
     if(sessionStorage.getItem("accessMerchantInfo") !== "{}" && sessionStorage.getItem("accessMerchantInfo") !== null){
       this.email = JSON.parse(sessionStorage.getItem("accessMerchantInfo")).mail;
       return
     }
    
-    //  this.$nextTick(()=>{
-    //  if(localStorage.getItem('login_email')){
-    //     this.email = AES_Decrypt(localStorage.getItem('login_email'))
-    //     this.loggedIn = true
-    //     this.checked = true
-    //   }else{
-    //     this.loggedIn = false
-    //     this.checked = false
-    //   }
-    // })
+ 
  
   },
 
@@ -112,7 +113,7 @@ export default {
     this.timeVal = null;
   },
   mounted(){
-    this.$nextTick(()=>{
+   setTimeout(()=>{
      if(localStorage.getItem('login_email')){
         this.email = AES_Decrypt(localStorage.getItem('login_email'))
         this.loggedIn = true
@@ -121,7 +122,7 @@ export default {
         this.loggedIn = false
         this.checked = false
       }
-    })
+    },300)
       
    
 },
@@ -146,6 +147,7 @@ export default {
       }
       
       if(this.loggedIn===true){
+        console.log(this.email);
         alert('一键登陆')
         return
       }

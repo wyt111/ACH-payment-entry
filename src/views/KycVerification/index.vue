@@ -31,17 +31,20 @@
                 <li>· You did not use multiple ID documents for the KYC verification .</li>
             </ul>
         </div>
-        <div class="Verification_button" v-if="kycVerState==0" @click="nextKycVer(0)">
+        <div class="Verification_button" v-if="kycVerState==0" @click="nextKycVer(0)" :style="{opacity:!nextKyc?'.5':'',cursor:!nextKyc?'not-allowed':''}">
           <p  >Begin Verification</p>
-          <img src="@/assets/images/rightIconSell.png" alt="">
+          <img src="@/assets/images/rightIconSell.png" alt="" v-if="nextKyc">
+          <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
         <div class="Verification_button" v-else-if="kycVerState==1" @click="nextKycVer(1)">
           <p>Continue the Payment</p>
-          <img src="@/assets/images/rightIconSell.png" alt="">
+          <img src="@/assets/images/rightIconSell.png" alt="" v-if="nextKyc">
+          <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
         <div class="Verification_button" v-else @click="nextKycVer(2)">
           <p >Try Again </p>
-          <img src="@/assets/images/rightIconSell.png" alt="">
+          <img src="@/assets/images/rightIconSell.png" alt="" v-if="nextKyc">
+          <van-loading class="icon" type="spinner" color="#fff" v-if="!nextKyc"/>
         </div>
     </div>
     <div class="verif_kyc" v-else :key="1">
@@ -53,12 +56,15 @@
 </template>
 <script>
 import snsWebSdk from '@sumsub/websdk';
+
 export default {
   name:'KycVerification',
   data(){
     return {
       status:0,
-      kycVerState:0
+      kycVerState:0,
+      getToken:'',
+      nextKyc:true
     }
   },
   methods:{
@@ -78,7 +84,6 @@ export default {
         .withOptions({ addViewportTag: false, adaptIframeHeight: true})
        
         .on('idCheck.applicantStatus', (type,) => {
-          console.log(type);
           if(!type){
             return
           }
@@ -92,6 +97,7 @@ export default {
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED'){
             this.status = 0
             this.kycVerState = 2
+           
             return
           }else{
             this.status = 0
@@ -119,36 +125,61 @@ export default {
 },
     //获取kyc验证的token
     getNewAccessToken() {
+
       // let newAccessToken = '_act-sbx-080f8eef-29d9-42a2-b9f8-dd894ad94e7e'
         return Promise.resolve('')// get a new token from your backend
     },
     //next
     nextKycVer(val){
-      if(val===0){
+      if(val===0 && this.nextKyc){
+        console.log(this.$store.state.cardInfoFromPath);
         this.status=1
-        sessionStorage.setItem('kycState',this.status)
+        this.nextKyc = false
+        this.getUserToken()
         setTimeout(()=>{
-          this.launchWebSdk('_act-sbx-2d9bb0c6-2127-4125-ab15-32cf343a0c63')
-        },1000)
+          this.nextKyc = true
+          // console.log(this.getToken);
+          this.launchWebSdk(this.getToken)
+        },2000)
         return 
       }else if(val === 1){
         this.status=0
         console.log('成功继续下一步')
         return
-      }else{
+      }else if(val === 2){
         this.status=1
+        this.nextKyc = false
+        this.getUserToken()
         setTimeout(()=>{
-          this.launchWebSdk('_act-sbx-2d9bb0c6-2127-4125-ab15-32cf343a0c63')
-        },1000)
+          this.nextKyc = true
+          this.launchWebSdk(this.getToken)
+        },2000)
+      }else{
+        return false
       }
       
     },
     //关闭页面
     goHome(){
-      setTimeout(()=>{
-        this.kycVerState = 0
-      },1000)
-      this.$router.replace('/')
+      //返回来的页面并且清空状态
+        setTimeout(()=>{
+          this.kycVerState = 0
+        sessionStorage.setItem('kycVerState',this.kycVerState)
+        })
+      
+      this.$router.go(-1)
+    },
+    //获取用户的kyc验证token
+    getUserToken(){
+      return '_act-sbx-f9e07552-6f29-4cc4-9e5a-a00abb13aae0'
+      // let data = {
+      //   fullName:'Dong'
+      // }
+      //  this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
+      //     if(res.data && res.returnCode === '0000'){
+      //       this.getToken =  res.data
+      //     }
+      //   })
     }
   },
   watch:{
@@ -171,7 +202,9 @@ export default {
 .KycVer-container{
   height: 100%;
  overflow: hidden;
-
+  .icon {
+    height: .15rem !important;
+  }
   .kyc_nav{
     width: 100%;
     height: .2rem;
@@ -249,7 +282,7 @@ export default {
     position: fixed;
     overflow: scroll;
    >img{
-     height: .15rem;
+     height: .13rem;
      cursor: pointer;
      position: absolute;
      right: .0rem;

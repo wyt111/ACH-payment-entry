@@ -93,9 +93,8 @@ export default {
           this.buttonData.triggerNum = 0;
           if(res && res.returnCode === "0000"){
             this.$store.state.sellOrderId = res.data.id;
-            this.$store.state.nextOrderState=1
             this.$router.push({
-              path:"/sellOrder",
+              path:"/kycVerification",
               });
           }
         })

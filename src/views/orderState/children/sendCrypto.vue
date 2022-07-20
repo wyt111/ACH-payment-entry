@@ -54,7 +54,8 @@
       </div>
     </div>
     </div>
-    <div v-else-if="orderStateData.orderStatus === 7 || orderStateData.expirationTime === 0" class="sendCrypto_timeError">
+    
+    <div v-else-if="orderStateData.orderStatus == 7 || orderStateData.expirationTime == 0" class="sendCrypto_timeError">
       <div class="sendCrypto_title" style="margin-top:.42rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
       <p style="cursor: pointer;" class="order-con" @click="copy" :data-clipboard-text="orderStateData.orderId">
@@ -73,6 +74,7 @@
       </div>
     </div>
     </div>
+    
     <div v-else></div>
     <div class="sendCrypto_confing" v-show="transferredShow" >
       <div class="content">
@@ -119,9 +121,15 @@ export default {
   mounted(){
     // this.$parent.routerViewState = true 
     setTimeout(() => {
+      if(this.orderStateData.orderStatus == 7 || this.orderStateData.expirationTime == 0){
+        return false
+      }
       this.getNetworkList()
     }, 1000);
     this.queryFee()
+    if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
+      return
+    }
     if(this.timerNumber >= 0 ){
         clearInterval(this.timeOut)
        this.timeOut =  setInterval(()=>{
@@ -141,9 +149,13 @@ export default {
   
     //网络列表延迟请求
     setTimeout(() => {
+    
       this.getNetworkList()
     }, 1000);
     this.queryFee()
+    if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
+      return
+    }
     if(this.timerNumber > 0 ){
         clearInterval(this.timeOut)
        this.timeOut =  setInterval(()=>{
@@ -153,6 +165,7 @@ export default {
             this.timerNumber = 15
           }else if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
             clearInterval(this.timeOut)
+            return
           }
         },1000)
       }
@@ -214,16 +227,9 @@ export default {
      //Calculate minutes and seconds
     turnMinute(value){
       if(value >= 0){
-        var second = value;
-        var minute=0;
-        minute = parseInt(second/60);
-        second%=60;
-        // if(minute>60) {
-        //   minute%=60;
-        // }
-        second = second>9?second:"0"+second;
-        minute = minute>9?minute:"0"+minute;
-        return minute+":"+second;
+        var num = value;
+        return '0'.repeat(2 - String(Math.floor(num / 3600)).length) + Math.floor(num / 3600) + ':' + '0'.repeat(2 - String(Math.floor((num%3600) / 60)).length) + Math.floor((num%3600) / 60) + ':' + '0'.repeat(2 - String(Math.floor((num%3600) % 60)).length) + Math.floor((num%3600) % 60)
+        
       }
     },
     //确认网络
@@ -526,7 +532,7 @@ export default {
     left: 0;
     bottom: 0;
     transform: translate(0,5rem);
-    border-radius: .3rem .3rem 0 0 ;
+    border-radius: .2rem .2rem 0 0 ;
     box-shadow: 0px -8px 20px rgba(0, 89, 218, 0.08);
     z-index: 2;
     transition: .5s ;
