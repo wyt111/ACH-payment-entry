@@ -4,7 +4,7 @@ export default {
   "post_login": '/user/login',
   "post_outLogin": '/login/to-logout',
   "get_transactionHistory": '/trade/list',
-  "get_buyCryptoInfo": '/crypto/buy/v1',
+  "get_buyCryptoInfo": '/crypto/buy/v2',
   //国家法币列表
   "get_countryList": '/crypto/world/list',
 
