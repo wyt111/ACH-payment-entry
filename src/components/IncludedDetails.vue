@@ -174,11 +174,7 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
-    if(this.isHome === true){
-      this.queryFee();
-      this.timingSetting();
-    }
-    if(this.isHome === false || this.isHome === null){
+    if(this.$store.state.buyRouterParams.cryptoCurrency !== ''){
       this.queryFee();
       this.timingSetting();
     }
