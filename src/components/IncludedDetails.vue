@@ -108,8 +108,8 @@ export default {
     'network': {
       deep: true,
       immediate: true,
-      handler(){
-        if(this.$store.state.goHomeState && (this.isHome === false || this.isHome === null)){
+      handler(val,oldVal){
+        if(this.$store.state.goHomeState && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
           this.queryFee();
           this.timingSetting();
         }
@@ -119,8 +119,8 @@ export default {
     '$store.state.buyRouterParams.amount': {
       deep: true,
       immediate: true,
-      handler() {
-        if(this.isHome && this.isHome === true){
+      handler(val,oldVal) {
+        if(this.isHome && this.isHome === true && Number(val) !== Number(oldVal)){
           this.queryFee();
           this.timingSetting();
         }
@@ -129,8 +129,8 @@ export default {
     //首页选择数字货币后刷新数据
     '$store.state.buyRouterParams.cryptoCurrency': {
       deep: true,
-      handler() {
-        if(this.isHome && this.isHome === true) {
+      handler(val,oldVal) {
+        if(this.isHome && this.isHome === true && val !== oldVal) {
           this.queryFee();
           this.timingSetting();
         }
@@ -157,8 +157,8 @@ export default {
     '$store.state.buyRouterParams.payCommission.symbol': {
       deep: true,
       immediate: true,
-      handler(){
-        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true){
+      handler(val,oldVal){
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true && val !== oldVal){
           this.queryFee();
           this.timingSetting();
         }
