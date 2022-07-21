@@ -2,6 +2,12 @@
   <div id="box">
     <div id="sell-form" ref="box_ref" @scroll="handleScroll">
       <div class="sellForm-content" ref="form_ref">
+
+        <!-- 历史表单信息 -->
+        <div class="cardInfo-history">
+          
+        </div>
+
         <div class="formLine" v-for="(item,index) in formJson" :key="index">
           <!-- 提示信息 - JPY NPR BRL -->
           <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
@@ -30,6 +36,9 @@
           <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
         </div>
       </div>
+
+      <!-- -->
+      <div class="attention"><span>Attention:</span> Please ensure the bank account belongs to you and the information is accurate. Returned transactions are subjected to $25 fee charged by our banking partners.</div>
 
       <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
         {{ $t('nav.Continue') }}
@@ -477,7 +486,7 @@ export default {
       font-weight: normal;
       color: #232323;
       text-indent: 0.16rem;
-      border: 1px solid #F3F4F5;
+      border-bottom: 1px solid #EEEEEE;
       height: 0.56rem;
       line-height: 0.56rem;
       &:last-child{
@@ -492,10 +501,10 @@ export default {
   clear: both;
   position: relative;
   .formTitle{
+    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+    font-weight: 400;
     font-size: 0.13rem;
-    font-family: "GeoRegular", GeoRegular;
-    font-weight: normal;
-    color: #707070;
+    color: #949EA4;
     display: flex;
     align-items: flex-end;
     span{
@@ -520,15 +529,18 @@ export default {
     input{
       width: 100%;
       height: 0.56rem;
-      background: #F3F4F5;
-      border-radius: 0.12rem;
+      border-radius: 0.06rem;
+      border: 1px solid #EEEEEE;
+      font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+      font-weight: 500;
       font-size: 0.16rem;
-      font-family: "GeoRegular", GeoRegular;
-      font-weight: normal;
-      color: #232323;
-      border: none;
+      color: #949EA4;
       outline: none;
       padding: 0 0.16rem;
+      &:focus{
+        border: 1px solid #D0ECFC;
+        box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
+      }
     }
     .radioInput{
       width: 100%;
@@ -537,12 +549,12 @@ export default {
       height: 0.56rem;
       line-height: 0.56rem;
       padding: 0 0.16rem;
-      background: #F3F4F5;
-      border-radius: 0.12rem;
+      border-radius: 0.06rem;
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
       color: #232323;
+      border: 1px solid #EEEEEE;
       .rightIcon{
         margin-left: auto;
         display: flex;
@@ -555,23 +567,34 @@ export default {
   }
   .errorMessage{
     position: absolute;
-    font-size: 0.13rem;
+    font-size: 0.1rem;
     font-family: "GeoLight", GeoLight;
     font-weight: 400;
     color: #E55643;
-    margin: 0.08rem 0.2rem 0 0.16rem;
+    margin: 0.04rem 0.2rem 0 0.16rem;
     clear: both;
   }
   .tipsMessage{
-    font-size: 0.14rem;
-    font-family: "Jost", sans-serif;
-    font-weight: 400;
-    color: #999999;
+    font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+    font-size: 0.13rem;
+    color: #C2C2C2;
     margin: 0.3rem 0 0.1rem 0;
     clear: both;
   }
   &:last-child{
     margin-bottom: 0.3rem;
+  }
+}
+
+.attention{
+  font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+  font-size: 0.13rem;
+  text-align: justify;
+  letter-spacing: 0.5px;
+  color: #C2C2C2;
+  span{
+    color: #949EA4;
+    font-weight: 600;
   }
 }
 
