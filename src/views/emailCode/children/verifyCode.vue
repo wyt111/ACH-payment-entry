@@ -131,7 +131,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
 
                 let params = {
                   country: _this.$store.state.sellRouterParams.positionData.alpha2,
-                  fiatName: _this.$store.state.sellRouterParams.positionData.fiatCode,
+                  fiatName: _this.$store.state.sellRouterParams.positionData.code,
                 };
                 _this.$axios.get(_this.$api.get_userSellCardInfo,params).then(res=>{
                   //data - null 没有填写过表单,跳转到表单页

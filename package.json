@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve --mode development",
     "build:dev": "vue-cli-service build --mode development",
     "build:test": "vue-cli-service build --mode test",
+    "build:uat": "vue-cli-service build --mode uat",
     "build:prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "test contract": "node --experimental-json-modules ./scripts/contractTest.js"

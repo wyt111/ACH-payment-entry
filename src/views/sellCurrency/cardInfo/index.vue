@@ -1,41 +1,47 @@
 <template>
-  <div id="sell-form" >
-    <div class="sellForm-content" ref="sellFormView">
-      <div class="formLine" v-for="(item,index) in formJson" :key="index">
-        <!-- 提示信息 - JPY NPR BRL -->
-        <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') || (currency === 'NPR' && item.paramsName === 'swiftCode') || (currency === 'BRL' && item.paramsName === 'bankCode')">
-          {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
-        <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
-        <!-- bank account type -->
-        <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
-          <div class="radioInput" :class="{'radioInput_focus': selectState === true}">
-            <div class="value">{{ $t(item.model) }}</div>
-            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+  <div id="box">
+    <div id="sell-form" ref="box_ref" @scroll="handleScroll">
+      <div class="sellForm-content" ref="form_ref">
+        <div class="formLine" v-for="(item,index) in formJson" :key="index">
+          <!-- 提示信息 - JPY NPR BRL -->
+          <div class="tipsMessage" v-if="(currency === 'JPY' && item.paramsName === 'bankCode') ||
+        (currency === 'NPR' && item.paramsName === 'routingCodeValue1') ||
+        (currency === 'BRL' && item.paramsName === 'bankCode') ||
+        (currency === 'BDT' && item.paramsName === 'routingCodeValue1')">
+            {{ $t('nav.sell_form_tips') }}：{{ $t(item.multinomialTips) }}</div>
+          <div class="formTitle"><span v-if="item.required">*</span>{{ $t(item.name) }}</div>
+          <!-- bank account type -->
+          <div class="formContent cursor" v-if="item.type === 'radio' && item.paramsName === 'bankAccountType'" @click="openSelect(item,index)">
+            <div class="radioInput">
+              <div class="value">{{ $t(item.model) }}</div>
+              <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+            </div>
           </div>
-        </div>
-        <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
-          <div class="radioInput" :class="{'radioInput_focus': selectState === true}">
-            <div class="value">{{ item.model }}</div>
-            <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+          <div class="formContent cursor" v-else-if="item.type === 'radio'" @click="openSelect(item,index)">
+            <div class="radioInput">
+              <div class="value">{{ item.model }}</div>
+              <div class="rightIcon"><img src="../../../assets/images/rightBlackIcon.png" alt=""></div>
+            </div>
           </div>
+          <div class="formContent" v-else>
+            <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)"  @focus="inputFocus" @blur="inputBlur">
+          </div>
+          <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
+          <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
         </div>
-        <div class="formContent" v-else>
-          <input type="text" v-model="item.model" :maxlength="item.maxLength" @input="inputChange(item,index)"  @focus="inputFocus" @blur="inputBlur">
-        </div>
-        <p class="errorMessage" v-if="item.tipsState">{{ $t(item.tips) }}</p>
-        <p class="errorMessage" v-else-if="item.multinomialTipsState && currency !== 'JPY' && currency !== 'NPR' && currency !== 'BRL'">{{ $t(item.multinomialTips) }}</p>
       </div>
-      <div class="cardTips">
-        <span>Attention: </span>
-        Please ensure the bank account belongs to you and the information is accurate. Returned transactions are subjected to $25 fee charged by our banking partners.
-      </div>
+
+      <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
+        {{ $t('nav.Continue') }}
+        <img class="rightIcon" src="../../../assets/images/rightIconSell.png" v-if="!request_loading">
+        <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
+      </button>
     </div>
 
-    <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow">
-      {{ $t('nav.Confirm') }}
-      <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" v-if="!request_loading">
-      <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
-    </button>
+    <!-- tips icon -->
+    <transition>
+      <div class="downTips-icon" v-show="goDown_state" @click="goDown"><img src="@/assets/images/downIcon.svg" ref="downTips_ref" alt=""></div>
+    </transition>
 
     <!-- 单选框 -->
     <!-- bank account type -->
@@ -70,6 +76,10 @@ export default {
         index: 0,
       },
       request_loading: false,
+
+      goDown_state: false,
+      oldOffsetTop: 0,
+      timeDown: null,
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -81,8 +91,16 @@ export default {
     })
   },
   activated(){
+    //初始化根据可视高度控制向下提示按钮状态
+    setTimeout(()=>{
+      if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("sell-form").scrollHeight - 50){
+        this.goDown_state = true;
+      }else{
+        this.goDown_state = false;
+      }
+    })
     //根据货币类型来过滤不同表单
-    this.currency = this.$store.state.sellRouterParams.positionData.fiatCode;
+    this.currency = this.$store.state.sellRouterParams.positionData.code;
     this.formJson = formJson.filter(item=>{return item.currency.includes(this.currency)})[0].form;
 
     //PHP - 金额大于500000地址必输
@@ -153,10 +171,10 @@ export default {
     // 正则校验 展示提示信息
     inputChange(val,index){
       //BDT - Swift code不是以DBBLBDDH开头的时候branch name必输
-      if(this.currency === 'BDT' && val.paramsName === 'swiftCode' && val.model.substr(0,8) === 'DBBLBDDH'){
-        this.formJson.filter(item=>{ return item.paramsName === "branchName" })[0].required = true;
-      }else if(this.currency === 'BDT' && val.paramsName === 'swiftCode' && val.model.substr(0,8) !== 'DBBLBDDH'){
-        this.formJson.filter(item=>{ return item.paramsName === "branchName" })[0].required = false
+      if(this.currency === 'BDT' && val.paramsName === 'routingCodeValue1' && val.model.substr(0,8) !== 'DBBLBDDH'){
+        this.formJson.filter(item=>{ return item.paramsName === "routingCodeValue2" })[0].required = true;
+      }else if(this.currency === 'BDT' && val.paramsName === 'routingCodeValue1' && val.model.substr(0,8) === 'DBBLBDDH'){
+        this.formJson.filter(item=>{ return item.paramsName === "routingCodeValue2" })[0].required = false
       }
       //所有表单正则验证
       if(!new RegExp(val.regular).test(this.formJson[index].model)){
@@ -170,6 +188,7 @@ export default {
     //表单 - 单选框
     openSelect(item,index){
       this.selectState = true;
+      console.log(this.selectState)
       this.selected = {
         item: item.radioList,
         index: index,
@@ -261,7 +280,7 @@ export default {
       let queryForm = {
         countryCode: this.$store.state.sellRouterParams.positionData.alpha2, // 国家Code
         id: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
-        fiatCode: this.$store.state.sellRouterParams.positionData.fiatCode, // 法币Code
+        fiatCode: this.$store.state.sellRouterParams.positionData.code, // 法币Code
       };
       this.formJsonCopy = JSON.parse(JSON.stringify(this.formJson));
       let bankAccountTypeDate = this.formJsonCopy.filter(res=>{return res.paramsName === 'bankAccountType'})[0];
@@ -309,21 +328,46 @@ export default {
       }
     },
     inputFocus(){
-
       if(this.$store.state.isPcAndPhone === 'phone'){
         this.buttonIsShow = false
         return
-        // this.$refs.sellFormView.style.paddingBottom = 290 + 'px'
       }else{
         this.buttonIsShow = true
         return
-        // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
       }
     },
     inputBlur(){
-
         this.buttonIsShow = true
-      // this.$refs.sellFormView.style.paddingBottom = 0 + 'px'
+    },
+
+    //按钮进入可视区域，隐藏滚动到底部按钮
+    handleScroll(val){
+      window.clearTimeout(this.timeDown);
+      this.timeDown = null;
+      let offset = this.$refs.button_ref.getBoundingClientRect();
+
+      //滚动的像素+容器的高度>可滚动的总高度-50像素
+      if(this.oldOffsetTop !== offset.top && (val.srcElement.scrollTop+val.srcElement.offsetHeight<val.srcElement.scrollHeight - 50)){
+        this.goDown_state = false;
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.timeDown = setTimeout(()=>{
+          this.goDown_state = true;
+        },1000)
+      }
+
+      if(val.srcElement.scrollTop+val.srcElement.offsetHeight>val.srcElement.scrollHeight - 50) {
+        window.clearTimeout(this.timeDown);
+        this.timeDown = null;
+        this.goDown_state = false;
+      }
+      this.oldOffsetTop = offset.top;
+    },
+    goDown(){
+      setTimeout(()=>{
+        this.$refs.button_ref.scrollIntoView({behavior: "smooth", block: "end", inline: 'end'})
+        this.goDown_state = false;
+      })
     },
 
     encrypt(val){
@@ -337,24 +381,121 @@ export default {
 
 <style lang="scss" scoped>
 #sell-form{
-  //height: auto !important;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  position: absolute;
   .sellForm-content{
-    flex: 1;
-    overflow: auto;
+    position: relative;
   }
 }
+.downTips-icon{
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  //background: #0059DA;
+  background: rgba(131,179,249,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  //-webkit-animation: anime 1s linear;
+  //animation: anime 1s linear;
+
+  img{
+    width: 0.3rem;
+  }
+}
+.downTips-icon img{
+  animation: jumpBoxHandler 1.8s infinite;/* 1.8s 事件完成时间周期 infinite无限循环 */
+}
+
+.v-enter-active,.v-leave-active{
+  transition: all 1s;
+}
+.v-enter,.v-leave-to{
+  opacity: 0;
+}
+.v-enter-to,.v-leave{
+  opacity: 0.8;
+}
+
+
+//@keyframes anime {
+//  0% {
+//    background: rgba(131,179,249,0.2);
+//  }
+//
+//  50% {
+//    background: rgba(131,179,249,0.6);
+//  }
+//
+//  100% {
+//    background: rgba(131,179,249,1);
+//  }
+//}
+
+@keyframes jumpBoxHandler { /* css事件 */
+  0% {
+    transform: translate(0px, 0);
+  }
+  50% {
+    transform: translate(0px, 0.06rem); /* 可配置跳动方向 */
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+#box{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.selectView{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  .selectDate{
+    z-index: 99;
+    position: absolute;
+    top: 2rem;
+    left: 0.16rem;
+    background: #FFFFFF;
+    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0.16rem;
+    max-height: 4rem;
+    min-width: 1.8rem;
+    overflow: auto;
+    li{
+      font-size: 0.16rem;
+      font-family: "GeoRegular", GeoRegular;
+      font-weight: normal;
+      color: #232323;
+      text-indent: 0.16rem;
+      border: 1px solid #F3F4F5;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      &:last-child{
+        border: none;
+      }
+    }
+  }
+}
+
 .formLine{
-  margin-top: 0.24rem;
+  margin-top: 0.28rem;
   clear: both;
   position: relative;
   .formTitle{
-    font-family: 'SF Pro Display';
-    font-style: normal;
-    font-weight: 400;
     font-size: 0.13rem;
-    color: #949EA4;
+    font-family: "GeoRegular", GeoRegular;
+    font-weight: normal;
+    color: #707070;
     display: flex;
     align-items: flex-end;
     span{
@@ -379,18 +520,15 @@ export default {
     input{
       width: 100%;
       height: 0.56rem;
-      border: 1px solid #EEEEEE;
-      border-radius: 0.06rem;
+      background: #F3F4F5;
+      border-radius: 0.12rem;
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
       color: #232323;
+      border: none;
       outline: none;
       padding: 0 0.16rem;
-      &:focus{
-        border: 1px solid #D0ECFC;
-        box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
-      }
     }
     .radioInput{
       width: 100%;
@@ -399,8 +537,8 @@ export default {
       height: 0.56rem;
       line-height: 0.56rem;
       padding: 0 0.16rem;
-      border-radius: 0.06rem;
-      border: 1px solid #EEEEEE;
+      background: #F3F4F5;
+      border-radius: 0.12rem;
       font-size: 0.16rem;
       font-family: "GeoRegular", GeoRegular;
       font-weight: normal;
@@ -413,10 +551,6 @@ export default {
           width: 0.24rem;
         }
       }
-    }
-    .radioInput_focus{
-      border: 1px solid #D0ECFC;
-      box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1);
     }
   }
   .errorMessage{
@@ -441,19 +575,6 @@ export default {
   }
 }
 
-.cardTips{
-  font-family: 'SF Pro Display';
-  font-style: normal;
-  font-size: 0.13rem;
-  letter-spacing: 0.5px;
-  color: #C2C2C2;
-  margin-top: 0.08rem;
-  span{
-    color: #949EA4;
-    font-weight: 600;
-  }
-}
-
 .continue{
   width: 100%;
   height: 0.58rem;
@@ -463,50 +584,19 @@ export default {
   font-family: "GeoRegular", GeoRegular;
   font-weight: normal;
   color: #FFFFFF;
-  margin-top: 0.16rem;
+  margin-top: 0.3rem;
   cursor: pointer;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   .rightIcon{
-    width: 0.2rem;
-    margin-left: 0.08rem;
-    margin-top: 0.02rem;
+    width: 0.24rem;
+    position: absolute;
+    top: 0.17rem;
+    right: 0.32rem;
   }
 }
 .continue:disabled{
   background: rgba(0, 89, 218, 0.5);
   cursor: no-drop;
-}
-
-.selectView{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  .selectDate{
-    position: absolute;
-    top: 2rem;
-    left: 0.16rem;
-    background: #FFFFFF;
-    box-shadow: 0 0 0.14rem 0 rgba(0, 0, 0, 0.12);
-    border-radius: 0.16rem;
-    max-height: 4rem;
-    min-width: 1.8rem;
-    overflow: auto;
-    li{
-      font-size: 0.16rem;
-      font-family: "GeoRegular", GeoRegular;
-      font-weight: normal;
-      color: #232323;
-      text-indent: 0.16rem;
-      border: 1px solid #F3F4F5;
-      height: 0.56rem;
-      line-height: 0.56rem;
-      &:last-child{
-        border: none;
-      }
-    }
-  }
 }
 </style>

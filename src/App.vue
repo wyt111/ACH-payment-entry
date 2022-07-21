@@ -5,21 +5,21 @@
           <!-- 顶部logo -->
           <div class="viewTab_logo">
             <p @click="goHome">Alchemy Pay</p>
-            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'">
+            <!-- this.$store.state.goHomeState 商户订单状态不展示菜单 -->
+            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode' && this.$store.state.goHomeState === true">
           </div>
-          <!-- 导航栏 --> 
+          <!-- 导航栏 -->
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
           <div class="routerView_box" v-show="routerViewState">
-            <div class="routerView" v-show="keepAlive">
-              <keep-alive class="keepAlive">
+            <div class="routerView">
+              <keep-alive class="keepAlive" :exclude="keepAlive">
                 <router-view/>
               </keep-alive>
             </div>
-            <div class="routerView" v-if="!keepAlive"><router-view class="noKeepAlive"/></div>
           </div>
           <!-- 菜单栏 -->
-          <routerMenu v-if="!routerViewState" />
+          <routerMenu v-if="!routerViewState"/>
           <!-- 语言切换 -->
           <Language v-if="LanguageShow"/>
           <!-- 确认支付后查询支付状态提示框 -->
@@ -57,9 +57,14 @@ export default {
     }
   },
   computed:{
-    //赋值路由是否需要缓存状态
+    //路由是否需要缓存状态
     keepAlive(){
-      return this.$route.meta.keepAlive;
+      let keepAliveName = '';
+      let keepAliveList = this.$router.options.routes.filter(item=>{return !item.meta.keepAlive});
+      keepAliveList.forEach(item=>{
+        keepAliveName = item.name + "," + keepAliveName;
+      })
+      return keepAliveName
     },
   },
   watch:{
@@ -335,7 +340,7 @@ html,body,#app,#viewBox{
   }
   .routerView{
     height: 100%;
-    .noKeepAlive,.KeepAlive{
+    .KeepAlive{
       height: 100%;
     }
     &>div{

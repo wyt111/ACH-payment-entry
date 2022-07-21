@@ -126,7 +126,9 @@
         "maxLength": "11",
         "required": true,
         "tips": "nav.sell_form_swiftCodeTips",
-        "tipsState": false
+        "tipsState": false,
+        "multinomialTipsState": false,
+        "multinomialTips": "nav.sell_form_branchNameMultinomialTips"
       },
       {
         "name": "nav.sell_form_branchName",
@@ -134,9 +136,7 @@
         "model": "",
         "regular": "",
         "maxLength": "250",
-        "required": false,
-        "tips": "nav.sell_form_branchNameMultinomialTips",
-        "tipsState": false
+        "required": true
       }
     ]
   },

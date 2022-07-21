@@ -60,7 +60,6 @@ export default {
     return{
       //you pay Prompt information
       warningTextState: false,
-      payAmount_tips: '',
 
       //All data
       basicData: {},
@@ -120,6 +119,16 @@ export default {
       }else{
         return false
       }
+    },
+    //法币最大最小值提示
+    payAmount_tips(){
+      var minError = `${this.$t('nav.home_minAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMin}.`;
+      var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMax}.`;
+      if(Number(this.payAmount) < this.payCommission.payMin){
+        return minError;
+      }else if(Number(this.payAmount) > this.payCommission.payMax){
+        return maxError;
+      }
     }
   },
   watch: {
@@ -129,6 +138,9 @@ export default {
       deep: true,
       handler() {
         this.$store.state.buyRouterParams.network = '';
+        this.payAmount = '';
+        this.getAmount = '';
+        this.detailedInfo_state = false;
         this.allBasicData.worldList !== undefined ? this.currentLocation() : '';
       },
     },
@@ -185,13 +197,6 @@ export default {
         //计算加密货币数量
         this.payinfo();
       }else{
-        var minError = `${this.$t('nav.home_minAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMin}.`;
-        var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.payCommission.symbol}${this.payCommission.payMax}.`;
-        if(Number(this.payAmount) < this.payCommission.payMin){
-          this.payAmount_tips = minError;
-        }else if(Number(this.payAmount) > this.payCommission.payMax){
-          this.payAmount_tips = maxError;
-        }
         this.warningTextState = true;
         this.getAmount = "";
         this.detailedInfo_state = false;
@@ -247,11 +252,11 @@ export default {
 
       //将you pay的币种和国家数据合并在一起
       this.basicData.worldList.forEach((item,index)=>{
-        if(item.fiatList){
-          item.fiatList.forEach((item2,index2)=>{
+        if(item.buyFiatList){
+          item.buyFiatList.forEach((item2,index2)=>{
             this.basicData.fiatCurrencyList.forEach(item3=>{
               if(item3.code === item2){
-                this.basicData.worldList[index].fiatList[index2] = item3;
+                this.basicData.worldList[index].buyFiatList[index2] = item3;
               }
             })
           })
@@ -265,6 +270,10 @@ export default {
           return item;
         }
       })
+      //商家配置的法币没有默认国家的法币，默认商家配置币种第一个
+      if(worldData[0].buyEnable === 0){
+        worldData = this.basicData.worldList.filter(item=>{return item.buyEnable === 1});
+      }
       this.handlePayWayList(worldData[0],1);
 
       //接入商户信息处理
@@ -282,15 +291,15 @@ export default {
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
-        this.payCommission = data.fiatList[0];
+        this.payCommission = data.buyFiatList[0];
       }else{
-        data.fiatList.forEach(item=>{
+        data.buyFiatList.forEach(item=>{
           if(item.code === data.code){
             this.payCommission = item;
           }
         })
       }
-      // this.allPayCommission = data.fiatList;
+      // this.allPayCommission = data.buyFiatList;
       //根据you pay币种类过滤费用
       this.exchangeRate = this.basicData.usdToEXR[this.payCommission.code];
       //you pay输入的最大值最小值：最小值里面取最大, 最大值里面取最小
@@ -301,7 +310,6 @@ export default {
       this.payCommission.payMin = Math.max(...minNumList);
       this.$store.state.buyRouterParams.exchangeRate = this.exchangeRate;
       this.$store.state.buyRouterParams.payCommission = this.payCommission;
-
       this.amountControl();
     },
 
@@ -341,8 +349,8 @@ export default {
           sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
           //network address All passed the verification
           if(res.success === true && res.data === null){
-            merchantParams.addressDefault = true;
-            merchantParams.networkDefault = true;
+            merchantParams.addressDefault = false;
+            merchantParams.networkDefault = false;
             sessionStorage.setItem("accessMerchantInfo",JSON.stringify(merchantParams));
             return;
           }
@@ -350,14 +358,14 @@ export default {
           //Judge whether a network｜address has passed
           if(res.success === true && res.data !== null){
             //you pay currency - address: false - Address is not brought out by default
-            if(res.data.address === false){ //No parameter defaults
+            if(res.data.address === false || res.data.address === undefined){ //No parameter defaults
               merchantParams.addressDefault = false;
             }else{
               merchantParams.addressDefault = true;
             }
 
             //network: false - The network is not brought out by default
-            if(res.data.network === false) {
+            if(res.data.network === false || res.data.network === undefined) {
               merchantParams.networkDefault = false;
             }else{
               merchantParams.networkDefault = true;

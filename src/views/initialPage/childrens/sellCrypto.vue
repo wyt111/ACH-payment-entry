@@ -22,7 +22,7 @@
         </div>
         <div class="pay_company" @click="openSearch('payCurrency-sell')">
           <div class="countryIcon"><img :src="positionData.positionImg"></div>
-          <div>{{ payCommission.fiatCode }}</div>
+          <div>{{ payCommission.code }}</div>
           <img class="rightIcon" src="@/assets/images/blackDownIcon.png">
         </div>
       </div>
@@ -55,7 +55,6 @@ export default {
     return{
       //you pay Prompt information
       warningTextState: false,
-      payAmount_tips: '',
 
       //All data
       basicData: {},
@@ -65,7 +64,7 @@ export default {
         positionValue: '',
         positionImg: '',
         alpha2: '',
-        fiatCode: ''
+        code: ''
       },
 
       payAmount: '',
@@ -79,9 +78,10 @@ export default {
       currencyData: {
         icon: '',
         name: '',
-        price: '',
         maxSell: '',
-        minSell: ''
+        minSell: '',
+        cryptoCurrencyNetworkId: '',
+        symbol: ''
       },
 
       //Payment method information
@@ -109,6 +109,15 @@ export default {
         return true
       }else{
         return false
+      }
+    },
+    payAmount_tips(){
+      var minError = `${this.$t('nav.home_minAmountTips')} ${this.currencyData.minSell}.`;
+      var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.currencyData.maxSell}.`;
+      if(Number(this.payAmount) < this.currencyData.minSell){
+        return minError;
+      }else if(Number(this.payAmount) > this.currencyData.maxSell){
+        return maxError;
       }
     }
   },
@@ -161,13 +170,6 @@ export default {
         //How many digital currencies can I exchange
         this.payinfo();
       }else{
-        var minError = `${this.$t('nav.home_minAmountTips')} ${this.currencyData.minSell}.`;
-        var maxError = `${this.$t('nav.home_maxAmountTips')} ${this.currencyData.maxSell}.`;
-        if(Number(this.payAmount) < this.currencyData.minSell){
-          this.payAmount_tips = minError;
-        }else if(Number(this.payAmount) > this.currencyData.maxSell){
-          this.payAmount_tips = maxError;
-        }
         this.warningTextState = true;
         this.getAmount = "";
         this.detailedInfo_state = false;
@@ -211,11 +213,11 @@ export default {
 
       //将you pay的币种和国家数据合并在一起
       this.basicData.worldList.forEach((item,index)=>{
-        if(item.fiatList){
-          item.fiatList.forEach((item2,index2)=>{
+        if(item.sellFiatList){
+          item.sellFiatList.forEach((item2,index2)=>{
             this.basicData.fiatCurrencyList.forEach(item3=>{
               if(item3.code === item2){
-                this.basicData.worldList[index].fiatList[index2] = item3;
+                this.basicData.worldList[index].sellFiatList[index2] = item3;
               }
             })
           })
@@ -229,24 +231,14 @@ export default {
           return item;
         }
       })
+      //商家配置的法币没有默认国家的法币，默认商家配置币种第一个
+      if(worldData[0].sellEnable === 0){
+        worldData = this.basicData.worldList.filter(item=>{return item.sellEnable === 1});
+      }
       this.handlePayWayList(worldData[0],1);
     },
 
     handlePayWayList(data,state){
-      //展示所需国家参数
-      this.positionData = {
-        positionValue: data.enCommonName,
-        positionImg: data.flag,
-        alpha2: data.alpha2,
-        fiatCode: data.fiatCode,
-      };
-      //费用所需参数
-      this.$store.state.feeParams.fiatCode = data.fiatCode;
-      this.$store.state.feeParams.worldId = data.worldId;
-      this.positionData.worldId = data.worldId;
-      this.payCommission = data;
-      this.$store.state.sellRouterParams.payCommission = data;
-      this.$store.state.sellRouterParams.positionData = this.positionData;
       //根据国家对应的币种处理数据
       //state - 1页面初始化数据处理 state - 2选择国家后数据处理
       if(state === 1){
@@ -264,7 +256,28 @@ export default {
             this.$store.state.sellRouterParams.currencyData = this.currencyData;
           }
         })
+        this.payCommission = data.sellFiatList[0];
+        this.positionData.code = data.sellFiatList[0].code;
+      }else{
+        data.sellFiatList.forEach(item=>{
+          if(item.code === data.code){
+            this.payCommission = item;
+          }
+        })
       }
+      //展示所需国家参数
+      this.positionData = {
+        positionValue: data.enCommonName,
+        positionImg: data.flag,
+        alpha2: data.alpha2,
+        code: this.payCommission.code,
+      };
+      //费用所需参数
+      this.$store.state.sellRouterParams.payCommission = this.payCommission;
+      this.$store.state.feeParams.fiatCode = this.payCommission.code;
+      this.$store.state.feeParams.worldId = data.worldId;
+      this.positionData.worldId = data.worldId;
+      this.$store.state.sellRouterParams.positionData = this.positionData;
       this.amountControl();
     },
 
@@ -272,21 +285,20 @@ export default {
       //是否是从菜单进入
       this.$store.state.routerQueryPath = false
 
-
-      this.payCommission.symbol = this.$store.state.feeParams.symbol;
-      let routerParams = {
-        amount: this.payAmount,
-        getAmount: this.getAmount,
-        cryptoCurrency: this.currencyData.name,
-        currencyData: this.currencyData,
-        payCommission: this.payCommission,
-        positionData: this.positionData
-      }
-      this.$store.state.sellRouterParams = routerParams;
+      // this.payCommission.symbol = this.$store.state.feeParams.symbol;
+      // let routerParams = {
+      //   amount: this.payAmount,
+      //   getAmount: this.getAmount,
+      //   cryptoCurrency: this.currencyData.name,
+      //   currencyData: this.currencyData,
+      //   payCommission: this.payCommission,
+      //   positionData: this.positionData
+      // }
+      // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
       //获取用户卡信息
       let params = {
         country: this.positionData.alpha2,
-        fiatName: this.positionData.fiatCode,
+        fiatName: this.positionData.code,
       };
       // Login information
       this.$store.state.emailFromPath = 'sellCrypto';

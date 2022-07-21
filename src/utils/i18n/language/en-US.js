@@ -97,19 +97,19 @@ module.exports = {
      * 买币
      */
     home_youPay: 'You Pay',
-    home_youBuyGet: 'You Get',
+    home_youBuyGet: 'You get',
     home_buyFee_timeDownTitle: 'Remaining time',
     home_buyFee_timeDown: 'Quote updates in',
-    home_buyFee_title1: 'You get',
+    home_buyFee_title1: 'You Get',
     home_buyFee_title2: 'for',
-    home_buyFee_rampFee: 'Ramp fee',
-    home_buyFee_networkFee: 'Network fee',
+    home_buyFee_rampFee: 'Ramp Fee',
+    home_buyFee_networkFee: 'Network Fee',
     //卖币
     home_youSell: 'You Sell',
     home_youSellGet: 'You Get',
     home_sellFee_title1: 'You sell',
     home_sellFee_title2: 'to',
-    home_sellFee_rampFee: 'Ramp fee',
+    home_sellFee_rampFee: 'Ramp Fee',
     //搜索组件
     search_components_countryTitle: 'Select Country',
     search_components_cryptoTitle: 'Select Crypto',
@@ -285,7 +285,7 @@ module.exports = {
     history_listTitle1: 'Order No',
     history_listTitle2: 'Crypto',
     history_listTitle3: 'Hash ID',
-    fee_listTitle_price: 'price',
+    fee_listTitle_price: 'Price',
     sell_order_title: 'state-content',
     fee_tips: 'Based on payment method',
     search_components_Popular: 'Popular',

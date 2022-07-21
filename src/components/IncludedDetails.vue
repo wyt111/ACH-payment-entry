@@ -13,7 +13,7 @@
     <div class="fee-content">
       <div class="fee-content-title" @click="expandCollapse">
         <div class="left">
-          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }}{{ routerParams.amount }}</span>
+          {{ $t('nav.home_youBuyGet') }} <span>{{ routerParams.getAmount }} {{ routerParams.cryptoCurrency }}</span> {{ $t('nav.home_buyFee_title2') }} <span>{{ payCommission.symbol }} {{ routerParams.amount }}</span>
         </div>
         <!-- 商户接入模式禁止点击 -->
         <div class="right" v-if="this.$store.state.goHomeState">
@@ -100,7 +100,6 @@ export default {
         payMin: 0,
         rampFee: 0,
         symbol: "",
-        symbolNative: ""
       },
       timeDownNumber: 15,
     }
@@ -109,8 +108,8 @@ export default {
     'network': {
       deep: true,
       immediate: true,
-      handler(){
-        if(this.$store.state.goHomeState){
+      handler(val,oldVal){
+        if(this.$store.state.goHomeState && val !== null && val !== '' && oldVal !== undefined && val !== oldVal){ // && (this.isHome === false || this.isHome === null)
           this.queryFee();
           this.timingSetting();
         }
@@ -119,8 +118,9 @@ export default {
     //首页输入金额改变后刷新数据
     '$store.state.buyRouterParams.amount': {
       deep: true,
-      handler() {
-        if(this.isHome && this.isHome === true){
+      immediate: true,
+      handler(val,oldVal) {
+        if(this.isHome && this.isHome === true && Number(val) !== Number(oldVal)){
           this.queryFee();
           this.timingSetting();
         }
@@ -129,8 +129,8 @@ export default {
     //首页选择数字货币后刷新数据
     '$store.state.buyRouterParams.cryptoCurrency': {
       deep: true,
-      handler() {
-        if(this.isHome && this.isHome === true) {
+      handler(val,oldVal) {
+        if(this.isHome && this.isHome === true && val !== oldVal) {
           this.queryFee();
           this.timingSetting();
         }
@@ -157,8 +157,8 @@ export default {
     '$store.state.buyRouterParams.payCommission.symbol': {
       deep: true,
       immediate: true,
-      handler(){
-        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.buyRouterParams.goHomeState === true){
+      handler(val,oldVal){
+        if(this.$store.state.buyRouterParams.cryptoCurrency !== '' && this.$store.state.goHomeState === true && val !== oldVal){
           this.queryFee();
           this.timingSetting();
         }
@@ -174,7 +174,7 @@ export default {
     this.triggerType = common.equipmentEnd === 'pc' ? "hover" : "click";
     //接收路由信息
     this.$store.state.buyRouterParams.payCommission !== undefined ? this.payCommission = this.$store.state.buyRouterParams.payCommission : '';
-    if(this.isHome && this.isHome === true){
+    if(this.$store.state.buyRouterParams.cryptoCurrency !== ''){
       this.queryFee();
       this.timingSetting();
     }
@@ -194,7 +194,8 @@ export default {
     networkFee(){
       if(this.feeInfo.networkFee !== undefined){
         let decimalDigits = 0;
-        let resultValue = this.feeInfo.networkFee; // * this.routerParams.exchangeRate
+        let resultValue = this.feeInfo.networkFee;
+        resultValue = this.feeInfo.networkFee * this.$store.state.buyRouterParams.exchangeRate;
         resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
         let networkFee = resultValue.toFixed(decimalDigits);
         isNaN(resultValue) || networkFee <= 0 ? networkFee = 0 : '';
@@ -208,7 +209,7 @@ export default {
       let price = resultValue.toFixed(decimalDigits);
       isNaN(resultValue) || price <= 0 ? price = 0 : '';
       return price;
-    }
+    },
   },
   methods:{
     //Countdown 15 refresh data
@@ -232,21 +233,11 @@ export default {
       let params = {
         symbol: this.$store.state.buyRouterParams.cryptoCurrency+"USDT",
         coin: this.$store.state.buyRouterParams.cryptoCurrency,
-        network: this.isHome && this.isHome === true ? '' : this.$store.state.buyRouterParams.network
+        network: this.network
       }
       this.$axios.get(this.$api.get_inquiryFee,params).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = JSON.parse(JSON.stringify(res.data));
-          //选择网络修改you get数量
-          if(this.$store.state.buyRouterParams.network !== ''){
-            this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
-            let newGetAmount = (Number(this.routerParams.amount) - this.feeInfo.networkFee - this.payCommission.rampFee) / (this.feeInfo.price * this.routerParams.exchangeRate);
-            let decimalDigits = 0;
-            newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-            newGetAmount = newGetAmount.toFixed(decimalDigits);
-            isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
-            this.routerParams.getAmount = newGetAmount;
-          }
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
             this.$parent.feeInfo = JSON.parse(JSON.stringify(res.data));
@@ -254,14 +245,27 @@ export default {
             this.useFee && this.useFee === true ? this.$parent.feeInfo = JSON.parse(JSON.stringify(this.feeInfo)) : '';
             this.$parent.calculationAmount();
           }
-          //商户对接计算you get数量
-          if(this.isLoading === true){
-            this.$store.state.buyRouterParams.payCommission.decimalDigits = 2;
-            let rampFee = (Number(this.$store.state.buyRouterParams.feeRate) * Number(this.$store.state.buyRouterParams.amount) + this.$store.state.buyRouterParams.fixedFee).toFixed(2);
-            this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
+          //选择网络修改you get数量、商户对接计算you get数量
+          if(this.$store.state.buyRouterParams.network !== '' && this.$store.state.buyRouterParams.network !== undefined){
+            let rampFee = this.$store.state.buyRouterParams.payCommission.rampFee;
+            let networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
+            let price = this.feeInfo.price * this.routerParams.exchangeRate
+            let newGetAmount = (this.$store.state.buyRouterParams.amount - networkFee - rampFee) / price;
+            let decimalDigits = 0;
+            newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+            newGetAmount = newGetAmount.toFixed(decimalDigits);
+            isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
+            this.routerParams.getAmount = newGetAmount;
+          }
+          if(this.isLoading && this.isLoading === true){
+            let rampFee = this.$store.state.buyRouterParams.payCommission.rampFee;
             this.feeInfo.networkFee = this.$store.state.buyRouterParams.exchangeRate * this.feeInfo.networkFee;
             let newGetAmount = (Number(this.$store.state.buyRouterParams.amount) - this.feeInfo.networkFee - rampFee) / this.feeInfo.price;
-            newGetAmount > 0 ? this.$store.state.buyRouterParams.getAmount = newGetAmount.toFixed(6) : this.$store.state.buyRouterParams.getAmount = 0;
+            let decimalDigits = 0;
+            newGetAmount >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+            newGetAmount = newGetAmount.toFixed(decimalDigits);
+            isNaN(newGetAmount) || newGetAmount <= 0 ? newGetAmount = 0 : '';
+            this.routerParams.getAmount = newGetAmount;
           }
         }
       })

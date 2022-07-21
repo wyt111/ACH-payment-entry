@@ -1,9 +1,9 @@
 <template>
   <div class="cardConfigPayment">
-<!--    <div class="cardConfigPayment-content">-->
+    <div class="cardConfigPayment-content">
       <div class="formLine">
         <div class="formTitle">{{ $t('nav.buy_configPay_title1') }}</div>
-        <div class="formContent" @click="goPayForm">
+        <div class="formContent cardInfo" @click="goPayForm">
           <div class="formContent-left">
             <div class="card-icon">
               <img src="../../../../assets/images/visaText.svg" v-if="cardName==='visa'">
@@ -25,9 +25,9 @@
       <!-- 选择接收方式的网络地址和名称 -->
       <CryptoCurrencyAddress/>
       <!-- 支付后隐藏协议模块 -->
-      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
+      <IncludedDetails class="includedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.networkDefault"/>
       <AuthorizationInfo class="AuthorizationInfo" :childData="childData" v-if="AuthorizationInfo_state"/>
-<!--    </div>-->
+    </div>
     <Button :buttonData="buttonData" :disabled="disabled" :loadingDisabled="true" @click.native="submit"></Button>
   </div>
 </template>
@@ -93,7 +93,7 @@ export default {
     this.AuthorizationInfo_state = true;
     //接入商户逻辑
     if(!this.$store.state.goHomeState){
-      this.newCvvState = true;
+      this.newCvvState = (this.$route.query.configPaymentFrom && this.$route.query.configPaymentFrom === 'userPayment') ? true : false;
       this.buyOrderInfo();
       return
     }
@@ -128,9 +128,15 @@ export default {
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
+          //计算rampFee
+          let decimalDigits = 0;
+          let resultValue = Number(res.data.feeRate) * Number(res.data.amount) + res.data.fixedFee;
+          resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+          let rampFee = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+          this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
           //费用组件计算数量
           _this.isLoading = true;
-          console.log(_this.loading)
           //获取、处理卡信息
           _this.cardData = JSON.parse(JSON.stringify(res.data.cardInfo));
           this.$store.state.buyRouterParams.orderNo = this.$route.query.merchant_orderNo;
@@ -176,9 +182,10 @@ export default {
       if(this.buttonData.triggerNum === 1){
         this.cvvDisabled = true;
         await this.pay();
-      }else{
-        this.queryOrderStatus();
       }
+      // else{
+      //   this.queryOrderStatus();
+      // }
     },
     //支付
     /**
@@ -196,12 +203,14 @@ export default {
         this.newCvvState === true ? newParams.cvv = AES_Encrypt(this.newCvv) : newParams.cvv = JSON.parse(this.$route.query.submitForm).cardCvv.replace(/ /g,'+');
         this.$axios.post(this.$api.post_internationalCard,newParams,'submitToken').then(res=>{
           if(res && res.returnCode === '0000'){
-            this.timeDown = setInterval(()=>{
-              this.queryOrderStatus();
-            },1000)
-            if(JSON.stringify(res.data) === "{}"){
-              this.$store.state.buyRouterParams.payment_webUrl = res.data.webUrl;
+            if(JSON.stringify(res.data) !== "{}"){
+              window.location = res.data.webUrl;
+            }else{
+              this.timeDown = setInterval(()=>{
+                this.queryOrderStatus();
+              },1000)
             }
+            this.submitState = true;
           }else {
             this.submitState = true;
             this.cvvDisabled = false;
@@ -212,6 +221,7 @@ export default {
           }
         }).catch(()=>{
           this.cvvDisabled = false;
+          this.submitState = true;
           this.buttonData = {
             loading: false,
             triggerNum: 0,
@@ -225,10 +235,6 @@ export default {
         "orderNo": this.$store.state.buyRouterParams.orderNo
       }
       this.$axios.get(this.$api.get_payResult,params).then(res2=>{
-        if(res2.data.orderStatus && res2.data.orderStatus === 1){
-          window.location = this.$store.state.buyRouterParams.payment_webUrl;
-          return
-        }
         if(res2.data.orderStatus && res2.data.orderStatus > 2 && res2.data.orderStatus <= 6){
           // Clear create order token
           localStorage.removeItem("submit-token");
@@ -249,14 +255,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//.cardConfigPayment{
-  //display: flex;
-  //flex-direction: column;
-  //.cardConfigPayment-content{
-  //  flex: 1;
-  //  overflow: auto;
-  //}
-//}
+.cardConfigPayment{
+display: flex;
+flex-direction: column;
+.cardConfigPayment-content{
+  flex: 1;
+  overflow: auto;
+}
+}
 
 .formLine{
   margin-top: 0.32rem;
@@ -274,6 +280,9 @@ export default {
         width: 0.4rem;
       }
     }
+  }
+  .cardInfo{
+    cursor: pointer;
   }
   .formContent{
     display: flex;

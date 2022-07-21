@@ -376,6 +376,7 @@ export default {
   .emailCode_tab{
     width: 100%;
     height: .35rem;
+    cursor: pointer;
     img{
       height: .24rem;
       // float: right;

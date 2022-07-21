@@ -54,7 +54,7 @@ export default {
     queryCardInfo(){
       let params = {
         country: this.$store.state.sellRouterParams.positionData.alpha2,
-        fiatName: this.$store.state.sellRouterParams.positionData.fiatCode,
+        fiatName: this.$store.state.sellRouterParams.positionData.code,
       };
       this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
         if(res && res.returnCode === "0000" && res.data !== null){
@@ -81,12 +81,12 @@ export default {
           cryptoCurrency: this.routerParams.cryptoCurrency,
           sellVolume: this.routerParams.amount,
           worldId: this.routerParams.positionData.worldId,
-          symbol: this.routerParams.payCommission.symbol,
+          symbol: this.routerParams.cryptoCurrency,
           cardNumber: this.$store.state.sellForm.accountNumber,
           swiftCode: this.$store.state.sellForm.swiftCode,
           bank: this.$store.state.sellForm.bankCode,
           cryptoCurrencyNetworkId: this.routerParams.currencyData.cryptoCurrencyNetworkId,
-          fiatName: this.routerParams.payCommission.fiatCode,
+          fiatName: this.$store.state.sellRouterParams.positionData.code,
           userCardId: this.$store.state.sellForm.id,
         };
         this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{

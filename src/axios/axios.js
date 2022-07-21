@@ -168,7 +168,7 @@ export default {
         'submit-token': submitToken === 'submitToken' ? localStorage.getItem("submit-token") : '',
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
-        // timezone: moment.tz.guess(),
+        timezone: moment.tz.guess(),
       },
     }).then((response) => {
       if (response.returnCode === "0000") {
@@ -201,7 +201,7 @@ export default {
         'timestamp': timestamp,
         'Accept-Language': sessionStorage.getItem("language") ? sessionStorage.getItem("language") : 'en-US',
         'Content-Type': 'application/json',
-        // timezone: moment.tz.guess(),
+        timezone: moment.tz.guess(),
       }
     }).then((response) => {
       if (response.returnCode === "0000") {

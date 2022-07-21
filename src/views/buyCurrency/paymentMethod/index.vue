@@ -45,7 +45,7 @@
         </div>
       </div>
       <CryptoCurrencyAddress v-if="$store.state.goHomeState"/>
-      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading"/>
+      <IncludedDetails class="IncludedDetails" ref="includedDetails_ref" :useFee="true" :isLoading="isLoading" :network="$store.state.buyRouterParams.network"/>
     </div>
     <button class="continue" :disabled="disabled" @click="confirm">
       {{ $t('nav.Continue') }}
@@ -129,10 +129,18 @@ export default {
           _this.$store.state.buyRouterParams.payCommission.code = res.data.fiatCurrency;
           _this.$store.state.buyRouterParams.addressDefault = res.data.address;
           _this.$store.state.buyRouterParams.networkDefault = res.data.network;
+          _this.$store.state.buyRouterParams.network = res.data.network;
           _this.$store.state.buyRouterParams.submitForm = res.data.cardInfo;
           _this.$store.state.buyRouterParams.feeRate = res.data.feeRate;
           _this.$store.state.buyRouterParams.fixedFee = res.data.fixedFee;
           _this.$store.state.buyRouterParams.exchangeRate = res.data.usdToXR;
+          //计算rampFee
+          let decimalDigits = 0;
+          let resultValue = Number(res.data.feeRate) * Number(res.data.amount) + res.data.fixedFee;
+          resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+          let rampFee = resultValue.toFixed(decimalDigits);
+          isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+          this.$store.state.buyRouterParams.payCommission.rampFee = rampFee;
           //支付方法列表
           _this.queryPayMethods();
           //费用组件计算数量
@@ -153,12 +161,12 @@ export default {
     },
     queryPayMethods(){
       let _this = this;
-      // let params = {
-      //   appId: JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId,
-      //   alpha2: this.$store.state.buyRouterParams.positionData.alpha2,
-      //   currency: this.$store.state.buyRouterParams.payCommission.code,
-      // }
-      this.$axios.get(this.$api.get_payMethods + this.$store.state.buyRouterParams.payCommission.code,'').then(res=>{
+      let params = {
+        appId: sessionStorage.getItem('accessMerchantInfo') ? JSON.parse(sessionStorage.getItem('accessMerchantInfo')).appId : '',
+        alpha2: this.$store.state.buyRouterParams.positionData ? this.$store.state.buyRouterParams.positionData.alpha2 : '',
+        currency: this.$store.state.buyRouterParams.payCommission.code,
+      }
+      this.$axios.get(this.$api.get_payMethods,params).then(res=>{
         if(res){
           //存储货币支持的支付方式
           this.$nextTick(()=>{
@@ -229,7 +237,12 @@ export default {
         this.buyParams.payWayCode = this.payMethod.payWayCode;
         this.buyParams.cryptoCurrencyVolume = this.$store.state.buyRouterParams.getAmount;
         this.buyParams.alpha2 = this.$store.state.buyRouterParams.positionData.alpha2;
-        this.$axios.post(this.$api.post_buy,this.buyParams,'submitToken').then(res=>{
+        //存在商户信息将信息带入请求地址
+        let urlQuery = '';
+        if(JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam){
+          urlQuery = `?${JSON.parse(sessionStorage.getItem("accessMerchantInfo")).merchantParam}`;
+        }
+        this.$axios.post(this.$api.post_buy + urlQuery,this.buyParams,'submitToken').then(res=>{
           this.request_loading = false;
           if(res && res.returnCode === '0000'){
             this.$store.state.buyRouterParams.orderNo = res.data.orderNo;

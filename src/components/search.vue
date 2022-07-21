@@ -16,10 +16,10 @@
       <ul v-if="viewName === 'payCurrency' || viewName === 'payCurrency-sell'">
         <li class="payCurrencyLi" v-for="(item,index) in searchText==='' ? basicData : searchData" :key="index" @click="choiseItem('payCurrency',item)">
           <p class="seach_li_text currencyCopywriting">
-            <img :src="item.flag">
+            <img :src="item.flag" :key="item.flag"> <!--  :onload="loadImg(item.flag)" :onerror="errorImg()" -->
             <span class="allName">{{ item.enCommonName }} -</span>
-            <span class="abbreviationName" v-if="viewName === 'payCurrency'"> {{ item.code }}</span>
-            <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span>
+            <span class="abbreviationName"> {{ item.code }}</span> <!--  v-if="viewName === 'payCurrency'" -->
+            <!-- <span class="abbreviationName" v-if="viewName === 'payCurrency-sell'">{{ item.fiatCode }}</span> -->
           </p>
           <p class="seach_li_rightIcon">
             <img src="../assets/images/rightIcon.png">
@@ -113,12 +113,6 @@ export default {
 
       //国家法币
       countryLegalCurrency: [],
-      queryCountryListQuery: {
-        pageIndex: 1,
-        pageSize: 10,
-        state: 1,
-        enCommonName: "",
-      }
     }
   },
   computed: {
@@ -223,6 +217,13 @@ export default {
     this.customComponentTitle();
   },
   methods: {
+    // loadImg(val){
+    //   return `this.onload=null;this.src="${val}"`;
+    // },
+    // errorImg(){
+    //   return 'this.onload=null;this.src='+'"../../static/img/10004-icon.png";'
+    // },
+
     //Judge title name
     customComponentTitle(){
       if(this.viewName === 'payCurrency' || this.viewName === 'payCurrency-sell'){
@@ -246,7 +247,6 @@ export default {
         this.$nextTick(()=>{
           let popularList = this.basicData.cryptoCurrencyResponse.popularList;
           popularList !== null && popularList.length > 0 ? this.popularList = popularList.filter(item=>{return item.purchaseSupported === 1}) : '';
-          console.log()
           this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{return item.purchaseSupported === 1});
         })
         return;
@@ -261,8 +261,8 @@ export default {
         let newWorldList = [];
         if(this.allBasicData.worldList){
           this.allBasicData.worldList.forEach(item=>{
-            if(item.fiatList){
-              item.fiatList.forEach(item2=>{
+            if(item.buyFiatList){
+              item.buyFiatList.forEach(item2=>{
                 let fiat = {
                   code: item2.code,
                 }
@@ -271,20 +271,35 @@ export default {
               })
             }
           });
+          newWorldList = newWorldList.filter(item=>{return item.buyEnable === 1});
         }
         this.basicData = newWorldList;
-        // this.queryCountryList();
         return;
       }
       if(this.viewName === 'payCurrency-sell'){
         this.basicData = [];
-        this.basicData = this.allBasicData.worldList.filter(item=>{return item.sellEnable === 1});
+        let newWorldList = [];
+        if(this.allBasicData.worldList){
+          this.allBasicData.worldList.forEach(item=>{
+            if(item.sellFiatList){
+              item.sellFiatList.forEach(item2=>{
+                let fiat = {
+                  code: item2.code,
+                }
+                fiat = {...fiat,...item};
+                newWorldList.push(fiat);
+              })
+            }
+          });
+          newWorldList = newWorldList.filter(item=>{return item.sellEnable === 1});
+        }
+        this.basicData = newWorldList;
         return;
       }
       if(this.viewName === 'currency-sell'){
         this.basicData = this.allBasicData;
         this.$nextTick(()=>{
-          this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
+          // this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
           this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
         })
         return;
@@ -322,7 +337,6 @@ export default {
           this.$nextTick(()=>{
             this.$parent.buyParams.network = item.network;
             this.$store.state.buyRouterParams.network = item.network;
-            console.log(this.$store.state.buyRouterParams.network)
             this.$parent.networkRegular = item.addressRegex;
             this.$parent.$parent.$refs.viewTab.tabState = true;
             this.$parent.searchViewState = false;
@@ -335,12 +349,17 @@ export default {
           return;
         }
         if(this.viewName === 'currency-sell'){ //卖币
-          this.$parent.$refs.sellCrypto_ref.currencyData.icon = item.logoUrl;
-          this.$parent.$refs.sellCrypto_ref.currencyData.name = item.name;
-          this.$parent.$refs.sellCrypto_ref.currencyData.maxSell = item.maxSell;
-          this.$parent.$refs.sellCrypto_ref.currencyData.minSell = item.minSell;
-          this.$parent.$refs.sellCrypto_ref.currencyData.cryptoCurrencyNetworkId = item.cryptoCurrencyNetworkId;
-          this.$parent.$refs.sellCrypto_ref.currencyData.symbol = item.symbol;
+          let currencyData = {
+            icon: item.logoUrl,
+            name: item.name,
+            maxSell: item.maxSell,
+            minSell: item.minSell,
+            cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
+            symbol: item.symbol,
+          }
+          this.$parent.$refs.sellCrypto_ref.currencyData = currencyData;
+          this.$store.state.sellRouterParams.currencyData = currencyData;
+          this.$store.state.sellRouterParams.cryptoCurrency = item.name;
           this.$store.state.feeParams.symbol = item.name;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
