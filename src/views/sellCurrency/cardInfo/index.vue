@@ -5,7 +5,14 @@
 
         <!-- 历史表单信息 -->
         <div class="cardInfo-history">
-          
+          <div class="line1">
+            <div class="line1-1"><el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox></div>
+            <div class="line1-2">Use this Information</div>
+            <div class="more" @click="openCardInfo">More</div>
+          </div>
+          <div class="info">
+            <span>Bank name:</span> HSBC  Account number: 12345456762132131231321
+          </div>
         </div>
 
         <div class="formLine" v-for="(item,index) in formJson" :key="index">
@@ -41,8 +48,8 @@
       <div class="attention"><span>Attention:</span> Please ensure the bank account belongs to you and the information is accurate. Returned transactions are subjected to $25 fee charged by our banking partners.</div>
 
       <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
-        {{ $t('nav.Continue') }}
-        <img class="rightIcon" src="../../../assets/images/rightIconSell.png" v-if="!request_loading">
+        {{ $t('nav.Confirm') }}
+        <img class="rightIcon" src="../../../assets/images/button-right-icon.svg" v-if="!request_loading">
         <van-loading class="icon rightIcon" type="spinner" color="#fff" v-else/>
       </button>
     </div>
@@ -89,6 +96,9 @@ export default {
       goDown_state: false,
       oldOffsetTop: 0,
       timeDown: null,
+
+      //历史卡信息
+      checked: false,
     }
   },
   //首页进入卖币卡表单页面清空缓存
@@ -379,6 +389,12 @@ export default {
       })
     },
 
+    //展示历史卡信息
+    openCardInfo(){
+      console.log(this.$parent)
+      this.$parent.historicalCardInfoSell_state = true;
+    },
+
     encrypt(val){
       if(val){
         return AES_Encrypt(val);
@@ -405,16 +421,11 @@ export default {
   width: 0.58rem;
   height: 0.58rem;
   border-radius: 50%;
-  //background: #0059DA;
   background: rgba(131,179,249,1);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
-  //-webkit-animation: anime 1s linear;
-  //animation: anime 1s linear;
-
   img{
     width: 0.3rem;
   }
@@ -433,21 +444,6 @@ export default {
   opacity: 0.8;
 }
 
-
-//@keyframes anime {
-//  0% {
-//    background: rgba(131,179,249,0.2);
-//  }
-//
-//  50% {
-//    background: rgba(131,179,249,0.6);
-//  }
-//
-//  100% {
-//    background: rgba(131,179,249,1);
-//  }
-//}
-
 @keyframes jumpBoxHandler { /* css事件 */
   0% {
     transform: translate(0px, 0);
@@ -465,6 +461,47 @@ export default {
   height: 100%;
   position: relative;
 }
+
+.cardInfo-history{
+  margin-top: 0.32rem;
+  .line1{
+    display: flex;
+    align-items: center;
+    .line1-2{
+      font-family: 'SFProDisplayRegular',SFProDisplayRegular;
+      font-weight: 400;
+      font-size: 0.13rem;
+      color: #949EA4;
+      margin-left: 0.08rem;
+    }
+    .more{
+      margin-left: auto;
+      font-family: 'SFProDisplaybold',SFProDisplaybold;
+      font-weight: 400;
+      font-size: 0.13rem;
+      color: #0059DA;
+      cursor: pointer;
+    }
+  }
+  .info{
+    width: 100%;
+    height: 0.56rem;
+    line-height: 0.56rem;
+    background: #FFF4DE;
+    border-radius: 0.06rem;
+    color: #8A5B00;
+    font-size: 0.13rem;
+    margin-top: 0.08rem;
+    padding: 0 0.07rem 0 0.17rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    span{
+      font-family: 'SFProDisplaybold',SFProDisplaybold;
+    }
+  }
+}
+
 .selectView{
   width: 100%;
   height: 100%;
@@ -598,28 +635,43 @@ export default {
   }
 }
 
+
 .continue{
   width: 100%;
   height: 0.58rem;
   background: #0059DA;
   border-radius: 0.29rem;
-  font-size: 0.17rem;
-  font-family: "GeoRegular", GeoRegular;
-  font-weight: normal;
+  font-family: 'SFProDisplayMedium',SFProDisplayMedium;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.16rem;
+  text-align: center;
   color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 0.3rem;
   cursor: pointer;
   border: none;
   position: relative;
   .rightIcon{
-    width: 0.24rem;
-    position: absolute;
-    top: 0.17rem;
-    right: 0.32rem;
+    width: 0.2rem;
+    margin-left: 0.08rem;
   }
 }
 .continue:disabled{
   background: rgba(0, 89, 218, 0.5);
   cursor: no-drop;
+}
+
+// 单选框
+.checkbox{
+  ::v-deep .el-checkbox__inner{
+    border-radius: 100% !important;
+  }
+}
+.checkbox ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background: #0059DA;
+  border-color:#0059DA ;
 }
 </style>

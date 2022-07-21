@@ -22,8 +22,10 @@
           <routerMenu v-if="!routerViewState"/>
           <!-- 语言切换 -->
           <Language v-if="LanguageShow"/>
-          <!-- 确认支付后查询支付状态提示框 -->
+          <!-- 买币 - 确认支付后查询支付状态提示框 -->
           <QueryOrderStatusTips v-if="tipsState"/>
+          <!-- 卖币 - 历史卡信息 -->
+          <HistoricalCardInfoSell v-if="historicalCardInfoSell_state"/>
         </div>
       <!-- pc端展示logo -->
       <div class="logoView" v-if="logoState">
@@ -43,17 +45,19 @@ import QueryOrderStatusTips from "./components/QueryOrderStatusTips";
 import Language from './components/Language.vue'
 import common from "./utils/common";
 import remSize from './utils/remSize';
+import HistoricalCardInfoSell from "./components/HistoricalCardInfo-sell";
 
 export default {
   name: 'App',
-  components: { tab, routerMenu, QueryOrderStatusTips ,Language},
+  components: {HistoricalCardInfoSell, tab, routerMenu, QueryOrderStatusTips ,Language},
   data(){
     return{
       routerViewState: true,
       logoState: true,
       tipsState: false,
       version: '',
-      LanguageShow:true
+      LanguageShow: true,
+      historicalCardInfoSell_state: false,
     }
   },
   computed:{
