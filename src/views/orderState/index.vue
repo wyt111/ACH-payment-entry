@@ -141,7 +141,7 @@ export default{
           // res.data.expirationTime = 0
           // console.log(this.network1);
           // this.playMoneyState = 6
-          // res.data.orderStatus = 0
+          // res.data.orderStatus = 1
           if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1){
             this.$store.state.nextOrderState = 2
           }

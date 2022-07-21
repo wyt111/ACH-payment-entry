@@ -47,7 +47,8 @@
           <img v-else-if="orderStateData.orderStatus==5" src="@/assets/images/stateSell/icon4_fil.png" alt="">
           <img v-else-if="orderStateData.orderStatus==6" src="@/assets/images/stateSell/icon4_error.png" alt="">
         <div class="sellState_right">
-          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">{{orderStateData.orderStatus==5?'Success':orderStateData.orderStatus==6?'Fail':'Result'}}</p>
+          <p :style="{ color:[0,1,2,3].includes(orderStateData.orderStatus)?'#949EA4':'' }">Result</p>
+          <p v-if="[5,6].includes(orderStateData.orderStatus)" style="color:#063376">{{ orderStateData.orderStatus==5?'Order completed':'Order fail' }}</p>
         </div>
       </div>
       
@@ -101,6 +102,7 @@ export default {
     p{
       font-size: .18rem;
       color: #063376;
+      font-family: SFProDisplaybold;
     }
     img{
       height: .11rem;
@@ -128,12 +130,14 @@ export default {
          font-size: .16rem;
          line-height: .18rem;
          margin-top: .02rem;
+         font-family: SFProDisplayRegular;
        }
        p:nth-of-type(2){
          font-size: .13rem;
          color: #063376;
          line-height: .13rem;
          margin-top: .08rem;
+         font-family: SFProDisplayRegular;
        }
      }
     }
@@ -154,6 +158,7 @@ export default {
       line-height: 18px;
       font-size: 13px;
       color: #C2C2C2;
+      font-family: SFProDisplayRegular;
     }
     .button{
       width: 100%;
@@ -164,6 +169,7 @@ export default {
       justify-content: center;
       align-items: center;
       margin-top: .16rem;
+       font-family: SFProDisplaybold;
       p{
         color: #fff;
         margin-right: .12rem;

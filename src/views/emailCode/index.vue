@@ -44,7 +44,7 @@
           <el-checkbox class="checkbox" size="medium"  v-model="checked"></el-checkbox>
           <div> {{ $t('nav.code_text') }} <span @click="openView('Terms')" style="cursor: pointer;">{{ $t('nav.code_name') }}</span> {{ $t('nav.code_and') }} <span style="cursor: pointer" @click="openView('Privacy')">{{ $t('nav.code_name2') }}.</span></div>
         </div>
-        <div class="emailCode_button" :style="{background: (email!=='' && email!==undefined && login_loading=== true && checked === true)?'#0059DAFF':login_loading===false?'':''}" @click="getCode">
+        <div class="emailCode_button" :style="{opacity: (email!=='' && email!==undefined && login_loading=== true && checked === true)?'1':''}" @click="getCode">
           {{ $t('nav.Proceed') }}
           <img class="icon" src="@/assets/images/rightIconSell.png" alt="" v-if="login_loading">
           <van-loading class="icon" type="spinner" color="#fff" v-if="login_loading===false"/>
@@ -147,7 +147,9 @@ export default {
       }
       
       if(this.loggedIn===true){
-        console.log(this.email);
+        
+        console.log('设备ID__'+localStorage.getItem('fingerprint_id'));
+        console.log('邮箱ID__'+this.email);
         alert('一键登陆')
         return
       }
@@ -277,7 +279,7 @@ export default {
     margin-top: .4rem;
     h2{
       font-size: .21rem;
-      font-family:"GeoLight";
+      font-family:"SFProDisplaybold";
       font-weight: normal;
       margin: .24rem 0 .16rem 0;
       color: #063376;
@@ -285,7 +287,7 @@ export default {
     p{
       width: 2.5rem;
       font-size: .13rem;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       font-weight: normal;
       color: #949EA4;
       text-align: center;
@@ -299,7 +301,7 @@ export default {
     margin-top: .16rem;
     font-size: .13rem;
     text-align: center;
-    font-family: "GeoLight";
+    font-family: "SFProDisplayRegular";
     color: #949EA4;
     span{
       color: #0059DA;
@@ -321,14 +323,17 @@ export default {
       left: .42rem;
       color: #949EA4;
       background: transparent;
-      font-family: "GeoLight";
+      font-family: "SFProDisplayRegular";
       outline: none;
+    }
+    input::placeholder{
+      color: #C2C2C2;
     }
     p{
       font-size: .13rem;
       color: #707070;
       position: absolute;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       top: -.23rem;
     }
     img{
@@ -342,7 +347,7 @@ export default {
   .emailCode_button{
     width: 100%;
     height: .58rem;
-    background: rgba(0, 89, 218, 0.5);
+    background: #0059DA;
     border-radius: .29rem;
     font-size: .17rem;
     text-align: center;
@@ -350,8 +355,9 @@ export default {
     position: relative;
     // position: absolute;
     // bottom: 0rem;
+    opacity: 0.25;
     color: #FAFAFA;
-    font-family: "GeoRegular";
+    font-family: "SFProDisplayRegular";
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -380,7 +386,7 @@ export default {
     color: #D92D20;
     line-height: 17px;
     font-size: 15px;
-    font-family:GeoRegular;
+    font-family:SFProDisplayRegular;
     margin-top: .08rem;
   }
 }
@@ -391,7 +397,7 @@ export default {
   font-size: .13rem;
   line-height: .16rem;
   margin-bottom: .16rem;
-   font-family: "GeoRegular";
+   font-family: "SFProDisplayRegular";
   span{
     color: #0059DA;
   }

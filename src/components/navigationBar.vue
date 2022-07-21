@@ -4,7 +4,7 @@
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
-      <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/backIcon.png"></div>
+      <div class="icon" v-if="$store.state.goHomeState" @click="goBack"><img src="../assets/images/goBack.png"></div>
       <div class="linkName">
         {{ $t(routerName) }}
         <!-- 退款页面标题添加币种 -->
@@ -14,7 +14,7 @@
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right" >
-      <img class="menu" src="../assets/images/allPageIcon.png" v-if="this.$parent.routerViewState" @click="openMenu">
+      <img class="menu" src="../assets/images/rightMeun.png" v-if="this.$parent.routerViewState" @click="openMenu">
       <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-else @click="openMenu">
     </div>
   </div>
@@ -131,15 +131,16 @@ export default {
   .navigationBar_view_left {
     display: flex;
     align-items: center;
-    font-size: 0.21rem;
-    font-family: "GeoDemibold", GeoDemibold;
+    font-size: 0.18rem;
+    font-family: SFProDisplaybold;
     font-weight: normal;
     color: #063376;
+    font-weight: 500;
     .icon {
       cursor: pointer;
       display: flex;
       img {
-        width: 0.16rem;
+        height: 0.18rem;
       }
     }
     .linkName {

@@ -154,6 +154,13 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Semibold的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
 @font-face {
   font-family: "GeoBold";
   src: url('./assets/fonts/Fieldwork/Fieldwork16-GeoBold.otf');
@@ -169,6 +176,25 @@ export default {
 @font-face {
   font-family: "GeoRegular";
   src: url('./assets/fonts/Fieldwork/Fieldwork10-GeoRegular.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+// 新增字体包
+@font-face {
+  font-family: "SFProDisplaybold";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayRegular";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Regular的副本.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SFProDisplayMedium";
+  src: url('./assets/fonts/Fieldwork/SF-Pro-Display-Medium的副本.otf');
   font-weight: normal;
   font-style: normal;
 }

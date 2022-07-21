@@ -230,19 +230,19 @@ html,body,#tradeHistory,.historyList,.van-list{
       }
     }
     p{
-      font-size: 0.15rem;
-      font-family: "GeoLight",GeoLight;
+      font-size: 0.13rem;
+      font-family: SFProDisplayRegular;
       font-weight: normal;
-      color: #707070;
+      color: #949EA4;
       margin: 0.08rem 0 0 0;
     }
     .noDataText{
       text-align: center;
       margin-top: 0.08rem;
-      font-size: 0.21rem;
-      font-family: "GeoDemibold",GeoDemibold;
+      font-size: 0.2rem;
+      font-family: SFProDisplaybold;
       font-weight: normal;
-      color: #000000;
+      color: #063376;
     }
     .continue{
       width: 100%;
@@ -250,7 +250,7 @@ html,body,#tradeHistory,.historyList,.van-list{
       background: #0059DA;
       border-radius: 0.29rem;
       font-size: 0.17rem;
-      font-family: "GeoRegular", GeoRegular;
+      font-family: SFProDisplayRegular;
       font-weight: normal;
       color: #FFFFFF;
       margin-top: 0.16rem;

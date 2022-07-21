@@ -1,9 +1,9 @@
 <template>
   <div id="routerMenu">
     <div class="router_nav" v-if="$route.path==='/sellOrder'">
-      <div class="navigationBar_view_left" >{{ $t('nav.menu') }}</div>
+      <div class="navigationBar_view_left" style="color:#063376">{{ $t('nav.menu') }}</div>
       <div class="navigationBar_view_right" >
-        <img class="closeIcon" src="../assets/images/closeIcon.png" @click="$parent.routerViewState=true">
+        <img class="closeIcon" style="width:.12rem" src="../assets/images/ShutDown.png" @click="$parent.routerViewState=true">
       </div>
     </div>
     <div class="routerMenu_isLogo" v-if="token===false">
@@ -197,11 +197,14 @@ export default {
           message: this.$t('nav.login_Youlogged')
         });
       }else{
-        this.loading = false
-        //是否是从菜单进入
         this.$store.state.routerQueryPath = true
         this.$parent.routerViewState = true;
+        setTimeout(() => {
+          this.loading = false
+        //是否是从菜单进入
+        
         this.$router.push('/emailCode')
+        }, 500);
       }
     },
     //显示退出登陆判断是否是pc 还是 移动
@@ -273,10 +276,11 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: .05rem 0 .15rem;
-  font-size: 0.21rem;
-    font-family: "GeoDemibold", GeoDemibold;
+  font-size: 0.18rem;
+    font-family: SFProDisplaybold;
     font-weight: normal;
-    color: #232323;
+    color: #063376;
+    font-weight: 500;
   img{
     width: .2rem;
     cursor: pointer;
@@ -294,9 +298,9 @@ export default {
       }
     }
     .lineName{
-      font-size: 0.17rem;
-      font-family: "GeoRegular";
-      font-weight: 500;
+      font-size: 0.16rem;
+      font-family: "SFProDisplayRegular";
+      font-weight: 400;
       color: #949EA4;
       margin-left: 0.08rem;
     }
@@ -306,14 +310,15 @@ export default {
       align-items: center;
       p{
         font-size: .15rem;
-        font-family: GeoLight;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
         color: #C2C2C2;
         margin-right: .12rem;
+        font-weight: 400;
       }
       .email{
         margin-right: 0.12rem;
-        font-size: 0.14rem;
+        font-size: 0.15rem;
         font-family: "GeoLight", GeoLight;
         font-weight: 400;
         color: #C2C2C2;
@@ -340,14 +345,15 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     >img{
-      width: .5rem;
+      width: .58rem;
       height: .5rem;
       margin-top: .18rem;
     }
     h2{
       font-size: .2rem;
-      font-family: "GeoLight";
+      font-family: "SFProDisplaybold";
       font-weight: normal;
       color: #063376;
       line-height: .25rem;
@@ -356,7 +362,7 @@ export default {
     }
     p{
       font-size: .13rem;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       font-weight: normal;
       color: #949EA4;
     }
@@ -370,13 +376,19 @@ export default {
       text-align: center;
       line-height: .58rem;
       color: #fff;
-      font-family: "GeoRegular";
+      font-family: "SFProDisplayRegular";
       position: relative;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .icon{
         width: .13rem;
-        // height: .1rem;
-        margin-left: .05rem;
+        margin-left: .12rem;
+        span{
+          height: .13rem;
+          margin-top: .02rem;
+        }
       }
     }
   }
@@ -397,14 +409,14 @@ export default {
       margin-left: .16rem;
       flex: 1;
       p:first-child{
-        font-family: GeoRegular;
+        font-family: SFProDisplaybold;
         font-size: .17rem;
         font-weight: normal;
         color: #063376;
         line-height: .17rem;
       }
       p:last-child{
-        font-family: GeoLight;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
         color: #C0C0C2;
         line-height: 17px;
@@ -454,6 +466,7 @@ export default {
         color: #949EA4;;
         line-height: .31rem;
         font-size: .16rem;
+        font-family: SFProDisplayRegular;
       }
       >div{
         width: 3.3rem;
@@ -472,7 +485,7 @@ export default {
           font-size: .16rem;
           font-weight: normal;
           color: #FFFFFF;
-          font-family: GeoRegular;
+          font-family: SFProDisplayRegular;
           margin-top: .05rem;
           margin-right: .13rem;
           cursor: pointer;
@@ -483,7 +496,7 @@ export default {
           text-align: center;
           font-weight: normal;
           color: #063376;
-          font-family: GeoDemibold;
+          font-family: SFProDisplayRegular;
           font-size: .16rem;
           line-height: .49rem;
           border: 1px solid #EEEEEE;

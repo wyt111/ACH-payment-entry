@@ -1,6 +1,6 @@
 <template>
   <div class="Language-container">
-    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/backIcon.png" alt="">{{ $t('nav.menu_language') }}</div>
+    <div class="Language_title" @click="$store.state.LanguageIsShow = false"><img src="../assets/images/goBack.png" alt="">{{ $t('nav.menu_language') }}</div>
     <div class="Language_line" v-for="item in languageList" :key="item.name" @click="choiseItem(item)">
       <div class="Language_line_left">
         <img :src="item.icon" alt="">
@@ -47,15 +47,16 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
+    
     cursor: pointer;
     img{
       height: .17rem;
       margin-right: .1rem;
     }
-    font-size: .21rem;
-    font-family: GeoDemibold;
+    color:#063376;
+    font-size: .18rem;
     font-weight: normal;
-    color: #232323;
+    font-family: SFProDisplaybold;
   }
   .Language_line{
     width: 100%;
@@ -71,9 +72,9 @@ export default {
 
       p{
         font-size: .16rem;
-        font-family: GeoRegular;
+        font-family: SFProDisplayRegular;
         font-weight: normal;
-        color: #232323;
+        color: #949EA4;
         margin-left: .1rem;
       }
       img{

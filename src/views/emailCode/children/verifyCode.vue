@@ -199,8 +199,8 @@ import { AES_Encrypt } from '@/utils/encryp.js';
   justify-content: space-between;
   .verifyCode_title{
     font-size: .13rem;
-    color: #232323;
-    font-family: "GeoLight";
+    color: #949EA4;
+    font-family: "SFProDisplayRegular";
     span{
       color: #0059DAFF;
       cursor: pointer;
@@ -254,7 +254,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
     // bottom: 0rem;
     position: relative;
     color: #FAFAFA;
-    font-family: "GeoRegular";
+    font-family: "SFProDisplayRegular";
     cursor: pointer;
     .icon{
       // width: .24rem;
@@ -263,7 +263,7 @@ import { AES_Encrypt } from '@/utils/encryp.js';
       span{
         position: absolute;
         left: 0;
-        top: .03rem;
+        top: .0rem;
       }
     }
   }

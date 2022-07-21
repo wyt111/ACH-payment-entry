@@ -29,9 +29,9 @@
             <p style="text-align:center">Your verification failed.</p>
             <ul class="verify_list">
                 <li>Please ensure:</li>
-                <li>· You submitted your own ID document .</li>
-                <li>· The name on your ID document is identical to your payment's cardholder name .</li>
-                <li>· You did not use multiple ID documents for the KYC verification .</li>
+                <li>· <span>You submitted your own ID document .</span></li>
+                <li>· <span>The name on your ID document is identical to your payment's cardholder name .</span></li>
+                <li>· <span>You did not use multiple ID documents for the KYC verification .</span></li>
             </ul>
         </div>
         <div class="Verification_button" v-if="kycVerState==0" @click="nextKycVer(0)" :style="{opacity:!nextKyc?'.5':'',cursor:!nextKyc?'not-allowed':''}">
@@ -202,8 +202,9 @@ export default {
   },
   mounted(){
     //保存页面状态
+    
    sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
-   
+  //  console.log(this.kycVerState=2);
   }
 }
 </script>
@@ -221,7 +222,7 @@ export default {
     // margin-bottom: .65rem;
     img{
       float: right;
-      height: .11rem;
+      height: .15rem;
       cursor: pointer;
     }
   }
@@ -236,7 +237,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-family: GeoRegular;
+      
       >img{
         width: 1.75rem;
       }
@@ -245,13 +246,14 @@ export default {
         margin-top: .2rem;
         color: #063376;
         line-height: 22px;
+        font-family: SFProDisplaybold;
       }
       div{
         width: 2.2rem;
         font-size: .13rem;
         line-height: .16rem;
         color: #949EA4;
-        font-family: GeoRegular;
+        font-family: SFProDisplayRegular;
          white-space: nowrap;
       }
        div:nth-of-type(1){
@@ -263,8 +265,15 @@ export default {
         color: #949EA4;
         line-height: .16rem;
         margin-top: .2rem;
+        
         li{
           margin-top: .06rem;
+          font-family: SFProDisplayRegular;
+          display: flex;
+          span{
+            display: inline-block;
+            margin-left: .05rem;
+          }
         }
       }
     }
@@ -277,7 +286,7 @@ export default {
       justify-content: center;
       align-items: center;
       border-radius: .3rem;
-      font-family: GeoRegular;
+      font-family: SFProDisplayRegular;
       color: #FFFFFF;
       cursor: pointer;
       img{
@@ -292,7 +301,7 @@ export default {
     position: fixed;
     overflow: scroll;
    >img{
-     height: .13rem;
+     height: .14rem;
      cursor: pointer;
      position: absolute;
      right: .0rem;
