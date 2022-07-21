@@ -9,9 +9,9 @@
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
-          <div class="allPage-icon">
+          <!-- <div class="allPage-icon">
             <img src="@/assets/images/allPageIcon.png" @click="openMenu">
-          </div>
+          </div> -->
         </div>
         <div class="home-children">
           <buyCrypto v-if="$store.state.homeTabstate === 'buyCrypto'" :allBasicData="basicData" ref="buyCrypto_ref"/>

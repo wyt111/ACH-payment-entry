@@ -5,15 +5,15 @@
         <img src="@/assets/images/goBack.png" alt="">
         <p>Sell {{orderStateData.cryptoCurrency}}</p>
       </div>
-          <div class="sendCrypto_nav_right" >
+          <!-- <div class="sendCrypto_nav_right" >
             <img class="menu" src="@/assets/images/rightMeun.png" v-if="this.$parent.$parent.routerViewState" @click="openMenu">
-          </div>
+          </div> -->
       </div>
     <div v-if="[0,1].includes(orderStateData.orderStatus)">
       <div>
         <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
-      <p>{{ timerNumber }} s</p>
+      <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }}s</span> </p>
       
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
@@ -306,7 +306,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: .3rem 0 .6rem 0;
+  padding: .0rem 0 .6rem 0;
  .sendCrypto_timeError{
    width: 100%;
    height: 100%;
@@ -332,14 +332,13 @@ export default {
  }
  .sendCrypto_nav{
    width: 100%;
-   padding: .15rem .22rem .15rem .22rem;
+   padding: .0rem 0 .1rem;
+   background: #FFFFFF;
    display: flex;
    justify-content: space-between;
    align-items: center;
-   position: absolute;
-   background: #FFFFFF;
-   top: .22rem;
-   left: 0;
+   position:sticky;
+   top:0;
    img{
        width: .19rem;
        cursor: pointer;

@@ -2,7 +2,12 @@
   <div id="viewBox" ref="viewApp">
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
-          <!-- 导航栏 -->
+          <!-- 顶部logo -->
+          <div class="viewTab_logo">
+            <p @click="goHome">Alchemy Pay</p>
+            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'">
+          </div>
+          <!-- 导航栏 --> 
           <tab ref="viewTab"/>
           <!-- 页面内容 -->
           <div class="routerView_box" v-show="routerViewState">
@@ -119,6 +124,27 @@ export default {
         this.$store.state.isPcAndPhone = 'pc'
       })
     },
+    goHome(){
+      //存在商户订单禁止点击logo跳转
+      if(this.$store.state.goHomeState === false){
+        return;
+      }
+      if(this.$route.path === '/' && this.LanguageShow === true){
+        this.$children[1].menuState = false;
+        this.$store.state.LanguageIsShow = false;
+        return;
+      }
+      if(this.$route.path === '/'){
+        this.$children[1].menuState = false;
+        return;
+      }
+      if(this.$route.path !== '/' && this.routerViewState === false){
+        this.routerViewState = true
+        this.$router.push('/');
+        return
+      }
+      this.$router.push('/');
+    }
   },
 }
 </script>
@@ -234,6 +260,26 @@ html,body,#app,#viewBox{
 }
 .buyCrypto_iframe_view_pc{
   padding: 0.40rem 0.30rem 0.40rem 0.30rem !important;
+}
+.viewTab_logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: .35rem;
+  position: relative;
+  p{
+    font-size: .18rem;
+    color: #063376;
+    font-family:SFProDisplaybold ;
+    cursor: pointer;
+  }
+  img{
+    // width: .16rem;
+   height: .16rem;
+   position: absolute;
+   right: 0;
+   cursor: pointer;
+  }
 }
 .buyCrypto_iframe_view{
   width: 375px;

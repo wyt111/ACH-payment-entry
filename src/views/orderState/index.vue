@@ -173,54 +173,54 @@ export default{
             return
           }
 
-          if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
-            this.turnMinute(res.data.expirationTime)
-            return
-          }else{
-            this.turnMinute = null
-            return false
-          }
+          // if(res.data.orderStatus>0 &&(this.playMoneyState == 0||this.playMoneyState == 1) ){
+          //   this.turnMinute(res.data.expirationTime)
+          //   return
+          // }else{
+          //   this.turnMinute = null
+          //   return false
+          // }
 
         }
         // this.playMoneyState = 4
       })
     },
     //进入银行卡信息页
-    goBank(state,orderData){
-      if(state == 6){
-        let params = {
-          id:orderData.userCardId,
-        }
-        this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
-          if(res && res.returnCode =='0000'){
-            this.$store.state.sellForm = res.data
-            this.$store.state.sellForm.sellOrderId = orderData.id
-            this.$store.state.cardInfoFromPath = 'sellOrder'
-            this.$router.push('/sell-formUserInfo')
-          }
-        })
+    // goBank(state,orderData){
+    //   if(state == 6){
+    //     let params = {
+    //       id:orderData.userCardId,
+    //     }
+    //     this.$axios.get(this.$api.get_userSellCardInfo,params).then(res=>{
+    //       if(res && res.returnCode =='0000'){
+    //         this.$store.state.sellForm = res.data
+    //         this.$store.state.sellForm.sellOrderId = orderData.id
+    //         this.$store.state.cardInfoFromPath = 'sellOrder'
+    //         this.$router.push('/sell-formUserInfo')
+    //       }
+    //     })
 
-      }else{
-        this.$toast(this.$t('nav.SellOrder_modified'))
-        return
-      }
-    },
+    //   }else{
+    //     this.$toast(this.$t('nav.SellOrder_modified'))
+    //     return
+    //   }
+    // },
     //Calculate minutes and seconds
-    turnMinute(value){
-      if(value >= 0){
-        var second = value;
-        var minute=0;
-        minute = parseInt(second/60);
-        second%=60;
-        // if(minute>60) {
-        //   minute%=60;
-        // }
-        second = second>9?second:"0"+second;
-        minute = minute>9?minute:"0"+minute;
-        this.timeText = minute+":"+second;
-        // console.log(this.timeText);
-      }
-    },
+    // turnMinute(value){
+    //   if(value >= 0){
+    //     var second = value;
+    //     var minute=0;
+    //     minute = parseInt(second/60);
+    //     second%=60;
+    //     // if(minute>60) {
+    //     //   minute%=60;
+    //     // }
+    //     second = second>9?second:"0"+second;
+    //     minute = minute>9?minute:"0"+minute;
+    //     this.timeText = minute+":"+second;
+    //     // console.log(this.timeText);
+    //   }
+    // },
    
     //解密了一些数据
     AES(value){

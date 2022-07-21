@@ -14,8 +14,8 @@
     <!-- close menu view -->
     <div class="navigationBar_view_left" v-else>{{ $t('nav.menu') }}</div>
     <div class="navigationBar_view_right" >
-      <img class="menu" src="../assets/images/rightMeun.png" v-if="this.$parent.routerViewState" @click="openMenu">
-      <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-else @click="openMenu">
+      <!-- <img class="menu" src="../assets/images/rightMeun.png" v-if="this.$parent.routerViewState" @click="openMenu"> -->
+      <img class="closeIcon" style="width:.11rem" src="../assets/images/ShutDown.png" v-if="!this.$parent.routerViewState" @click="openMenu">
     </div>
   </div>
 </template>

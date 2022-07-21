@@ -87,6 +87,9 @@ export default {
       this.$store.state.nextOrderState = 1
       this.$router.replace('/')
     }
+  },
+  deactivated(){
+    this.$store.state.nextOrderState = 1
   }
 }
 </script>

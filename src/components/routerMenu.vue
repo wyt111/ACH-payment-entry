@@ -197,10 +197,11 @@ export default {
           message: this.$t('nav.login_Youlogged')
         });
       }else{
-        this.$store.state.routerQueryPath = true
-        this.$parent.routerViewState = true;
+        
         setTimeout(() => {
           this.loading = false
+          this.$store.state.routerQueryPath = true
+        this.$parent.routerViewState = true;
         //是否是从菜单进入
         
         this.$router.push('/emailCode')
@@ -211,7 +212,7 @@ export default {
     loginOutIsShow(){
       let winWidth = document.body.clientWidth || document.documentElement.clientWidth
       if(winWidth < 791){
-        this.$refs.loginOutView.style = 'top:10%;tannsfrom:translate(-50%,-10%)'
+        this.$refs.loginOutView.style = 'top:20%;tannsfrom:translate(-50%,-20%)'
       }else{
         this.$refs.loginOutView.style = 'left:50%;top:30%;tannsfrom:translate(-50%,-30%)'
       }
