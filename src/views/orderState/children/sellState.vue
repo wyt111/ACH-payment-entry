@@ -84,13 +84,13 @@ export default {
   methods:{
     goSellOrder(){
     
-      this.$store.state.nextOrderState = 1
+      setTimeout(() => {
+        this.$store.state.nextOrderState = 1
+      }, 1000);
       this.$router.replace('/')
     }
   },
-  deactivated(){
-    this.$store.state.nextOrderState = 1
-  }
+
 }
 </script>
 <style lang="scss" scoped>

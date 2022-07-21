@@ -93,6 +93,8 @@ export default {
           this.buttonData.triggerNum = 0;
           if(res && res.returnCode === "0000"){
             this.$store.state.sellOrderId = res.data.id;
+            //再次进入订单页面时让订单页重新开始
+            this.$store.state.nextOrderState =1
             this.$router.push({
               path:"/sellOrder",
               });

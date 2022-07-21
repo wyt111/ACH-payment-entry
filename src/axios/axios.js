@@ -78,6 +78,7 @@ function requestPrompt(response){
           message: response.returnMsg
         });
         break;
+        
     }
   }
 }
@@ -171,7 +172,7 @@ export default {
         timezone: moment.tz.guess(),
       },
     }).then((response) => {
-      if (response.returnCode === "0000") {
+      if (response.returnCode === "0000" || response.returnCode === "110") {
         return Promise.resolve(response);
       }
       // else {

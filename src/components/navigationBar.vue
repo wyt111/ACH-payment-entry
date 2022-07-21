@@ -1,6 +1,6 @@
 <!-- all page navigation bar -->
 <template>
-  <div class="navigationBar_view" v-if="(tabState  &&  $route.path !== '/sellOrder' && !this.$parent.routerViewState && $route.path !== '/kycVerification') ||tabState&& $route.path !== '/'&&  $route.path !== '/sellOrder'&& $route.path !== '/kycVerification' ">
+  <div class="navigationBar_view" v-if="navigationBarIsShow">
     <!-- open menu view -->
     <div class="navigationBar_view_left" v-if="this.$parent.routerViewState">
       <!-- merchant_orderNo 地址栏存在商户订单隐藏返回按钮 -->
@@ -118,6 +118,15 @@ export default {
     },
     openMenu(){
       this.$parent.routerViewState === true ? this.$parent.routerViewState = false : this.$parent.routerViewState = true;
+    }
+  },
+  computed:{
+    //导航的显示隐藏
+    navigationBarIsShow(){
+      if((this.tabState  &&  this.$route.path !== '/sellOrder' && !this.$parent.routerViewState && this.$route.path !== '/kycVerification') || this.tabState&& this.$route.path !== '/'&&  this.$route.path !== '/sellOrder'&& this.$route.path !== '/kycVerification' ){
+        return true
+      }
+      return false
     }
   }
 };

@@ -290,7 +290,7 @@ export default {
   .routerMenu_line{
     display: flex;
     align-items: center;
-    margin-top: 0.24rem;
+    margin-top: 0.28rem;
     cursor: pointer;
     .lineIcon{
       display: flex;
@@ -384,10 +384,11 @@ export default {
       justify-content: center;
       align-items: center;
       .icon{
-        width: .13rem;
-        margin-left: .12rem;
+        width: .16rem;
+        // height: .14rem;
+        margin-left: .1rem;
         span{
-          height: .13rem;
+          height: .16rem;
           margin-top: .02rem;
         }
       }

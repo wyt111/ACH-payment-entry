@@ -1,7 +1,10 @@
 <template>
   <div class="order-container" >
-    <sendCrypto v-if="$store.state.nextOrderState?$store.state.nextOrderState==1:nextOrderState" :orderStateData="orderStateData"/>
+    <!-- {{ $store.state.nextOrderState }} -->
+    <sendCrypto v-if="[0,1,7].includes(orderStateData.orderStatus) && $store.state.nextOrderState ===1 " :orderStateData="orderStateData"/>
+   
     <sellState v-else :orderStateData="orderStateData"/>
+     
   </div>
 
 </template>
@@ -132,16 +135,12 @@ export default{
       // console.log(parmas);
       this.$axios.get(this.$api.get_PlayCurrencyStatus,parmas).then(res=>{
         if(res && res.data){
-          // res.data.orderStatus = 7
+          // res.data.orderStatus = 5
+          // res.data.expirationTime=0
           this.orderStateData = res.data
           this.$store.state.orderStatus = res.data
           this.playMoneyState = res.data.orderStatus
           this.network1 = res.data.networkName
-
-          // res.data.expirationTime = 0
-          // console.log(this.network1);
-          // this.playMoneyState = 6
-          // res.data.orderStatus = 1
           if(this.orderStateData.orderStatus==2 && this.$store.state.nextOrderState == 1){
             this.$store.state.nextOrderState = 2
           }

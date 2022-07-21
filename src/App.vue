@@ -3,10 +3,10 @@
     <div class="buyCrypto_iframe_view" :class="{'buyCrypto_iframe_view_pc': logoState===true}"  >
         <div id="App" >
           <!-- 顶部logo -->
-          <div class="viewTab_logo">
-            <p @click="goHome">Alchemy Pay</p>
+          <div class="viewTab_logo" v-if="$route.path!=='/kycVerification'">
+            <img src="@/assets/images/achLogo.svg" alt="" @click="goHome">
             <!-- this.$store.state.goHomeState 商户订单状态不展示菜单 -->
-            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode' && this.$store.state.goHomeState === true">
+            <img src="@/assets/images/rightMeun.png" alt="" @click="routerViewState=!routerViewState" v-show="routerViewState && $route.path!=='/emailCode' && $route.path!=='/verifyCode'  && this.$store.state.goHomeState === true">
           </div>
           <!-- 导航栏 -->
           <tab ref="viewTab"/>
@@ -272,13 +272,11 @@ html,body,#app,#viewBox{
   align-items: center;
   margin-bottom: .35rem;
   position: relative;
-  p{
-    font-size: .18rem;
-    color: #063376;
-    font-family:SFProDisplaybold ;
+  img:nth-of-type(1){
+    height: .15rem;
     cursor: pointer;
   }
-  img{
+  img:nth-of-type(2){
     // width: .16rem;
    height: .16rem;
    position: absolute;

@@ -18,7 +18,7 @@
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
-      <p style="color:#063376">{{ orderStateData.feeUnit }} {{ feeInfo.rampFee }}</p>
+      <p style="color:#063376">{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee }}</p>
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
@@ -127,7 +127,7 @@ export default {
       this.getNetworkList()
     }, 1000);
     this.queryFee()
-    if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
+    if((this.orderStateData.orderStatus === 7 && this.$store.state.nextOrderState ==1 )|| (this.$store.state.nextOrderState ==1&& this.orderStateData.expirationTime <=0)){
       return
     }
     if(this.timerNumber >= 0 ){
@@ -145,6 +145,7 @@ export default {
      
     
   },
+
   activated(){
   
     //网络列表延迟请求
@@ -153,10 +154,11 @@ export default {
       this.getNetworkList()
     }, 1000);
     this.queryFee()
-    if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
+     if((this.orderStateData.orderStatus === 7 && this.$store.state.nextOrderState ==1 )|| (this.$store.state.nextOrderState ==1&& this.orderStateData.expirationTime <=0)){
       return
     }
-    if(this.timerNumber > 0 ){
+    this.timerNumber = 15
+    if(this.timerNumber >= 0 ){
         clearInterval(this.timeOut)
        this.timeOut =  setInterval(()=>{
           this.timerNumber--
@@ -165,7 +167,6 @@ export default {
             this.timerNumber = 15
           }else if(this.orderStateData.orderStatus === 7 ||  this.orderStateData.expirationTime <=0){
             clearInterval(this.timeOut)
-            return
           }
         },1000)
       }
@@ -241,7 +242,7 @@ export default {
        let params = {
         // id:'15',
         id:this.$store.state.sellOrderId,
-        cryptoCurrencyNetworkId:val.id
+        cryptoCurrencyNetworkId:val.id//val.networkName
       }
       this.Network_show = false
       this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
@@ -420,6 +421,7 @@ export default {
       font-size: .13rem;
       font-style: normal;
       color: #949EA4;
+      font-weight: 400;
     }
     .content{
       width: 100%;

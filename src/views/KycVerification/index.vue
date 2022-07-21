@@ -68,7 +68,8 @@ export default {
       status:0,
       kycVerState:0,
       getToken:'',
-      nextKyc:true
+      nextKyc:true,
+      timeOut:null
     }
   },
   methods:{
@@ -138,13 +139,12 @@ export default {
       //0进行kyc验证 1 成功跳转到卖币或者卖币订单page 2失败重新验证kyc
       if(val===0 && this.nextKyc){
         // console.log(this.$store.state.cardInfoFromPath);
-        this.status=1
         this.nextKyc = false
-        this.getUserToken()
         setTimeout(()=>{
-          this.nextKyc = true
-          this.launchWebSdk(this.getToken)
-        },2000)
+          // this.status=1
+        this.getUserToken()
+        },3000)
+        
         return 
       }else if(val === 1){
         this.status=0
@@ -158,13 +158,15 @@ export default {
         
         return
       }else if(val === 2){
-        this.status=1
+        
         this.nextKyc = false
-        this.getUserToken()
+        
         setTimeout(()=>{
+          this.status=1
+          this.getUserToken()
           this.nextKyc = true
           this.launchWebSdk(this.getToken)
-        },2000)
+        },3000)
       }else{
         return false
       }
@@ -183,11 +185,21 @@ export default {
     //获取用户的kyc验证token
     getUserToken(){
       let data = {
-        fullName:'sgahsgah'
+        fullName:'dong'
       }
        this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
           if(res.data && res.returnCode === '0000'){
             this.getToken =  res.data
+            // setTimeout(()=>{
+              this.nextKyc = true
+              this.launchWebSdk(this.getToken)
+            // },2000)
+            return
+          }else if(res.data && res.returnCode === '110'){
+            this.status = 0
+            this.kycVerState = 2
+            this.nextKyc = true
+            this.$toast(res.data)
           }
         })
     }
@@ -198,12 +210,14 @@ export default {
       if(newVal !== oldVal){
         sessionStorage.setItem('kycVerState',newVal)
       }
-    }
+    },
+   
   },
   mounted(){
     //保存页面状态
     
    sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
+
   //  console.log(this.kycVerState=2);
   }
 }
