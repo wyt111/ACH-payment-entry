@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
+import IncludedDetailsSell from '../../../components/IncludedDetails-sell';
 import Button from '../../../components/Button';
 import { AES_Decrypt } from "../../../utils/encryp";
 

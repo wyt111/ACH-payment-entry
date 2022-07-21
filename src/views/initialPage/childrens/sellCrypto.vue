@@ -45,7 +45,7 @@
 
 <script>
 import common from "../../../utils/common";
-import IncludedDetailsSell from '../../../components/IncludedDetailsSell';
+import IncludedDetailsSell from '../../../components/IncludedDetails-sell';
 
 export default {
   name: "buyCrypto",
