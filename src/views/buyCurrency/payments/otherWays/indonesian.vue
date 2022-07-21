@@ -28,6 +28,7 @@
     </div>
 
     <Button :buttonData="buttonData" :disabled="disabled" @click.native="submit"></Button>
+    <div class="companyAddress">Alchemy GPS Europe UAB, Laisvés pr. 60, LT-05120 Vilnius</div>
   </div>
 </template>
 
@@ -363,6 +364,16 @@ export default {
 .AuthorizationInfo{
   margin-top: 0.16rem;
   //margin-bottom: 0.2rem;
+}
+
+.companyAddress{
+  width: 100%;
+  font-size: 0.13rem;
+  font-family: "GeoLight", GeoLight;
+  font-weight: normal;
+  color: #c2c2c2c2;
+  text-align: center;
+  margin-top: 0.12rem;
 }
 
 .number_input{
