@@ -12,13 +12,13 @@
     <div v-if="[0,1].includes(orderStateData.orderStatus)">
       <div>
         <div class="sendCrypto_title">
-      <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} </span> </p>
-      <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }}s</span> </p>
+      <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ feeInfo.fiatSymbol }} {{ amountFee }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ $store.state.sellRouterParams.amount }} {{ $store.state.sellRouterParams.cryptoCurrency }} </span> </p>
+      <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }} </span> s</p>
       
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p>{{ $t('nav.home_buyFee_rampFee') }} </p>
-      <p style="color:#063376">{{ feeInfo.fiatSymbol }} {{ feeInfo.rampFee }}</p>
+      <p style="color:#063376">{{ feeInfo.fiatSymbol }} {{ rampFeeSell }}</p>
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
       <p >{{ $t('nav.Sellorder_Id') }}</p>
@@ -241,39 +241,41 @@ export default {
       }
        let params = {
         // id:'15',
-        id:this.$store.state.sellOrderId,
-        cryptoCurrencyNetworkId:val.id//val.networkName
+        orderId:this.orderStateData.orderId,
+        network:val.network//val.networkName
       }
       this.Network_show = false
-      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
+      this.$axios.post(this.$api.post_sellSelectNet,params).then(res=>{
         if(res && res.data){
           this.Network_show = false
+          if(res.data.status==1){
+            this.$toast('Your order is below its minimum amount')
+            return
+          }else if(res.data.status==2){
+            this.$toast('Your order is higher than its maximum amount')
+            return
+          }else{
+            // this.$toast('success')
+            return
+          }
         }
       })
     } ,
-    //保留小数点两位或者6位
-    getToFixed(firstVal,lastVal){
-      let decimalDigits = 0;
-      let resultValue = firstVal - lastVal;
-      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-      let price = resultValue.toFixed(decimalDigits);
-      isNaN(resultValue) || price <= 0 ? price = 0 : '';
-      return price;
-
-    },
+  
      //费率刷新
     queryFee(){
-      // console.log(this.$store.state.feeParams);
-       this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+      
+      let data = JSON.parse(JSON.stringify(this.$store.state.feeParams))
+      data.alpha2 = this.$store.state.sellForm.countryCode
+      data.symbol = data.symbol + 'USDT'
+      delete data.worldId
+       this.$axios.get(this.$api.get_sellRampfee,data).then(res=>{
          if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
+            //手续费
           this.feeInfo.rampFee = (this.$store.state.sellRouterParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
-           let decimalDigits = 0;
-            let resultValue = this.feeInfo.rampFee;
-            resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
-            let rampFee = resultValue.toFixed(decimalDigits);
-            isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
-            this.feeInfo.rampFee = rampFee
+            //换算成法币的钱
+            this.feeInfo.amount = (this.$store.state.sellRouterParams.amount *this.feeInfo.price *this.feeInfo.rate) -this.feeInfo.rampFee
          }
        })
     },
@@ -295,7 +297,28 @@ export default {
         }
       }
     }
-  }
+  },
+  computed:{
+    //卖币法币价格
+    amountFee(){
+      let decimalDigits = 0;
+      let resultValue = parseFloat(this.feeInfo.amount);
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let rampFee = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+      return rampFee
+    },
+    //卖币手续费
+    rampFeeSell(){
+      let decimalDigits = 0;
+      let resultValue = parseFloat(this.feeInfo.rampFee);
+      resultValue >= 1 ? decimalDigits = 2 : decimalDigits = 6;
+      let rampFee = resultValue.toFixed(decimalDigits);
+      isNaN(resultValue) || rampFee <= 0 ? rampFee = 0 : '';
+    
+      return rampFee
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>

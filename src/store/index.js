@@ -67,7 +67,7 @@ const store = new Vuex.Store({
         LanguageIsShow:false,
         menuState:false,
         isLogin:false,
-
+        kycStatus:0,
         //移动端点击logo返回首页
         goHomeState: true,
     },

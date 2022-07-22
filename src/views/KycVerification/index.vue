@@ -52,7 +52,7 @@
     </div>
     <!-- kyc验证页面 -->
     <div class="verif_kyc" v-else :key="1">
-          <img src="@/assets/images/ShutDown.png" @click="status=0" alt="">
+          <img src="@/assets/images/ShutDown.png" @click="removeItemKyv" alt="">
       <div id="sumsub-websdk-container" ></div>
     </div>
     
@@ -94,21 +94,24 @@ export default {
           if(!type){
             return
           }
+          //正在处理
           if(type.reviewStatus === "pending"){
             console.log('正在处理')
             return
+            //成功
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'GREEN'){
             this.status = 0
             this.kycVerState = 1
             return
+            //失败
           }else if(type.reviewStatus === "completed" && type.reviewResult.reviewAnswer === 'RED'){
             this.status = 0
             this.kycVerState = 2
-           
             return
           }else{
+            //重新验证
             this.status = 0
-            this.kycVerState = 2
+            this.kycVerState = 1
             return
           }
             
@@ -131,8 +134,9 @@ export default {
 },
     //获取kyc验证的token
     getNewAccessToken() {
+      this.getUserToken()
       // let newAccessToken = '_act-sbx-080f8eef-29d9-42a2-b9f8-dd894ad94e7e'
-        return Promise.resolve('')// get a new token from your backend
+        return Promise.resolve(this.getToken)// get a new token from your backend
     },
     //next 下一步
     nextKycVer(val){
@@ -141,19 +145,21 @@ export default {
         // console.log(this.$store.state.cardInfoFromPath);
         this.nextKyc = false
         setTimeout(()=>{
-          // this.status=1
+          this.status=1
         this.getUserToken()
-        },3000)
+        },1000)
         
         return 
       }else if(val === 1){
         this.status=0
         this.kycVerState = 0
-        if(this.$store.state.cardInfoFromPath === 'configSell'){
-          this.$router.push(`/sellOrder`)
-          return
-        }
-          alert('买币跳转')
+        // if(this.$store.state.cardInfoFromPath === 'configSell'){
+        //   this.$router.push(`/sellOrder`)
+        //   return
+        // }
+        sessionStorage.removeItem('getToken')
+            sessionStorage.removeItem('sellState')
+          alert('成功跳转')
         
         
         return
@@ -179,29 +185,46 @@ export default {
           this.kycVerState = 0
         sessionStorage.setItem('kycVerState',this.kycVerState)
         })
-      
+       sessionStorage.removeItem('sellState') 
+       sessionStorage.removeItem('getToken')
       this.$router.go(-1)
+    },
+    //关闭kyc验证
+    removeItemKyv(){
+      this.status = 0;
+       sessionStorage.removeItem('sellState') 
+       sessionStorage.removeItem('getToken')
     },
     //获取用户的kyc验证token
     getUserToken(){
       let data = {
-        fullName:'dong'
+        fullName:'20T0fT/6GpV2B6qCvN5HRQ=='
       }
-       this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
+       this.$axios.post(this.$api.post_getKycToken+'?fullName='+data.fullName).then(res=>{
+         if(!res){
+            this.nextKyc = true
+            this.$toast('未知错误')
+            return
+         }
+           
           if(res.data && res.returnCode === '0000'){
             this.getToken =  res.data
+            sessionStorage.setItem('getToken',res.data)
+            sessionStorage.setItem('sellState',this.status)
             // setTimeout(()=>{
               this.nextKyc = true
               this.launchWebSdk(this.getToken)
             // },2000)
-            return
+            return 
           }else if(res.data && res.returnCode === '110'){
             this.status = 0
             this.kycVerState = 2
             this.nextKyc = true
             this.$toast(res.data)
+            return
           }
         })
+        
     }
   },
   watch:{
@@ -213,10 +236,21 @@ export default {
     },
    
   },
+  
   mounted(){
     //保存页面状态
     
    sessionStorage.getItem('kycVerState')?this.kycVerState = sessionStorage.getItem('kycVerState'):''
+   if(sessionStorage.getItem('sellState') && sessionStorage.getItem('getToken')){
+     this.status = sessionStorage.getItem('sellState') 
+      this.getToken = sessionStorage.getItem('getToken')
+      setTimeout(()=>{
+        this.launchWebSdk(this.getToken)
+      },200)
+   }else{
+     return false
+   }
+   
 
   //  console.log(this.kycVerState=2);
   }
@@ -225,6 +259,7 @@ export default {
 
 <style lang="scss" scoped>
 .KycVer-container{
+  width: 100%;
   height: 100%;
  overflow: hidden;
   .icon {
@@ -318,7 +353,7 @@ export default {
      height: .14rem;
      cursor: pointer;
      position: absolute;
-     right: .0rem;
+     right: .1rem;
      top: .0rem;
    }
  #sumsub-websdk-container{
