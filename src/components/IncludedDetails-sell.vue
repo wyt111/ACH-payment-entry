@@ -156,7 +156,6 @@ export default {
     '$store.state.sellRouterParams.payCommission.fiatCode': {
       deep: true,
       handler(val){
-        console.log(val,"---val")
         this.timingSetting();
       }
     },
@@ -247,10 +246,8 @@ export default {
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;
           //修改首页费用数据
           if(this.isHome && this.isHome === true){
-            console.log("触发")
             this.$parent.feeInfo = this.feeInfo;
             this.$parent.calculationAmount();
-            console.log(this.feeInfo,"---child")
           }
         }
       })

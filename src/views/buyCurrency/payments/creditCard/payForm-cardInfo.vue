@@ -139,9 +139,6 @@ export default {
     });
   },
   activated(){
-    // setInterval(()=>{
-    //   this.elShaking(this.$refs.downTips_ref)
-    // },2000)
     //初始化根据可视高度控制向下提示按钮状态
     this.$nextTick(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
@@ -204,8 +201,6 @@ export default {
         })
       }else{
         this.errorTime = true;
-        // this.timeData = val.target.value.replace(/[^0-9// /]/g,'');
-        // this.timeData = val.target.value.substr(0,val.target.value.indexOf(val.target.value[val.target.value.length-1]));
       }
     },
     timeBlur(){

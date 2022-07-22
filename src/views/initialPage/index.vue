@@ -6,6 +6,7 @@
           <div class="home-tab">
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===false">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-if="tableState===false">{{ $t('nav.routerName_sell') }}</div>
+            <!-- 商户配置菜单栏 -->
             <div :class="{'tabClass': tabstate==='buyCrypto'}" @click="switchTab('buyCrypto')" v-if="tableState===true && tabstate==='buyCrypto'">{{ $t('nav.routerName_buy') }}</div>
             <div :class="{'tabClass': tabstate==='sellCrypto'}" @click="switchTab('sellCrypto')" v-else-if="tableState===true && tabstate==='sellCrypto'">{{ $t('nav.routerName_sell') }}</div>
           </div>
@@ -160,24 +161,28 @@ html,body,#homePage,.homePage_view,.homePage_content{
   .home-header {
     display: flex;
     align-items: center;
-    padding-bottom: 0.32rem;
+    padding-bottom: 0.24rem;
     .home-tab{
       display: flex;
       align-items: center;
-      font-size: 0.2rem;
-      font-family: 'GeoDemibold', GeoDemibold;
-      font-weight: bold;
-      color: #CCCCCC;
+      font-family: 'SFProDisplayMedium',SFProDisplayMedium;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 0.18rem;
+      color: #949EA4;
       div{
         display: flex;
         cursor: pointer;
+        padding-bottom: 0.12rem;
+        border-bottom: 4px solid #FFFFFF;
       }
       div:nth-of-type(2){
         margin-left: 0.4rem;
         cursor: pointer;
       }
       .tabClass{
-        color: #232323;
+        color: #063376;
+        border-bottom: 4px solid #0059DA;
       }
     }
     .allPage-icon {

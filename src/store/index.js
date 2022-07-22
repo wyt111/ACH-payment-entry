@@ -53,7 +53,8 @@ const store = new Vuex.Store({
             },
             currencyData: {
                 name: '',
-            }
+            },
+            cardInfoList: [],
         },
 
         feeParams: {}, //卖币费用请求参数

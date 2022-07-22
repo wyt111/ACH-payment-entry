@@ -36,13 +36,15 @@ export default {
   //获取卖币用户卡信息
   "get_userSellCardInfo": '/user/card/query/sell',
   //卖币确认订单
-  "post_sellConfirmOrder": '/trade/confirm/sell/order',
+  // "post_sellConfirmOrder": '/trade/confirm/sell/order',
   //查询卖币订单订单状态
   "get_PlayCurrencyStatus":'/trade/query/sellOrder',
   //获取卖币支持网络
   "get_networkList":'/crypto/sell/network',
-  //卖币添加或修改UserCard接口
-  "post_sellForm": '/user/card/sell/submit',
+  //卖币确认订单
+  "post_sellForm": '/trade/create/sell/coin/order',
+  //历史卡信息列表
+  "get_cardList": '/user/card/query/sell/list',
     //------------------------- kyc验证获取token接口 -------------------------
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',
