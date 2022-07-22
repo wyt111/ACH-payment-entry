@@ -1,20 +1,28 @@
 <template>
   <div id="HistoricalCardInfo">
-    <div class="content">
-      <div class="cardView">
-        <div class="line1">
-          <div class="line1-left">HSBC</div>
-          <div class="line1-right"><span>****</span>3683</div>
+    <van-popup v-model="show" get-container="#App">
+      <div class="content">
+        <div class="cardView">
+          <div class="line1">
+            <div class="line1-left">HSBC</div>
+            <div class="line1-right"><span>****</span>3683</div>
+          </div>
+          <div class="line2">Sharon Wang</div>
         </div>
-        <div class="line2">Sharon Wang</div>
       </div>
-    </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HistoricalCardInfo-sell"
+  name: "HistoricalCardInfo-sell",
+  data(){
+    return{
+      show: true,
+    }
+  }
+
 }
 </script>
 
@@ -26,7 +34,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.15);
+  //background: rgba(0, 0, 0, 0.15);
   .content{
     margin: 1.54rem auto;
     width: 3.45rem;
@@ -54,5 +62,11 @@ export default {
       }
     }
   }
+}
+</style>
+<style>
+/*ui - 遮罩层样式修改*/
+.van-overlay{
+  border-radius: 0 !important;
 }
 </style>

@@ -541,15 +541,6 @@ export default {
   display: none !important;
 }
 
-.van-popup{
-  max-height: 35%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 0 40px #4479D9;
-  border-radius: 0 0 25px 25px;
-}
-
 //数字输入框
 .van-cell{
   padding: 0 !important;
