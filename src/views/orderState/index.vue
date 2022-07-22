@@ -1,6 +1,7 @@
 <template>
-  <div class="order-container" >
-    <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
+  <div class="order-container" ref="orderContainer">
+    <div >
+      <div class="timing" v-if="[0,1].includes(playMoneyState)" style="white-space:nowrap;">{{ $t('nav.Sellorder_transfer') }} {{orderStateData.cryptoCurrency}} {{ $t('nav.Sellorder_within') }}<span>{{ timeText }}</span></div>
     <!-- <div class="timing" v-if="playMoneyState===1">Received {{ orderStateData.receivedSellVolume?orderStateData.receivedSellVolume:0 }} {{ orderStateData.cryptoCurrency }} {{ orderStateData.blockNumber }}/{{ orderStateData.confirmedNum }} confirmations <span style="color:#4479D9FF;margin-left:.3rem" >View</span></div> -->
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue === 'zh-HK'"> 您將賣出<span v-if="playMoneyState!==5" style="color:#000;font-weight:500"> </span>{{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }} 並獲取 {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} </div>
     <div class="timing" v-if="[2,3,4,5].includes(playMoneyState) && $store.state.languageValue !== 'zh-HK'">{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }}  <span v-if="playMoneyState!==5" style="color:#000;font-weight:500"></span>{{ $t('nav.Sellorder_get') }} {{ orderStateData.feeUnit }} {{ getToFixed(orderStateData.fiatAmount,orderStateData.fee) }} {{ $t('nav.Sellorder_for') }} {{ orderStateData.sellVolume?orderStateData.sellVolume:0 }} {{ orderStateData.cryptoCurrency }}</div>
@@ -62,7 +63,7 @@
           <p>{{ orderStateData.orderId }}</p>
           <img src="../../assets/images/copy.png" alt="">
         </div>
-        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)">{{ $t('nav.Sellorder_Network') }}</div>
+        <div class="order-title" v-if="[0,1,2,3].includes(playMoneyState)" ref="SellorderNetwork">{{ $t('nav.Sellorder_Network') }}</div>
         <div class="order-con" style="cursor: pointer;" v-if="[0,1,2,3].includes(playMoneyState)" @click="Network_isShow">
           <p>{{ Network?Network.networkName: network1}}</p>
           <img v-if="[0,1].includes(playMoneyState)" style="height:.24rem" src="../../assets/images/rightBlackIcon.png" alt="">
@@ -112,6 +113,7 @@
         <div class="Network-title">{{ $t('nav.Sellorder_Network') }}</div>
         <div class="Network-content" v-for="item in Network_data" :key="item.id" @click="SetNetwork(item)"><p>{{ item.networkName }}</p><img :src="item.network===orderStateData.cryptoCurrencyNetwork?NetworkCheck:''" alt=""></div>
     </van-popup>
+    </div>
   </div>
 
 </template>
@@ -166,6 +168,11 @@ export default{
           this.Network_show = true
         }else{
           this.Network_show1 = !this.Network_show1
+          if(this.Network_show1){
+            this.$nextTick(()=>{
+              this.$refs.orderContainer.scrollTop = this.$refs.SellorderNetwork.offsetTop+40    
+            })
+          }
         }
       }
     },
@@ -429,8 +436,10 @@ export default{
 
 .order-container{
   // padding: 0 .2rem .3rem;
-  padding-bottom: .2rem;
-
+  // padding-bottom: .2rem;
+height: 100%;
+overflow:scroll;
+transition: 1s;
   .timing{
     font-family: GeoLight;
     font-weight: 500;
