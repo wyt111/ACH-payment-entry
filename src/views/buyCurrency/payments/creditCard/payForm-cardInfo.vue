@@ -64,6 +64,7 @@
 
 <script>
 import { AES_Decrypt, AES_Encrypt } from '@/utils/encryp.js';
+import valid from 'card-validator';
 
 export default {
   name: "International-card-payment",
@@ -139,9 +140,6 @@ export default {
     });
   },
   activated(){
-    // setInterval(()=>{
-    //   this.elShaking(this.$refs.downTips_ref)
-    // },2000)
     //初始化根据可视高度控制向下提示按钮状态
     this.$nextTick(()=>{
       if(this.$refs.box_ref.offsetHeight + 4 < document.getElementById("internationalCardPay").scrollHeight - 50){
@@ -204,8 +202,6 @@ export default {
         })
       }else{
         this.errorTime = true;
-        // this.timeData = val.target.value.replace(/[^0-9// /]/g,'');
-        // this.timeData = val.target.value.substr(0,val.target.value.indexOf(val.target.value[val.target.value.length-1]));
       }
     },
     timeBlur(){
@@ -242,13 +238,11 @@ export default {
       if(value !== '' && value !== undefined){
         this.params.cardNumber = value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ');
         //卡号验证
-        let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
-        let firstCardNumber = cardNumber.substring(0,1);
-        let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
-        if(this.params.cardNumber === '' || !regular.test(cardNumber)){
-          this.errorCard = true;
-        }else {
+        let validObject = valid.number(this.params.cardNumber);
+        if(this.params.cardNumber !== '' && validObject.isValid && (validObject.card.type === 'mastercard' || validObject.card.type === 'visa')){
           this.errorCard = false;
+        }else {
+          this.errorCard = true;
         }
       }
 
@@ -335,17 +329,6 @@ export default {
     //验证、提交卡信息
     submitPay(){
       this.request_loading = true;
-      //卡号验证
-      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
-      let firstCardNumber = cardNumber.substring(0,1);
-      let regular = firstCardNumber === '4' ? /^4[0-9]{12}(?:[0-9]{3})?$/ : firstCardNumber === '5' ? /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ : /^4[0-9]{12}(?:[0-9]{3})?$/;
-      if(this.params.cardNumber === '' || !regular.test(cardNumber)){
-        this.errorCard = true;
-        return;
-      }
-
-      this.errorCard = false;
-
       //拼接年月日期参数
       this.params.cardExpireMonth = this.timeData.substring(0,2);
       this.params.cardExpireYear = '20' + this.timeData.substring(5,7);
@@ -353,6 +336,7 @@ export default {
       let queryParams = JSON.parse(JSON.stringify(this.params));
 
       //需要加密的敏感字段
+      let cardNumber = this.params.cardNumber.replace(/\s*/g,"");
       queryParams.cardNumber = AES_Encrypt(cardNumber).replace(/ /g,'');
       queryParams.cardCvv = AES_Encrypt(queryParams.cardCvv);
 
