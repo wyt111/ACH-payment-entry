@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <!-- -->
+      <!-- 购买提示信息 -->
       <div class="attention"><span>Attention:</span> Please ensure the bank account belongs to you and the information is accurate. Returned transactions are subjected to $25 fee charged by our banking partners.</div>
 
       <button class="continue" :disabled="disabled" @click="submit" v-show="buttonIsShow" ref="button_ref">
