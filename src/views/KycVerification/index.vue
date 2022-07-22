@@ -141,7 +141,7 @@ export default {
         // console.log(this.$store.state.cardInfoFromPath);
         this.nextKyc = false
         setTimeout(()=>{
-          // this.status=1
+          this.status=1
         this.getUserToken()
         },3000)
         
@@ -185,9 +185,15 @@ export default {
     //获取用户的kyc验证token
     getUserToken(){
       let data = {
-        fullName:'dong'
+        fullName:'4lJ1L0cYDLgX7Wr4T+gbYw=='
       }
-       this.$axios.post(this.$api.post_getKycToken,data).then(res=>{
+       this.$axios.post(this.$api.post_getKycToken+'?fullName='+data.fullName).then(res=>{
+         if(!res){
+            this.nextKyc = true
+            this.$toast('未知错误')
+            return
+         }
+           
           if(res.data && res.returnCode === '0000'){
             this.getToken =  res.data
             // setTimeout(()=>{
@@ -200,8 +206,10 @@ export default {
             this.kycVerState = 2
             this.nextKyc = true
             this.$toast(res.data)
+            return
           }
         })
+        
     }
   },
   watch:{
@@ -213,6 +221,7 @@ export default {
     },
    
   },
+  
   mounted(){
     //保存页面状态
     
