@@ -46,7 +46,7 @@ export default {
   //卖币切换网络
   "post_sellSelectNet":'/trade/sell/order/switching/network',
   //卖币查询费率接口
-  "post_sellRampfee":'/crypto/sell/fee/v2',
+  "get_sellRampfee":'/crypto/sell/fee/v2',
     //------------------------- kyc验证获取token接口 -------------------------
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',

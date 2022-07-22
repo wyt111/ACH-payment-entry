@@ -92,6 +92,7 @@ export default {
         this.$axios.post(this.$api.post_sellConfirmOrder,params,'').then(res=>{
           this.buttonData.triggerNum = 0;
           if(res && res.returnCode === "0000"){
+            console.log(res.data);
             this.$store.state.sellOrderId = res.data.id;
             //再次进入订单页面时让订单页重新开始
             this.$store.state.nextOrderState =1

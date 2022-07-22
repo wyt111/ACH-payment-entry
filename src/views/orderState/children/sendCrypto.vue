@@ -13,7 +13,7 @@
       <div>
         <div class="sendCrypto_title">
       <p>{{ $t('nav.Sellorder_You') }} {{ $t('nav.Sellorder_will') }} {{ $t('nav.Sellorder_get') }}  <span> {{ feeInfo.fiatSymbol }} {{ amountFee }}</span>  {{ $t('nav.Sellorder_for') }} <span>  {{ $store.state.sellRouterParams.amount }} {{ $store.state.sellRouterParams.cryptoCurrency }} </span> </p>
-      <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }}s</span> </p>
+      <p style="display:flex;justify-content:space-between;width:.37rem"><img  src="@/assets/images/timeSell.svg" alt=""><span >{{ timerNumber }} </span> s</p>
       
     </div>
     <div class="sendCrypto_title" style="margin-top:.16rem">
@@ -241,21 +241,35 @@ export default {
       }
        let params = {
         // id:'15',
-        id:this.$store.state.sellOrderId,
-        cryptoCurrencyNetworkId:val.id//val.networkName
+        orderId:this.orderStateData.orderId,
+        network:val.network//val.networkName
       }
       this.Network_show = false
-      this.$axios.post(this.$api.post_sellConfirmOrder,params).then(res=>{
+      this.$axios.post(this.$api.post_sellSelectNet,params).then(res=>{
         if(res && res.data){
           this.Network_show = false
+          if(res.data.status==1){
+            this.$toast('Your order is below its minimum amount')
+            return
+          }else if(res.data.status==2){
+            this.$toast('Your order is higher than its maximum amount')
+            return
+          }else{
+            // this.$toast('success')
+            return
+          }
         }
       })
     } ,
   
      //费率刷新
     queryFee(){
-      // console.log(this.$store.state.feeParams);
-       this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+      
+      let data = JSON.parse(JSON.stringify(this.$store.state.feeParams))
+      data.alpha2 = this.$store.state.sellForm.countryCode
+      data.symbol = data.symbol + 'USDT'
+      delete data.worldId
+       this.$axios.get(this.$api.get_sellRampfee,data).then(res=>{
          if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
             //手续费
