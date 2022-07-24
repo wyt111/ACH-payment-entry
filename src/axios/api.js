@@ -51,6 +51,8 @@ export default {
   "get_sellRampfee":'/crypto/sell/fee/v2',
   // 卖币申请退款
   "get_sellRefund": '/trade/sell/order/refund',
+  //是否需要kyc验证
+  "get_kyc": '/trade/query/sell/coin/kyc',
   //------------------------- kyc验证获取token接口 -------------------------
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',

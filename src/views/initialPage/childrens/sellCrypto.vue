@@ -301,7 +301,7 @@ export default {
       // this.$store.state.sellRouterParams = JSON.parse(JSON.stringify(routerParams));
       //跳转填写卡信息
       this.$store.state.homeTabstate = 'sellCrypto';
-      // this.$store.state.cardInfoFromPath = 'configSell';
+      this.$store.state.cardInfoFromPath = 'configSell';
       delete this.$store.state.sellForm;
       delete this.$store.state.sellRouterParams.cardInfoList;
       this.$router.push('/sell-formUserInfo')

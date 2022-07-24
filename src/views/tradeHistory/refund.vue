@@ -1,18 +1,18 @@
 <template>
   <div id="refund">
-    <p class="title">Enter your Tron ({{ $route.query.currency }}) address </p>
+    <p class="title">Enter your Tron ({{ $store.state.sellRouterParams.currencyData.name }}) address </p>
     <div class="walletAddress">
       <input type="text" v-model="walletAddress" placeholder="Enter your wallet address">
       <img src="@/assets/images/scanCode_icon.svg" alt="" @click="scanCode_state=true">
     </div>
-    <p class="exchangeRate">1 USD ≈ 1 USDT</p>
+    <p class="exchangeRate">1 USD ≈ {{ $store.state.sellRouterParams.currencyData.price }} {{ $store.state.sellRouterParams.currencyData.name }}</p>
     <!-- 扫码 -->
     <div class="scanCode" v-if="scanCode_state">
       <qrcode-stream @decode="onDecode" @init="onInit" />
     </div>
     <footer>
       <p class="tips"><span>Pay attention:</span> Please make sure the address you enter is correct and belong to the network that you choose. If you enter incompatible address, you will lose your funds.</p>
-      <button>Confirm <img src="@/assets/images/button-right-icon.svg" alt=""></button>
+      <button :disabled="disabled" @click="confirmRefund">Confirm <img src="@/assets/images/button-right-icon.svg" alt=""></button>
     </footer>
   </div>
 </template>
@@ -30,6 +30,15 @@ export default {
       walletAddress: "",
       scanCode_state: false,
       error: '',
+    }
+  },
+  computed: {
+    disabled(){
+      if(this.walletAddress === ''){
+        return true
+      }else{
+        return false
+      }
     }
   },
   methods: {
@@ -63,6 +72,18 @@ export default {
           this.error = `ERROR: Camera error (${error.name})`;
         }
       }
+    },
+
+    confirmRefund(){
+      let params = {
+        orderId: this.$route.query.orderId,
+        address: this.walletAddress
+      }
+      this.$axios.get(this.$api.get_sellRefund,params).then(res=>{
+        if(res && res.returnCode === '0000'){
+          this.$router.back(-1);
+        }
+      })
     }
   }
 }
@@ -161,6 +182,10 @@ export default {
       img{
         width: 0.16rem;
         margin-left: 0.12rem;
+      }
+      &:disabled{
+        opacity: 0.25;
+        cursor: no-drop;
       }
     }
   }

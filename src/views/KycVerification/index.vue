@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="KycVer-container">
     <!-- 展示成功失败页面 -->
     <div class="Verification_content" v-if="status==0" :key="0">
@@ -9,7 +9,7 @@
         <div class="content" v-if="kycVerState==0">
           <img src="@/assets/images/kycIcon1.svg" alt="">
             <p>Please verify your identity.
-            It usually takes about 2 minutes.</p>
+            It usually takes about 2 minutes.</p> 
             <div>
               · Prepare your ID
             </div>

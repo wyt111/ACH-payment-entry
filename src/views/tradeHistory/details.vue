@@ -173,7 +173,7 @@ export default {
       this.$router.push(`/sell-formUserInfo`);
     },
     refund(){
-      this.$router.push(`/Refund?currency=${'USDT'}`);
+      this.$router.replace(`/Refund?orderId=${12}`);
     }
   }
 }

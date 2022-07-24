@@ -348,7 +348,7 @@ export default {
         this.request_loading = true;
         let params = {
           sellCardDTO: val,
-          orderId: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
+          // orderId: this.$store.state.sellForm ? this.$store.state.sellForm.id : '', // 不传为新增卡信息，传为修改卡信息
           cryptoCurrency: this.$store.state.sellRouterParams.currencyData.name,
           sellVolume: this.$store.state.sellRouterParams.amount,
           network: this.$store.state.sellRouterParams.currencyData.sellNetwork.network,
@@ -368,16 +368,32 @@ export default {
             sellForm.idNumber = this.encrypt(sellForm.idNumber);
             this.$store.state.sellForm = sellForm;
             //跳转状态
-            if(this.$store.state.cardInfoFromPath === 'configSell' || this.$store.state.cardInfoFromPath === 'sellOrder'){
-              this.$router.replace(`/${this.$store.state.cardInfoFromPath}`);
-              return;
+            if(this.$store.state.cardInfoFromPath === 'configSell'){
+              this.isKyc(val);
+            }else{
+              
             }
-            this.$router.push(`/${this.$store.state.cardInfoFromPath}`);
           }
         }).catch(()=>{
           this.request_loading = false;
         })
       }
+    },
+
+    isKyc(val){
+      let params = {
+        amount: this.$store.state.sellRouterParams.amount * this.$store.state.sellRouterParams.currencyData.price
+      }
+      this.$axios.get(this.$api.get_kyc,params).then(res=>{
+        if(res && res.returnCode === '0000'){
+          if(res.data.isKyc === true){
+            this.$store.state.sellRouterParams.fullName = val.name;
+            this.$router.push('/kycVerification');
+          }else{
+            
+          }
+        }
+      })
     },
 
     inputFocus(){
