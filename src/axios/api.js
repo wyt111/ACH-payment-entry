@@ -30,7 +30,7 @@ export default {
 
   //------------------------- 卖币接口 -------------------------
   //卖币查询费用
-  "get_inquiryFeeSell": '/crypto/sell/fee',
+  "get_inquiryFeeSell": '/crypto/sell/fee/v2',
   //银行列表
   "get_bank": '/world/bank/list',
   //获取卖币用户卡信息
@@ -49,7 +49,9 @@ export default {
   "post_sellSelectNet":'/trade/sell/order/switching/network',
   //卖币查询费率接口
   "get_sellRampfee":'/crypto/sell/fee/v2',
-    //------------------------- kyc验证获取token接口 -------------------------
+  // 卖币申请退款
+  "get_sellRefund": '/trade/sell/order/refund',
+  //------------------------- kyc验证获取token接口 -------------------------
     //获取kyc验证token
   "post_getKycToken":'/kyc/getKycToken',
   //买币是否要kyc验证

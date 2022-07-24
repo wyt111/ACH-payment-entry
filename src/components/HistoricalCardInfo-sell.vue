@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {AES_Decrypt} from "../utils/encryp";
+import {AES_Decrypt, AES_Encrypt} from "../utils/encryp";
 
 export default {
   name: "HistoricalCardInfo-sell",
@@ -51,7 +51,10 @@ export default {
   },
   methods: {
     choiseCardInfo(item,index){
-      this.cardInfo = item;
+      let cardInfo = JSON.parse(JSON.stringify(item));
+      cardInfo.accountNumber = AES_Encrypt(cardInfo.accountNumber);
+      cardInfo.name = AES_Encrypt(cardInfo.name);
+      this.cardInfo = cardInfo;
       this.which = index;
     },
     close(event){
@@ -60,7 +63,8 @@ export default {
       }
     },
     confirmCard(){
-      this.$store.state.sellRouterParams.sellForm = this.cardInfo;
+      this.$store.state.sellForm = this.cardInfo;
+      this.$parent.$refs.routerView.decryptCardInfo();
       this.$parent.historicalCardInfoSell_state = false;
     },
   }

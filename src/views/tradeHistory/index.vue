@@ -1,6 +1,14 @@
 <template>
   <div id="tradeHistory">
-    <div class="noData" v-if="historyList.length===0">
+
+    <div class="tabView">
+      <div class="tab" :class="{'tabView-left': tabViewName === 'buy'}" @click="tabViewName = 'buy'">Buy Crypto</div>
+      <div class="tab" :class="{'tabView-right': tabViewName === 'sell'}" @click="tabViewName = 'sell'">Sell Crypto</div>
+    </div>
+
+    <!-- 买币历史 -->
+    <div class="historyList-box" v-show="tabViewName === 'buy'"
+      <div class="noData" v-if="buy_historyList.length===0">
       <div class="noDataImg"><img src="../../assets/images/noData.png"></div>
       <div class="noDataText">{{ $t('nav.history_noListText') }}</div>
       <p>{{ $t('nav.history_noListText2') }}</p>
@@ -12,7 +20,7 @@
     <div class="historyList" v-else>
       <van-list v-model="loading" :finished="finished" :finished-text="$t('nav.history_noMore')" @load="onLoad" loading-text="Loading" error-text="Loading failed">
         <div class="van-clearfix">
-          <div class="float-item" v-for="(item,index) in historyList" :key="index">
+          <div class="float-item" v-for="(item,index) in buy_historyList" :key="index">
             <div class="historyLi_header">
               <div class="historyLi_header_left">
                 <div class="cryptoCurrencyIcon"><img :src="item.cryptoCurrencyIcon"></div>
@@ -60,6 +68,13 @@
         </div>
       </van-list>
     </div>
+    </div>
+
+    <!-- 卖币历史 -->
+    <!-- <div class="historyList-box" v-show="tabViewName === 'buy'">
+      
+    </div> -->
+
   </div>
 </template>
 
@@ -69,13 +84,16 @@ export default {
   name: "Trade History",
   data(){
     return{
+      tabViewName: 'buy',
+
       query: {
         orderState: 1,
         orderType: 1,
         pageIndex: 1,
         pageSize: 5
       },
-      historyList: [],
+      buy_historyList: [],
+      sell_historyList: [],
 
       loading: false,
       finished: false,
@@ -88,7 +106,7 @@ export default {
       pageIndex: 1,
       pageSize: 5
     };
-    this.historyList = [];
+    this.buy_historyList = [];
     this.queryTransactionHistory();
   },
   methods:{
@@ -100,9 +118,9 @@ export default {
       this.$axios.get(this.$api.get_transactionHistory,this.query).then(res=>{
         if(res.data){
           let newArray = res.data.result.filter(item=>{return item.orderState !== 0 && item.orderState !== 6});
-          _this.historyList = _this.historyList.concat(newArray);
+          _this.buy_historyList = _this.buy_historyList.concat(newArray);
           _this.loading = false;
-          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.historyList.length === res.data.total){
+          if ((_this.query.pageIndex * _this.query.pageSize) > res.data.total || _this.buy_historyList.length === res.data.total){
             _this.finished = true;
           }
         }
@@ -119,9 +137,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html,body,#tradeHistory,.historyList,.van-list{
+html,body,#tradeHistory,.historyList-box,.historyList,.van-list{
   height: 100%;
 }
+
+.tabView{
+    width: 100%;
+    height: 0.5rem;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 0.25rem;
+    display: flex;
+    margin-bottom: 0.24rem;
+  .tab{
+    flex: 1;
+    font-family: 'SFProDisplayMedium',SFProDisplayMedium;
+    font-weight: 500;
+    font-size: 0.16rem;
+    line-height: 0.5rem;
+    color: #949EA4;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+.tabView-left{
+  color: #FFFFFF !important;
+  background: #0059DA;
+  border: 1px solid #0059DA !important;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+.tabView-right{
+  color: #FFFFFF !important;
+  background: #0059DA;
+  border: 1px solid #0059DA !important;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
 #tradeHistory{
   padding-top: 0.24rem;
   .float-item{

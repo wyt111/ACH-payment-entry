@@ -71,15 +71,21 @@
           </li> -->
           <div class="screen_title">{{ $t('nav.search_components_All') }}</div>
           <li :class="{'allCurrencyLi': index===0}" v-for="(item,index) in cryptoCurrencyVOList" :key="'all_'+index" @click="choiseItem('currency-sell',item)">
-            <p class="seach_li_img"><img :src="item.logoUrl"></p>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
+            <div class="seach_li_img">
+              <img :src="item.logoUrl">
+              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>  
+            </div>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText" v-if="item.sellNetwork"> - {{ item.sellNetwork.networkName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
         </div>
         <div v-else>
           <li v-for="(item,index) in searchData" :key="'search_'+index" @click="choiseItem('currency-sell',item)">
-            <p class="seach_li_img"><img :src="item.logoUrl"></p>
-            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.fullName }}</span></p>
+            <div class="seach_li_img">
+              <img :src="item.logoUrl">
+              <p class="networkIcon"><img src="../assets/images/hk.svg" alt=""></p>
+            </div>
+            <p class="seach_li_text currencyCopywriting">{{ item.name }} <span class="seach_li_allText"> - {{ item.sellNetwork.networkName }}</span></p>
             <p class="seach_li_rightIcon"><img src="../assets/images/rightIcon.png"></p>
           </li>
         </div>
@@ -298,10 +304,26 @@ export default {
       }
       if(this.viewName === 'currency-sell'){
         this.basicData = this.allBasicData;
-        this.$nextTick(()=>{
-          // this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
-          this.cryptoCurrencyVOList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
-        })
+        if(this.basicData.cryptoCurrencyResponse){
+          this.$nextTick(()=>{
+            let newCurrencyList = [];
+            let newCurrencyList_network = [];
+            // this.popularList = this.basicData.cryptoCurrencyResponse.popularList.filter(item=>{ return item.isSell === 1 });
+            newCurrencyList = this.basicData.cryptoCurrencyResponse.cryptoCurrencyList.filter(item=>{ return item.isSell === 1 });
+            newCurrencyList.forEach(item=>{
+              if(item.sellNetworkList){
+                item.sellNetworkList.forEach(item2=>{
+                  let fiat = {
+                    sellNetwork: item2,
+                  }
+                  fiat = {...fiat,...item};
+                  newCurrencyList_network.push(fiat);
+                })
+              }
+            });
+            this.cryptoCurrencyVOList = newCurrencyList_network;
+          })
+        }
         return;
       }
     },
@@ -352,15 +374,16 @@ export default {
           let currencyData = {
             icon: item.logoUrl,
             name: item.name,
-            maxSell: item.maxSell,
-            minSell: item.minSell,
+            maxSell: item.sellNetwork.maxSell,
+            minSell: item.sellNetwork.minSell,
             cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
             symbol: item.symbol,
+            sellNetwork: item.sellNetwork
           }
           this.$parent.$refs.sellCrypto_ref.currencyData = currencyData;
           this.$store.state.sellRouterParams.currencyData = currencyData;
           this.$store.state.sellRouterParams.cryptoCurrency = item.name;
-          this.$store.state.feeParams.symbol = item.name;
+          this.$store.state.feeParams.symbol = item.symbol;
           this.$parent.$refs.sellCrypto_ref.amountControl();
           this.$parent.searchState = true;
           return;
@@ -416,10 +439,32 @@ export default {
         cursor: pointer;
         .seach_li_img{
           display: flex;
+          width: 0.36rem;
+          height: 0.36rem;
+          background: #94ACBA;
+          border-radius: 50%;
+          position: relative;
           img{
             width: 0.36rem;
             border-radius: 50%;
             background: #E0E0E0;
+          }
+          .networkIcon{
+            width: 0.19rem;
+            height: 0.19rem;
+            background: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 0;  
+            right: -0.06rem;
+            img{
+              width: 0.15rem;
+              height: 0.15rem;
+              border-radius: 50%;
+            }
           }
         }
         .seach_li_text{

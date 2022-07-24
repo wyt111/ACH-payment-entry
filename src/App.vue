@@ -14,7 +14,7 @@
           <div class="routerView_box" v-show="routerViewState">
             <div class="routerView">
               <keep-alive class="keepAlive" :exclude="keepAlive">
-                <router-view/>
+                <router-view ref="routerView"/>
               </keep-alive>
             </div>
           </div>

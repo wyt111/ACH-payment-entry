@@ -2,10 +2,10 @@
   <div id="buyCrypto">
     <!-- 买币功能模块 -->
     <div class="buyCrypto_content">
-      <div class="methods_select cursor">
+      <div class="methods_select cursor" :class="{'inputFocus': inputFocus}">
         <div class="methods_select-left">
           <div class="form_title pay_title">{{ $t('nav.home_youSell') }}</div>
-          <van-field class="pay_input" type="number" v-model.number="payAmount" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
+          <van-field class="pay_input" type="number" v-model.number="payAmount" @focus="inputFocus=true" @blur="inputFocus=false" @input="inputChange" :disabled="payAmountState" pattern="[0-9]*" inputmode="decimal" placeholder="0.00"/>
         </div>
         <div class="get_company" @click="openSearch('currency-sell')">
           <div class="getImg networkImg">
@@ -95,6 +95,8 @@ export default {
       allPayCommission: [],
 
       triggerType: "hover",
+      
+      inputFocus: false,
     }
   },
   computed: {
@@ -248,11 +250,12 @@ export default {
             this.currencyData = {
               icon: item.logoUrl,
               name: item.name,
-              maxSell: item.maxSell,
-              minSell: item.minSell,
-              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId
+              maxSell: item.sellNetworkList[0].maxSell,
+              minSell: item.sellNetworkList[0].minSell,
+              cryptoCurrencyNetworkId: item.cryptoCurrencyNetworkId,
+              sellNetwork: item.sellNetworkList[0]
             }
-            this.$store.state.feeParams.symbol = item.name; //name -- popularList币种
+            this.$store.state.feeParams.symbol = item.symbol; //name -- popularList币种
             this.$store.state.sellRouterParams.cryptoCurrency = item.name;
             this.$store.state.sellRouterParams.currencyData = this.currencyData;
           }
@@ -346,6 +349,10 @@ html,body,#buyCrypto{
     margin-top: 0.12rem;
   }
 }
+.inputFocus{
+  border: 1px solid #D0ECFC;
+  box-shadow: 0 0 0.35rem rgba(89, 153, 248, 0.1); 
+}
 
 .pay_input{
   width: 1.4rem;
@@ -376,12 +383,9 @@ html,body,#buyCrypto{
 .methods_select-left{
   margin-top: -0.1rem;
 }
-.get_title{
-  margin-top: 0.4rem;
-}
 .get_input{
   width: 1.4rem;
-  height: 0.56rem;
+  height: 0.26rem;
   overflow: auto;
   font-family: 'SF Pro Display';
   font-style: normal;
@@ -389,6 +393,7 @@ html,body,#buyCrypto{
   font-size: 0.2rem;
   line-height: 0.24rem;
   color: #063376;
+  margin-top: 0.06rem;
   .no_getAmount{
     color: #C2C2C2;
   }
@@ -424,8 +429,8 @@ html,body,#buyCrypto{
     }
     .networkIcon{
       background: #FFFFFF;
-      width: 0.14rem;
-      height: 0.14rem;
+      width: 0.16rem;
+      height: 0.16rem;
       border-radius: 50%;
       display: flex;
       justify-content: center;
