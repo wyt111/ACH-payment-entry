@@ -240,7 +240,9 @@ export default {
       },1000)
     },
     queryFee(){
-      this.$axios.get(this.$api.get_inquiryFeeSell,this.$store.state.feeParams).then(res=>{
+      let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
+      patams.symbol = patams.symbol +'USDT'
+      this.$axios.get(this.$api.get_inquiryFeeSell,patams).then(res=>{
         if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
           this.feeInfo.rampFee = (this.routerParams.amount * this.feeInfo.price * this.feeInfo.percentageFee + this.feeInfo.fixedFee) * this.feeInfo.rate;

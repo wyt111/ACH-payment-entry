@@ -265,11 +265,9 @@ export default {
      //费率刷新
     queryFee(){
       
-      let data = JSON.parse(JSON.stringify(this.$store.state.feeParams))
-      data.alpha2 = this.$store.state.sellForm.countryCode
-      data.symbol = data.symbol + 'USDT'
-      delete data.worldId
-       this.$axios.get(this.$api.get_sellRampfee,data).then(res=>{
+      let patams = JSON.parse(JSON.stringify(this.$store.state.feeParams))
+      patams.symbol = patams.symbol +'USDT'
+       this.$axios.get(this.$api.get_sellRampfee,patams).then(res=>{
          if(res && res.returnCode === "0000"){
           this.feeInfo = res.data;
             //手续费
